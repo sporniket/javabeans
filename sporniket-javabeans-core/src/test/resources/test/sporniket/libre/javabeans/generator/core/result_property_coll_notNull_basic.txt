@@ -1,0 +1,35 @@
+	//**Property name ("usefullProperty")
+	public static final String PROPERTY_NAME__USEFULL_PROPERTY = "usefullProperty" ;
+	
+	//**Property "usefullProperty" : .
+	private List<String> myUsefullProperty ;
+	
+	/**Read accessor for property "usefullProperty" : .
+	 *
+
+	 *
+	 * @return Property "usefullProperty".
+	 *
+
+	 */
+	public List<String> getUsefullProperty() {
+		if(null == myUsefullProperty)
+		{
+			setUsefullProperty(new ArrayList<String>(0));
+		}
+		return myUsefullProperty ;
+	}
+
+	
+	/**Write accessor for property "usefullProperty" : .
+	 *
+
+	 *
+	 * @param usefullProperty Value of property "usefullProperty".
+	 *
+
+	 */
+	public void setUsefullProperty(List<String> usefullProperty) {
+		myUsefullProperty = usefullProperty ;
+	}
+	

@@ -1,0 +1,235 @@
+package {0};
+
+import java.beans.* ;
+import java.util.* ;
+
+/**{1}.
+ *
+ {2}
+ {3}
+ *
+ *@version {4}
+ {5}
+ {6}
+ */
+public class {7} {8} '{'
+	// ======== COLLECTION AND MAP EVENT NAME SUFFIXES ========
+	// note : it''s a bit of redondancy, but this way the generated code does not require 
+	// additionnal library beyond what is specified in the javabean set description.
+
+	//**Item added
+	public static final String __EVENT_SUFFIX__ADD = "__ADD" ;
+	
+	//**Collection added
+	public static final String __EVENT_SUFFIX__ADD_ALL = "__ADD_ALL" ;
+	
+	//**Item removed
+	public static final String __EVENT_SUFFIX__REMOVE = "__REMOVE" ;
+	
+	//**Collection cleared
+	public static final String __EVENT_SUFFIX__CLEAR = "__CLEAR" ;
+
+	//**Item added (in a map)
+	public static final String __EVENT_SUFFIX__PUT = "__PUT" ;
+	
+	//**Map added
+	public static final String __EVENT_SUFFIX__PUT_ALL = "__PUT_ALL" ;
+	
+	// ======== PROPERTY CHANGE SUPPORT ========
+	//**Bounded property support.
+	protected PropertyChangeSupport __myPcs = new PropertyChangeSupport(this);
+	
+	public void addPropertyChangeListener(PropertyChangeListener listener)
+	'{'
+		__myPcs.addPropertyChangeListener(listener);
+	'}'
+	
+	public void removePropertyChangeListener(PropertyChangeListener listener)
+	'{'
+		__myPcs.removePropertyChangeListener(listener);
+	'}'
+	
+	public PropertyChangeListener[] getPropertyChangeListeners()
+	'{'
+		return __myPcs.getPropertyChangeListeners();
+	'}'
+	
+	public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener)
+	'{'
+		__myPcs.addPropertyChangeListener(propertyName, listener);
+	'}'
+	
+	/**
+	 * Macro to register a listener for collection related events.
+	 *
+	 * Use #removePropertyChangeListenerForCollection to remove the listener.
+	 */
+	public void addPropertyChangeListenerForCollection(String propertyName, PropertyChangeListener listener)
+	'{'
+		__myPcs.addPropertyChangeListener(propertyName, listener);
+		__myPcs.addPropertyChangeListener(propertyName+__EVENT_SUFFIX__ADD, listener);
+		__myPcs.addPropertyChangeListener(propertyName+__EVENT_SUFFIX__ADD_ALL, listener);
+		__myPcs.addPropertyChangeListener(propertyName+__EVENT_SUFFIX__REMOVE, listener);
+		__myPcs.addPropertyChangeListener(propertyName+__EVENT_SUFFIX__CLEAR, listener);
+	'}'
+	
+	/**
+	 * Macro to register a listener for map related events.
+	 *
+	 * Use #removePropertyChangeListenerForMap to remove the listener.
+	 */
+	public void addPropertyChangeListenerForMap(String propertyName, PropertyChangeListener listener)
+	'{'
+		__myPcs.addPropertyChangeListener(propertyName, listener);
+		__myPcs.addPropertyChangeListener(propertyName+__EVENT_SUFFIX__PUT, listener);
+		__myPcs.addPropertyChangeListener(propertyName+__EVENT_SUFFIX__PUT_ALL, listener);
+		__myPcs.addPropertyChangeListener(propertyName+__EVENT_SUFFIX__REMOVE, listener);
+		__myPcs.addPropertyChangeListener(propertyName+__EVENT_SUFFIX__CLEAR, listener);
+	'}'
+	
+	public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener)
+	'{'
+		__myPcs.removePropertyChangeListener(propertyName, listener);
+	'}'
+	
+	/**
+	 * Macro to unregister a listener from collection related events.
+	 */
+	public void removePropertyChangeListenerForCollection(String propertyName, PropertyChangeListener listener)
+	'{'
+		__myPcs.removePropertyChangeListener(propertyName, listener);
+		__myPcs.removePropertyChangeListener(propertyName+__EVENT_SUFFIX__ADD, listener);
+		__myPcs.removePropertyChangeListener(propertyName+__EVENT_SUFFIX__ADD_ALL, listener);
+		__myPcs.removePropertyChangeListener(propertyName+__EVENT_SUFFIX__REMOVE, listener);
+		__myPcs.removePropertyChangeListener(propertyName+__EVENT_SUFFIX__CLEAR, listener);
+	'}'
+	
+	/**
+	 * Macro to unregister a listener from map related events.
+	 */
+	public void removePropertyChangeListenerForMap(String propertyName, PropertyChangeListener listener)
+	'{'
+		__myPcs.removePropertyChangeListener(propertyName, listener);
+		__myPcs.removePropertyChangeListener(propertyName+__EVENT_SUFFIX__PUT, listener);
+		__myPcs.removePropertyChangeListener(propertyName+__EVENT_SUFFIX__PUT_ALL, listener);
+		__myPcs.removePropertyChangeListener(propertyName+__EVENT_SUFFIX__REMOVE, listener);
+		__myPcs.removePropertyChangeListener(propertyName+__EVENT_SUFFIX__CLEAR, listener);
+	'}'
+	
+	public PropertyChangeListener[] getPropertyChangeListeners(String propertyName)
+	'{'
+		return __myPcs.getPropertyChangeListeners(propertyName);
+	'}'
+	
+	public void firePropertyChange(String propertyName, Object oldValue, Object newValue)
+    '{'
+		__myPcs.firePropertyChange(propertyName, oldValue, newValue);
+	'}'
+	
+	public void fireIndexedPropertyChange(String propertyName, int index, Object oldValue, Object newValue)
+    '{'
+		__myPcs.fireIndexedPropertyChange(propertyName, index, oldValue, newValue);
+	'}'
+	
+	public boolean hasChangeListeners(String propertyName)
+	'{'
+		return __myPcs.hasListeners(propertyName);
+	'}'
+	
+	// ======== PROPERTY CONSTRAINT SUPPORT ========
+	//**Vetoable property support.
+	protected VetoableChangeSupport __myVcs = new VetoableChangeSupport(this);
+	
+	public void addVetoableChangeListener(VetoableChangeListener listener)
+	'{'
+		__myVcs.addVetoableChangeListener(listener);
+	'}'
+	
+	public void removeVetoableChangeListener(VetoableChangeListener listener)
+	'{'
+		__myVcs.removeVetoableChangeListener(listener);
+	'}'
+	
+	public VetoableChangeListener[] getVetoableChangeListeners()
+	'{'
+		return __myVcs.getVetoableChangeListeners();
+	'}'
+	
+	public void addVetoableChangeListener(String propertyName, VetoableChangeListener listener)
+	'{'
+		__myVcs.addVetoableChangeListener(propertyName, listener);
+	'}'
+	
+	/**
+	 * Macro to register a listener for collection related events.
+	 *
+	 * Use #removeVetoableChangeListenerForCollection to remove the listener.
+	 */
+	public void addVetoableChangeListenerForCollection(String propertyName, VetoableChangeListener listener)
+	'{'
+		__myVcs.addVetoableChangeListener(propertyName, listener);
+		__myVcs.addVetoableChangeListener(propertyName+__EVENT_SUFFIX__ADD, listener);
+		__myVcs.addVetoableChangeListener(propertyName+__EVENT_SUFFIX__ADD_ALL, listener);
+		__myVcs.addVetoableChangeListener(propertyName+__EVENT_SUFFIX__REMOVE, listener);
+		__myVcs.addVetoableChangeListener(propertyName+__EVENT_SUFFIX__CLEAR, listener);
+	'}'
+	
+	/**
+	 * Macro to register a listener for map related events.
+	 *
+	 * Use #removeVetoableChangeListenerForMap to remove the listener.
+	 */
+	public void addVetoableChangeListenerForMap(String propertyName, VetoableChangeListener listener)
+	'{'
+		__myVcs.addVetoableChangeListener(propertyName, listener);
+		__myVcs.addVetoableChangeListener(propertyName+__EVENT_SUFFIX__PUT, listener);
+		__myVcs.addVetoableChangeListener(propertyName+__EVENT_SUFFIX__PUT_ALL, listener);
+		__myVcs.addVetoableChangeListener(propertyName+__EVENT_SUFFIX__REMOVE, listener);
+		__myVcs.addVetoableChangeListener(propertyName+__EVENT_SUFFIX__CLEAR, listener);
+	'}'
+	
+	public void removeVetoableChangeListener(String propertyName, VetoableChangeListener listener)
+	'{'
+		__myVcs.removeVetoableChangeListener(propertyName, listener);
+	'}'
+	
+	/**
+	 * Macro to unregister a listener from collection related events.
+	 */
+	public void removeVetoableChangeListenerForCollection(String propertyName, VetoableChangeListener listener)
+	'{'
+		__myVcs.removeVetoableChangeListener(propertyName, listener);
+		__myVcs.removeVetoableChangeListener(propertyName+__EVENT_SUFFIX__ADD, listener);
+		__myVcs.removeVetoableChangeListener(propertyName+__EVENT_SUFFIX__ADD_ALL, listener);
+		__myVcs.removeVetoableChangeListener(propertyName+__EVENT_SUFFIX__REMOVE, listener);
+		__myVcs.removeVetoableChangeListener(propertyName+__EVENT_SUFFIX__CLEAR, listener);
+	'}'
+	
+	/**
+	 * Macro to unregister a listener from map related events.
+	 */
+	public void removeVetoableChangeListenerForMap(String propertyName, VetoableChangeListener listener)
+	'{'
+		__myVcs.removeVetoableChangeListener(propertyName, listener);
+		__myVcs.removeVetoableChangeListener(propertyName+__EVENT_SUFFIX__PUT, listener);
+		__myVcs.removeVetoableChangeListener(propertyName+__EVENT_SUFFIX__PUT_ALL, listener);
+		__myVcs.removeVetoableChangeListener(propertyName+__EVENT_SUFFIX__REMOVE, listener);
+		__myVcs.removeVetoableChangeListener(propertyName+__EVENT_SUFFIX__CLEAR, listener);
+	'}'
+	
+	public VetoableChangeListener[] getVetoableChangeListeners(String propertyName)
+	'{'
+		return __myVcs.getVetoableChangeListeners(propertyName);
+	'}'
+	
+	public void fireVetoableChange(String propertyName, Object oldValue, Object newValue) throws PropertyVetoException
+	'{'
+		__myVcs.fireVetoableChange(propertyName, oldValue, newValue);
+	'}'
+	
+	public boolean hasVetoableChangeListeners(String propertyName)
+	'{'
+		return __myVcs.hasListeners(propertyName);
+	'}'
+
+	// ======== PROPERTIES ========

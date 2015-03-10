@@ -1,0 +1,38 @@
+	//**Property name ("usefullProperty")
+	public static final String PROPERTY_NAME__USEFULL_PROPERTY = "usefullProperty" ;
+	
+	//**Property "usefullProperty" : .
+	private Map<String,String> myUsefullProperty ;
+	
+	/**Read accessor for property "usefullProperty" : .
+	 *
+
+	 *
+	 * @return Property "usefullProperty".
+	 *
+
+	 */
+	public Map<String,String> getUsefullProperty() {
+		if(null == myUsefullProperty)
+		{
+			myUsefullProperty = new HashMap<String,String>(0); //don't use setter, because it could oppose it...
+		}
+		return myUsefullProperty ;
+	}
+
+	
+	/**Write accessor for property "usefullProperty" : .
+	 *
+
+	 *
+	 * @param usefullProperty Value of property "usefullProperty".
+	 *
+
+	 */
+	public void setUsefullProperty(Map<String,String> usefullProperty) throws PropertyVetoException {
+		Map<String,String> _oldValue = myUsefullProperty ;
+		__myVcs.fireVetoableChange(PROPERTY_NAME__USEFULL_PROPERTY, myUsefullProperty, usefullProperty);
+		myUsefullProperty = usefullProperty ;
+		__myPcs.firePropertyChange(PROPERTY_NAME__USEFULL_PROPERTY, _oldValue, getUsefullProperty());
+	}
+	

@@ -1,0 +1,117 @@
+	//**Property name ("usefullProperty")
+	public static final String PROPERTY_NAME__USEFULL_PROPERTY = "usefullProperty" ;
+	
+	//**Property name ("usefullProperty"), element added
+	public static final String PROPERTY_NAME__USEFULL_PROPERTY__ADD = "usefullProperty"+__EVENT_SUFFIX__ADD ;
+	
+	//**Property name ("usefullProperty"), collection added
+	public static final String PROPERTY_NAME__USEFULL_PROPERTY__ADD_ALL = "usefullProperty"+__EVENT_SUFFIX__ADD_ALL ;
+	
+	//**Property name ("usefullProperty"), element removed
+	public static final String PROPERTY_NAME__USEFULL_PROPERTY__REMOVE = "usefullProperty"+__EVENT_SUFFIX__REMOVE ;
+	
+	//**Property name ("usefullProperty"), collection cleared
+	public static final String PROPERTY_NAME__USEFULL_PROPERTY__CLEAR = "usefullProperty"+__EVENT_SUFFIX__CLEAR ;
+	
+	//**Property "usefullProperty" : .
+	private List<String> myUsefullProperty = new ArrayList<String>(10) ;
+	
+	/**Read accessor for property "usefullProperty" : .
+	 *
+
+	 *
+	 * @return Property "usefullProperty".
+	 *
+
+	 */
+	public List<String> getUsefullProperty() {
+		return new ArrayList<String>(myUsefullProperty) ;
+	}
+
+	
+	/**Write accessor for property "usefullProperty" : .
+	 *
+
+	 *
+	 * @param usefullProperty Value of property "usefullProperty".
+	 *
+
+	 */
+	public void setUsefullProperty(List<String> usefullProperty) throws PropertyVetoException {
+		List<String> _oldValue = getUsefullProperty() ;
+		__myVcs.fireVetoableChange(PROPERTY_NAME__USEFULL_PROPERTY, _oldValue, usefullProperty);
+		myUsefullProperty.clear() ;
+		myUsefullProperty.addAll(usefullProperty) ;
+		__myPcs.firePropertyChange(PROPERTY_NAME__USEFULL_PROPERTY, _oldValue, getUsefullProperty());
+	}
+	
+	//== START collection proxy for "usefullProperty" ==
+	public void addUsefullProperty(String usefullProperty) throws PropertyVetoException
+	{
+		__myVcs.fireVetoableChange(PROPERTY_NAME__USEFULL_PROPERTY__ADD, usefullProperty, null);
+		myUsefullProperty.add(usefullProperty);
+		__myPcs.firePropertyChange(PROPERTY_NAME__USEFULL_PROPERTY__ADD, usefullProperty, null);
+	}
+	
+	public void removeUsefullProperty(String usefullProperty) throws PropertyVetoException
+	{
+		__myVcs.fireVetoableChange(PROPERTY_NAME__USEFULL_PROPERTY__REMOVE, usefullProperty, null);
+		myUsefullProperty.remove(usefullProperty);
+		__myPcs.firePropertyChange(PROPERTY_NAME__USEFULL_PROPERTY__REMOVE, usefullProperty, null);
+	}
+	
+	public void clearUsefullProperty() throws PropertyVetoException
+	{
+		List<String> _oldValue = getUsefullProperty() ;
+		__myVcs.fireVetoableChange(PROPERTY_NAME__USEFULL_PROPERTY__CLEAR, _oldValue, null);
+		myUsefullProperty.clear();
+		__myPcs.firePropertyChange(PROPERTY_NAME__USEFULL_PROPERTY__CLEAR, _oldValue, null);
+	}
+	
+	public void addAllUsefullProperty(List<String> usefullProperty) throws PropertyVetoException
+	{
+		List<String> _oldValue = getUsefullProperty() ;
+		__myVcs.fireVetoableChange(PROPERTY_NAME__USEFULL_PROPERTY__ADD_ALL, _oldValue, usefullProperty);
+		myUsefullProperty.addAll(usefullProperty);
+		__myPcs.firePropertyChange(PROPERTY_NAME__USEFULL_PROPERTY__ADD_ALL, _oldValue, usefullProperty);
+	}
+	
+	//==
+	public boolean containsUsefullProperty(String usefullProperty)
+	{
+		return myUsefullProperty.contains(usefullProperty);
+	}
+	
+	public boolean isEmptyUsefullProperty()
+	{
+		return myUsefullProperty.isEmpty();
+	}
+	//== END collection proxy for "usefullProperty" ==
+	
+	
+	/**Fluent addAll for property "usefullProperty" : .
+	 *
+
+	 *
+	 * @param usefullProperty new elements collection to add to the "usefullProperty" collection property.
+	 *
+
+	 */
+	public DummyBean withUsefullProperty(List<String> usefullProperty) throws PropertyVetoException {
+		addAllUsefullProperty(usefullProperty) ;
+		return this ;
+	}
+	
+	/**Fluent add element for property "usefullProperty" : .
+	 *
+
+	 *
+	 * @param usefullProperty new element to add to the "usefullProperty" collection property.
+	 *
+
+	 */
+	public DummyBean withUsefullProperty(String usefullProperty) throws PropertyVetoException {
+		addUsefullProperty(usefullProperty) ;
+		return this ;
+	}
+	

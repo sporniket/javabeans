@@ -1,0 +1,104 @@
+	//**Property name ("usefullProperty")
+	public static final String PROPERTY_NAME__USEFULL_PROPERTY = "usefullProperty" ;
+	
+	//**Property name ("usefullProperty"), element added
+	public static final String PROPERTY_NAME__USEFULL_PROPERTY__ADD = "usefullProperty"+__EVENT_SUFFIX__ADD ;
+	
+	//**Property name ("usefullProperty"), collection added
+	public static final String PROPERTY_NAME__USEFULL_PROPERTY__ADD_ALL = "usefullProperty"+__EVENT_SUFFIX__ADD_ALL ;
+	
+	//**Property name ("usefullProperty"), element removed
+	public static final String PROPERTY_NAME__USEFULL_PROPERTY__REMOVE = "usefullProperty"+__EVENT_SUFFIX__REMOVE ;
+	
+	//**Property name ("usefullProperty"), collection cleared
+	public static final String PROPERTY_NAME__USEFULL_PROPERTY__CLEAR = "usefullProperty"+__EVENT_SUFFIX__CLEAR ;
+	
+	//**Property "usefullProperty" : .
+	private List<String> myUsefullProperty = new ArrayList<String>(10) ;
+	
+	/**Read accessor for property "usefullProperty" : .
+	 *
+
+	 *
+	 * @return Property "usefullProperty".
+	 *
+
+	 */
+	public List<String> getUsefullProperty() {
+		return new ArrayList<String>(myUsefullProperty) ;
+	}
+
+	
+	/**Write accessor for property "usefullProperty" : .
+	 *
+
+	 *
+	 * @param usefullProperty Value of property "usefullProperty".
+	 *
+
+	 */
+	public void setUsefullProperty(List<String> usefullProperty) {
+		myUsefullProperty.clear() ;
+		myUsefullProperty.addAll(usefullProperty) ;
+	}
+	
+	//== START collection proxy for "usefullProperty" ==
+	public void addUsefullProperty(String usefullProperty)
+	{
+		myUsefullProperty.add(usefullProperty);
+	}
+	
+	public void removeUsefullProperty(String usefullProperty)
+	{
+		myUsefullProperty.remove(usefullProperty);
+	}
+	
+	public void clearUsefullProperty()
+	{
+		myUsefullProperty.clear();
+	}
+	
+	public void addAllUsefullProperty(List<String> usefullProperty)
+	{
+		myUsefullProperty.addAll(usefullProperty);
+	}
+	
+	//==
+	public boolean containsUsefullProperty(String usefullProperty)
+	{
+		return myUsefullProperty.contains(usefullProperty);
+	}
+	
+	public boolean isEmptyUsefullProperty()
+	{
+		return myUsefullProperty.isEmpty();
+	}
+	//== END collection proxy for "usefullProperty" ==
+	
+	
+	/**Fluent addAll for property "usefullProperty" : .
+	 *
+
+	 *
+	 * @param usefullProperty new elements collection to add to the "usefullProperty" collection property.
+	 *
+
+	 */
+	public DummyBean withUsefullProperty(List<String> usefullProperty) {
+		addAllUsefullProperty(usefullProperty) ;
+		return this ;
+	}
+	
+	/**Fluent add element for property "usefullProperty" : .
+	 *
+
+	 *
+	 * @param usefullProperty new element to add to the "usefullProperty" collection property.
+	 *
+
+	 */
+	public DummyBean withUsefullProperty(String usefullProperty) {
+		addUsefullProperty(usefullProperty) ;
+		return this ;
+	}
+	

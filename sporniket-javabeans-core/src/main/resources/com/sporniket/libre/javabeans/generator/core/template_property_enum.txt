@@ -1,0 +1,6 @@
+	/**
+	 * Valid values for property "{2}".
+	 */
+	public static enum {0} '{'
+		{1} ;
+	'}'

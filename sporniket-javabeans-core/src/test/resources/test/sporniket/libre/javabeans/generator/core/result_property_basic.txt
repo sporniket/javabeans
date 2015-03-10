@@ -1,0 +1,63 @@
+	//**Property name ("usefullProperty")
+	public static final String PROPERTY_NAME__USEFULL_PROPERTY = "usefullProperty" ;
+	
+	//**Property "usefullProperty" : An interestingly usefull property.
+	private java.util.Date myUsefullProperty ;
+	
+	/**Read accessor for property "usefullProperty" : An interestingly usefull property.
+	 *
+<p>First paragraph of first description</p>
+<p>Second paragraph of first description</p>
+
+second description with no html tags.
+
+	 *
+	 * @return Property "usefullProperty".
+	 *
+	 * @see First see for property
+	 * @see Second see for property
+
+	 */
+	public java.util.Date getUsefullProperty() {
+		return myUsefullProperty ;
+	}
+
+	
+	/**Write accessor for property "usefullProperty" : An interestingly usefull property.
+	 *
+<p>First paragraph of first description</p>
+<p>Second paragraph of first description</p>
+
+second description with no html tags.
+
+	 *
+	 * @param usefullProperty Value of property "usefullProperty".
+	 *
+	 * @see First see for property
+	 * @see Second see for property
+
+	 */
+	public void setUsefullProperty(java.util.Date usefullProperty) {
+		myUsefullProperty = usefullProperty ;
+	}
+	
+	/**Fluent write accessor for property "usefullProperty" : An interestingly usefull property.
+	 *
+<p>First paragraph of first description</p>
+<p>Second paragraph of first description</p>
+
+second description with no html tags.
+
+	 *
+	 * @param usefullProperty Value of property "usefullProperty".
+	 *
+	 * @see First see for property
+	 * @see Second see for property
+
+	 */
+	public DummyBean withUsefullProperty(java.util.Date usefullProperty) {
+		setUsefullProperty(usefullProperty) ;
+		return this ;
+	}
+
+

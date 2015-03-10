@@ -1,0 +1,40 @@
+package {0};
+
+import java.beans.* ;
+import java.util.* ;
+
+/**{1}.
+ *
+ {2}
+ {3}
+ *
+ *@version {4}
+ {5}
+ {6}
+ */
+public class {7} {8} '{'
+	// ======== COLLECTION AND MAP EVENT NAME SUFFIXES ========
+	// note : it''s a bit of redondancy, but this way the generated code does not require 
+	// additionnal library beyond what is specified in the javabean set description.
+
+	//**Item added
+	public static final String __EVENT_SUFFIX__ADD = "__ADD" ;
+	
+	//**Collection added
+	public static final String __EVENT_SUFFIX__ADD_ALL = "__ADD_ALL" ;
+	
+	//**Item removed
+	public static final String __EVENT_SUFFIX__REMOVE = "__REMOVE" ;
+	
+	//**Collection cleared
+	public static final String __EVENT_SUFFIX__CLEAR = "__CLEAR" ;
+
+	//**Item added (in a map)
+	public static final String __EVENT_SUFFIX__PUT = "__PUT" ;
+	
+	//**Map added
+	public static final String __EVENT_SUFFIX__PUT_ALL = "__PUT_ALL" ;
+	
+	// use the super class code...
+
+	// ======== PROPERTIES ========

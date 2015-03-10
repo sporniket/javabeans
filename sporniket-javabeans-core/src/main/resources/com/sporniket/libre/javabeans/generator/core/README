@@ -1,0 +1,40 @@
+Property templates :
+====================
+0 : javabean style property name ; e.g. myUsefullProperty
+1 : capitalized name ; e.g. MyUsefullProperty
+2 : All-caps name ; e.g. MY_USEFULL_PROPERTY
+3 : Type/Interface (List, Set or Map)
+4 : Description
+5 : see
+6 : summary
+7 : Implementation
+8 : Parametrization (type of items/keys)
+9 : Parametrization (type of values)
+10 : Instanciation parameters
+11 : enclosing type (for fluent write accessors)
+
+
+Class template begin / package :
+====================
+0 : package name
+1 : summary
+2 : description
+3 : licence
+4 : version
+5 : authors
+6 : sees
+7 : classname
+8 : "extends xxx", if appliable.
+
+
+
+Class template end :
+====================
+0 : Date
+
+
+Property enum :
+===============
+0 : enum type name
+1 : comma separated values
+2 : related property name

@@ -1,0 +1,62 @@
+            ------
+            How to use the sporniket-javabean maven plugin
+            
+
+	This manual will explain how to declare the plugin, where to place description files, and how to generate java classes.
+	
+Plugin declaration
+
+	First, edit your settings.xml file to declare the sporniketcore maven repository :
+
+---
+<repository>
+  <id>sporniketcore</id>
+  <name>Sporniket-core repository</name>
+  <releases>
+    <enabled>true</enabled>
+    <updatePolicy>daily</updatePolicy>
+    <checksumPolicy>fail</checksumPolicy>
+  </releases>
+  <snapshots>
+    <enabled>false</enabled>
+    <updatePolicy>always</updatePolicy>
+    <checksumPolicy>fail</checksumPolicy>
+  </snapshots>
+  <url>http://sourceforge.net/projects/sporniketcore/files/m2-repo</url>
+  <layout>default</layout>
+</repository>
+---
+
+	Add the following plugin declaration in the plugins section of your POM file :
+
+--- 
+<!-- For generating javabeans -->
+<plugin>
+	<groupId>com.sporniket.javabeans</groupId>
+	<artifactId>sporniket-javabeans-maven</artifactId>
+	<version>[the version to use]</version>
+	<executions>
+		<execution>
+			<goals>
+				<goal>generate</goal>
+			</goals>
+		</execution>
+	</executions>
+</plugin>
+---
+
+Javabean description files and generated sources location
+
+	The plugin will look for xml files in src/main/sporniket-javabeans.
+	
+	The plugin will generate javacode in target/generated-sources/sporniket-javabeans, and will create the packages directories as needed.
+	
+Run the plugin
+
+	Invoke maven and instruct to use the "generate" goal of the plugin :
+	
+---
+mvn com.sporniket.javabeans:sporniket-javabeans-maven:generate
+---
+	
+	If not done yet, add target/generated-sources/sporniket-javabeans in the list of your source code folders.

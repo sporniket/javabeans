@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project>
+	<version />
+	<bannerRight>
+		<src>http://sflogo.sourceforge.net/sflogo.php?group_id=46769&amp;type=16
+		</src>
+	</bannerRight>
+	<body>
+		<menu ref="parent" />
+		<menu ref="modules" />
+		<menu ref="reports" />
+	</body>
+</project>

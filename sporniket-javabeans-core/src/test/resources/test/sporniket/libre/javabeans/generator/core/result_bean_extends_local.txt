@@ -1,0 +1,220 @@
+package test.sporniket.javabeans.generator;
+
+import java.beans.* ;
+import java.util.* ;
+
+/**A usefull Bean that provide usefull fields.
+ *
+ It is underlined that this bean is very usefull.
+<p>On a sidenote, nevermind.
+
+ <p>(c)2012 David SPORN
+<pre>GPL notice</pre>
+
+ *
+ *@version 1.0.5
+  * @author David SPORN
+
+  * @see http://bean.example.com
+
+ */
+public class MyUsefullBean extends MotherClass {
+	// ======== COLLECTION AND MAP EVENT NAME SUFFIXES ========
+	// note : it's a bit of redondancy, but this way the generated code does not require 
+	// additionnal library beyond what is specified in the javabean set description.
+
+	//**Item added
+	public static final String __EVENT_SUFFIX__ADD = "__ADD" ;
+	
+	//**Collection added
+	public static final String __EVENT_SUFFIX__ADD_ALL = "__ADD_ALL" ;
+	
+	//**Item removed
+	public static final String __EVENT_SUFFIX__REMOVE = "__REMOVE" ;
+	
+	//**Collection cleared
+	public static final String __EVENT_SUFFIX__CLEAR = "__CLEAR" ;
+
+	//**Item added (in a map)
+	public static final String __EVENT_SUFFIX__PUT = "__PUT" ;
+	
+	//**Map added
+	public static final String __EVENT_SUFFIX__PUT_ALL = "__PUT_ALL" ;
+	
+	// use the super class code...
+
+	// ======== PROPERTIES ========
+
+	//**Property name ("creationDate")
+	public static final String PROPERTY_NAME__CREATION_DATE = "creationDate" ;
+	
+	//**Property "creationDate" : .
+	private java.util.Date myCreationDate ;
+	
+	/**Read accessor for property "creationDate" : .
+	 *
+
+	 *
+	 * @return Property "creationDate".
+	 *
+
+	 */
+	public java.util.Date getCreationDate() {
+		return myCreationDate ;
+	}
+
+	
+	/**Write accessor for property "creationDate" : .
+	 *
+
+	 *
+	 * @param creationDate Value of property "creationDate".
+	 *
+
+	 */
+	public void setCreationDate(java.util.Date creationDate) {
+		myCreationDate = creationDate ;
+	}
+	
+	/**Fluent write accessor for property "creationDate" : .
+	 *
+
+	 *
+	 * @param creationDate Value of property "creationDate".
+	 *
+
+	 */
+	public MyUsefullBean withCreationDate(java.util.Date creationDate) {
+		setCreationDate(creationDate) ;
+		return this ;
+	}
+	
+	//**Property name ("editDate")
+	public static final String PROPERTY_NAME__EDIT_DATE = "editDate" ;
+	
+	//**Property "editDate" : .
+	private java.util.Date myEditDate ;
+	
+	/**Read accessor for property "editDate" : .
+	 *
+
+	 *
+	 * @return Property "editDate".
+	 *
+
+	 */
+	public java.util.Date getEditDate() {
+		return myEditDate ;
+	}
+
+	
+	/**Write accessor for property "editDate" : .
+	 *
+
+	 *
+	 * @param editDate Value of property "editDate".
+	 *
+
+	 */
+	public void setEditDate(java.util.Date editDate) {
+		java.util.Date _oldValue = myEditDate;
+		myEditDate = editDate ;
+		__myPcs.firePropertyChange(PROPERTY_NAME__EDIT_DATE, _oldValue, myEditDate);
+	}
+	
+	/**Fluent write accessor for property "editDate" : .
+	 *
+
+	 *
+	 * @param editDate Value of property "editDate".
+	 *
+
+	 */
+	public MyUsefullBean withEditDate(java.util.Date editDate) {
+		setEditDate(editDate) ;
+		return this ;
+	}
+	
+	//**Property name ("deleteDate")
+	public static final String PROPERTY_NAME__DELETE_DATE = "deleteDate" ;
+	
+	//**Property "deleteDate" : .
+	private java.util.Date myDeleteDate ;
+	
+	/**Read accessor for property "deleteDate" : .
+	 *
+
+	 *
+	 * @return Property "deleteDate".
+	 *
+
+	 */
+	public java.util.Date getDeleteDate() {
+		return myDeleteDate ;
+	}
+
+	
+	/**Write accessor for property "deleteDate" : .
+	 *
+
+	 *
+	 * @param deleteDate Value of property "deleteDate".
+	 *
+
+	 */
+	public void setDeleteDate(java.util.Date deleteDate) throws PropertyVetoException {
+		java.util.Date _oldValue = myDeleteDate;
+		__myVcs.fireVetoableChange(PROPERTY_NAME__DELETE_DATE, myDeleteDate, deleteDate);
+		myDeleteDate = deleteDate ;
+		__myPcs.firePropertyChange(PROPERTY_NAME__DELETE_DATE, _oldValue, myDeleteDate);
+	}
+	
+	/**Fluent write accessor for property "deleteDate" : .
+	 *
+
+	 *
+	 * @param deleteDate Value of property "deleteDate".
+	 *
+
+	 */
+	public MyUsefullBean withDeleteDate(java.util.Date deleteDate) throws PropertyVetoException {
+		setDeleteDate(deleteDate) ;
+		return this ;
+	}
+	
+	//**Property name ("notNullBasicCollection")
+	public static final String PROPERTY_NAME__NOT_NULL_BASIC_COLLECTION = "notNullBasicCollection" ;
+	
+	//**Property "notNullBasicCollection" : .
+	private Set<String> myNotNullBasicCollection ;
+	
+	/**Read accessor for property "notNullBasicCollection" : .
+	 *
+
+	 *
+	 * @return Property "notNullBasicCollection".
+	 *
+
+	 */
+	public Set<String> getNotNullBasicCollection() {
+		if(null == myNotNullBasicCollection)
+		{
+			setNotNullBasicCollection(new TreeSet<String>());
+		}
+		return myNotNullBasicCollection ;
+	}
+
+	
+	/**Write accessor for property "notNullBasicCollection" : .
+	 *
+
+	 *
+	 * @param notNullBasicCollection Value of property "notNullBasicCollection".
+	 *
+
+	 */
+	public void setNotNullBasicCollection(Set<String> notNullBasicCollection) {
+		myNotNullBasicCollection = notNullBasicCollection ;
+	}
+	
+}
