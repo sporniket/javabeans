@@ -13,43 +13,25 @@
 	<packaging>maven-plugin</packaging>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version.dependency.maven>2.0</version.dependency.maven>
+		
+		<!-- maven plugins version -->
+		<version.maven-plugin-plugin>2.5.1</version.maven-plugin-plugin>
 	</properties>
 
 	<name>sporniket-javabeans-maven</name>
 	<description>Maven Plugin for the code generator.</description>
-	<url>${url.base}/${project.artifactId}/${project.version}/</url>
+	<url>${url.base}/blob/master/${project.artifactId}</url>
 
 	<distributionManagement>
 		<site>
-			<id>sporniketcore.sf.net</id>
+			<id>localMvnSite</id>
 			<name>Sporniket Java Core Library - Javabeans Maven Plugin</name>
 			<url>${url.base.site.deploy}/${project.artifactId}/${project.version}</url>
 		</site>
 	</distributionManagement>
-
 	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- Maven -->
-		<dependency>
-			<groupId>org.apache.maven</groupId>
-			<artifactId>maven-plugin-api</artifactId>
-			<version>${version.dependency.maven}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.maven</groupId>
-			<artifactId>maven-project</artifactId>
-			<version>${version.dependency.maven}</version>
-		</dependency>
-
+		<!-- ===INTERNAL DEPENDENCIES -->
 		<!-- Javabean core -->
 		<dependency>
 			<groupId>com.sporniket.javabeans</groupId>
@@ -57,12 +39,34 @@
 			<version>${project.version}</version>
 		</dependency>
 
+		<!-- ===EXTERNAL DEPENDENCIES (non test) -->
+		<!-- Maven -->
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-plugin-api</artifactId>
+			<version>${version.dependency.maven}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-project</artifactId>
+			<version>${version.dependency.maven}</version>
+		</dependency>
+
 		<!-- Castor generated classes support -->
 		<dependency>
 			<groupId>org.codehaus.castor</groupId>
 			<artifactId>castor-xml</artifactId>
-			<version>${version.dependency.castor}</version>
+			<version>${version.dependency.castor.xml}</version>
 		</dependency>
+
+		<!-- ===TEST DEPENDENCIES -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -70,7 +74,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-plugin-plugin</artifactId>
-				<version>2.5.1</version>
+				<version>${version.maven-plugin-plugin}</version>
 				<configuration>
 					<goalPrefix>sporniket-javabeans</goalPrefix>
 				</configuration>

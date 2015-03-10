@@ -11,31 +11,48 @@
 
 	<artifactId>sporniket-javabeans-core</artifactId>
 	<packaging>jar</packaging>
-
+	
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.sporniket.core>0-SNAPSHOT</version.sporniket.core>
+		<version.castor-maven-plugin>2.0</version.castor-maven-plugin>
 	</properties>
 
 	<name>sporniket-javabeans-core</name>
 	<description>Core of the code generator.</description>
-	<url>${url.base}/${project.artifactId}/${project.version}/</url>
+	<url>${url.base}/blob/master/${project.artifactId}</url>
 
 	<distributionManagement>
 		<site>
-			<id>sporniketcore.sf.net</id>
+			<id>localMvnSite</id>
 			<name>Sporniket Java Core Library - Javabeans Core</name>
 			<url>${url.base.site.deploy}/${project.artifactId}/${project.version}</url>
 		</site>
 	</distributionManagement>
+	<dependencies>
+		<!-- ===INTERNAL DEPENDENCIES=== -->
 
+		<!-- ===EXTERNAL DEPENDENCIES (non test)=== -->
+		<!-- Castor generated classes support -->
+		<dependency>
+			<groupId>org.codehaus.castor</groupId>
+			<artifactId>castor-xml</artifactId>
+			<version>${version.dependency.castor.xml}</version>
+		</dependency>
+
+		<!-- ===TEST DEPENDENCIES=== -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 	<build>
 		<plugins>
 			<!-- Castor plugin to generate exchange classes -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>castor-maven-plugin</artifactId>
-				<version>2.0</version>
+				<version>${version.castor-maven-plugin}</version>
 				<executions>
 					<execution>
 						<goals>
@@ -46,19 +63,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- Castor generated classes support -->
-		<dependency>
-			<groupId>org.codehaus.castor</groupId>
-			<artifactId>castor-xml</artifactId>
-			<version>${version.dependency.castor}</version>
-		</dependency>
-	</dependencies>
 </project>

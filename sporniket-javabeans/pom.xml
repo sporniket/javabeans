@@ -13,8 +13,8 @@
 		<version.jdk>1.6</version.jdk>
 		
 		<version.dependency.sporniket.core>15.03.00-jdk6</version.dependency.sporniket.core>
-		<version.dependency.castor>1.3.2</version.dependency.castor>
-		
+		<version.dependency.castor.xml>1.3.2</version.dependency.castor.xml>
+				
 		<!-- maven plugins version -->
 		<version.maven-compiler-plugin>3.2</version.maven-compiler-plugin>
 		<version.maven-source-plugin>2.4</version.maven-source-plugin>
@@ -54,7 +54,7 @@
 		<dependency>
 			<groupId>org.codehaus.castor</groupId>
 			<artifactId>castor-xml</artifactId>
-			<version>${version.dependency.castor}</version>
+			<version>${version.dependency.castor.xml}</version>
 		</dependency>
 
 		<!-- ===TEST DEPENDENCIES -->

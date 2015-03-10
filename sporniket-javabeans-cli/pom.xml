@@ -18,29 +18,32 @@
 
 	<name>sporniket-javabeans-cli</name>
 	<description>Command line interface for the code generator.</description>
-	<url>${url.base}/${project.artifactId}/${project.version}/</url>
+	<url>${url.base}/blob/master/${project.artifactId}</url>
 
 	<distributionManagement>
 		<site>
-			<id>sporniketcore.sf.net</id>
+			<id>localMvnSite</id>
 			<name>Sporniket Java Core Library - Javabeans Command Line Interface</name>
 			<url>${url.base.site.deploy}/${project.artifactId}/${project.version}</url>
 		</site>
 	</distributionManagement>
-
 	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
-
+		<!-- ===INTERNAL DEPENDENCIES -->
 		<!-- Javabean core -->
 		<dependency>
 			<groupId>com.sporniket.javabeans</groupId>
 			<artifactId>sporniket-javabeans-core</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+
+		<!-- ===EXTERNAL DEPENDENCIES (non test) -->
+
+		<!-- ===TEST DEPENDENCIES -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
