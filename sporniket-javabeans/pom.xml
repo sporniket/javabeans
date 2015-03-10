@@ -4,20 +4,29 @@
 
 	<groupId>com.sporniket.javabeans</groupId>
 	<artifactId>sporniket-javabeans</artifactId>
-	<version>0-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	<version>0-SNAPSHOT</version>
 
 	<properties>
 		<url.base>http://sporniketcore.sourceforge.net/sites</url.base>
 		<url.base.site.deploy>scp://shell.sourceforge.net/home/project-web/sporniketcore/htdocs/sites</url.base.site.deploy>
 		<version.jdk>1.6</version.jdk>
-		<version.dependency.sporniket.core>0-SNAPSHOT</version.dependency.sporniket.core>
+		
+		<version.dependency.sporniket.core>15.03.00-jdk6</version.dependency.sporniket.core>
 		<version.dependency.castor>1.3.2</version.dependency.castor>
+		
+		<!-- maven plugins version -->
+		<version.maven-compiler-plugin>3.2</version.maven-compiler-plugin>
+		<version.maven-source-plugin>2.4</version.maven-source-plugin>
+		<version.maven-javadoc-plugin>2.10.1</version.maven-javadoc-plugin>
+		<version.maven-surefire-report-plugin>2.18.1</version.maven-surefire-report-plugin>
+		<version.maven-pmd-plugin>3.4</version.maven-pmd-plugin>
+		<version.maven-release-plugin>2.5.1</version.maven-release-plugin>
 	</properties>
 
 	<name>sporniket-javabeans</name>
 	<description>Java code generator that eases the task of writing Javabeans.</description>
-	<url>${url.base}/${project.artifactId}/${project.version}/</url>
+	<url>${url.base}/blob/master/${project.artifactId}</url>
 
 	<modules>
 		<module>../sporniket-javabeans-core</module>
@@ -26,6 +35,9 @@
 	</modules>
 
 	<dependencies>
+		<!-- ===INTERNAL DEPENDENCIES -->
+
+		<!-- ===EXTERNAL DEPENDENCIES (non test) -->
 		<!-- Sporniket core -->
 		<dependency>
 			<groupId>com.sporniket.core</groupId>
@@ -44,17 +56,57 @@
 			<artifactId>castor-xml</artifactId>
 			<version>${version.dependency.castor}</version>
 		</dependency>
+
+		<!-- ===TEST DEPENDENCIES -->
 	</dependencies>
 
 	<build>
-		<!-- For annotations and other Java5 stuff -->
 		<plugins>
+			<!-- Version of Java supported -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${version.maven-compiler-plugin}</version>
 				<configuration>
 					<source>${version.jdk}</source>
 					<target>${version.jdk}</target>
+				</configuration>
+			</plugin>
+            <!-- create a source jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+				<version>${version.maven-source-plugin}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- create a javadoc jar -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${version.maven-javadoc-plugin}</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- release -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>${version.maven-release-plugin}</version>
+				<configuration>
+					<tagNameFormat>v@{project.version}</tagNameFormat>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -65,24 +117,42 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.8.1</version>
+				<version>${version.maven-javadoc-plugin}</version>
 				<configuration>
 				</configuration>
+				<reportSets>
+					<reportSet>
+						<id>default</id>
+						<configuration>
+						</configuration>
+						<reports>
+							<report>javadoc</report>
+						</reports>
+					</reportSet>
+					<reportSet>
+						<id>aggregate</id>
+						<configuration>
+						</configuration>
+						<reports>
+							<report>aggregate</report>
+						</reports>
+					</reportSet>
+				</reportSets>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-report-plugin</artifactId>
-				<version>2.7.2</version>
+				<version>${version.maven-surefire-report-plugin}</version>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-changelog-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<dateFormat>EEE MMM dd hh:mm:ss yyyy Z</dateFormat>
-					<startDate>2012-01-01</startDate>
-				</configuration>
-			</plugin>
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
+<!-- 				<artifactId>maven-changelog-plugin</artifactId> -->
+<!-- 				<version>2.2</version> -->
+<!-- 				<configuration> -->
+<!-- 					<dateFormat>EEE MMM dd hh:mm:ss yyyy Z</dateFormat> -->
+<!-- 					<startDate>2012-01-01</startDate> -->
+<!-- 				</configuration> -->
+<!-- 			</plugin> -->
 		</plugins>
 	</reporting>
 
@@ -96,26 +166,21 @@
 	</licenses>
 
 	<distributionManagement>
-		<repository>
-			<id>sporniketcore.sf.net</id>
-			<name>SourceForge File Release System</name>
-			<url>scp://shell.sourceforge.net/home/frs/project/sporniketcore/m2-repo</url>
-		</repository>
 		<site>
-			<id>sporniketcore.sf.net</id>
+			<id>localMvnSite</id>
 			<name>Sporniket Java Core Library - Javabeans</name>
 			<url>${url.base.site.deploy}/${project.artifactId}/${project.version}</url>
 		</site>
 	</distributionManagement>
 
 	<scm>
-		<connection>scm:hg:http://hg.code.sf.net/p/sporniketcore/ws-javabeans</connection>
-		<url>http://hg.code.sf.net/p/sporniketcore/ws-javabeans</url>
+		<connection>scm:git:https://github.com/sporniket/javabeans.git</connection>
+		<url>https://github.com/sporniket/javabeans</url>
 	</scm>
 
 	<issueManagement>
-		<system>SourceForge.net</system>
-		<url>http://sourceforge.net/tracker/?group_id=46769&amp;atid=447316</url>
+		<system>GitHub.com</system>
+		<url>https://github.com/sporniket/javabeans/issues</url>
 	</issueManagement>
 
 	<organization>
