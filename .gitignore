@@ -10,3 +10,26 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# Old Mercurial metadata (see history at http://sourceforge.net/projects/sporniketcore/)
+.hg*
+
+# backup file from gedit
+*~
+
+# Maven files
+pom.xml.releaseBackup
+release.properties
+target/
+
+# generated maven site
+mvnsites/
+
+#old bin folders
+bin/
+
+#Eclipse artifacts
+.project
+.classpath
+.settings/
+
