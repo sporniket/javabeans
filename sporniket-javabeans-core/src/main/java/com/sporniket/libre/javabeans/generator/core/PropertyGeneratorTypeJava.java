@@ -100,7 +100,7 @@ public class PropertyGeneratorTypeJava implements PropertyGenerator
 	private Map<PropertyMode, MessageFormat> myTemplateRegistry = new HashMap<PropertyMode, MessageFormat>();
 
 	/**
-	 * @throws IOException
+	 * @throws IOException if there is a problem to deal with.
 	 * 
 	 */
 	public PropertyGeneratorTypeJava() throws IOException
@@ -111,7 +111,7 @@ public class PropertyGeneratorTypeJava implements PropertyGenerator
 	/**
 	 * Initialisation : fill templateRegistry.
 	 * 
-	 * @throws IOException
+	 * @throws IOException if there is a problem to deal with.
 	 */
 	private void init__loadTemplates() throws IOException
 	{
