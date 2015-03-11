@@ -12,7 +12,7 @@
 		<url.base.site.deploy>scp://shell.sourceforge.net/home/project-web/sporniketcore/htdocs/sites</url.base.site.deploy>
 		<version.jdk>1.6</version.jdk>
 		
-		<version.dependency.sporniket.core>15.03.00-jdk6</version.dependency.sporniket.core>
+		<version.dependency.sporniket.core>15.03.00.01-jdk6</version.dependency.sporniket.core>
 		<version.dependency.castor.xml>1.3.2</version.dependency.castor.xml>
 				
 		<!-- maven plugins version -->
