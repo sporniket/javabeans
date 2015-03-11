@@ -14,7 +14,7 @@ import com.sporniket.studio.schema.model.set.javabean.Package;
  * <p>
  * &copy; Copyright 2012-2013 David Sporn
  * </p>
- * <hr />
+ * <hr>
  * 
  * <p>
  * This file is part of <i>The Sporniket Javabeans Library &#8211; core</i>.
@@ -31,11 +31,11 @@ import com.sporniket.studio.schema.model.set.javabean.Package;
  * 
  * <p>
  * You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library &#8211; 
- * core</i>. If not, see <http://www.gnu.org/licenses/>. 2
+ * core</i>. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. 2
  * 
- * <hr />
+ * <hr>
  * 
- * @author David SPORN <david.sporn@sporniket.com>
+ * @author David SPORN 
  * @version 13.01.01
  * 
  */
@@ -44,9 +44,9 @@ public interface PackageGenerator
 	/**
 	 * Output in the given stream the Java code of the specified Javabean.
 	 * 
-	 * @param out
-	 * @param pack
-	 * @param set
+	 * @param out output writer.
+	 * @param pack package to generate.
+	 * @param set bean set to generate.
 	 */
 	void outputPackageInfo(PrintWriter out, Package pack, BeanSet set);
 }

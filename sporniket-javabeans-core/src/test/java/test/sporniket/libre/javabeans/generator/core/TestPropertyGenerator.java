@@ -12,7 +12,7 @@ import junit.framework.TestCase;
  * 
  * Those test suite requires a named bean or they throw a NPE.
  * 
- * @author David SPORN <david.sporn@sporniket.com>
+ * @author David SPORN 
  * 
  * @version 0-SNAPSHOT
  * @since 0-SNAPSHOT

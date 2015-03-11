@@ -16,7 +16,7 @@ import com.sporniket.studio.schema.model.set.javabean.Property;
  * <p>
  * &copy; Copyright 2012-2013 David Sporn
  * </p>
- * <hr />
+ * <hr>
  * 
  * <p>
  * This file is part of <i>The Sporniket Javabeans Library &#8211; core</i>.
@@ -33,11 +33,11 @@ import com.sporniket.studio.schema.model.set.javabean.Property;
  * 
  * <p>
  * You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library &#8211; 
- * core</i>. If not, see <http://www.gnu.org/licenses/>. 2
+ * core</i>. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. 2
  * 
- * <hr />
+ * <hr>
  * 
- * @author David SPORN <david.sporn@sporniket.com>
+ * @author David SPORN 
  * @version 13.01.01
  */
 public class JavadocUtils
@@ -93,8 +93,8 @@ public class JavadocUtils
 	/**
 	 * Concatenate all the description item.
 	 * 
-	 * @param strings
-	 * @return
+	 * @param strings the strings to concatenate.
+	 * @return the concatenated strings
 	 */
 	public static String concatenateStringArray(String[] strings)
 	{
@@ -158,11 +158,8 @@ public class JavadocUtils
 	/**
 	 * Aggregate the "see" elements
 	 * 
-	 * @param property
-	 * @param bean
-	 * @param pack
-	 * @param set
-	 * @return
+	 * @param property the property for which "see" elements are generated.
+	 * @return the javadoc directives, or empty.
 	 */
 	public static String generateSee(Property property)
 	{

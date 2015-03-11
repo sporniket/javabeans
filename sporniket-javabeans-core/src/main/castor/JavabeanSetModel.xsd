@@ -121,7 +121,7 @@
 						<dt>type="java:complete_java_class_name"</dt>
 						<dd>field is of type complete_java_class_name e.g.:"java:String", "java:com.sporniket.lang.Date"</dd>
 						<dt> type="enum:[EnumName]:Comma,separated,values"</dt>
-						<dd> field is of type MyClass.EnumName, or MyClass. &lt;FieldName&gt; if EnumName is not specified. EnumName is a public static enum.</dd>
+						<dd> field is of type MyClass.EnumName, or MyClass. &amp;lt;FieldName&amp;gt; if EnumName is not specified. EnumName is a public static enum.</dd>
 						<dt>type="coll:Interface:ImplementationType:ItemType:{notNull|isolated}:Instanciation parameters"</dt>
 						<dd>
 							<ul>
@@ -137,7 +137,7 @@
 										<dd> contains, isEmpty are proxied</dd>
 									</dl>
 								</li>
-								<li>An empty instanciation will be "new ImplementationType&lt;ItemType&gt;(Instanciation parameters)". A clone instanciation will be "new ImplementationType&lt;ItemType&gt;(Source collection)"</li>
+								<li>An empty instanciation will be "new ImplementationType&amp;lt;ItemType&amp;gt;(Instanciation parameters)". A clone instanciation will be "new ImplementationType&amp;lt;ItemType&amp;gt;(Source collection)"</li>
 							</ul>
 						</dd>
 						<dt>type="map:ImplementationType:KeyType:ValueType:{notNull|isolated}:Instanciation parameters"</dt>
@@ -155,7 +155,7 @@
 										<dd> containsKey, containsValue, isEmpty are proxied</dd>
 									</dl>
 								</li>
-								<li>If appliable, the instanciation will be "new ImplementationType&lt;KeyType,ValueType&gt;(parameters).</li>
+								<li>If appliable, the instanciation will be "new ImplementationType&amp;lt;KeyType,ValueType&amp;gt;(parameters).</li>
 							</ul>
 						</dd>
 					</dl>

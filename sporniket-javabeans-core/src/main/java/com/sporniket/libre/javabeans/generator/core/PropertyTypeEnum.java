@@ -11,7 +11,7 @@ import com.sporniket.libre.lang.string.StringTools;
  * <p>
  * &copy; Copyright 2012-2013 David Sporn
  * </p>
- * <hr />
+ * <hr>
  * 
  * <p>
  * This file is part of <i>The Sporniket Javabeans Library &#8211; core</i>.
@@ -28,11 +28,11 @@ import com.sporniket.libre.lang.string.StringTools;
  * 
  * <p>
  * You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library &#8211; 
- * core</i>. If not, see <http://www.gnu.org/licenses/>. 2
+ * core</i>. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. 2
  * 
- * <hr />
+ * <hr>
  * 
- * @author David SPORN <david.sporn@sporniket.com>
+ * @author David SPORN 
  * @version 13.01.01
  * 
  */
@@ -75,7 +75,7 @@ public class PropertyTypeEnum extends PropertyType
 	/**
 	 * Predicate telling whether the enum has a specific name.
 	 * 
-	 * @return
+	 * @return <code>true</code> if there is no name for the xml model does not define a name for the enumeration to generate.
 	 */
 	public boolean isAnonymous()
 	{
