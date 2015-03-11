@@ -22,6 +22,9 @@
 		<version.maven-surefire-report-plugin>2.18.1</version.maven-surefire-report-plugin>
 		<version.maven-pmd-plugin>3.4</version.maven-pmd-plugin>
 		<version.maven-release-plugin>2.5.1</version.maven-release-plugin>
+		
+		<!-- excluded packages for javadoc plugin -->
+		<javadoc.excludePackageNames>com.sporniket.studio.schema.model.set.javabean:com.sporniket.studio.schema.model.set.javabean.*:com.sporniket.libre.javabeans.generator.maven</javadoc.excludePackageNames>
 	</properties>
 
 	<name>sporniket-javabeans</name>
@@ -92,7 +95,7 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>${version.maven-javadoc-plugin}</version>
 				<configuration>
-					<excludePackageNames>com.sporniket.studio.schema.model.set.javabean:com.sporniket.studio.schema.model.set.javabean.*</excludePackageNames>
+					<excludePackageNames>${javadoc.excludePackageNames}</excludePackageNames>
 				</configuration>
 				<executions>
 					<execution>
@@ -122,7 +125,7 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>${version.maven-javadoc-plugin}</version>
 				<configuration>
-					<excludePackageNames>com.sporniket.studio.schema.model.set.javabean:com.sporniket.studio.schema.model.set.javabean.*</excludePackageNames>
+					<excludePackageNames>${javadoc.excludePackageNames}</excludePackageNames>
 				</configuration>
 				<reportSets>
 					<reportSet>
