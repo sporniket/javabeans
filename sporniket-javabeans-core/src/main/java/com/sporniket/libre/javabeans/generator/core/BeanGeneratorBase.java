@@ -48,6 +48,7 @@ import com.sporniket.studio.schema.model.set.javabean.Property;
  * 
  * @author David SPORN 
  * @version 13.01.01
+ * @since 13.01.01
  * 
  */
 public class BeanGeneratorBase implements BeanGenerator

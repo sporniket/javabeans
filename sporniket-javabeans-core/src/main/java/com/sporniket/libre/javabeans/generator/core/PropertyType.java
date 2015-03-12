@@ -35,10 +35,41 @@ import com.sporniket.studio.schema.model.set.javabean.Property;
  * 
  * @author David SPORN 
  * @version 13.01.01
+ * @since 13.01.01
  * 
  */
 public class PropertyType
 {
+	/**
+	 * <p>
+	 * &copy; Copyright 2012-2013 David Sporn
+	 * </p>
+	 * <hr>
+	 * 
+	 * <p>
+	 * This file is part of <i>The Sporniket Javabeans Library &#8211; core</i>.
+	 * 
+	 * <p>
+	 * <i>The Sporniket Javabeans Library &#8211; core</i> is free software: you can redistribute it and/or modify it under the
+	 * terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License,
+	 * or (at your option) any later version.
+	 * 
+	 * <p>
+	 * <i>The Sporniket Javabeans Library &#8211; core</i> is distributed in the hope that it will be useful, but WITHOUT ANY
+	 * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
+	 * General Public License for more details.
+	 * 
+	 * <p>
+	 * You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library
+	 * &#8211; core</i>. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. 2
+	 * 
+	 * <hr>
+	 * 
+	 * @author David SPORN
+	 * @version 13.01.01
+	 * @since 13.01.01
+	 * 
+	 */
 	public static enum Prefix
 	{
 		COLL("coll"),
@@ -68,11 +99,41 @@ public class PropertyType
 			return myName;
 		}
 	}
+	/**
+	 * <p>
+	 * &copy; Copyright 2012-2013 David Sporn
+	 * </p>
+	 * <hr>
+	 * 
+	 * <p>
+	 * This file is part of <i>The Sporniket Javabeans Library &#8211; core</i>.
+	 * 
+	 * <p>
+	 * <i>The Sporniket Javabeans Library &#8211; core</i> is free software: you can redistribute it and/or modify it under the
+	 * terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License,
+	 * or (at your option) any later version.
+	 * 
+	 * <p>
+	 * <i>The Sporniket Javabeans Library &#8211; core</i> is distributed in the hope that it will be useful, but WITHOUT ANY
+	 * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
+	 * General Public License for more details.
+	 * 
+	 * <p>
+	 * You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library
+	 * &#8211; core</i>. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. 2
+	 * 
+	 * <hr>
+	 * 
+	 * @author David SPORN
+	 * @version 13.01.01
+	 * @since 13.01.01
+	 * 
+	 */
 	public static class Utils
 	{
 		/**
-		 * @param type
-		 * @param target
+		 * @param type value from the xml model.
+		 * @param target type to define from <code>type</code>.
 		 */
 		private static void doExtractBasicInfo(String type, PropertyType target)
 		{

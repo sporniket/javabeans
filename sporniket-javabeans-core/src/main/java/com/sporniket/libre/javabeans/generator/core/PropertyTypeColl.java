@@ -34,6 +34,7 @@ import com.sporniket.libre.lang.string.StringTools;
  * 
  * @author David SPORN 
  * @version 13.01.01
+ * @since 13.01.01
  * 
  */
 public class PropertyTypeColl extends PropertyType

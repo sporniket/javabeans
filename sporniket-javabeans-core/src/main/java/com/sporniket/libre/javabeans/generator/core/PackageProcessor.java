@@ -44,6 +44,7 @@ import com.sporniket.studio.schema.model.set.javabean.Package;
  * 
  * @author David SPORN 
  * @version 13.01.01
+ * @since 13.01.01
  * 
  */
 public class PackageProcessor implements FileGenerator

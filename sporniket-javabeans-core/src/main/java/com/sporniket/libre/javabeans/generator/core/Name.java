@@ -34,6 +34,7 @@ import java.util.List;
  * 
  * @author David SPORN 
  * @version 13.01.01
+ * @since 13.01.01
  * 
  */
 class Name
@@ -41,8 +42,8 @@ class Name
 	/**
 	 * Instanciate a {@link Name} from a javabean style property name.
 	 * 
-	 * @param propertyName
-	 * @return
+	 * @param propertyName the javabean style property name (camel case, first character is lower case)
+	 * @return the property name.
 	 */
 	public static Name createFromJavabeanPropertyName(String propertyName)
 	{
