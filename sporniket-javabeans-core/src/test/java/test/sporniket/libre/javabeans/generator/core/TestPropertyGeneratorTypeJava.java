@@ -65,21 +65,6 @@ public class TestPropertyGeneratorTypeJava extends TestPropertyGenerator
 	 */
 	private static String FILE_NAME__VETOABLE = "result_property_vetoable.txt";
 
-	public static void main(String[] args)
-	{
-		TestPropertyGeneratorTypeJava _myTest = new TestPropertyGeneratorTypeJava();
-		try
-		{
-			_myTest.setUp();
-			_myTest.testBasicMode();
-		}
-		catch (Exception _exception)
-		{
-			// TODO Auto-generated catch block
-			_exception.printStackTrace();
-		}
-	}
-
 	/**
 	 * Generator to test.
 	 */
