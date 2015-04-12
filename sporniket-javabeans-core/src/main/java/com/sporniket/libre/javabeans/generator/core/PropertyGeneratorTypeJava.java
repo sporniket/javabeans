@@ -65,36 +65,6 @@ public class PropertyGeneratorTypeJava implements PropertyGenerator
 	 */
 	private static String TEMPLATE_NAME__VETOABLE = "template_property_vetoable.txt";
 
-	public static void main(String[] args)
-	{
-		try
-		{
-			PropertyGeneratorTypeJava _generator = new PropertyGeneratorTypeJava();
-			// do stuff
-			Property _testProp = new Property();
-			_testProp.setMode(PropertyMode.BASIC);
-			_testProp.setName("usefullProperty");
-			_testProp.setType("java:java.util.Date");
-
-			PropertyType _parsedType = PropertyType.Utils.instanciate(_testProp.getType());
-
-			PrintWriter _out = new PrintWriter(System.out);
-			_generator.outputPropertyJavaCode(_out, _parsedType, _testProp, null, null, null);
-			_out.println("//=======================================================================");
-			_testProp.setMode(PropertyMode.BOUNDABLE);
-			_generator.outputPropertyJavaCode(_out, _parsedType, _testProp, null, null, null);
-			_out.println("//=======================================================================");
-			_testProp.setMode(PropertyMode.VETOABLE);
-			_generator.outputPropertyJavaCode(_out, _parsedType, _testProp, null, null, null);
-			_out.flush();
-
-		}
-		catch (Exception _exception)
-		{
-			_exception.printStackTrace();
-		}
-	}
-
 	/**
 	 * Registry of templates
 	 */
