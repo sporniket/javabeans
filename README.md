@@ -173,7 +173,7 @@ For a *collection* and a *map*, *mode* can be :
 
 This attribute specify the kind of Javabean property :
 
-* *basic* : the classical getter/setter.
-* *boundable* : the property can be listened for change (*PropertyChangeListener*)
-* *vetoable* : the property can also be constrained (*VetoableChangeListener*)
+* *basic* : the classical getter/setter. This is the default value.
+* *boundable* : the property can be listened for change (*PropertyChangeListener*).
+* *vetoable* : the property can also be constrained (*VetoableChangeListener*).
 
