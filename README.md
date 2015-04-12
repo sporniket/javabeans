@@ -11,11 +11,18 @@ a project to generate Javabeans from a XML model.
 
 ## Installation and plugin declaration
 
-As of now, there is no central repository to get the plugin. One should clone the git repository and build/install the plugin :
+As of now, there is no central repository to get the plugin. Thus one should clone the git repository and build/install the plugin, and before that do the same for a required library :
 
 ```
+git clone https://github.com/sporniket/core.git
+git checkout v15.03.00.01-jdk6
+cd core/sporniket-core
+mvn install
+
+cd ../..
+
 git clone https://github.com/sporniket/javabeans.git
-cd sporniket-javabeans
+cd javabeans/sporniket-javabeans
 mvn install
 ```
 
