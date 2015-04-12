@@ -38,11 +38,15 @@ Then, the plugin can be declared in the project poms :
 </plugin>
 ```
 
+## XML model files location
+
+XML model files MUST be in *src/main/sporniket-javabeans*.
+
 ## Run the plugin
 
-The plugin should be invoked during the build lifecycle.
+The plugin is invoked during the build lifecycle.
 
-Here is the manual invocation :
+Should you need to run the plugin manually :
 
 ```
 mvn com.sporniket.javabeans:sporniket-javabeans-maven:generate
@@ -50,7 +54,7 @@ mvn com.sporniket.javabeans:sporniket-javabeans-maven:generate
 
 ## Model files
 
-XML model files MUST be in *src/main/sporniket-javabeans*.
+
 
 ### Overall structure
 
@@ -95,7 +99,6 @@ Thus, a model file looks like this :
 #### package and bean annotation
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
 <package name="test.sporniket.javabean.generator.core">
 	<annotation>
 		<summary>One phrase that will be seen in the summary table of the javadoc.</summary>
@@ -108,7 +111,6 @@ Thus, a model file looks like this :
 ```
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
 <bean name="MyUsefullBean">
 	<annotation>
 		<summary>One phrase that will be seen in the summary table of the javadoc.</summary>
@@ -124,7 +126,6 @@ Thus, a model file looks like this :
 
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
 <property name="testJavaBasic" type="java:java.util.Date" mode="basic">
 	<annotation>
 		<summary>One phrase that will be seen in the summary table of the javadoc.</summary>
@@ -158,6 +159,15 @@ This attribute specify the type of the property, and follows the pattern *type:d
 * *map* : then *def* specifies a _map_, following the pattern *implementationClass:keyClass:valueClass:mode*.
 
 ##### collection and map specifications
+
+For a *collection*, the type of the property for the getter/setter will be the specified *interface*, *implementationClass* will be the type of the internal field, *elementClass* is the type of elements stored in the collection.
+
+For a *map*, *implementationClass* will be the type of the internal field, *keyClass* is the type of the map keys, *valueClass* is the type of the map values.
+
+For a *collection* and a *map*, *mode* can be :
+
+* *notNull* : the getter return an non null container.
+* *isolated* : the container is encapsulated (the getter returns a clone, the setter does not replace the container), the javabeans act as a proxy (e.g. add/addAll/clear/remove for a collection, put/putAll/remove/clear for a map)
 
 #### mode
 
