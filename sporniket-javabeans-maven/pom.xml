@@ -56,7 +56,6 @@
 		<dependency>
 			<groupId>org.codehaus.castor</groupId>
 			<artifactId>castor-xml</artifactId>
-			<version>${version.dependency.castor.xml}</version>
 		</dependency>
 
 		<!-- ===TEST DEPENDENCIES -->
