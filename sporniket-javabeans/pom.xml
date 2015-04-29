@@ -8,8 +8,8 @@
 	<version>15.04.01-SNAPSHOT</version>
 
 	<properties>
-		<url.base>http://sporniketcore.sourceforge.net/sites</url.base>
-		<url.base.site.deploy>scp://shell.sourceforge.net/home/project-web/sporniketcore/htdocs/sites</url.base.site.deploy>
+		<url.base>https://github.com/sporniket/core</url.base>
+		<url.base.site.deploy>${project.baseUri}../mvnsites</url.base.site.deploy>
 		<version.jdk>1.6</version.jdk>
 
 		<version.dependency.sporniket.core>15.03.01-jdk</version.dependency.sporniket.core>
