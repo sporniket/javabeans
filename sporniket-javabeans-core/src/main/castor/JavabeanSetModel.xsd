@@ -192,6 +192,18 @@
 				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="private" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Flag to signal that the generated class will be package private.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="abstract" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Flag to signal that the generated class will be abstract.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 		<xs:attribute name="extends" type="xs:string" use="optional">
 			<xs:annotation>
 				<xs:documentation>Name of a Java class that is extended by the generated class, following the usual naming convention, e.g. MyUsefullBean. [FIXME define type restriction]
