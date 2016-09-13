@@ -1,6 +1,3 @@
-	//**Property name ("usefullProperty")
-	public static final String PROPERTY_NAME__USEFULL_PROPERTY = "usefullProperty" ;
-	
 	//**Property "usefullProperty" : An interestingly usefull property.
 	private java.util.Date myUsefullProperty ;
 	

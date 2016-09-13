@@ -1,18 +1,3 @@
-	//**Property name ("{0}")
-	public static final String PROPERTY_NAME__{2} = "{0}" ;
-	
-	//**Property name ("{0}"), element added
-	public static final String PROPERTY_NAME__{2}__PUT = "{0}"+__EVENT_SUFFIX__PUT ;
-	
-	//**Property name ("{0}"), collection added
-	public static final String PROPERTY_NAME__{2}__PUT_ALL = "{0}"+__EVENT_SUFFIX__PUT_ALL ;
-	
-	//**Property name ("{0}"), element removed
-	public static final String PROPERTY_NAME__{2}__REMOVE = "{0}"+__EVENT_SUFFIX__REMOVE ;
-	
-	//**Property name ("{0}"), collection cleared
-	public static final String PROPERTY_NAME__{2}__CLEAR = "{0}"+__EVENT_SUFFIX__CLEAR ;
-	
 	//**Property "{0}" : {6}.
 	private {3}<{8},{9}> my{1} = new {7}<{8},{9}>({10}) ;
 	

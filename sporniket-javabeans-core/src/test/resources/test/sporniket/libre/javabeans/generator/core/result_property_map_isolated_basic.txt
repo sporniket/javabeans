@@ -1,18 +1,3 @@
-	//**Property name ("usefullProperty")
-	public static final String PROPERTY_NAME__USEFULL_PROPERTY = "usefullProperty" ;
-	
-	//**Property name ("usefullProperty"), element added
-	public static final String PROPERTY_NAME__USEFULL_PROPERTY__PUT = "usefullProperty"+__EVENT_SUFFIX__PUT ;
-	
-	//**Property name ("usefullProperty"), collection added
-	public static final String PROPERTY_NAME__USEFULL_PROPERTY__PUT_ALL = "usefullProperty"+__EVENT_SUFFIX__PUT_ALL ;
-	
-	//**Property name ("usefullProperty"), element removed
-	public static final String PROPERTY_NAME__USEFULL_PROPERTY__REMOVE = "usefullProperty"+__EVENT_SUFFIX__REMOVE ;
-	
-	//**Property name ("usefullProperty"), collection cleared
-	public static final String PROPERTY_NAME__USEFULL_PROPERTY__CLEAR = "usefullProperty"+__EVENT_SUFFIX__CLEAR ;
-	
 	//**Property "usefullProperty" : .
 	private Map<String,String> myUsefullProperty = new HashMap<String,String>(10) ;
 	

@@ -4,9 +4,6 @@
 	public static enum NamedValues {
 		YES,NO,MAYBE ;
 	}
-	//**Property name ("usefullProperty")
-	public static final String PROPERTY_NAME__USEFULL_PROPERTY = "usefullProperty" ;
-	
 	//**Property "usefullProperty" : .
 	private NamedValues myUsefullProperty ;
 	

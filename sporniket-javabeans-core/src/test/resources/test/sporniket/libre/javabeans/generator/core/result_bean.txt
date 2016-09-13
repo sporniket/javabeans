@@ -240,9 +240,6 @@ public class MyUsefullBean  {
 
 	// ======== PROPERTIES ========
 
-	//**Property name ("creationDate")
-	public static final String PROPERTY_NAME__CREATION_DATE = "creationDate" ;
-	
 	//**Property "creationDate" : .
 	private java.util.Date myCreationDate ;
 	
@@ -376,9 +373,6 @@ public class MyUsefullBean  {
 		setDeleteDate(deleteDate) ;
 		return this ;
 	}
-	
-	//**Property name ("notNullBasicCollection")
-	public static final String PROPERTY_NAME__NOT_NULL_BASIC_COLLECTION = "notNullBasicCollection" ;
 	
 	//**Property "notNullBasicCollection" : .
 	private Set<String> myNotNullBasicCollection ;
