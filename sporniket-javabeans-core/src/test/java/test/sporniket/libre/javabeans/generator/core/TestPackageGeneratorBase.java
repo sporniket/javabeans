@@ -45,7 +45,11 @@ public class TestPackageGeneratorBase extends TestCase
 	 */
 	private static String FILE_NAME__PACKAGE = "result_package_info.txt";
 
+	private static String FILE_NAME__PACKAGE__NO_ANNOTATION = "result_package_info_no_annotation.txt";
+
 	private String myExpectedResult;
+
+	private String myExpectedResultNoAnnotation;
 
 	private PackageGeneratorBase myGenerator;
 
@@ -62,6 +66,7 @@ public class TestPackageGeneratorBase extends TestCase
 		myGenerator = new PackageGeneratorBase();
 
 		myExpectedResult = TextLoader.getInstance().load(getClass().getResourceAsStream(FILE_NAME__PACKAGE));
+		myExpectedResultNoAnnotation = TextLoader.getInstance().load(getClass().getResourceAsStream(FILE_NAME__PACKAGE__NO_ANNOTATION));
 	}
 
 	public void testPackageInfoGeneration()
@@ -70,6 +75,16 @@ public class TestPackageGeneratorBase extends TestCase
 		Package _package = _set.getPackage(0);
 		
 		Utils.checkPackageGenerator(myGenerator, _package, _set, myExpectedResult);
+	}
+
+	public void testPackageInfoGenerationNoAnnotation()
+	{
+		BeanSet _set = Utils.createDummyBeanSet();
+		Package _package = _set.getPackage(0);
+		_package.setAnnotation(null);
+		_set.setAnnotation(null);
+		
+		Utils.checkPackageGenerator(myGenerator, _package, _set, myExpectedResultNoAnnotation);
 	}
 
 }

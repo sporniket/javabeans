@@ -67,13 +67,12 @@ public class PackageGeneratorBase implements PackageGenerator
 		Object[] _params =
 		{
 				pack.getName(),
-				(null != pack.getAnnotation()) ? pack.getAnnotation().getSummary() : "",
+				JavadocUtils.generateSummary(pack),
 				JavadocUtils.generateDescription(pack),
 				JavadocUtils.generateLicence(set),
-				set.getAnnotation().getVersion(),
+				JavadocUtils.generateVersion(set),
 				JavadocUtils.generateAuthor(set),
-				JavadocUtils.generateSee(pack, set),
-				pack.getName()
+				JavadocUtils.generateSee(pack, set)
 		};
 		out.println(myPackageInfoTemplate.format(_params));
 	}

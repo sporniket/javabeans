@@ -178,10 +178,10 @@ public class BeanGeneratorBase implements BeanGenerator
 		Object[] _params =
 		{
 				pack.getName(),
-				bean.getAnnotation().getSummary(),
+				JavadocUtils.generateSummary(bean),
 				JavadocUtils.generateDescription(bean),
 				JavadocUtils.generateLicence(set),
-				set.getAnnotation().getVersion(),
+				JavadocUtils.generateVersion(set),
 				JavadocUtils.generateAuthor(set),
 				JavadocUtils.generateSee(bean),
 				bean.getName(),

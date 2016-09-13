@@ -13,31 +13,31 @@ import com.sporniket.studio.schema.model.set.javabean.Property;
 /**
  * @author DSPORN
  * 
- * <p>
- * &copy; Copyright 2012-2013 David Sporn
- * </p>
- * <hr>
+ *         <p>
+ *         &copy; Copyright 2012-2013 David Sporn
+ *         </p>
+ *         <hr>
  * 
- * <p>
- * This file is part of <i>The Sporniket Javabeans Library &#8211; core</i>.
+ *         <p>
+ *         This file is part of <i>The Sporniket Javabeans Library &#8211; core</i>.
  * 
- * <p>
- * <i>The Sporniket Javabeans Library &#8211; core</i> is free software: you can redistribute it and/or modify it under the terms of the
- * GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ *         <p>
+ *         <i>The Sporniket Javabeans Library &#8211; core</i> is free software: you can redistribute it and/or modify it under the
+ *         terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the
+ *         License, or (at your option) any later version.
  * 
- * <p>
- * <i>The Sporniket Javabeans Library &#8211; core</i> is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
- * License for more details.
+ *         <p>
+ *         <i>The Sporniket Javabeans Library &#8211; core</i> is distributed in the hope that it will be useful, but WITHOUT ANY
+ *         WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
+ *         General Public License for more details.
  * 
- * <p>
- * You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library &#8211; 
- * core</i>. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. 2
+ *         <p>
+ *         You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library
+ *         &#8211; core</i>. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. 2
  * 
- * <hr>
+ *         <hr>
  * 
- * @author David SPORN 
+ * @author David SPORN
  * @version 13.01.01
  * @since 13.01.01
  */
@@ -58,43 +58,11 @@ public class JavadocUtils
 	 */
 	private static final String TEMPLATE__SEE__INDENTED = "\t * @see {0}\n";
 
-	public static String generateAuthor(BeanSet set)
-	{
-		StringBuilder _result = new StringBuilder();
-		if (null != set && null != set.getAnnotation() && null != set.getAnnotation().getAuthor())
-		{
-			generateJavadocDirectives(TEMPLATE__AUTHOR, set.getAnnotation().getAuthor(), _result);
-		}
-
-		return _result.toString();
-	}
-
-	public static String generateDescription(Property property)
-	{
-		return (null != property.getAnnotation()) ? concatenateStringArray(property.getAnnotation().getDescription())
-				: "";
-	}
-
-	public static String generateDescription(Bean bean)
-	{
-		return (null != bean.getAnnotation()) ? concatenateStringArray(bean.getAnnotation().getDescription()) : "";
-	}
-
-	public static String generateDescription(Package bean)
-	{
-		return (null != bean.getAnnotation()) ? concatenateStringArray(bean.getAnnotation()
-				.getDescription()) : "";
-	}
-
-	public static String generateLicence(BeanSet set)
-	{
-		return (null != set.getAnnotation()) ? concatenateStringArray(set.getAnnotation().getLicencenotice()) : "";
-	}
-
 	/**
 	 * Concatenate all the description item.
 	 * 
-	 * @param strings the strings to concatenate.
+	 * @param strings
+	 *            the strings to concatenate.
 	 * @return the concatenated strings
 	 */
 	public static String concatenateStringArray(String[] strings)
@@ -107,27 +75,38 @@ public class JavadocUtils
 		return _result.toString();
 	}
 
-	/**
-	 * Generate a concatenation of javadoc directives.
-	 * 
-	 * @param template
-	 *            template to use.
-	 * @param sees
-	 *            list of <em>see</em> directives parameters.
-	 * @param _result
-	 *            a concatenation of <em>see</em> directives.
-	 */
-	private static void generateJavadocDirectives(String template, String[] sees, StringBuilder _result)
+	public static String generateAuthor(BeanSet set)
 	{
-		MessageFormat _seeTemplate = new MessageFormat(template);
-		for (String _see : sees)
+		StringBuilder _result = new StringBuilder();
+		if (null != set && null != set.getAnnotation() && null != set.getAnnotation().getAuthor())
 		{
-			Object[] _params =
-			{
-				_see
-			};
-			_result.append(_seeTemplate.format(_params));
+			generateJavadocDirectives(TEMPLATE__AUTHOR, set.getAnnotation().getAuthor(), _result);
 		}
+
+		return _result.toString();
+	}
+
+	public static String generateDescription(Bean bean)
+	{
+		return (null != bean.getAnnotation() && null != bean.getAnnotation().getDescription()) ? concatenateStringArray(bean
+				.getAnnotation().getDescription()) : "";
+	}
+
+	public static String generateDescription(Package pack)
+	{
+		return (null != pack.getAnnotation() && null != pack.getAnnotation().getDescription()) ? concatenateStringArray(pack
+				.getAnnotation().getDescription()) : "";
+	}
+
+	public static String generateDescription(Property property)
+	{
+		return (null != property.getAnnotation()) ? concatenateStringArray(property.getAnnotation().getDescription()) : "";
+	}
+
+	public static String generateLicence(BeanSet set)
+	{
+		return (null != set.getAnnotation() && null != set.getAnnotation().getLicencenotice()) ? concatenateStringArray(set
+				.getAnnotation().getLicencenotice()) : "";
 	}
 
 	public static String generateSee(Bean bean)
@@ -159,7 +138,8 @@ public class JavadocUtils
 	/**
 	 * Aggregate the "see" elements
 	 * 
-	 * @param property the property for which "see" elements are generated.
+	 * @param property
+	 *            the property for which "see" elements are generated.
 	 * @return the javadoc directives, or empty.
 	 */
 	public static String generateSee(Property property)
@@ -171,5 +151,44 @@ public class JavadocUtils
 		}
 
 		return _result.toString();
+	}
+
+	public static String generateSummary(Bean bean)
+	{
+		return (null != bean.getAnnotation() && null != bean.getAnnotation().getSummary()) ? bean.getAnnotation().getSummary() : "";
+	}
+
+	public static String generateSummary(Package pack)
+	{
+		return (null != pack.getAnnotation() && null != pack.getAnnotation().getSummary()) ? pack.getAnnotation().getSummary() : "";
+	}
+
+	public static String generateVersion(BeanSet set)
+	{
+		return (null != set.getAnnotation() && null != set.getAnnotation().getVersion()) ? "@version "
+				+ set.getAnnotation().getVersion() : "";
+	}
+
+	/**
+	 * Generate a concatenation of javadoc directives.
+	 * 
+	 * @param template
+	 *            template to use.
+	 * @param sees
+	 *            list of <em>see</em> directives parameters.
+	 * @param _result
+	 *            a concatenation of <em>see</em> directives.
+	 */
+	private static void generateJavadocDirectives(String template, String[] sees, StringBuilder _result)
+	{
+		MessageFormat _seeTemplate = new MessageFormat(template);
+		for (String _see : sees)
+		{
+			Object[] _params =
+			{
+				_see
+			};
+			_result.append(_seeTemplate.format(_params));
+		}
 	}
 }

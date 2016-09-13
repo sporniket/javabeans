@@ -49,6 +49,8 @@ public class TestBeanGeneratorBase extends TestCase
 
 	private static String FILE_NAME__BEAN__ABSTRACT = "result_bean_abstract.txt";
 
+	private static String FILE_NAME__BEAN__NO_ANNOTATION = "result_bean_no_annotation.txt";
+
 	private static String FILE_NAME__BEAN__PRIVATE = "result_bean_private.txt";
 
 	private static String FILE_NAME__BEAN__PRIVATE_ABSTRACT = "result_bean_private_abstract.txt";
@@ -64,6 +66,8 @@ public class TestBeanGeneratorBase extends TestCase
 	private String myExpectedResultExtends;
 
 	private String myExpectedResultExtendsLocal;
+
+	private String myExpectedResultNoAnnotation;
 
 	private String myExpectedResultPrivate;
 
@@ -111,6 +115,16 @@ public class TestBeanGeneratorBase extends TestCase
 		Utils.checkBeanGenerator(myGenerator, _bean, _package, _set, myExpectedResult);
 	}
 
+	public void testBeanGenerationNoAnnotation()
+	{
+		BeanSet _set = Utils.createDummyBeanSet();
+		Package _package = _set.getPackage(0);
+		Bean _bean = _package.getBean(0);
+		_bean.setAnnotation(null);
+
+		Utils.checkBeanGenerator(myGenerator, _bean, _package, _set, myExpectedResultNoAnnotation);
+	}
+
 	public void testPrivateAbstractBeanGeneration()
 	{
 		BeanSet _set = Utils.createDummyBeanSet();
@@ -145,6 +159,7 @@ public class TestBeanGeneratorBase extends TestCase
 		myGenerator = new BeanGeneratorBase();
 
 		myExpectedResult = TextLoader.getInstance().load(getClass().getResourceAsStream(FILE_NAME__BEAN));
+		myExpectedResultNoAnnotation = TextLoader.getInstance().load(getClass().getResourceAsStream(FILE_NAME__BEAN__NO_ANNOTATION));
 		myExpectedResultPrivate = TextLoader.getInstance().load(getClass().getResourceAsStream(FILE_NAME__BEAN__PRIVATE));
 		myExpectedResultAbstract = TextLoader.getInstance().load(getClass().getResourceAsStream(FILE_NAME__BEAN__ABSTRACT));
 		myExpectedResultPrivateAbstract = TextLoader.getInstance().load(getClass().getResourceAsStream(FILE_NAME__BEAN__PRIVATE_ABSTRACT));
