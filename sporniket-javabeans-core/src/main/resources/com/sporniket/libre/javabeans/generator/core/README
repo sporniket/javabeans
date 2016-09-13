@@ -25,7 +25,8 @@ Class template begin / package :
 6 : sees
 7 : classname
 8 : "extends xxx", if appliable.
-
+9 : abstract modifier
+10 : visibility modifier
 
 
 Class template end :

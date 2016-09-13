@@ -31,8 +31,8 @@ import com.sporniket.studio.schema.model.set.javabean.Property;
  * This file is part of <i>The Sporniket Javabeans Library &#8211; core</i>.
  * 
  * <p>
- * <i>The Sporniket Javabeans Library &#8211; core</i> is free software: you can redistribute it and/or modify it under the terms of the
- * GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your
+ * <i>The Sporniket Javabeans Library &#8211; core</i> is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
  * 
  * <p>
@@ -41,12 +41,12 @@ import com.sporniket.studio.schema.model.set.javabean.Property;
  * License for more details.
  * 
  * <p>
- * You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library &#8211; 
+ * You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library &#8211;
  * core</i>. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. 2
  * 
  * <hr>
  * 
- * @author David SPORN 
+ * @author David SPORN
  * @version 13.01.01
  * @since 13.01.01
  * 
@@ -109,7 +109,8 @@ public class BeanGeneratorBase implements BeanGenerator
 	private MessageFormat myTemplateCodeExtends = new MessageFormat(TEMPLATE_CODE__EXTENDS);
 
 	/**
-	 * @throws IOException if there is a problem to deal with.
+	 * @throws IOException
+	 *             if there is a problem to deal with.
 	 * 
 	 */
 	public BeanGeneratorBase() throws IOException
@@ -137,7 +138,8 @@ public class BeanGeneratorBase implements BeanGenerator
 	/**
 	 * Return "extends xxx" or an empty string.
 	 * 
-	 * @param value class name to extends, may be empty.
+	 * @param value
+	 *            class name to extends, may be empty.
 	 * @return an empty string if value is empty.
 	 */
 	private String getExtendsCode(String value)
@@ -183,7 +185,9 @@ public class BeanGeneratorBase implements BeanGenerator
 				JavadocUtils.generateAuthor(set),
 				JavadocUtils.generateSee(bean),
 				bean.getName(),
-				getExtendsCode(bean.getExtends())
+				getExtendsCode(bean.getExtends()),
+				bean.isAbstract() ? "abstract" : "",
+				bean.isPrivate() ? "" : "public"
 		};
 		String _classFullyQualifiedName = pack.getName() + "." + bean.getExtends();
 		MessageFormat _format = ((!StringTools.isEmptyString(bean.getExtends())) && (myGeneratedClassesRegistry

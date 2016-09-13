@@ -18,7 +18,7 @@ import java.util.* ;
   * @see http://bean.example.com
 
  */
-public class MyUsefullBean extends MotherClass {
+public  class MyUsefullBean extends MotherClass {
 	// ======== COLLECTION AND MAP EVENT NAME SUFFIXES ========
 	// note : it's a bit of redondancy, but this way the generated code does not require 
 	// additionnal library beyond what is specified in the javabean set description.
