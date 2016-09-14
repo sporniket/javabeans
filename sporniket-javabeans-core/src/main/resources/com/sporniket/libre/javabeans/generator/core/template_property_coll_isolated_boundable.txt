@@ -2,16 +2,16 @@
 	public static final String PROPERTY_NAME__{2} = "{0}" ;
 	
 	//**Property name ("{0}"), element added
-	public static final String PROPERTY_NAME__{2}__ADD = "{0}"+__EVENT_SUFFIX__ADD ;
+	public static final String PROPERTY_NAME__{2}__ADD = "{0}__ADD" ;
 	
 	//**Property name ("{0}"), collection added
-	public static final String PROPERTY_NAME__{2}__ADD_ALL = "{0}"+__EVENT_SUFFIX__ADD_ALL ;
+	public static final String PROPERTY_NAME__{2}__ADD_ALL = "{0}__ADD_ALL" ;
 	
 	//**Property name ("{0}"), element removed
-	public static final String PROPERTY_NAME__{2}__REMOVE = "{0}"+__EVENT_SUFFIX__REMOVE ;
+	public static final String PROPERTY_NAME__{2}__REMOVE = "{0}__REMOVE" ;
 	
 	//**Property name ("{0}"), collection cleared
-	public static final String PROPERTY_NAME__{2}__CLEAR = "{0}"+__EVENT_SUFFIX__CLEAR ;
+	public static final String PROPERTY_NAME__{2}__CLEAR = "{0}__CLEAR" ;
 	
 	//**Property "{0}" : {6}.
 	private {3}<{8}> my{1} = new {7}<{8}>({10}) ;
