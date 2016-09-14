@@ -50,6 +50,8 @@ import com.sporniket.studio.schema.model.set.javabean.types.PropertyMode;
  */
 public class TestPropertyGeneratorTypeJava extends TestPropertyGenerator
 {
+	private static final String _INITIAL = "_initial";
+
 	/**
 	 * Name of the result file for generating a basic property.
 	 */
@@ -64,6 +66,20 @@ public class TestPropertyGeneratorTypeJava extends TestPropertyGenerator
 	 * Name of the result file for generating a vetoable property.
 	 */
 	private static String FILE_NAME__VETOABLE = "result_property_vetoable.txt";
+	/**
+	 * Name of the result file for generating a basic property.
+	 */
+	private static String FILE_NAME__BASIC__INITIAL_VALUE = "result_property_basic_initial.txt";
+
+	/**
+	 * Name of the result file for generating a boundable property.
+	 */
+	private static String FILE_NAME__BOUNDABLE__INITIAL_VALUE = "result_property_boundable_initial.txt";
+
+	/**
+	 * Name of the result file for generating a vetoable property.
+	 */
+	private static String FILE_NAME__VETOABLE__INITIAL_VALUE = "result_property_vetoable_initial.txt";
 
 	/**
 	 * Generator to test.
@@ -73,15 +89,29 @@ public class TestPropertyGeneratorTypeJava extends TestPropertyGenerator
 	/**
 	 * Map type of property to the reference code to compare with the generated code.
 	 */
-	private Map<PropertyMode, String> myResultRegistry = new HashMap<PropertyMode, String>();
+	private Map<String, String> myResultRegistry = new HashMap<String, String>();
 
 	/**
-	 * @param mode
+	 * @param mode the mode to use
+	 * @param the initial expression to use.
 	 */
-	private void doTestMode(PropertyMode mode)
+	private void doTestMode(PropertyMode mode, String initialValue)
 	{
 		Property _testProp = doTestMode__createDummyProperty(mode);
-		doTestMode__checkPropertyGeneration(_testProp, myDummyBean, null, null, myResultRegistry.get(mode));
+		if (null == initialValue)
+		{
+			doTestMode__checkPropertyGeneration(_testProp, myDummyBean, null, null, myResultRegistry.get(mode.value()));
+		}
+		else
+		{
+			_testProp.setInitialExpression(initialValue);
+			doTestMode__checkPropertyGeneration(_testProp, myDummyBean, null, null, myResultRegistry.get(mode.value()+_INITIAL));
+		}
+	}
+	
+	private void doTestMode(PropertyMode mode)
+	{
+		doTestMode(mode, null);
 	}
 
 	/**
@@ -136,13 +166,21 @@ public class TestPropertyGeneratorTypeJava extends TestPropertyGenerator
 
 		myGenerator = new PropertyGeneratorTypeJava();
 
-		myResultRegistry.put(PropertyMode.BASIC, TextLoader.getInstance().load(getClass().getResourceAsStream(FILE_NAME__BASIC)));
+		myResultRegistry.put(PropertyMode.BASIC.value(), TextLoader.getInstance().load(getClass().getResourceAsStream(FILE_NAME__BASIC)));
 
-		myResultRegistry.put(PropertyMode.BOUNDABLE,
+		myResultRegistry.put(PropertyMode.BOUNDABLE.value(),
 				TextLoader.getInstance().load(getClass().getResourceAsStream(FILE_NAME__BOUNDABLE)));
 
-		myResultRegistry.put(PropertyMode.VETOABLE,
+		myResultRegistry.put(PropertyMode.VETOABLE.value(),
 				TextLoader.getInstance().load(getClass().getResourceAsStream(FILE_NAME__VETOABLE)));
+
+		myResultRegistry.put(PropertyMode.BASIC.value()+_INITIAL, TextLoader.getInstance().load(getClass().getResourceAsStream(FILE_NAME__BASIC__INITIAL_VALUE)));
+
+		myResultRegistry.put(PropertyMode.BOUNDABLE.value()+_INITIAL,
+				TextLoader.getInstance().load(getClass().getResourceAsStream(FILE_NAME__BOUNDABLE__INITIAL_VALUE)));
+
+		myResultRegistry.put(PropertyMode.VETOABLE.value()+_INITIAL,
+				TextLoader.getInstance().load(getClass().getResourceAsStream(FILE_NAME__VETOABLE__INITIAL_VALUE)));
 
 	}
 
@@ -157,9 +195,25 @@ public class TestPropertyGeneratorTypeJava extends TestPropertyGenerator
 	/**
 	 * Test the <code>basic</code> mode.
 	 */
+	public void testBasicModeWithInitialValue()
+	{
+		doTestMode(PropertyMode.BASIC, "new java.util.Date()");
+	}
+
+	/**
+	 * Test the <code>basic</code> mode.
+	 */
 	public void testBoundableMode()
 	{
 		doTestMode(PropertyMode.BOUNDABLE);
+	}
+
+	/**
+	 * Test the <code>basic</code> mode.
+	 */
+	public void testBoundableModeWithInitialValue()
+	{
+		doTestMode(PropertyMode.BOUNDABLE, "new java.util.Date()");
 	}
 
 	/**
@@ -168,5 +222,13 @@ public class TestPropertyGeneratorTypeJava extends TestPropertyGenerator
 	public void testVetoableMode()
 	{
 		doTestMode(PropertyMode.VETOABLE);
+	}
+
+	/**
+	 * Test the <code>vetoable</code> mode.
+	 */
+	public void testVetoableModeWithInitialValue()
+	{
+		doTestMode(PropertyMode.VETOABLE, "new java.util.Date()");
 	}
 }

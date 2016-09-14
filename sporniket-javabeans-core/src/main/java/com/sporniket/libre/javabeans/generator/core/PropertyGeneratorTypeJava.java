@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.sporniket.libre.io.MessageFormatLoader;
+import com.sporniket.libre.lang.string.StringTools;
 import com.sporniket.studio.schema.model.set.javabean.Bean;
 import com.sporniket.studio.schema.model.set.javabean.BeanSet;
 import com.sporniket.studio.schema.model.set.javabean.Package;
@@ -110,10 +111,11 @@ public class PropertyGeneratorTypeJava implements PropertyGenerator
 		String _description = (null != property.getAnnotation()) ? JavadocUtils.concatenateStringArray(property.getAnnotation()
 				.getDescription()) : "";
 		String _summary = (null != property.getAnnotation()) ? property.getAnnotation().getSummary() : "";
+		String _initialExpression = (!StringTools.isEmptyString(property.getInitialExpression()))?"= "+property.getInitialExpression():"" ;
 		Object[] _params =
 		{
 				_name.getUncapitalized(), _name.getCapitalized(), _name.getAllCaps(), _type, _description, _sees, _summary
-				,"","","","",bean.getName()
+				,"","","","",bean.getName(),_initialExpression
 		};
 		MessageFormat _template = myTemplateRegistry.get(property.getMode());
 		out.println(_template.format(_params));

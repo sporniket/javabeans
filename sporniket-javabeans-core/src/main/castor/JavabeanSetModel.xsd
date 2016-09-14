@@ -177,6 +177,19 @@
 				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="initialExpression" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>
+					If not empty and the type of the property is :
+					<dl>
+						<dt>'java:...'</dt>
+						<dd>the expression to use as initial value.</dd>
+						<dt>'enum:...'</dt>
+						<dd>the enum value to use as initial value.</dd>
+					</dl> 
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="Bean">
 		<xs:annotation>

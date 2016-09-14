@@ -142,7 +142,8 @@ public class PropertyGeneratorTypeMap implements PropertyGenerator
 					_propertyType.getParametrizationKey(),
 					_propertyType.getParametrizationValue(),
 					_propertyType.getInstanciationParameters(),
-					bean.getName()
+					bean.getName(),
+					"" //not used
 			};
 			out.println(_template.format(_params));
 		}

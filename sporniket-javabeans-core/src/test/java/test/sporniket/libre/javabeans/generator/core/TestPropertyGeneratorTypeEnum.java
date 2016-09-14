@@ -49,6 +49,8 @@ import com.sporniket.studio.schema.model.set.javabean.types.PropertyMode;
  */
 public class TestPropertyGeneratorTypeEnum extends TestPropertyGenerator
 {
+	private static final String _INITIAL = "_initial";
+
 	/**
 	 * Name of the result file for generating an anonymous enum property.
 	 */
@@ -58,6 +60,15 @@ public class TestPropertyGeneratorTypeEnum extends TestPropertyGenerator
 	 * Name of the result file for generating a named enum property.
 	 */
 	private static String FILE_NAME__ENUM_NAMED = "result_property_enum_named.txt";
+	/**
+	 * Name of the result file for generating an anonymous enum property.
+	 */
+	private static String FILE_NAME__ENUM_ANONYMOUS__INITIAL_VALUE = "result_property_enum_anonymous_initial.txt";
+
+	/**
+	 * Name of the result file for generating a named enum property.
+	 */
+	private static String FILE_NAME__ENUM_NAMED__INITIAL_VALUE = "result_property_enum_named_initial.txt";
 
 	/**
 	 * Value of the "type" attribute for an anonymous enum property.
@@ -82,10 +93,23 @@ public class TestPropertyGeneratorTypeEnum extends TestPropertyGenerator
 	/**
 	 * @param mode
 	 */
-	private void doTestMode(String typeValue)
+	private void doTestMode(String typeValue, String initialValue)
 	{
 		Property _testProp = doTestMode__createDummyProperty(typeValue);
-		doTestMode__checkPropertyGeneration(_testProp, myDummyBean, null, null, myResultRegistry.get(typeValue));
+		if (null == initialValue)
+		{
+			doTestMode__checkPropertyGeneration(_testProp, myDummyBean, null, null, myResultRegistry.get(typeValue));
+		}
+		else
+		{
+			_testProp.setInitialExpression(initialValue);
+			doTestMode__checkPropertyGeneration(_testProp, myDummyBean, null, null, myResultRegistry.get(typeValue+_INITIAL));
+		}
+	}
+	
+	private void doTestMode(String typeValue)
+	{
+		doTestMode(typeValue, null);
 	}
 
 	/**
@@ -136,6 +160,12 @@ public class TestPropertyGeneratorTypeEnum extends TestPropertyGenerator
 
 		myResultRegistry.put(TYPE_VALUE__ENUM_ANONYMOUS,
 				TextLoader.getInstance().load(getClass().getResourceAsStream(FILE_NAME__ENUM_ANONYMOUS)));
+
+		myResultRegistry.put(TYPE_VALUE__ENUM_NAMED+_INITIAL,
+				TextLoader.getInstance().load(getClass().getResourceAsStream(FILE_NAME__ENUM_NAMED__INITIAL_VALUE)));
+
+		myResultRegistry.put(TYPE_VALUE__ENUM_ANONYMOUS+_INITIAL,
+				TextLoader.getInstance().load(getClass().getResourceAsStream(FILE_NAME__ENUM_ANONYMOUS__INITIAL_VALUE)));
 	}
 
 	/**
@@ -152,6 +182,22 @@ public class TestPropertyGeneratorTypeEnum extends TestPropertyGenerator
 	public void testNamedEnumProperty()
 	{
 		doTestMode(TYPE_VALUE__ENUM_NAMED);
+	}
+
+	/**
+	 * Test the <code>basic</code> mode.
+	 */
+	public void testAnonymousEnumPropertyWithInitialValue()
+	{
+		doTestMode(TYPE_VALUE__ENUM_ANONYMOUS, "TRUE");
+	}
+
+	/**
+	 * Test the <code>basic</code> mode.
+	 */
+	public void testNamedEnumPropertyWithInitialValue()
+	{
+		doTestMode(TYPE_VALUE__ENUM_NAMED, "YES");
 	}
 
 }

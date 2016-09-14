@@ -137,7 +137,8 @@ public class PropertyGeneratorTypeColl implements PropertyGenerator
 					_propertyType.getParametrization(),
 					"", // not used
 					_propertyType.getInstanciationParameters(),
-					bean.getName()
+					bean.getName(),
+					"" //not used
 			};
 			out.println(_template.format(_params));
 		}

@@ -12,6 +12,7 @@ Property templates :
 9 : Parametrization (type of values)
 10 : Instanciation parameters
 11 : enclosing type (for fluent write accessors)
+12 : initialization expression ('= expr' or empty string)
 
 
 Class template begin / package :

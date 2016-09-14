@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.text.MessageFormat;
 
 import com.sporniket.libre.io.MessageFormatLoader;
+import com.sporniket.libre.lang.string.StringTools;
 import com.sporniket.studio.schema.model.set.javabean.Bean;
 import com.sporniket.studio.schema.model.set.javabean.BeanSet;
 import com.sporniket.studio.schema.model.set.javabean.Package;
@@ -82,6 +83,10 @@ public class PropertyGeneratorTypeEnum implements PropertyGenerator
 		};
 		out.println(myTemplateEnum.format(_params));
 
+		// compute real initial expression to use with a regular generator
+		String _initialExpression = (!StringTools.isEmptyString(property.getInitialExpression()))?_enumJavaName+"."+property.getInitialExpression():"" ;
+		property.setInitialExpression(_initialExpression);
+		
 		// substitute type to use normal generator.
 		String _oldType = property.getType();
 		String _fakeType = PropertyType.Prefix.JAVA + PropertyType.MARKER__SEPARATOR + _enumJavaName;
