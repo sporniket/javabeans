@@ -227,7 +227,7 @@ public class BeanGeneratorBase implements BeanGenerator
 	 */
 	public void setGeneratedClassesRegistry(Set<String> generatedClassesRegistry)
 	{
-		myGeneratedClassesRegistry = generatedClassesRegistry;
+		getGeneratedClassesRegistry().addAll(generatedClassesRegistry);
 	}
 
 }
