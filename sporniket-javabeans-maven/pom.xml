@@ -24,9 +24,9 @@
 
 	<distributionManagement>
 		<site>
-			<id>localMvnSite</id>
-			<name>Sporniket Java Core Library - Javabeans Maven Plugin</name>
-			<url>${url.base.site.deploy}/${project.artifactId}/${project.version}</url>
+			<id>localMvnSite-${project.artifactId}</id>
+			<name>Sporniket Javabeans Generator - ${project.name}</name>
+			<url>${url.base.site.deploy}/${project.parent.artifactId}/module/${project.artifactId}/${project.version}</url>
 		</site>
 	</distributionManagement>
 	<dependencies>

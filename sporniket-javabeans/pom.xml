@@ -8,7 +8,7 @@
 
 	<properties>
 		<url.base>https://github.com/sporniket/core</url.base>
-		<url.base.site.deploy>${project.baseUri}../mvnsites</url.base.site.deploy>
+		<url.base.site.deploy>file://${user.home}/mvnsites</url.base.site.deploy>
 		<version.jdk>1.6</version.jdk>
 
 		<version.dependency.sporniket.core>15.03.01-jdk</version.dependency.sporniket.core>
@@ -177,7 +177,7 @@
 	<distributionManagement>
 		<site>
 			<id>localMvnSite</id>
-			<name>Sporniket Java Core Library - Javabeans</name>
+			<name>Sporniket Javabeans Generator</name>
 			<url>${url.base.site.deploy}/${project.artifactId}/${project.version}</url>
 		</site>
 		<repository>
