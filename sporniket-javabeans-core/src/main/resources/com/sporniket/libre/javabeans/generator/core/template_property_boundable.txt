@@ -31,16 +31,4 @@
 		__myPcs.firePropertyChange(PROPERTY_NAME__{2}, _oldValue, my{1});
 	'}'
 	
-	/**Fluent write accessor for property "{0}" : {6}.
-	 *
-{4}
-	 *
-	 * @param {0} Value of property "{0}".
-	 *
-{5}
-	 */
-	public {11} with{1}({3} {0}) '{'
-		set{1}({0}) ;
-		return this ;
-	'}'
 	
