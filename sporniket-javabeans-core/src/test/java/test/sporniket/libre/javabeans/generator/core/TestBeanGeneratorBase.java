@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 
 import com.sporniket.libre.io.TextLoader;
 import com.sporniket.libre.javabeans.generator.core.BeanGeneratorBase;
+import com.sporniket.libre.javabeans.generator.core.GeneratorSession;
 import com.sporniket.studio.schema.model.set.javabean.Bean;
 import com.sporniket.studio.schema.model.set.javabean.BeanSet;
 import com.sporniket.studio.schema.model.set.javabean.Package;
@@ -87,21 +88,29 @@ public class TestBeanGeneratorBase extends TestCase
 
 	public void testBeanExtendsGeneration()
 	{
+		Bean _motherClass = new Bean() ;
+		_motherClass.setName("MotherClass") ;
+
 		BeanSet _set = Utils.createDummyBeanSet();
 		Package _package = _set.getPackage(0);
+		_package.addBean(_motherClass);
 		Bean _bean = _package.getBean(0);
-		_bean.setExtends("MotherClass");
+		_bean.setExtends(_motherClass.getName());
 
 		Utils.checkBeanGenerator(myGenerator, _bean, _package, _set, myExpectedResultExtends);
 	}
 
 	public void testBeanExtendsLocalGeneration()
 	{
+		Bean _motherClass = new Bean() ;
+		_motherClass.setName("MotherClass") ;
+
 		BeanSet _set = Utils.createDummyBeanSet();
 		Package _package = _set.getPackage(0);
+		_package.addBean(_motherClass);
 		Bean _bean = _package.getBean(0);
-		_bean.setExtends("MotherClass");
-		myGenerator.getGeneratedClassesRegistry().add(_package.getName() + "." + _bean.getExtends());
+		_bean.setExtends(_motherClass.getName());
+		myGenerator.getSession().getBeanRegistry().put(_package.getName() + "." + _bean.getExtends(),_motherClass);
 
 		Utils.checkBeanGenerator(myGenerator, _bean, _package, _set, myExpectedResultExtendsLocal);
 	}
@@ -157,6 +166,7 @@ public class TestBeanGeneratorBase extends TestCase
 		super.setUp();
 
 		myGenerator = new BeanGeneratorBase();
+		myGenerator.setSession(new GeneratorSession());
 
 		myExpectedResult = TextLoader.getInstance().load(getClass().getResourceAsStream(FILE_NAME__BEAN));
 		myExpectedResultNoAnnotation = TextLoader.getInstance().load(getClass().getResourceAsStream(FILE_NAME__BEAN__NO_ANNOTATION));

@@ -9,8 +9,6 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 import com.sporniket.libre.io.MessageFormatLoader;
 import com.sporniket.libre.lang.string.StringTools;
@@ -73,13 +71,11 @@ public class BeanGeneratorBase implements BeanGenerator
 	 * Name of the template file for the begining of the class (after generating properties).
 	 */
 	private static final String TEMPLATE_NAME__CLASS_END = "template_bean_class_end.txt";
-
+	
 	/**
-	 * Registry to find out if an extended classe needs property change management code.
-	 * 
-	 * Will be set by {@link PackageProcessor}.
+	 * Processing session.
 	 */
-	private Set<String> myGeneratedClassesRegistry = new TreeSet<String>();
+	private GeneratorSession mySession ;
 
 	/**
 	 * Registry of {@link PropertyGenerator}.
@@ -167,14 +163,6 @@ public class BeanGeneratorBase implements BeanGenerator
 		}
 	}
 
-	/**
-	 * @return the generatedClassesRegistry
-	 */
-	public Set<String> getGeneratedClassesRegistry()
-	{
-		return myGeneratedClassesRegistry;
-	}
-
 	public void outputBeanJavaCode(PrintWriter out, Bean bean, Package pack, BeanSet set)
 	{
 		outputBeanJavaCode__outputClassBegin(out, bean, pack, set);
@@ -199,8 +187,8 @@ public class BeanGeneratorBase implements BeanGenerator
 				bean.isPrivate() ? "" : "public"
 		};
 		String _classFullyQualifiedName = pack.getName() + "." + bean.getExtends();
-		MessageFormat _format = ((!StringTools.isEmptyString(bean.getExtends())) && (myGeneratedClassesRegistry
-				.contains(_classFullyQualifiedName))) ? myTemplateClassBeginExtendsLocal : myTemplateClassBegin;
+		MessageFormat _format = ((!StringTools.isEmptyString(bean.getExtends())) && (getSession().getBeanRegistry()
+				.containsKey(_classFullyQualifiedName))) ? myTemplateClassBeginExtendsLocal : myTemplateClassBegin;
 		out.println(_format.format(_params));
 
 	}
@@ -236,13 +224,14 @@ public class BeanGeneratorBase implements BeanGenerator
 		}
 	}
 
-	/**
-	 * @param generatedClassesRegistry
-	 *            the generatedClassesRegistry to set
-	 */
-	public void setGeneratedClassesRegistry(Set<String> generatedClassesRegistry)
+	public GeneratorSession getSession()
 	{
-		getGeneratedClassesRegistry().addAll(generatedClassesRegistry);
+		return mySession;
+	}
+
+	public void setSession(GeneratorSession session)
+	{
+		mySession = session;
 	}
 
 }

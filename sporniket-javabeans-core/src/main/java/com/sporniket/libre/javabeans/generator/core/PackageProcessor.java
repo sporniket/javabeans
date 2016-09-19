@@ -7,8 +7,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Set;
-import java.util.TreeSet;
 
 import com.sporniket.libre.io.FileGenerator;
 import com.sporniket.studio.schema.model.set.javabean.Bean;
@@ -49,13 +47,10 @@ import com.sporniket.studio.schema.model.set.javabean.Package;
  */
 public class PackageProcessor implements FileGenerator
 {
-
 	/**
-	 * Registry to find out if an extended classe needs property change management code.
-	 * 
-	 * Will be filled by {@link BeanSetProcessor}.
+	 * Processing session.
 	 */
-	private Set<String> myGeneratedClassesRegistry = new TreeSet<String>();
+	private GeneratorSession mySession ;
 
 	/**
 	 * Directory where the processor will be working
@@ -192,22 +187,14 @@ public class PackageProcessor implements FileGenerator
 		myWorkingDirectory = workingDirectory;
 	}
 
-	/**
-	 * @return the generatedClassesRegistry
-	 */
-	public Set<String> getGeneratedClassesRegistry()
+	public GeneratorSession getSession()
 	{
-		return myGeneratedClassesRegistry;
+		return mySession;
 	}
 
-	/**
-	 * @param generatedClassesRegistry
-	 *            the generatedClassesRegistry to set
-	 */
-	public void setGeneratedClassesRegistry(Set<String> generatedClassesRegistry)
+	public void setSession(GeneratorSession session)
 	{
-		myGeneratedClassesRegistry = generatedClassesRegistry;
-		myBeanGenerator.setGeneratedClassesRegistry(generatedClassesRegistry);
+		mySession = session;
 	}
 
 }

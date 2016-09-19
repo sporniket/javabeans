@@ -53,11 +53,10 @@ import com.sporniket.studio.schema.model.set.javabean.types.PropertyMode;
  */
 public class BeanSetProcessor implements FileGenerator
 {
-
 	/**
-	 * Registry to find out if an extended classe needs property change management code.
+	 * Processing session.
 	 */
-	private Set<String> myGeneratedClassesRegistry = new TreeSet<String>();
+	private final GeneratorSession mySession = new GeneratorSession() ;
 
 	/**
 	 * Directory where the processor will be working
@@ -137,16 +136,20 @@ public class BeanSetProcessor implements FileGenerator
 	 */
 	private void registerGeneratedClasses(BeanSet set)
 	{
-		myGeneratedClassesRegistry.clear();
 		for (Package _package : set.getPackage())
 		{
 			String _classPrefix = _package.getName() + ".";
 			for (Bean _bean : _package.getBean())
 			{
-				myGeneratedClassesRegistry.add(_classPrefix + _bean.getName());
+				getSession().getBeanRegistry().put(_classPrefix + _bean, _bean);
 			}
 		}
-		myPackageProcessor.setGeneratedClassesRegistry(myGeneratedClassesRegistry);
+		myPackageProcessor.setSession(getSession());
+	}
+
+	private GeneratorSession getSession()
+	{
+		return mySession;
 	}
 
 }
