@@ -230,7 +230,7 @@ public class BeanGeneratorBase implements BeanGenerator
 		{
 			// FIXME require two-way navigation package <-> bean
 			// FIXME before processing the beanset, transform any extends into fully qualified extends. for code generation, if the
-			// extended class and generated class are in the same package, compute the local name of the extended class.
+			// FIXME extended class and generated class are in the same package, compute the local name of the extended class.
 		}
 	}
 
