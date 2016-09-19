@@ -71,11 +71,11 @@ public class BeanGeneratorBase implements BeanGenerator
 	 * Name of the template file for the begining of the class (after generating properties).
 	 */
 	private static final String TEMPLATE_NAME__CLASS_END = "template_bean_class_end.txt";
-	
+
 	/**
 	 * Processing session.
 	 */
-	private GeneratorSession mySession ;
+	private GeneratorSession mySession;
 
 	/**
 	 * Registry of {@link PropertyGenerator}.
@@ -124,12 +124,14 @@ public class BeanGeneratorBase implements BeanGenerator
 
 	private void BeanGeneratorBase__initGenerators() throws IOException
 	{
-		myPropertyGeneratorRegistry.put(PropertyType.Prefix.JAVA.getName(), new PropertyGeneratorTypeJava(GeneratorUtils.TEMPLATE_SUFFIX__GETTER_SETTER));
+		myPropertyGeneratorRegistry.put(PropertyType.Prefix.JAVA.getName(), new PropertyGeneratorTypeJava(
+				GeneratorUtils.TEMPLATE_SUFFIX__GETTER_SETTER));
 		myPropertyGeneratorRegistry.put(PropertyType.Prefix.ENUM.getName(), new PropertyGeneratorTypeEnum());
 		myPropertyGeneratorRegistry.put(PropertyType.Prefix.COLL.getName(), new PropertyGeneratorTypeColl());
 		myPropertyGeneratorRegistry.put(PropertyType.Prefix.MAP.getName(), new PropertyGeneratorTypeMap());
-		
-		myPropertyGeneratorRegistryFluentSetter.put(PropertyType.Prefix.JAVA.getName(), new PropertyGeneratorTypeJava(GeneratorUtils.TEMPLATE_SUFFIX__FLUENT_SETTER));
+
+		myPropertyGeneratorRegistryFluentSetter.put(PropertyType.Prefix.JAVA.getName(), new PropertyGeneratorTypeJava(
+				GeneratorUtils.TEMPLATE_SUFFIX__FLUENT_SETTER));
 	}
 
 	private void BeanGeneratorBase__loadTemplates() throws IOException
@@ -215,12 +217,20 @@ public class BeanGeneratorBase implements BeanGenerator
 			}
 			PropertyGenerator _generator = myPropertyGeneratorRegistry.get(_typeType);
 			_generator.outputPropertyJavaCode(out, _propertyType, _property, bean, pack, set);
-			
-			if(myPropertyGeneratorRegistryFluentSetter.containsKey(_typeType))
+
+			if (myPropertyGeneratorRegistryFluentSetter.containsKey(_typeType))
 			{
 				PropertyGenerator _generatorFluent = myPropertyGeneratorRegistryFluentSetter.get(_typeType);
 				_generatorFluent.outputPropertyJavaCode(out, _propertyType, _property, bean, pack, set);
 			}
+		}
+		// override fluent setter from parent classes
+		Bean _currentBean = bean;
+		while (!StringTools.isEmptyString(_currentBean.getExtends()))
+		{
+			// FIXME require two-way navigation package <-> bean
+			// FIXME before processing the beanset, transform any extends into fully qualified extends. for code generation, if the
+			// extended class and generated class are in the same package, compute the local name of the extended class.
 		}
 	}
 
