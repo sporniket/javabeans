@@ -86,7 +86,14 @@ public class BeanGeneratorBase implements BeanGenerator
 	 * 
 	 * There is a {@link PropertyGenerator} for each type of property.
 	 */
-	private Map<String, PropertyGenerator> myPropertyGeneratorRegistry = new HashMap<String, PropertyGenerator>();
+	private final Map<String, PropertyGenerator> myPropertyGeneratorRegistry = new HashMap<String, PropertyGenerator>();
+
+	/**
+	 * Registry of {@link PropertyGenerator} for generating fluent setters.
+	 * 
+	 * There is a {@link PropertyGenerator} for each type of property.
+	 */
+	private final Map<String, PropertyGenerator> myPropertyGeneratorRegistryFluentSetter = new HashMap<String, PropertyGenerator>();
 
 	/**
 	 * Template to generate the part before the java code of the properties.
@@ -121,10 +128,12 @@ public class BeanGeneratorBase implements BeanGenerator
 
 	private void BeanGeneratorBase__initGenerators() throws IOException
 	{
-		myPropertyGeneratorRegistry.put(PropertyType.Prefix.JAVA.getName(), new PropertyGeneratorTypeJava());
+		myPropertyGeneratorRegistry.put(PropertyType.Prefix.JAVA.getName(), new PropertyGeneratorTypeJava(GeneratorUtils.TEMPLATE_SUFFIX__GETTER_SETTER));
 		myPropertyGeneratorRegistry.put(PropertyType.Prefix.ENUM.getName(), new PropertyGeneratorTypeEnum());
 		myPropertyGeneratorRegistry.put(PropertyType.Prefix.COLL.getName(), new PropertyGeneratorTypeColl());
 		myPropertyGeneratorRegistry.put(PropertyType.Prefix.MAP.getName(), new PropertyGeneratorTypeMap());
+		
+		myPropertyGeneratorRegistryFluentSetter.put(PropertyType.Prefix.JAVA.getName(), new PropertyGeneratorTypeJava(GeneratorUtils.TEMPLATE_SUFFIX__FLUENT_SETTER));
 	}
 
 	private void BeanGeneratorBase__loadTemplates() throws IOException
@@ -218,6 +227,12 @@ public class BeanGeneratorBase implements BeanGenerator
 			}
 			PropertyGenerator _generator = myPropertyGeneratorRegistry.get(_typeType);
 			_generator.outputPropertyJavaCode(out, _propertyType, _property, bean, pack, set);
+			
+			if(myPropertyGeneratorRegistryFluentSetter.containsKey(_typeType))
+			{
+				PropertyGenerator _generatorFluent = myPropertyGeneratorRegistryFluentSetter.get(_typeType);
+				_generatorFluent.outputPropertyJavaCode(out, _propertyType, _property, bean, pack, set);
+			}
 		}
 	}
 

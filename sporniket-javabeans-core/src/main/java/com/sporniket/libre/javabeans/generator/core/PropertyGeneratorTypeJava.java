@@ -29,8 +29,8 @@ import com.sporniket.studio.schema.model.set.javabean.types.PropertyMode;
  * This file is part of <i>The Sporniket Javabeans Library &#8211; core</i>.
  * 
  * <p>
- * <i>The Sporniket Javabeans Library &#8211; core</i> is free software: you can redistribute it and/or modify it under the terms of the
- * GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your
+ * <i>The Sporniket Javabeans Library &#8211; core</i> is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
  * 
  * <p>
@@ -39,12 +39,12 @@ import com.sporniket.studio.schema.model.set.javabean.types.PropertyMode;
  * License for more details.
  * 
  * <p>
- * You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library &#8211; 
+ * You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library &#8211;
  * core</i>. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. 2
  * 
  * <hr>
  * 
- * @author David SPORN 
+ * @author David SPORN
  * @version 13.01.01
  * @since 13.01.01
  * 
@@ -54,17 +54,17 @@ public class PropertyGeneratorTypeJava implements PropertyGenerator
 	/**
 	 * Name of the template file for generating a basic property.
 	 */
-	private static String TEMPLATE_NAME__BASIC = "template_property_basic.txt";
+	private static String TEMPLATE_NAME__BASIC = "template_property_basic{0}.txt";
 
 	/**
 	 * Name of the template file for generating a boundable property.
 	 */
-	private static String TEMPLATE_NAME__BOUNDABLE = "template_property_boundable.txt";
+	private static String TEMPLATE_NAME__BOUNDABLE = "template_property_boundable{0}.txt";
 
 	/**
 	 * Name of the template file for generating a vetoable property.
 	 */
-	private static String TEMPLATE_NAME__VETOABLE = "template_property_vetoable.txt";
+	private static String TEMPLATE_NAME__VETOABLE = "template_property_vetoable{0}.txt";
 
 	/**
 	 * Registry of templates
@@ -72,26 +72,35 @@ public class PropertyGeneratorTypeJava implements PropertyGenerator
 	private Map<PropertyMode, MessageFormat> myTemplateRegistry = new HashMap<PropertyMode, MessageFormat>();
 
 	/**
-	 * @throws IOException if there is a problem to deal with.
-	 * 
+	 * @param templateSuffix
+	 *            the suffix to add to the template file names.
+	 * @throws IOException
+	 *             if there is a problem to deal with.
 	 */
-	public PropertyGeneratorTypeJava() throws IOException
+	public PropertyGeneratorTypeJava(String templateSuffix) throws IOException
 	{
-		init__loadTemplates();
+		init__loadTemplates(templateSuffix);
 	}
 
 	/**
 	 * Initialisation : fill templateRegistry.
 	 * 
-	 * @throws IOException if there is a problem to deal with.
+	 * @param templateSuffix
+	 * 
+	 * @throws IOException
+	 *             if there is a problem to deal with.
 	 */
-	private void init__loadTemplates() throws IOException
+	private void init__loadTemplates(String templateSuffix) throws IOException
 	{
-		myTemplateRegistry.put(PropertyMode.BASIC, MessageFormatLoader.load(getClass().getResourceAsStream(TEMPLATE_NAME__BASIC)));
+		Object[] _args =
+		{
+			templateSuffix
+		};
+		myTemplateRegistry.put(PropertyMode.BASIC, MessageFormatLoader.load(getClass().getResourceAsStream(MessageFormat.format(TEMPLATE_NAME__BASIC, _args))));
 		myTemplateRegistry.put(PropertyMode.BOUNDABLE,
-				MessageFormatLoader.load(getClass().getResourceAsStream(TEMPLATE_NAME__BOUNDABLE)));
+				MessageFormatLoader.load(getClass().getResourceAsStream(MessageFormat.format(TEMPLATE_NAME__BOUNDABLE, _args))));
 		myTemplateRegistry.put(PropertyMode.VETOABLE,
-				MessageFormatLoader.load(getClass().getResourceAsStream(TEMPLATE_NAME__VETOABLE)));
+				MessageFormatLoader.load(getClass().getResourceAsStream(MessageFormat.format(TEMPLATE_NAME__VETOABLE, _args))));
 	}
 
 	/*
@@ -111,11 +120,23 @@ public class PropertyGeneratorTypeJava implements PropertyGenerator
 		String _description = (null != property.getAnnotation()) ? JavadocUtils.concatenateStringArray(property.getAnnotation()
 				.getDescription()) : "";
 		String _summary = (null != property.getAnnotation()) ? property.getAnnotation().getSummary() : "";
-		String _initialExpression = (!StringTools.isEmptyString(property.getInitialExpression()))?"= "+property.getInitialExpression():"" ;
+		String _initialExpression = (!StringTools.isEmptyString(property.getInitialExpression())) ? "= "
+				+ property.getInitialExpression() : "";
 		Object[] _params =
 		{
-				_name.getUncapitalized(), _name.getCapitalized(), _name.getAllCaps(), _type, _description, _sees, _summary
-				,"","","","",bean.getName(),_initialExpression
+				_name.getUncapitalized(),
+				_name.getCapitalized(),
+				_name.getAllCaps(),
+				_type,
+				_description,
+				_sees,
+				_summary,
+				"",
+				"",
+				"",
+				"",
+				bean.getName(),
+				_initialExpression
 		};
 		MessageFormat _template = myTemplateRegistry.get(property.getMode());
 		out.println(_template.format(_params));

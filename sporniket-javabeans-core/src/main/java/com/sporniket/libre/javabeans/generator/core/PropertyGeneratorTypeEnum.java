@@ -50,7 +50,9 @@ public class PropertyGeneratorTypeEnum implements PropertyGenerator
 	 */
 	private static String TEMPLATE_NAME__ENUM = "template_property_enum.txt";
 
-	private PropertyGenerator myNormalGenerator;
+	private final PropertyGenerator myNormalGenerator = new PropertyGeneratorTypeJava(GeneratorUtils.TEMPLATE_SUFFIX__GETTER_SETTER);;
+	
+	private final PropertyGenerator myNormalGeneratorFluent =new PropertyGeneratorTypeJava(GeneratorUtils.TEMPLATE_SUFFIX__FLUENT_SETTER);;
 	
 	private MessageFormat myTemplateEnum;
 
@@ -110,11 +112,12 @@ public class PropertyGeneratorTypeEnum implements PropertyGenerator
 	{
 		PropertyType _fakePropertyType = PropertyType.Utils.instanciate(property.getType());
 		myNormalGenerator.outputPropertyJavaCode(out, _fakePropertyType, property, bean, pack, set);
+		myNormalGeneratorFluent.outputPropertyJavaCode(out, _fakePropertyType, property, bean, pack, set);
 	}
 
 	private void PropertyGeneratorTypeEnum__createGenerator() throws IOException
 	{
-		myNormalGenerator = new PropertyGeneratorTypeJava();
+		//nothing to do.
 	}
 
 	private void PropertyGeneratorTypeEnum__loadTemplate() throws IOException

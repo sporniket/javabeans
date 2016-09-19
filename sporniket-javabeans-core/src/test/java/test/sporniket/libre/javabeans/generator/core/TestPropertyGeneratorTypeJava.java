@@ -9,6 +9,7 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import com.sporniket.libre.io.TextLoader;
+import com.sporniket.libre.javabeans.generator.core.GeneratorUtils;
 import com.sporniket.libre.javabeans.generator.core.PropertyGeneratorTypeJava;
 import com.sporniket.studio.schema.model.set.javabean.Bean;
 import com.sporniket.studio.schema.model.set.javabean.BeanSet;
@@ -164,7 +165,7 @@ public class TestPropertyGeneratorTypeJava extends TestPropertyGenerator
 	{
 		super.setUp();
 
-		myGenerator = new PropertyGeneratorTypeJava();
+		myGenerator = new PropertyGeneratorTypeJava(GeneratorUtils.TEMPLATE_SUFFIX__GETTER_SETTER);
 
 		myResultRegistry.put(PropertyMode.BASIC.value(), TextLoader.getInstance().load(getClass().getResourceAsStream(FILE_NAME__BASIC)));
 
