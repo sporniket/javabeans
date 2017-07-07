@@ -5,6 +5,10 @@ import java.util.List;
 
 class SampleBasicBeanRaw
 {
+	/**
+	 * Date of creation.
+	 */
+	@Deprecated
 	public Date date ;
 	public List<String> names ;
 	private String ignored ;
