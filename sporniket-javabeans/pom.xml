@@ -9,7 +9,7 @@
 	<properties>
 		<url.base>https://github.com/sporniket/core</url.base>
 		<url.base.site.deploy>file://${user.home}/mvnsites</url.base.site.deploy>
-		<version.jdk>1.6</version.jdk>
+		<version.jdk>1.8</version.jdk>
 
 		<version.dependency.sporniket.core>15.03.01-jdk</version.dependency.sporniket.core>
 		<version.dependency.castor.xml>1.3.2</version.dependency.castor.xml>
