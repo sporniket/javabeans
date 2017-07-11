@@ -19,6 +19,8 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import com.sporniket.libre.javabeans.core.pojo.encapsulator.ClassUtils;
+
 /**
  * Encapsulate a given Pojo into a Bean.
  *
@@ -65,14 +67,16 @@ public class Encapsulator
 		return field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);
 	}
 
-	private String computeOutputClassname(Class<?> classToOutput, Map<Class<?>, String> translations, Set<String> shortables)
+	private String computeOutputClassname(Class<?> classToOutput, Map<String, String> translations, Set<String> shortables)
 	{
-		final String _translatedName = (translations.containsKey(classToOutput))
-				? translations.get(classToOutput)
-				: classToOutput.getName();
-		final String _className = (shortables.contains(_translatedName)) ? getSimpleName(_translatedName) : _translatedName;
-
-		return _className;
+//		String _name = classToOutput.getName();
+//		final String _translatedName = (translations.containsKey(_name))
+//				? translations.get(_name)
+//				: _name;
+//		final String _className = (shortables.contains(_translatedName)) ? getSimpleName(_translatedName) : _translatedName;
+//
+//		return _className;
+		return ClassUtils.computeOutputClassname(classToOutput, translations, shortables) ;
 	}
 
 	Set<Class<?>> getKnownClasses()
@@ -85,26 +89,17 @@ public class Encapsulator
 		return myShortClassnameMapping;
 	}
 
-	private String getSimpleName(String fullClassName)
+//	private String getSimpleName(String fullClassName)
+//	{
+//		return fullClassName.substring(fullClassName.lastIndexOf('.') + 1);
+//	}
+
+	Map<String, String> getTranslationMapWhenPojosAreSuffixed(Set<Class<?>> registry, Set<String> sourcePackages, String pojoSuffix)
 	{
-		return fullClassName.substring(fullClassName.lastIndexOf('.') + 1);
+		return ClassUtils.getTranslationMapWhenPojosAreSuffixed(registry, sourcePackages, pojoSuffix);
 	}
 
-	Map<Class<?>, String> getTranslationMapWhenPojosAreSuffixed(Set<Class<?>> registry, Set<String> sourcePackages,
-			String pojoSuffix)
-	{
-		final Map<Class<?>, String> result = new HashMap<>(registry.size());
-		final Predicate<String> _isPojo = Pattern.compile("^.+" + pojoSuffix + "$").asPredicate();
-
-		registry.stream().filter(c -> (sourcePackages.contains(c.getPackage().getName()) && _isPojo.test(c.getSimpleName())))
-				.forEach(c -> {
-					result.put(c, c.getName().substring(0, c.getName().length() - pojoSuffix.length()));
-				});
-
-		return result;
-	}
-
-	private void outputJavabeanClassDeclaration(Class<?> toScan, PrintStream _out, Map<Class<?>, String> _translation,
+	private void outputJavabeanClassDeclaration(Class<?> toScan, PrintStream _out, Map<String, String> _translation,
 			Set<String> _shortables)
 	{
 		final StringBuilder _classDecl = new StringBuilder("public class ");
@@ -152,7 +147,7 @@ public class Encapsulator
 
 		_out.println();
 
-		final Map<Class<?>, String> _translation = getTranslationMapWhenPojosAreSuffixed(getKnownClasses(),
+		final Map<String, String> _translation = getTranslationMapWhenPojosAreSuffixed(getKnownClasses(),
 				Arrays.asList(toScan.getPackage().getName()).stream().collect(Collectors.toCollection(TreeSet::new)), "Raw");
 		if (_translation.isEmpty())
 		{
@@ -161,7 +156,7 @@ public class Encapsulator
 		else
 		{
 			_out.println("// .--== Type translations ==--.\n//");
-			_translation.keySet().forEach(c -> _out.printf("// %s --> %s\n", c.getName(), _translation.get(c)));
+			_translation.keySet().forEach(c -> _out.printf("// %s --> %s\n", c, _translation.get(c)));
 		}
 
 		_out.println();
@@ -210,35 +205,17 @@ public class Encapsulator
 
 	private void registerKnownClasses(Class<?> toScan, List<Field> beanFields)
 	{
-		final Predicate<? super Class<?>> _isNotRegistered = i -> !getKnownClasses().contains(i);
-		getKnownClasses().add(toScan);
-		getKnownClasses().add(toScan.getSuperclass());
-		final Consumer<? super Class<?>> _registerKnownClass = i -> getKnownClasses().add(i);
-		Arrays.asList(toScan.getInterfaces()).stream().filter(_isNotRegistered).forEach(_registerKnownClass);
-		beanFields.stream().map(Field::getType).filter(_isNotRegistered).forEach(i -> getKnownClasses().add(i));
+		ClassUtils.updateKnownClasses(getKnownClasses(), toScan);
 	}
 
 	private void registerShortClassnameMapping(Set<Class<?>> registry)
 	{
-		registry.forEach(c -> {
-			if (!getShortClassnameMapping().containsKey(c.getSimpleName()))
-			{
-				getShortClassnameMapping().put(c.getSimpleName(), c.getName());
-
-			}
-		});
+		ClassUtils.updateShortClassnameMappingFromClasses(getShortClassnameMapping(), registry);
 	}
 
 	private void registerShortClassnameMappingFromString(Collection<String> registry)
 	{
-		registry.forEach(c -> {
-			final String _simpleName = getSimpleName(c);
-			if (!getShortClassnameMapping().containsKey(_simpleName))
-			{
-				getShortClassnameMapping().put(_simpleName, c);
-
-			}
-		});
+		ClassUtils.updateShortClassnameMappingFromStrings(getShortClassnameMapping(), registry);
 	}
 
 }
