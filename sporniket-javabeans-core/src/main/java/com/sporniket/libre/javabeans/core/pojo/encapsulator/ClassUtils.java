@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.sporniket.libre.javabeans.core.pojo.encapsulator;
 
@@ -14,7 +14,7 @@ import java.util.function.Predicate;
 
 /**
  * Utility package for {@link Class}.
- * 
+ *
  * @author dsporn
  *
  */
@@ -22,7 +22,7 @@ public final class ClassUtils
 {
 	public static String computeOutputClassname(Class<?> classToOutput, Map<String, String> translations, Set<String> shortables)
 	{
-		String _name = classToOutput.getName();
+		final String _name = classToOutput.getName();
 		final String _translatedName = (translations.containsKey(_name)) ? translations.get(_name) : _name;
 		final String _className = (shortables.contains(_translatedName)) ? getSimpleName(_translatedName) : _translatedName;
 
@@ -53,6 +53,15 @@ public final class ClassUtils
 		return name.substring(0, name.length() - suffix.length());
 	}
 
+	/**
+	 * Add into a collection of 'known classes' the specified class, its superclass and implemented interfaces, and the type of its
+	 * public fields.
+	 *
+	 * @param knownClasses
+	 *            the collection to update.
+	 * @param toScan
+	 *            the class to scan.
+	 */
 	public static void updateKnownClasses(Set<Class<?>> knownClasses, Class<?> toScan)
 	{
 		final Predicate<? super Class<?>> _isNotRegistered = i -> !knownClasses.contains(i);
