@@ -69,13 +69,6 @@ public class Encapsulator
 
 	private String computeOutputClassname(Class<?> classToOutput, Map<String, String> translations, Set<String> shortables)
 	{
-//		String _name = classToOutput.getName();
-//		final String _translatedName = (translations.containsKey(_name))
-//				? translations.get(_name)
-//				: _name;
-//		final String _className = (shortables.contains(_translatedName)) ? getSimpleName(_translatedName) : _translatedName;
-//
-//		return _className;
 		return ClassUtils.computeOutputClassname(classToOutput, translations, shortables) ;
 	}
 
@@ -88,11 +81,6 @@ public class Encapsulator
 	{
 		return myShortClassnameMapping;
 	}
-
-//	private String getSimpleName(String fullClassName)
-//	{
-//		return fullClassName.substring(fullClassName.lastIndexOf('.') + 1);
-//	}
 
 	Map<String, String> getTranslationMapWhenPojosAreSuffixed(Set<Class<?>> registry, Set<String> sourcePackages, String pojoSuffix)
 	{
