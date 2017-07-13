@@ -98,11 +98,11 @@ public class Encapsulator
 			Set<String> _shortables)
 	{
 		final StringBuilder _classDecl = new StringBuilder("public class ");
-		_classDecl.append(ClassUtils.computeOutputClassname(toScan, _translation, _shortables));
+		_classDecl.append(ClassUtils.computeOutputClassname(toScan.getName(), _translation, _shortables));
 		if (!Object.class.equals(toScan.getSuperclass()))
 		{
 			_classDecl.append(" extends ")
-					.append(ClassUtils.computeOutputClassname(toScan.getSuperclass(), _translation, _shortables));
+					.append(ClassUtils.computeOutputClassname(toScan.getSuperclass().getName(), _translation, _shortables));
 		}
 		final Class<?>[] _interfaces = toScan.getInterfaces();
 		if (_interfaces.length > 0)
@@ -110,7 +110,7 @@ public class Encapsulator
 			for (int _i = 0; _i < _interfaces.length; _i++)
 			{
 				_classDecl.append((0 == _i) ? " implements " : ", ")
-						.append(ClassUtils.computeOutputClassname(_interfaces[_i], _translation, _shortables));
+						.append(ClassUtils.computeOutputClassname(_interfaces[_i].getName(), _translation, _shortables));
 			}
 		}
 
@@ -133,7 +133,7 @@ public class Encapsulator
 			final Set<String> shortables)
 	{
 		final String _accessorSuffix = FieldUtils.computeFieldAccessorSuffix(field);
-		final String _type = ClassUtils.computeOutputClassname(field.getType(), translation, shortables);
+		final String _type = ClassUtils.computeOutputClassname(field.getType().getName(), translation, shortables);
 
 		// getter
 		out.printf("    public %s get%s() {return pojo.%s ;}\n", _type, _accessorSuffix, field.getName());

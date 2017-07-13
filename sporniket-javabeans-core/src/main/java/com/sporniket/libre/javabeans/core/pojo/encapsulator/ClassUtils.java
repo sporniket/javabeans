@@ -20,9 +20,9 @@ import java.util.function.Predicate;
  */
 public final class ClassUtils
 {
-	public static String computeOutputClassname(Class<?> classToOutput, Map<String, String> translations, Set<String> shortables)
+	public static String computeOutputClassname(String classToOutput, Map<String, String> translations, Set<String> shortables)
 	{
-		final String _name = classToOutput.getName();
+		final String _name = classToOutput;
 		final String _translatedName = (translations.containsKey(_name)) ? translations.get(_name) : _name;
 		final String _className = (shortables.contains(_translatedName)) ? getSimpleName(_translatedName) : _translatedName;
 
@@ -48,7 +48,7 @@ public final class ClassUtils
 		return result;
 	}
 
-	private static String removeSuffixFromClassName(String name, String suffix)
+	public static String removeSuffixFromClassName(String name, String suffix)
 	{
 		return name.substring(0, name.length() - suffix.length());
 	}
