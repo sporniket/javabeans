@@ -34,6 +34,11 @@ public final class ClassUtils
 		return fullClassName.substring(fullClassName.lastIndexOf('.') + 1);
 	}
 
+	public static String getPackageName(String fullClassName)
+	{
+		return fullClassName.substring(fullClassName.lastIndexOf('.') + 1);
+	}
+
 	public static Map<String, String> getTranslationMapWhenPojosAreSuffixed(Set<Class<?>> registry, Set<String> sourcePackages,
 			String pojoSuffix)
 	{
