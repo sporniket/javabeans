@@ -132,7 +132,7 @@ public class Encapsulator
 	private void outputJavabean__property(final Field field, PrintStream out, final Map<String, String> translation,
 			final Set<String> shortables)
 	{
-		final String _accessorSuffix = FieldUtils.computeFieldAccessorSuffix(field);
+		final String _accessorSuffix = FieldUtils.computeFieldAccessorSuffix(field.getName());
 		final String _type = ClassUtils.computeOutputClassname(field.getType().getName(), translation, shortables);
 
 		// getter
