@@ -3,6 +3,7 @@ package test.sporniket.libre.javabeans.core.pojo.encapsulator;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -11,7 +12,10 @@ import java.util.stream.Collectors;
 
 import com.sporniket.libre.javabeans.core.pojo.encapsulator.ClassDocUtils;
 import com.sporniket.libre.javabeans.core.pojo.encapsulator.ClassUtils;
+import com.sporniket.libre.javabeans.core.pojo.encapsulator.FieldDocUtils;
+import com.sporniket.libre.javabeans.core.pojo.encapsulator.FieldUtils;
 import com.sun.javadoc.ClassDoc;
+import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.RootDoc;
 import com.sun.tools.javadoc.Main;
 
@@ -42,6 +46,83 @@ public class EncapsulatorDoclet
 			new EncapsulatorDoclet().processPojoClass(classes[i], System.out);
 		}
 		return true;
+	}
+
+	/**
+	 * Generate a Javabean defined by encapsulating a pojo.
+	 *
+	 * @param rawClass
+	 *            the pojo to encapsulate into a javabean.
+	 * @param out
+	 *            the {@link PrintStream} to generate the definition into.
+	 * @param translations
+	 *            a translation table to get the javabeans type from pojo types (since the goal is to convert a set of related pojo
+	 *            into a set of related javabeans).
+	 * @param shortables
+	 *            the list of classes that can be shortened (use the simple name instead of the full classname after the import
+	 *            declaration)
+	 */
+	private void outputJavabean(ClassDoc rawClass, PrintStream out, final Map<String, String> translations,
+			final Set<String> shortables)
+	{
+		outputJavabean__classBegin(rawClass, out, translations, shortables);
+
+		FieldDocUtils.getPublicDeclaredFields(rawClass).forEach(_field -> {
+			outputJavabean__property(_field, out, translations, shortables);
+		});
+
+		outputJavabean__classEnd(rawClass, out, translations, shortables);
+	}
+
+	private void outputJavabean__classBegin(ClassDoc toScan, PrintStream _out, Map<String, String> _translation,
+			Set<String> _shortables)
+	{
+		final StringBuilder _classDecl = new StringBuilder("public class ");
+		_classDecl.append(ClassUtils.computeOutputClassname(toScan.name(), _translation, _shortables));
+		final String _supername = toScan.superclass().qualifiedName();
+		if (!Object.class.getName().equals(_supername))
+		{
+			_classDecl.append(" extends ").append(ClassUtils.computeOutputClassname(_supername, _translation, _shortables));
+		}
+		final ClassDoc[] _interfaces = toScan.interfaces();
+		if (_interfaces.length > 0)
+		{
+			for (int _i = 0; _i < _interfaces.length; _i++)
+			{
+				_classDecl.append((0 == _i) ? " implements " : ", ")
+						.append(ClassUtils.computeOutputClassname(_interfaces[_i].name(), _translation, _shortables));
+			}
+		}
+
+		_out.printf("%s\n{\n", _classDecl.toString());
+
+		_out.println();
+
+		final String _simpleName = ClassUtils.getSimpleName(toScan.name());
+		_out.printf("    private final %s pojo = new %s() ;\n\n", _simpleName, _simpleName);
+
+		_out.println();
+	}
+
+	private void outputJavabean__classEnd(ClassDoc toScan, PrintStream _out, Map<String, String> _translation,
+			Set<String> _shortables)
+	{
+		_out.println("}\n");
+	}
+
+	private void outputJavabean__property(final FieldDoc field, PrintStream out, final Map<String, String> translation,
+			final Set<String> shortables)
+	{
+		final String _accessorSuffix = FieldUtils.computeFieldAccessorSuffix(field.name());
+		final String _type = ClassUtils.computeOutputClassname(field.type().qualifiedTypeName(), translation, shortables);
+
+		// getter
+		out.printf("    public %s get%s() {return pojo.%s ;}\n", _type, _accessorSuffix, field.name());
+
+		// setter
+		out.printf("    public void set%s(%s value) {pojo.%s = value;}\n", _accessorSuffix, _type, field.name());
+
+		out.println();
 	}
 
 	private void processPojoClass(ClassDoc toScan, PrintStream _out)
@@ -93,5 +174,11 @@ public class EncapsulatorDoclet
 
 		_out.println();
 
+		// reverse short mapping for getting the shortenable names of the class.
+		final Set<String> _shortables = new HashSet<>(_shortNameMapping.values());
+
+		// ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
+		// generate class
+		outputJavabean(toScan, _out, _translation, _shortables);
 	}
 }
