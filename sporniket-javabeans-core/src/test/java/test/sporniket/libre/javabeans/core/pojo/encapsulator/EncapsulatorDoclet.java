@@ -36,8 +36,8 @@ public class EncapsulatorDoclet
 		List<String> _knownClasses = new ArrayList<>();
 		ClassDocUtils.updateKnowClasses(_knownClasses, toScan);
 
-		final Predicate<? super String> _isNotJavaLangType = c -> !Object.class.getPackage().equals(ClassUtils.getPackageName(c));
-		final Predicate<? super String> _isNotInSamePackage = c -> !toScan.containingPackage().equals(ClassUtils.getPackageName(c));
+		final Predicate<? super String> _isNotJavaLangType = c -> !Object.class.getPackage().getName().equals(ClassUtils.getPackageName(c));
+		final Predicate<? super String> _isNotInSamePackage = c -> !toScan.containingPackage().name().equals(ClassUtils.getPackageName(c));
 
 		_knownClasses.stream().filter(_isNotJavaLangType).filter(_isNotInSamePackage)
 				.collect(Collectors.toCollection(TreeSet::new)).forEach(c -> _out.printf("import %s;\n", c));
