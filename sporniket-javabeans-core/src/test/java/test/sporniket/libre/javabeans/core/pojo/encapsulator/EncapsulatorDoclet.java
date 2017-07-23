@@ -2,6 +2,7 @@ package test.sporniket.libre.javabeans.core.pojo.encapsulator;
 
 import java.io.PrintStream;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -16,13 +17,28 @@ import com.sun.tools.javadoc.Main;
 
 public class EncapsulatorDoclet
 {
+	public static void main(String[] args)
+	{
+		final String[] _args =
+		{
+				"-sourcepath",
+				"/home/dsporn/dev/00-src/javabeans/sporniket-javabeans-core/src/test/java",
+				"-private",
+				"-doclet",
+				"test.sporniket.libre.javabeans.core.pojo.encapsulator.EncapsulatorDoclet",
+				"test.sporniket.libre.javabeans.core.pojo.testsuite"
+
+		};
+		Main.execute(_args);
+	}
+
 	public static boolean start(RootDoc root)
 	{
-		ClassDoc[] classes = root.classes();
+		final ClassDoc[] classes = root.classes();
 		for (int i = 0; i < classes.length; ++i)
 		{
 			System.out.println("--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ");
-			System.out.println("//"+classes[i]);
+			System.out.println("//" + classes[i]);
 			new EncapsulatorDoclet().processPojoClass(classes[i], System.out);
 		}
 		return true;
@@ -34,14 +50,16 @@ public class EncapsulatorDoclet
 
 		_out.println();
 
-		Set<String> _knownClasses = new TreeSet<>();
+		final Set<String> _knownClasses = new TreeSet<>();
 		ClassDocUtils.updateKnowClasses(_knownClasses, toScan);
 
-		final Predicate<? super String> _isNotJavaLangType = c -> !Object.class.getPackage().getName().equals(ClassUtils.getPackageName(c));
-		final Predicate<? super String> _isNotInSamePackage = c -> !toScan.containingPackage().name().equals(ClassUtils.getPackageName(c));
+		final Predicate<? super String> _isNotJavaLangType = c -> !Object.class.getPackage().getName()
+				.equals(ClassUtils.getPackageName(c));
+		final Predicate<? super String> _isNotInSamePackage = c -> !toScan.containingPackage().name()
+				.equals(ClassUtils.getPackageName(c));
 
-		_knownClasses.stream().filter(_isNotJavaLangType).filter(_isNotInSamePackage)
-				.collect(Collectors.toCollection(TreeSet::new)).forEach(c -> _out.printf("import %s;\n", c));
+		_knownClasses.stream().filter(_isNotJavaLangType).filter(_isNotInSamePackage).collect(Collectors.toCollection(TreeSet::new))
+				.forEach(c -> _out.printf("import %s;\n", c));
 
 		_out.println();
 
@@ -54,26 +72,26 @@ public class EncapsulatorDoclet
 		else
 		{
 			_out.println("// .--== Type translations ==--.\n//");
-			_translation.keySet().forEach(c -> _out.printf("// %s --> %s\n", c, _translation.get(c)));
+			_translation.keySet().forEach(c -> _out.printf("// %s\n//     --> %s\n", c, _translation.get(c)));
 		}
 
 		_out.println();
 
+		final Map<String, String> _shortNameMapping = new HashMap<>(_knownClasses.size() + _translation.size());
+		ClassUtils.updateShortClassnameMappingFromClassnames(_shortNameMapping, _knownClasses);
+		ClassUtils.updateShortClassnameMappingFromClassnames(_shortNameMapping, _translation.values());
 
-	}
-
-	public static void main(String[] args)
-	{
-		String[] _args =
+		if (_shortNameMapping.isEmpty())
 		{
-				"-sourcepath",
-				"/home/dsporn/dev/00-src/javabeans/sporniket-javabeans-core/src/test/java",
-				"-private",
-				"-doclet",
-				"test.sporniket.libre.javabeans.core.pojo.encapsulator.EncapsulatorDoclet",
-				"test.sporniket.libre.javabeans.core.pojo.testsuite"
+			_out.println("//no shortnames");
+		}
+		else
+		{
+			_out.println("// .--== short names mapping ==--.\n//");
+			_shortNameMapping.keySet().forEach(c -> _out.printf("// %s\n//     --> %s\n", c, _shortNameMapping.get(c)));
+		}
 
-		};
-		Main.execute(_args);
+		_out.println();
+
 	}
 }
