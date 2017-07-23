@@ -176,7 +176,7 @@ public class Encapsulator
 
 		// update shortnames mapping
 		ClassUtils.updateShortClassnameMappingFromClasses(getShortClassnameMapping(), getKnownClasses());
-		ClassUtils.updateShortClassnameMappingFromStrings(getShortClassnameMapping(), _translation.values());
+		ClassUtils.updateShortClassnameMappingFromClassnames(getShortClassnameMapping(), _translation.values());
 
 		final Map<String, String> _shortNameMapping = getShortClassnameMapping();
 		if (_shortNameMapping.isEmpty())

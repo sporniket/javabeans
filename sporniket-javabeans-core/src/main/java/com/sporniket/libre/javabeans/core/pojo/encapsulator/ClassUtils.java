@@ -29,7 +29,7 @@ public final class ClassUtils
 		return _className;
 	}
 
-	private static String getSimpleName(String fullClassName)
+	public static String getSimpleName(String fullClassName)
 	{
 		return fullClassName.substring(fullClassName.lastIndexOf('.') + 1);
 	}
@@ -91,7 +91,7 @@ public final class ClassUtils
 		});
 	}
 
-	public static void updateShortClassnameMappingFromStrings(Map<String, String> mapping, Collection<String> registry)
+	public static void updateShortClassnameMappingFromClassnames(Map<String, String> mapping, Collection<String> registry)
 	{
 		registry.forEach(c -> {
 			final String _simpleName = getSimpleName(c);
