@@ -20,8 +20,8 @@ public class EncapsulatorDoclet
 		ClassDoc[] classes = root.classes();
 		for (int i = 0; i < classes.length; ++i)
 		{
-			System.out.println(classes[i]);
 			System.out.println("--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ");
+			System.out.println("//"+classes[i]);
 			new EncapsulatorDoclet().processPojoClass(classes[i], System.out);
 		}
 		return true;
