@@ -1,8 +1,9 @@
 package test.sporniket.libre.javabeans.core.pojo.encapsulator;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -33,7 +34,7 @@ public class EncapsulatorDoclet
 
 		_out.println();
 
-		List<String> _knownClasses = new ArrayList<>();
+		Set<String> _knownClasses = new TreeSet<>();
 		ClassDocUtils.updateKnowClasses(_knownClasses, toScan);
 
 		final Predicate<? super String> _isNotJavaLangType = c -> !Object.class.getPackage().getName().equals(ClassUtils.getPackageName(c));
@@ -41,6 +42,24 @@ public class EncapsulatorDoclet
 
 		_knownClasses.stream().filter(_isNotJavaLangType).filter(_isNotInSamePackage)
 				.collect(Collectors.toCollection(TreeSet::new)).forEach(c -> _out.printf("import %s;\n", c));
+
+		_out.println();
+
+		final Map<String, String> _translation = ClassDocUtils.getTranslationMapWhenPojosAreSuffixed(_knownClasses,
+				Arrays.asList(toScan.containingPackage().name()).stream().collect(Collectors.toCollection(TreeSet::new)), "Raw");
+		if (_translation.isEmpty())
+		{
+			_out.println("//no translation");
+		}
+		else
+		{
+			_out.println("// .--== Type translations ==--.\n//");
+			_translation.keySet().forEach(c -> _out.printf("// %s --> %s\n", c, _translation.get(c)));
+		}
+
+		_out.println();
+
+
 	}
 
 	public static void main(String[] args)

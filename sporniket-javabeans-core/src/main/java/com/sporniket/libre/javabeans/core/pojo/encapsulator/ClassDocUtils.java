@@ -1,6 +1,7 @@
 package com.sporniket.libre.javabeans.core.pojo.encapsulator;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,8 @@ import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.ParameterizedType;
 import com.sun.javadoc.Type;
 
+import static com.sporniket.libre.javabeans.core.pojo.encapsulator.ClassUtils.*;
+
 /**
  * Utility class for {@link ClassDoc}
  * 
@@ -21,21 +24,22 @@ import com.sun.javadoc.Type;
  */
 public final class ClassDocUtils
 {
-	public static Map<String, String> getTranslationMapWhenPojosAreSuffixed(Set<ClassDoc> registry, Set<String> sourcePackages,
+	//FIXME move to ClassUtils
+	public static Map<String, String> getTranslationMapWhenPojosAreSuffixed(Set<String> registry, Set<String> sourcePackages,
 			String pojoSuffix)
 	{
 		final Map<String, String> result = new HashMap<>(registry.size());
-		final Predicate<ClassDoc> _isPojo = c -> sourcePackages.contains(c.containingPackage().name())
-				&& !pojoSuffix.equals(c.simpleTypeName()) && c.simpleTypeName().endsWith(pojoSuffix);
+		final Predicate<String> _isPojo = c -> sourcePackages.contains(getPackageName(c))
+				&& !pojoSuffix.equals(getSimpleName(c)) && c.endsWith(pojoSuffix);
 
 		registry.stream().filter(_isPojo).forEach(c -> {
-			result.put(c.qualifiedName(), ClassUtils.removeSuffixFromClassName(c.qualifiedName(), pojoSuffix));
+			result.put(c, ClassUtils.removeSuffixFromClassName(c, pojoSuffix));
 		});
 
 		return result;
 	}
 
-	public static void updateKnowClasses(List<String> knownClasses, ClassDoc toScan)
+	public static void updateKnowClasses(Collection<String> knownClasses, ClassDoc toScan)
 	{
 		final Predicate<String> _isNotRegistered = i -> !knownClasses.contains(i);
 		final Consumer<String> _registerKnownClass = i -> knownClasses.add(i); // do not support parametrized types
@@ -49,7 +53,7 @@ public final class ClassDocUtils
 		FieldDocUtils.getPublicFields(toScan).stream().map(FieldDoc::type).forEach(_processType);
 	}
 
-	private static void updateKnownClasses(List<String> knownClasses, Type toScan)
+	private static void updateKnownClasses(Collection<String> knownClasses, Type toScan)
 	{
 		ParameterizedType _pt = toScan.asParameterizedType();
 		if (null != _pt)
