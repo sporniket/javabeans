@@ -18,4 +18,13 @@ public class TestClassUtils
 		// verify
 		assertThat(_toTest, is(Object.class.getPackage().getName()));
 	}
+	@Test
+	public void test__getSimpleName()
+	{
+		// prepare
+		// execute
+		String _toTest = ClassUtils.getSimpleName(Object.class.getName());
+		// verify
+		assertThat(_toTest, is(Object.class.getSimpleName()));
+	}
 }
