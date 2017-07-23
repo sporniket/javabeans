@@ -10,17 +10,30 @@ import java.util.TreeSet;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import javax.tools.DocumentationTool;
+import javax.tools.ToolProvider;
+
 import com.sporniket.libre.javabeans.core.pojo.encapsulator.ClassDocUtils;
 import com.sporniket.libre.javabeans.core.pojo.encapsulator.ClassUtils;
 import com.sporniket.libre.javabeans.core.pojo.encapsulator.FieldDocUtils;
 import com.sporniket.libre.javabeans.core.pojo.encapsulator.FieldUtils;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
+import com.sun.javadoc.LanguageVersion;
 import com.sun.javadoc.RootDoc;
-import com.sun.tools.javadoc.Main;
 
 public class EncapsulatorDoclet
 {
+
+	/**
+	 * Supports generics and annotations.
+	 * @return {@link LanguageVersion#JAVA_1_5}
+	 */
+	public static LanguageVersion languageVersion()
+	{
+		return LanguageVersion.JAVA_1_5;
+	}
+
 	public static void main(String[] args)
 	{
 		final String[] _args =
@@ -33,7 +46,9 @@ public class EncapsulatorDoclet
 				"test.sporniket.libre.javabeans.core.pojo.testsuite"
 
 		};
-		Main.execute(_args);
+
+		DocumentationTool javadoc = ToolProvider.getSystemDocumentationTool();
+		javadoc.run(System.in, System.out, System.err, _args);
 	}
 
 	public static boolean start(RootDoc root)
@@ -74,15 +89,15 @@ public class EncapsulatorDoclet
 		outputJavabean__classEnd(rawClass, out, translations, shortables);
 	}
 
-	private void outputJavabean__classBegin(ClassDoc toScan, PrintStream _out, Map<String, String> _translation,
+	private void outputJavabean__classBegin(ClassDoc toScan, PrintStream _out, Map<String, String> _translations,
 			Set<String> _shortables)
 	{
 		final StringBuilder _classDecl = new StringBuilder("public class ");
-		_classDecl.append(ClassUtils.computeOutputClassname(toScan.name(), _translation, _shortables));
+		_classDecl.append(ClassUtils.computeOutputClassname(toScan.name(), _translations, _shortables));
 		final String _supername = toScan.superclass().qualifiedName();
 		if (!Object.class.getName().equals(_supername))
 		{
-			_classDecl.append(" extends ").append(ClassUtils.computeOutputClassname(_supername, _translation, _shortables));
+			_classDecl.append(" extends ").append(ClassUtils.computeOutputClassname(_supername, _translations, _shortables));
 		}
 		final ClassDoc[] _interfaces = toScan.interfaces();
 		if (_interfaces.length > 0)
@@ -90,7 +105,7 @@ public class EncapsulatorDoclet
 			for (int _i = 0; _i < _interfaces.length; _i++)
 			{
 				_classDecl.append((0 == _i) ? " implements " : ", ")
-						.append(ClassUtils.computeOutputClassname(_interfaces[_i].name(), _translation, _shortables));
+						.append(ClassUtils.computeOutputClassname(_interfaces[_i].name(), _translations, _shortables));
 			}
 		}
 
@@ -110,11 +125,11 @@ public class EncapsulatorDoclet
 		_out.println("}\n");
 	}
 
-	private void outputJavabean__property(final FieldDoc field, PrintStream out, final Map<String, String> translation,
+	private void outputJavabean__property(final FieldDoc field, PrintStream out, final Map<String, String> translations,
 			final Set<String> shortables)
 	{
 		final String _accessorSuffix = FieldUtils.computeFieldAccessorSuffix(field.name());
-		final String _type = ClassUtils.computeOutputClassname(field.type().qualifiedTypeName(), translation, shortables);
+		String _type = ClassDocUtils.computeOutputType(field.type(), translations, shortables);
 
 		// getter
 		out.printf("    public %s get%s() {return pojo.%s ;}\n", _type, _accessorSuffix, field.name());

@@ -14,6 +14,8 @@ import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.ParameterizedType;
 import com.sun.javadoc.Type;
+import com.sun.javadoc.TypeVariable;
+import com.sun.javadoc.WildcardType;
 
 /**
  * Utility class for {@link ClassDoc}
@@ -36,6 +38,69 @@ public final class ClassDocUtils
 		});
 
 		return result;
+	}
+	
+	public static String computeOutputType(Type toOutput, Map<String, String> translations, Set<String> shortables)
+	{
+		StringBuilder _buffer = new StringBuilder();
+		outputTypename(_buffer, toOutput, translations, shortables);
+		return _buffer.toString() ;
+	}
+	
+	private static void outputTypename(StringBuilder into, Type toOutput, Map<String, String> translations, Set<String> shortables)
+	{
+		//either TypeVariable, WildcardType or ParametrizedType
+		
+		//Parametrized type
+		ParameterizedType _pType = toOutput.asParameterizedType() ;
+		if(null != _pType)
+		{
+			into.append(computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables)) ;
+			Type[] _typeArguments = _pType.typeArguments();
+			for(int _i = 0 ; _i < _typeArguments.length ; _i++)
+			{
+				into.append((0 == _i)?"<":",");
+				outputTypename(into, _typeArguments[_i], translations, shortables);
+			}
+			into.append(">") ;
+			return ; //done
+		}
+		
+		//Wildcard Type
+		WildcardType _wType = toOutput.asWildcardType();
+		if (null != _wType)
+		{
+			into.append("?") ;
+			Type[] _extendsBounds = _wType.extendsBounds();
+			if (_extendsBounds.length > 0)
+			{
+				into.append(" extends ") ;
+				outputTypename(into, _extendsBounds[0], translations, shortables);
+			}
+			Type[] _superBounds = _wType.superBounds();
+			if (_superBounds.length > 0)
+			{
+				into.append(" super ") ;
+				outputTypename(into, _superBounds[0], translations, shortables);
+			}
+			return ; //done
+		}
+		
+		TypeVariable _tVar = toOutput.asTypeVariable();
+		if (null != _tVar)
+		{
+			into.append(_tVar.typeName());
+			Type[] _bounds = _tVar.bounds();
+			if (_bounds.length > 0)
+			{
+				into.append(" extends ") ;
+				outputTypename(into, _bounds[0], translations, shortables);
+			}
+			return ; //done
+		}
+		
+		// else normal type.
+		into.append(ClassUtils.computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
 	}
 
 

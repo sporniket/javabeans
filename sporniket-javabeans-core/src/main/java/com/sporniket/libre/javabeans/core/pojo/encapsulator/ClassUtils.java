@@ -31,7 +31,8 @@ public final class ClassUtils
 
 	public static String getPackageName(String fullClassName)
 	{
-		return fullClassName.substring(0, fullClassName.lastIndexOf('.'));
+		int _lastIndexOfDot = fullClassName.lastIndexOf('.');
+		return fullClassName.substring(0, (_lastIndexOfDot < 0) ? 0 : _lastIndexOfDot);
 	}
 
 	public static String removeSuffixFromClassName(String name, String suffix)
