@@ -1,9 +1,10 @@
 package com.sporniket.libre.javabeans.core.pojo.encapsulator;
 
+import static com.sporniket.libre.javabeans.core.pojo.encapsulator.ClassUtils.*;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -13,8 +14,6 @@ import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.ParameterizedType;
 import com.sun.javadoc.Type;
-
-import static com.sporniket.libre.javabeans.core.pojo.encapsulator.ClassUtils.*;
 
 /**
  * Utility class for {@link ClassDoc}
@@ -39,6 +38,16 @@ public final class ClassDocUtils
 		return result;
 	}
 
+
+	/**
+	 * Add into a collection of 'known classes' the specified class, its superclass and implemented interfaces, and the type of its
+	 * public fields.
+	 *
+	 * @param knownClasses
+	 *            the collection to update.
+	 * @param toScan
+	 *            the class to scan.
+	 */
 	public static void updateKnowClasses(Collection<String> knownClasses, ClassDoc toScan)
 	{
 		final Predicate<String> _isNotRegistered = i -> !knownClasses.contains(i);
@@ -53,6 +62,16 @@ public final class ClassDocUtils
 		FieldDocUtils.getPublicFields(toScan).stream().map(FieldDoc::type).forEach(_processType);
 	}
 
+
+	/**
+	 * Add into a collection of 'known classes' the specified type, and the type of its
+	 * parameters if any.
+	 *
+	 * @param knownClasses
+	 *            the collection to update.
+	 * @param toScan
+	 *            the type to scan.
+	 */
 	private static void updateKnownClasses(Collection<String> knownClasses, Type toScan)
 	{
 		ParameterizedType _pt = toScan.asParameterizedType();
