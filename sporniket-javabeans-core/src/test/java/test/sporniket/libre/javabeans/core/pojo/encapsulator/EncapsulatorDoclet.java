@@ -21,6 +21,7 @@ import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.LanguageVersion;
 import com.sun.javadoc.RootDoc;
+import com.sun.javadoc.TypeVariable;
 
 public class EncapsulatorDoclet
 {
@@ -89,15 +90,44 @@ public class EncapsulatorDoclet
 		outputJavabean__classEnd(rawClass, out, translations, shortables);
 	}
 
-	private void outputJavabean__classBegin(ClassDoc toScan, PrintStream _out, Map<String, String> _translations,
-			Set<String> _shortables)
+	private void outputJavabean__classBegin(ClassDoc toScan, PrintStream _out, Map<String, String> translations,
+			Set<String> shortables)
 	{
 		final StringBuilder _classDecl = new StringBuilder("public class ");
-		_classDecl.append(ClassUtils.computeOutputClassname(toScan.name(), _translations, _shortables));
+		_classDecl.append(ClassDocUtils.computeOutputType(toScan, translations, shortables));
+		String _classParam = "" ;
+		String _pojoParam = "" ;
+		TypeVariable[] _typeParameters = toScan.typeParameters();
+		if(_typeParameters.length > 0)
+		{
+			StringBuilder _classParamBuilder = new StringBuilder() ;
+			StringBuilder _pojoParamBuilder = new StringBuilder() ;
+			for(int _i = 0 ; _i < _typeParameters.length ; _i++)
+			{
+				if (0 == _i)
+				{
+					_classParamBuilder.append("<");
+					_pojoParamBuilder.append("<") ;
+				}
+				else
+				{
+					_classParamBuilder.append(", ");
+					_pojoParamBuilder.append(", ") ;
+				}
+				TypeVariable _toOutput = _typeParameters[_i];
+				ClassDocUtils.outputType__TypeVariable(_classParamBuilder, _toOutput, translations, shortables);
+				_pojoParamBuilder.append(_toOutput.simpleTypeName());
+			}
+			_classParam = _classParamBuilder.append(">").toString();
+			_pojoParam = _pojoParamBuilder.append(">").toString() ;
+
+		}
+		_classDecl.append(_classParam);
+		
 		final String _supername = toScan.superclass().qualifiedName();
 		if (!Object.class.getName().equals(_supername))
 		{
-			_classDecl.append(" extends ").append(ClassUtils.computeOutputClassname(_supername, _translations, _shortables));
+			_classDecl.append(" extends ").append(ClassUtils.computeOutputClassname(_supername, translations, shortables));
 		}
 		final ClassDoc[] _interfaces = toScan.interfaces();
 		if (_interfaces.length > 0)
@@ -105,7 +135,7 @@ public class EncapsulatorDoclet
 			for (int _i = 0; _i < _interfaces.length; _i++)
 			{
 				_classDecl.append((0 == _i) ? " implements " : ", ")
-						.append(ClassUtils.computeOutputClassname(_interfaces[_i].name(), _translations, _shortables));
+						.append(ClassUtils.computeOutputClassname(_interfaces[_i].name(), translations, shortables));
 			}
 		}
 
@@ -114,7 +144,7 @@ public class EncapsulatorDoclet
 		_out.println();
 
 		final String _simpleName = ClassUtils.getSimpleName(toScan.name());
-		_out.printf("    private final %s pojo = new %s() ;\n\n", _simpleName, _simpleName);
+		_out.printf("    private final %s pojo%s = new %s%s() ;\n\n", _simpleName, _pojoParam, _simpleName, (_pojoParam.length() > 0)?"<>":"");
 
 		_out.println();
 	}
