@@ -1,10 +1,9 @@
 package com.sporniket.libre.javabeans.core.pojo.encapsulator;
 
-import static com.sporniket.libre.javabeans.core.pojo.encapsulator.ClassUtils.*;
+import static com.sporniket.libre.javabeans.core.pojo.encapsulator.ClassUtils.computeOutputClassname;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -19,7 +18,7 @@ import com.sun.javadoc.WildcardType;
 
 /**
  * Utility class for {@link ClassDoc}
- * 
+ *
  * @author dsporn
  *
  */
@@ -27,100 +26,209 @@ public final class ClassDocUtils
 {
 	public static String computeOutputType(Type toOutput, Map<String, String> translations, Set<String> shortables)
 	{
-		StringBuilder _buffer = new StringBuilder();
+		final StringBuilder _buffer = new StringBuilder();
 		outputType(_buffer, toOutput, translations, shortables);
-		return _buffer.toString() ;
+		return _buffer.toString();
 	}
-	
-	//FIXME move to ClassUtils
-	public static Map<String, String> getTranslationMapWhenPojosAreSuffixed(Set<String> registry, Set<String> sourcePackages,
-			String pojoSuffix)
+
+	/**
+	 * Output the class name for the class declaration, e.g.
+	 * "<code>public class X&lt;A, B extends Foo, C super Bar, ...&gt; [extends... implements...]</code>".
+	 *
+	 * @param into
+	 *            the buffer into which to output the class name.
+	 * @param toOutput
+	 *            the class to output.
+	 * @param translations
+	 *            translation map.
+	 * @param shortables
+	 *            set of class that can be output as a simple name instead of fully qualified.
+	 */
+	public static void outputClassName__classDeclaration(StringBuilder into, ClassDoc toOutput, Map<String, String> translations,
+			Set<String> shortables)
 	{
-		final Map<String, String> result = new HashMap<>(registry.size());
-		final Predicate<String> _isPojo = c -> sourcePackages.contains(getPackageName(c))
-				&& !pojoSuffix.equals(getSimpleName(c)) && c.endsWith(pojoSuffix);
-
-		registry.stream().filter(_isPojo).forEach(c -> {
-			result.put(c, ClassUtils.removeSuffixFromClassName(c, pojoSuffix));
-		});
-
-		return result;
+		into.append(ClassUtils.computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
+		final TypeVariable[] _typeArguments = toOutput.typeParameters();
+		for (int _i = 0; _i < _typeArguments.length; _i++)
+		{
+			into.append((0 == _i) ? "<" : ", ");
+			outputType__TypeVariable(into, _typeArguments[_i], translations, shortables);
+		}
+		into.append(">");
 	}
 	
+	/**
+	 * Output the class name for the pojo type instanciation, e.g.
+	 * "<code>... pojo = new SampleBasicBeanRaw<>() ;</code>".
+	 *
+	 * @param into
+	 *            the buffer into which to output the class name.
+	 * @param toOutput
+	 *            the class to output.
+	 * @param translations
+	 *            translation map.
+	 * @param shortables
+	 *            set of class that can be output as a simple name instead of fully qualified.
+	 */
+	public static void outputClassName__pojoInstanciation(StringBuilder into, ClassDoc toOutput, Map<String, String> translations,
+			Set<String> shortables) {
+		into.append(ClassUtils.computeOutputClassname(toOutput.qualifiedTypeName(), shortables));
+		final TypeVariable[] _typeArguments = toOutput.typeParameters();
+		if(_typeArguments.length > 0)
+		{
+			into.append("<>");
+		}
+	}
+	
+	/**
+	 * Output the class name for the pojo type declaration, e.g.
+	 * "<code>private final SampleBasicBeanRaw<T, R> pojo = ...</code>".
+	 *
+	 * @param into
+	 *            the buffer into which to output the class name.
+	 * @param toOutput
+	 *            the class to output.
+	 * @param translations
+	 *            translation map.
+	 * @param shortables
+	 *            set of class that can be output as a simple name instead of fully qualified.
+	 */
+	public static void outputClassName__pojoType(StringBuilder into, ClassDoc toOutput, Map<String, String> translations,
+			Set<String> shortables) {
+		into.append(ClassUtils.computeOutputClassname(toOutput.qualifiedTypeName(), shortables));
+		final TypeVariable[] _typeArguments = toOutput.typeParameters();
+		if(_typeArguments.length > 0)
+		{
+			for(int _i = 0 ; _i < _typeArguments.length ; _i++)
+			{
+				into.append((0 == _i) ? "<" : ", ") ;
+				into.append(_typeArguments[_i].simpleTypeName());
+			}
+			into.append(">");
+		}
+	}
+
+	/**
+	 * Output the type name.
+	 *
+	 * @param into
+	 *            the buffer into which to output the class name.
+	 * @param toOutput
+	 *            the class to output.
+	 * @param translations
+	 *            translation map.
+	 * @param shortables
+	 *            set of class that can be output as a simple name instead of fully qualified.
+	 */
 	private static void outputType(StringBuilder into, Type toOutput, Map<String, String> translations, Set<String> shortables)
 	{
-		//either TypeVariable, WildcardType or ParametrizedType
-		
-		//Parametrized type
-		ParameterizedType _pType = toOutput.asParameterizedType() ;
-		if(null != _pType)
+
+		// Either Parametrized type ...
+		final ParameterizedType _pType = toOutput.asParameterizedType();
+		if (null != _pType)
 		{
 			outputType__ParameterizedType(into, _pType, translations, shortables);
-			return ; //done
+			return; // done
 		}
-		
-		//Wildcard Type
-		WildcardType _wType = toOutput.asWildcardType();
+
+		// ... or Wildcard type ...
+		final WildcardType _wType = toOutput.asWildcardType();
 		if (null != _wType)
 		{
 			outputType__WildcardType(into, _wType, translations, shortables);
-			return ; //done
+			return; // done
 		}
-		
-		TypeVariable _tVar = toOutput.asTypeVariable();
+
+		// ... or type variable ...
+		final TypeVariable _tVar = toOutput.asTypeVariable();
 		if (null != _tVar)
 		{
 			outputType__TypeVariable(into, _tVar, translations, shortables);
-			return ; //done
+			return; // done
 		}
-		
-		// else normal type.
+
+		// ... or normal type.
 		into.append(ClassUtils.computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
 	}
 
+	/**
+	 * Output the type name when the type is a parametrized type.
+	 *
+	 * @param into
+	 *            the buffer into which to output the class name.
+	 * @param toOutput
+	 *            the class to output.
+	 * @param translations
+	 *            translation map.
+	 * @param shortables
+	 *            set of class that can be output as a simple name instead of fully qualified.
+	 */
 	private static void outputType__ParameterizedType(StringBuilder into, ParameterizedType toOutput,
 			Map<String, String> translations, Set<String> shortables)
 	{
-		into.append(computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables)) ;
-		Type[] _typeArguments = toOutput.typeArguments();
-		for(int _i = 0 ; _i < _typeArguments.length ; _i++)
+		into.append(computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
+		final Type[] _typeArguments = toOutput.typeArguments();
+		for (int _i = 0; _i < _typeArguments.length; _i++)
 		{
-			into.append((0 == _i)?"<":",");
+			into.append((0 == _i) ? "<" : ", ");
 			outputType(into, _typeArguments[_i], translations, shortables);
 		}
-		into.append(">") ;
+		into.append(">");
 	}
 
-	public static void outputType__TypeVariable(StringBuilder into, TypeVariable toOutput, Map<String, String> translations,
+	/**
+	 * Output the type name when the type is a type variable.
+	 *
+	 * @param into
+	 *            the buffer into which to output the class name.
+	 * @param toOutput
+	 *            the class to output.
+	 * @param translations
+	 *            translation map.
+	 * @param shortables
+	 *            set of class that can be output as a simple name instead of fully qualified.
+	 */
+	private static void outputType__TypeVariable(StringBuilder into, TypeVariable toOutput, Map<String, String> translations,
 			Set<String> shortables)
 	{
 		into.append(toOutput.typeName());
-		Type[] _bounds = toOutput.bounds();
+		final Type[] _bounds = toOutput.bounds();
 		if (_bounds.length > 0)
 		{
-			into.append(" extends ") ;
+			into.append(" extends ");
 			outputType(into, _bounds[0], translations, shortables);
 		}
 	}
 
+	/**
+	 * Output the type name when the type is a wildcard type.
+	 *
+	 * @param into
+	 *            the buffer into which to output the class name.
+	 * @param toOutput
+	 *            the class to output.
+	 * @param translations
+	 *            translation map.
+	 * @param shortables
+	 *            set of class that can be output as a simple name instead of fully qualified.
+	 */
 	private static void outputType__WildcardType(StringBuilder into, WildcardType toOutput, Map<String, String> translations,
 			Set<String> shortables)
 	{
-		into.append("?") ;
-		Type[] _extendsBounds = toOutput.extendsBounds();
+		into.append("?");
+		final Type[] _extendsBounds = toOutput.extendsBounds();
 		if (_extendsBounds.length > 0)
 		{
-			into.append(" extends ") ;
+			into.append(" extends ");
 			outputType(into, _extendsBounds[0], translations, shortables);
 		}
-		Type[] _superBounds = toOutput.superBounds();
+		final Type[] _superBounds = toOutput.superBounds();
 		if (_superBounds.length > 0)
 		{
-			into.append(" super ") ;
+			into.append(" super ");
 			outputType(into, _superBounds[0], translations, shortables);
 		}
 	}
-
 
 	/**
 	 * Add into a collection of 'known classes' the specified class, its superclass and implemented interfaces, and the type of its
@@ -145,10 +253,8 @@ public final class ClassDocUtils
 		FieldDocUtils.getPublicFields(toScan).stream().map(FieldDoc::type).forEach(_processType);
 	}
 
-
 	/**
-	 * Add into a collection of 'known classes' the specified type, and the type of its
-	 * parameters if any.
+	 * Add into a collection of 'known classes' the specified type, and the type of its parameters if any.
 	 *
 	 * @param knownClasses
 	 *            the collection to update.
@@ -157,12 +263,17 @@ public final class ClassDocUtils
 	 */
 	private static void updateKnownClasses(Collection<String> knownClasses, Type toScan)
 	{
-		ParameterizedType _pt = toScan.asParameterizedType();
+		if(null != toScan.asTypeVariable())
+		{
+			//skip type variables
+			return ;
+		}
+		final ParameterizedType _pt = toScan.asParameterizedType();
 		if (null != _pt)
 		{
 			Arrays.asList(_pt.typeArguments()).forEach(t -> updateKnownClasses(knownClasses, t));
 		}
-		String _qualifiedTypeName = toScan.qualifiedTypeName();
+		final String _qualifiedTypeName = toScan.qualifiedTypeName();
 		if (!knownClasses.contains(_qualifiedTypeName))
 		{
 			knownClasses.add(_qualifiedTypeName);

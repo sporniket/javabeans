@@ -1,5 +1,9 @@
 package test.sporniket.libre.javabeans.core.pojo.encapsulator;
 
+import static com.sporniket.libre.javabeans.core.pojo.encapsulator.ClassDocUtils.*;
+import static com.sporniket.libre.javabeans.core.pojo.encapsulator.ClassUtils.*;
+import static com.sporniket.libre.javabeans.core.pojo.encapsulator.FieldDocUtils.getPublicDeclaredFields;
+
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,21 +17,18 @@ import java.util.stream.Collectors;
 import javax.tools.DocumentationTool;
 import javax.tools.ToolProvider;
 
-import com.sporniket.libre.javabeans.core.pojo.encapsulator.ClassDocUtils;
-import com.sporniket.libre.javabeans.core.pojo.encapsulator.ClassUtils;
-import com.sporniket.libre.javabeans.core.pojo.encapsulator.FieldDocUtils;
 import com.sporniket.libre.javabeans.core.pojo.encapsulator.FieldUtils;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.LanguageVersion;
 import com.sun.javadoc.RootDoc;
-import com.sun.javadoc.TypeVariable;
 
 public class EncapsulatorDoclet
 {
 
 	/**
 	 * Supports generics and annotations.
+	 * 
 	 * @return {@link LanguageVersion#JAVA_1_5}
 	 */
 	public static LanguageVersion languageVersion()
@@ -83,7 +84,7 @@ public class EncapsulatorDoclet
 	{
 		outputJavabean__classBegin(rawClass, out, translations, shortables);
 
-		FieldDocUtils.getPublicDeclaredFields(rawClass).forEach(_field -> {
+		getPublicDeclaredFields(rawClass).forEach(_field -> {
 			outputJavabean__property(_field, out, translations, shortables);
 		});
 
@@ -94,40 +95,12 @@ public class EncapsulatorDoclet
 			Set<String> shortables)
 	{
 		final StringBuilder _classDecl = new StringBuilder("public class ");
-		_classDecl.append(ClassDocUtils.computeOutputType(toScan, translations, shortables));
-		String _classParam = "" ;
-		String _pojoParam = "" ;
-		TypeVariable[] _typeParameters = toScan.typeParameters();
-		if(_typeParameters.length > 0)
-		{
-			StringBuilder _classParamBuilder = new StringBuilder() ;
-			StringBuilder _pojoParamBuilder = new StringBuilder() ;
-			for(int _i = 0 ; _i < _typeParameters.length ; _i++)
-			{
-				if (0 == _i)
-				{
-					_classParamBuilder.append("<");
-					_pojoParamBuilder.append("<") ;
-				}
-				else
-				{
-					_classParamBuilder.append(", ");
-					_pojoParamBuilder.append(", ") ;
-				}
-				TypeVariable _toOutput = _typeParameters[_i];
-				ClassDocUtils.outputType__TypeVariable(_classParamBuilder, _toOutput, translations, shortables);
-				_pojoParamBuilder.append(_toOutput.simpleTypeName());
-			}
-			_classParam = _classParamBuilder.append(">").toString();
-			_pojoParam = _pojoParamBuilder.append(">").toString() ;
+		outputClassName__classDeclaration(_classDecl, toScan, translations, shortables);
 
-		}
-		_classDecl.append(_classParam);
-		
 		final String _supername = toScan.superclass().qualifiedName();
 		if (!Object.class.getName().equals(_supername))
 		{
-			_classDecl.append(" extends ").append(ClassUtils.computeOutputClassname(_supername, translations, shortables));
+			_classDecl.append(" extends ").append(computeOutputClassname(_supername, translations, shortables));
 		}
 		final ClassDoc[] _interfaces = toScan.interfaces();
 		if (_interfaces.length > 0)
@@ -135,16 +108,20 @@ public class EncapsulatorDoclet
 			for (int _i = 0; _i < _interfaces.length; _i++)
 			{
 				_classDecl.append((0 == _i) ? " implements " : ", ")
-						.append(ClassUtils.computeOutputClassname(_interfaces[_i].name(), translations, shortables));
+						.append(computeOutputClassname(_interfaces[_i].name(), translations, shortables));
 			}
 		}
 
-		_out.printf("%s\n{\n", _classDecl.toString());
+		_out.printf(_classDecl.append("\n{\n").toString());
 
 		_out.println();
 
-		final String _simpleName = ClassUtils.getSimpleName(toScan.name());
-		_out.printf("    private final %s pojo%s = new %s%s() ;\n\n", _simpleName, _pojoParam, _simpleName, (_pojoParam.length() > 0)?"<>":"");
+		StringBuilder _pojoDecl = new StringBuilder("    private final ");
+		outputClassName__pojoType(_pojoDecl, toScan, translations, shortables);
+		_pojoDecl.append(" pojo = new ");
+		outputClassName__pojoInstanciation(_pojoDecl, toScan, translations, shortables);
+
+		_out.printf(_pojoDecl.append("() ;\n\n").toString());
 
 		_out.println();
 	}
@@ -159,7 +136,7 @@ public class EncapsulatorDoclet
 			final Set<String> shortables)
 	{
 		final String _accessorSuffix = FieldUtils.computeFieldAccessorSuffix(field.name());
-		String _type = ClassDocUtils.computeOutputType(field.type(), translations, shortables);
+		String _type = computeOutputType(field.type(), translations, shortables);
 
 		// getter
 		out.printf("    public %s get%s() {return pojo.%s ;}\n", _type, _accessorSuffix, field.name());
@@ -177,19 +154,17 @@ public class EncapsulatorDoclet
 		_out.println();
 
 		final Set<String> _knownClasses = new TreeSet<>();
-		ClassDocUtils.updateKnowClasses(_knownClasses, toScan);
+		updateKnowClasses(_knownClasses, toScan);
 
-		final Predicate<? super String> _isNotJavaLangType = c -> !Object.class.getPackage().getName()
-				.equals(ClassUtils.getPackageName(c));
-		final Predicate<? super String> _isNotInSamePackage = c -> !toScan.containingPackage().name()
-				.equals(ClassUtils.getPackageName(c));
+		final Predicate<? super String> _isNotJavaLangType = c -> !Object.class.getPackage().getName().equals(getPackageName(c));
+		final Predicate<? super String> _isNotInSamePackage = c -> !toScan.containingPackage().name().equals(getPackageName(c));
 
 		_knownClasses.stream().filter(_isNotJavaLangType).filter(_isNotInSamePackage).collect(Collectors.toCollection(TreeSet::new))
 				.forEach(c -> _out.printf("import %s;\n", c));
 
 		_out.println();
 
-		final Map<String, String> _translation = ClassDocUtils.getTranslationMapWhenPojosAreSuffixed(_knownClasses,
+		final Map<String, String> _translation = getTranslationMapWhenPojosAreSuffixed(_knownClasses,
 				Arrays.asList(toScan.containingPackage().name()).stream().collect(Collectors.toCollection(TreeSet::new)), "Raw");
 		if (_translation.isEmpty())
 		{
@@ -204,8 +179,8 @@ public class EncapsulatorDoclet
 		_out.println();
 
 		final Map<String, String> _shortNameMapping = new HashMap<>(_knownClasses.size() + _translation.size());
-		ClassUtils.updateShortClassnameMappingFromClassnames(_shortNameMapping, _knownClasses);
-		ClassUtils.updateShortClassnameMappingFromClassnames(_shortNameMapping, _translation.values());
+		updateShortClassnameMappingFromClassnames(_shortNameMapping, _knownClasses);
+		updateShortClassnameMappingFromClassnames(_shortNameMapping, _translation.values());
 
 		if (_shortNameMapping.isEmpty())
 		{
