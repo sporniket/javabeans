@@ -25,6 +25,33 @@ import com.sun.javadoc.RootDoc;
 
 public class EncapsulatorDoclet
 {
+	/**
+	 * Constant data and state globally accessible during the work of the doclet.
+	 * @author dsporn
+	 *
+	 */
+	public static class Session {
+		private final Map<String,String> myTranslations = new HashMap<>();
+
+		public Map<String, String> getTranslations()
+		{
+			return myTranslations;
+		}
+	}
+	
+	/**
+	 * Constant data and state globally accessible during the work of the doclet on a package.
+	 * @author dsporn
+	 *
+	 */
+	public static class SessionPackage {
+		private final Map<String, String> myShortNameMapping = new HashMap<>();
+
+		public Map<String, String> getShortNameMapping()
+		{
+			return myShortNameMapping;
+		}
+	}
 
 	/**
 	 * Supports generics and annotations.
@@ -116,14 +143,18 @@ public class EncapsulatorDoclet
 
 		_out.println();
 
+		outputJavabean__classBegin__pojoInstance(toScan, _out, translations, shortables);
+	}
+
+	private void outputJavabean__classBegin__pojoInstance(ClassDoc toScan, PrintStream _out, Map<String, String> translations,
+			Set<String> shortables)
+	{
 		StringBuilder _pojoDecl = new StringBuilder("    private final ");
 		outputClassName__pojoType(_pojoDecl, toScan, translations, shortables);
 		_pojoDecl.append(" pojo = new ");
 		outputClassName__pojoInstanciation(_pojoDecl, toScan, translations, shortables);
 
 		_out.printf(_pojoDecl.append("() ;\n\n").toString());
-
-		_out.println();
 	}
 
 	private void outputJavabean__classEnd(ClassDoc toScan, PrintStream _out, Map<String, String> _translation,
