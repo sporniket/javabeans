@@ -32,9 +32,12 @@
 	<url>${url.base}/blob/master/${project.artifactId}</url>
 
 	<modules>
+		<module>../sporniket-javabeans-doclet</module>
+<!--
 		<module>../sporniket-javabeans-core</module>
 		<module>../sporniket-javabeans-cli</module>
 		<module>../sporniket-javabeans-maven</module>
+-->
 	</modules>
 
 	<dependencyManagement>
