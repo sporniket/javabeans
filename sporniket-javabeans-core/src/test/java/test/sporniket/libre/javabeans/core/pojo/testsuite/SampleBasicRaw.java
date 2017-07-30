@@ -4,12 +4,12 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 
+ *
  * @author dsporn
  * @since foo
  * @version bar
  */
-class SampleBasicBeanRaw
+class SampleBasicRaw
 {
 	/**
 	 * Date of creation.
