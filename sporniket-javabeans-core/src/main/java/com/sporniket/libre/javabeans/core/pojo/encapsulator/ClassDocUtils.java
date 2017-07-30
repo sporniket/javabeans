@@ -58,6 +58,57 @@ public final class ClassDocUtils
 	}
 	
 	/**
+	 * Output the class name for the bean type instanciation, e.g.
+	 * "<code>... pojo = new SampleBasicBean<>() ;</code>".
+	 *
+	 * @param into
+	 *            the buffer into which to output the class name.
+	 * @param toOutput
+	 *            the class to output.
+	 * @param translations
+	 *            translation map.
+	 * @param shortables
+	 *            set of class that can be output as a simple name instead of fully qualified.
+	 */
+	public static void outputClassName__beanInstanciation(StringBuilder into, ClassDoc toOutput, Map<String, String> translations,
+			Set<String> shortables) {
+		into.append(ClassUtils.computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
+		final TypeVariable[] _typeArguments = toOutput.typeParameters();
+		if(_typeArguments.length > 0)
+		{
+			into.append("<>");
+		}
+	}
+	
+	/**
+	 * Output the class name for the bean type declaration, e.g.
+	 * "<code>private final SampleBasicBean<T, R> bean = ...</code>".
+	 *
+	 * @param into
+	 *            the buffer into which to output the class name.
+	 * @param toOutput
+	 *            the class to output.
+	 * @param translations
+	 *            translation map.
+	 * @param shortables
+	 *            set of class that can be output as a simple name instead of fully qualified.
+	 */
+	public static void outputClassName__beanType(StringBuilder into, ClassDoc toOutput, Map<String, String> translations,
+			Set<String> shortables) {
+		into.append(ClassUtils.computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
+		final TypeVariable[] _typeArguments = toOutput.typeParameters();
+		if(_typeArguments.length > 0)
+		{
+			for(int _i = 0 ; _i < _typeArguments.length ; _i++)
+			{
+				into.append((0 == _i) ? "<" : ", ") ;
+				into.append(_typeArguments[_i].simpleTypeName());
+			}
+			into.append(">");
+		}
+	}
+	
+	/**
 	 * Output the class name for the pojo type instanciation, e.g.
 	 * "<code>... pojo = new SampleBasicBeanRaw<>() ;</code>".
 	 *

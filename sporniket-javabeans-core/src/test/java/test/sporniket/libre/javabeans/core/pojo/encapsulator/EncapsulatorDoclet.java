@@ -2,7 +2,7 @@ package test.sporniket.libre.javabeans.core.pojo.encapsulator;
 
 import static com.sporniket.libre.javabeans.core.pojo.encapsulator.ClassDocUtils.*;
 import static com.sporniket.libre.javabeans.core.pojo.encapsulator.ClassUtils.*;
-import static com.sporniket.libre.javabeans.core.pojo.encapsulator.FieldDocUtils.getAccessibleDeclaredFields;
+import static com.sporniket.libre.javabeans.core.pojo.encapsulator.FieldDocUtils.*;
 
 import java.io.PrintStream;
 import java.util.Arrays;
@@ -27,24 +27,28 @@ public class EncapsulatorDoclet
 {
 	/**
 	 * Constant data and state globally accessible during the work of the doclet.
+	 *
 	 * @author dsporn
 	 *
 	 */
-	public static class Session {
-		private final Map<String,String> myTranslations = new HashMap<>();
+	public static class Session
+	{
+		private final Map<String, String> myTranslations = new HashMap<>();
 
 		public Map<String, String> getTranslations()
 		{
 			return myTranslations;
 		}
 	}
-	
+
 	/**
 	 * Constant data and state globally accessible during the work of the doclet on a package.
+	 *
 	 * @author dsporn
 	 *
 	 */
-	public static class SessionPackage {
+	public static class SessionPackage
+	{
 		private final Map<String, String> myShortNameMapping = new HashMap<>();
 
 		public Map<String, String> getShortNameMapping()
@@ -55,7 +59,7 @@ public class EncapsulatorDoclet
 
 	/**
 	 * Supports generics and annotations.
-	 * 
+	 *
 	 * @return {@link LanguageVersion#JAVA_1_5}
 	 */
 	public static LanguageVersion languageVersion()
@@ -76,7 +80,7 @@ public class EncapsulatorDoclet
 
 		};
 
-		DocumentationTool javadoc = ToolProvider.getSystemDocumentationTool();
+		final DocumentationTool javadoc = ToolProvider.getSystemDocumentationTool();
 		javadoc.run(System.in, System.out, System.err, _args);
 	}
 
@@ -118,6 +122,52 @@ public class EncapsulatorDoclet
 		outputJavabean__classEnd(rawClass, out, translations, shortables);
 	}
 
+	private void outputJavabean__builder(ClassDoc toScan, PrintStream _out, Map<String, String> translations,
+			Set<String> shortables)
+	{
+		// TODO Auto-generated method stub
+		_out.println("    public static class Builder");
+		_out.println("    {");
+
+		outputJavabean__builder__beanInstance(toScan, _out, translations, shortables);
+
+		getAccessibleFields(toScan).forEach(f -> outputJavabean__builder__fluentSetter(f, _out, translations, shortables));
+
+		_out.println("    }");
+	}
+
+	private void outputJavabean__builder__beanInstance(ClassDoc toScan, PrintStream _out, Map<String, String> translations,
+			Set<String> shortables)
+	{
+		// bean instance
+		final StringBuilder _pojoDecl = new StringBuilder("        private final ");
+		outputClassName__beanType(_pojoDecl, toScan, translations, shortables);
+		_pojoDecl.append(" bean = new ");
+		outputClassName__beanInstanciation(_pojoDecl, toScan, translations, shortables);
+		_pojoDecl.append("() ;\n\n");
+
+		// bean getter
+		_pojoDecl.append("        public ");
+		outputClassName__beanType(_pojoDecl, toScan, translations, shortables);
+		_pojoDecl.append(" done() {return bean ;}\n");
+
+		// done
+		_out.println(_pojoDecl.toString());
+	}
+
+	private void outputJavabean__builder__fluentSetter(final FieldDoc field, PrintStream out,
+			final Map<String, String> translations, final Set<String> shortables)
+	{
+		final String _accessorSuffix = FieldUtils.computeFieldAccessorSuffix(field.name());
+		final String _type = computeOutputType(field.type(), translations, shortables);
+
+		// setter
+		out.printf("        public Builder with%s(%s value) {bean.set%s(value); return this;}\n", _accessorSuffix, _type,
+				_accessorSuffix);
+
+		out.println();
+	}
+
 	private void outputJavabean__classBegin(ClassDoc toScan, PrintStream _out, Map<String, String> translations,
 			Set<String> shortables)
 	{
@@ -143,13 +193,26 @@ public class EncapsulatorDoclet
 
 		_out.println();
 
+		outputJavabean__builder(toScan, _out, translations, shortables);
+
+		_out.println();
+
+		StringBuilder _builderUtility = new StringBuilder("    public static ");
+		outputClassName__beanType(_builderUtility, toScan, translations, shortables);
+		_builderUtility.append(".Builder build() {return new ");
+		outputClassName__beanType(_builderUtility, toScan, translations, shortables);
+		_builderUtility.append(".Builder() ;}");
+		_out.println(_builderUtility.toString());
+
+		_out.println();
+
 		outputJavabean__classBegin__pojoInstance(toScan, _out, translations, shortables);
 	}
 
 	private void outputJavabean__classBegin__pojoInstance(ClassDoc toScan, PrintStream _out, Map<String, String> translations,
 			Set<String> shortables)
 	{
-		StringBuilder _pojoDecl = new StringBuilder("    private final ");
+		final StringBuilder _pojoDecl = new StringBuilder("    private final ");
 		outputClassName__pojoType(_pojoDecl, toScan, translations, shortables);
 		_pojoDecl.append(" pojo = new ");
 		outputClassName__pojoInstanciation(_pojoDecl, toScan, translations, shortables);
@@ -167,7 +230,7 @@ public class EncapsulatorDoclet
 			final Set<String> shortables)
 	{
 		final String _accessorSuffix = FieldUtils.computeFieldAccessorSuffix(field.name());
-		String _type = computeOutputType(field.type(), translations, shortables);
+		final String _type = computeOutputType(field.type(), translations, shortables);
 
 		// getter
 		out.printf("    public %s get%s() {return pojo.%s ;}\n", _type, _accessorSuffix, field.name());
