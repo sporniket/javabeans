@@ -1,8 +1,8 @@
 package test.sporniket.libre.javabeans.core.pojo.encapsulator;
 
-import static com.sporniket.libre.javabeans.core.pojo.encapsulator.ClassDocUtils.*;
-import static com.sporniket.libre.javabeans.core.pojo.encapsulator.ClassUtils.*;
-import static com.sporniket.libre.javabeans.core.pojo.encapsulator.FieldDocUtils.*;
+import static com.sporniket.libre.javabeans.core.pojo.encapsulator.UtilsClassDoc.*;
+import static com.sporniket.libre.javabeans.core.pojo.encapsulator.UtilsClassname.*;
+import static com.sporniket.libre.javabeans.core.pojo.encapsulator.UtilsFieldDoc.*;
 
 import java.io.PrintStream;
 import java.util.Arrays;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import javax.tools.DocumentationTool;
 import javax.tools.ToolProvider;
 
-import com.sporniket.libre.javabeans.core.pojo.encapsulator.FieldUtils;
+import com.sporniket.libre.javabeans.core.pojo.encapsulator.UtilsFieldname;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.LanguageVersion;
@@ -158,7 +158,7 @@ public class EncapsulatorDoclet
 	private void outputJavabean__builder__fluentSetter(final FieldDoc field, PrintStream out,
 			final Map<String, String> translations, final Set<String> shortables)
 	{
-		final String _accessorSuffix = FieldUtils.computeFieldAccessorSuffix(field.name());
+		final String _accessorSuffix = UtilsFieldname.computeFieldAccessorSuffix(field.name());
 		final String _type = computeOutputType(field.type(), translations, shortables);
 
 		// setter
@@ -229,7 +229,7 @@ public class EncapsulatorDoclet
 	private void outputJavabean__property(final FieldDoc field, PrintStream out, final Map<String, String> translations,
 			final Set<String> shortables)
 	{
-		final String _accessorSuffix = FieldUtils.computeFieldAccessorSuffix(field.name());
+		final String _accessorSuffix = UtilsFieldname.computeFieldAccessorSuffix(field.name());
 		final String _type = computeOutputType(field.type(), translations, shortables);
 
 		// getter

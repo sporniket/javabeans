@@ -15,7 +15,7 @@ import com.sun.javadoc.FieldDoc;
  * @author dsporn
  *
  */
-public final class FieldDocUtils
+public final class UtilsFieldDoc
 {
 	private static Predicate<FieldDoc> IS_ACCESSIBLE_FIELD = f -> f.isPublic() || f.isPackagePrivate();
 

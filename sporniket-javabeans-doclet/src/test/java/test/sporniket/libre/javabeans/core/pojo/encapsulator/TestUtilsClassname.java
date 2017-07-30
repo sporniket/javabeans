@@ -5,16 +5,16 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
-import com.sporniket.libre.javabeans.core.pojo.encapsulator.ClassUtils;
+import com.sporniket.libre.javabeans.core.pojo.encapsulator.UtilsClassname;
 
-public class TestClassUtils
+public class TestUtilsClassname
 {
 	@Test
 	public void test__getPackageName()
 	{
 		// prepare
 		// execute
-		String _toTest = ClassUtils.getPackageName(Object.class.getName());
+		String _toTest = UtilsClassname.getPackageName(Object.class.getName());
 		// verify
 		assertThat(_toTest, is(Object.class.getPackage().getName()));
 	}
@@ -23,7 +23,7 @@ public class TestClassUtils
 	{
 		// prepare
 		// execute
-		String _toTest = ClassUtils.getSimpleName(Object.class.getName());
+		String _toTest = UtilsClassname.getSimpleName(Object.class.getName());
 		// verify
 		assertThat(_toTest, is(Object.class.getSimpleName()));
 	}

@@ -1,6 +1,6 @@
 package com.sporniket.libre.javabeans.core.pojo.encapsulator;
 
-import static com.sporniket.libre.javabeans.core.pojo.encapsulator.ClassUtils.computeOutputClassname;
+import static com.sporniket.libre.javabeans.core.pojo.encapsulator.UtilsClassname.computeOutputClassname;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,7 +22,7 @@ import com.sun.javadoc.WildcardType;
  * @author dsporn
  *
  */
-public final class ClassDocUtils
+public final class UtilsClassDoc
 {
 	public static String computeOutputType(Type toOutput, Map<String, String> translations, Set<String> shortables)
 	{
@@ -47,7 +47,7 @@ public final class ClassDocUtils
 	public static void outputClassName__classDeclaration(StringBuilder into, ClassDoc toOutput, Map<String, String> translations,
 			Set<String> shortables)
 	{
-		into.append(ClassUtils.computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
+		into.append(UtilsClassname.computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
 		final TypeVariable[] _typeArguments = toOutput.typeParameters();
 		for (int _i = 0; _i < _typeArguments.length; _i++)
 		{
@@ -72,7 +72,7 @@ public final class ClassDocUtils
 	 */
 	public static void outputClassName__beanInstanciation(StringBuilder into, ClassDoc toOutput, Map<String, String> translations,
 			Set<String> shortables) {
-		into.append(ClassUtils.computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
+		into.append(UtilsClassname.computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
 		final TypeVariable[] _typeArguments = toOutput.typeParameters();
 		if(_typeArguments.length > 0)
 		{
@@ -95,7 +95,7 @@ public final class ClassDocUtils
 	 */
 	public static void outputClassName__beanType(StringBuilder into, ClassDoc toOutput, Map<String, String> translations,
 			Set<String> shortables) {
-		into.append(ClassUtils.computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
+		into.append(UtilsClassname.computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
 		final TypeVariable[] _typeArguments = toOutput.typeParameters();
 		if(_typeArguments.length > 0)
 		{
@@ -123,7 +123,7 @@ public final class ClassDocUtils
 	 */
 	public static void outputClassName__pojoInstanciation(StringBuilder into, ClassDoc toOutput, Map<String, String> translations,
 			Set<String> shortables) {
-		into.append(ClassUtils.computeOutputClassname(toOutput.qualifiedTypeName(), shortables));
+		into.append(UtilsClassname.computeOutputClassname(toOutput.qualifiedTypeName(), shortables));
 		final TypeVariable[] _typeArguments = toOutput.typeParameters();
 		if(_typeArguments.length > 0)
 		{
@@ -146,7 +146,7 @@ public final class ClassDocUtils
 	 */
 	public static void outputClassName__pojoType(StringBuilder into, ClassDoc toOutput, Map<String, String> translations,
 			Set<String> shortables) {
-		into.append(ClassUtils.computeOutputClassname(toOutput.qualifiedTypeName(), shortables));
+		into.append(UtilsClassname.computeOutputClassname(toOutput.qualifiedTypeName(), shortables));
 		final TypeVariable[] _typeArguments = toOutput.typeParameters();
 		if(_typeArguments.length > 0)
 		{
@@ -199,7 +199,7 @@ public final class ClassDocUtils
 		}
 
 		// ... or normal type.
-		into.append(ClassUtils.computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
+		into.append(UtilsClassname.computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
 	}
 
 	/**
@@ -301,7 +301,7 @@ public final class ClassDocUtils
 
 		Arrays.asList(toScan.interfaces()).stream().map(ClassDoc::qualifiedName).filter(_isNotRegistered)
 				.forEach(_registerKnownClass);
-		FieldDocUtils.getAccessibleFields(toScan).stream().map(FieldDoc::type).forEach(_processType);
+		UtilsFieldDoc.getAccessibleFields(toScan).stream().map(FieldDoc::type).forEach(_processType);
 	}
 
 	/**

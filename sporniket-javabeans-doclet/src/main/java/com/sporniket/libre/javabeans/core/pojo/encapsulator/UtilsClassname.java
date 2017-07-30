@@ -15,7 +15,7 @@ import java.util.function.Predicate;
  * @author dsporn
  *
  */
-public final class ClassUtils
+public final class UtilsClassname
 {
 	/**
 	 * Output the class name.

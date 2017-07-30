@@ -1,12 +1,12 @@
 package com.sporniket.libre.javabeans.core.pojo.encapsulator;
 
 /**
- * Utility class for Fieldnames.
+ * Utility class for Field names.
  *
  * @author dsporn
  *
  */
-public final class FieldUtils
+public final class UtilsFieldname
 {
 	/**
 	 * Capitalize the first letter of the field name.
