@@ -250,7 +250,7 @@ public final class ClassDocUtils
 
 		Arrays.asList(toScan.interfaces()).stream().map(ClassDoc::qualifiedName).filter(_isNotRegistered)
 				.forEach(_registerKnownClass);
-		FieldDocUtils.getPublicFields(toScan).stream().map(FieldDoc::type).forEach(_processType);
+		FieldDocUtils.getAccessibleFields(toScan).stream().map(FieldDoc::type).forEach(_processType);
 	}
 
 	/**

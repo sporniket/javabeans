@@ -37,7 +37,7 @@ public final class FieldDocUtils
 	 * @param toScan
 	 * @return
 	 */
-	public static List<FieldDoc> getPublicDeclaredFields(ClassDoc toScan)
+	public static List<FieldDoc> getAccessibleDeclaredFields(ClassDoc toScan)
 	{
 		return Arrays.asList(toScan.fields()).stream().filter(IS_ACCESSIBLE_FIELD).collect(Collectors.toList());
 	}
@@ -48,7 +48,7 @@ public final class FieldDocUtils
 	 * @param toScan
 	 * @return
 	 */
-	public static List<FieldDoc> getPublicFields(ClassDoc toScan)
+	public static List<FieldDoc> getAccessibleFields(ClassDoc toScan)
 	{
 		List<FieldDoc> _buffer = new ArrayList<>();
 		collectPublicFieldsInto(_buffer, toScan);

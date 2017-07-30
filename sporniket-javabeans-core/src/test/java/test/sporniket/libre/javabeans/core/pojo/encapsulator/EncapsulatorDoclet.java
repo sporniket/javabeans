@@ -2,7 +2,7 @@ package test.sporniket.libre.javabeans.core.pojo.encapsulator;
 
 import static com.sporniket.libre.javabeans.core.pojo.encapsulator.ClassDocUtils.*;
 import static com.sporniket.libre.javabeans.core.pojo.encapsulator.ClassUtils.*;
-import static com.sporniket.libre.javabeans.core.pojo.encapsulator.FieldDocUtils.getPublicDeclaredFields;
+import static com.sporniket.libre.javabeans.core.pojo.encapsulator.FieldDocUtils.getAccessibleDeclaredFields;
 
 import java.io.PrintStream;
 import java.util.Arrays;
@@ -111,7 +111,7 @@ public class EncapsulatorDoclet
 	{
 		outputJavabean__classBegin(rawClass, out, translations, shortables);
 
-		getPublicDeclaredFields(rawClass).forEach(_field -> {
+		getAccessibleDeclaredFields(rawClass).forEach(_field -> {
 			outputJavabean__property(_field, out, translations, shortables);
 		});
 
