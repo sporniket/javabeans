@@ -17,7 +17,7 @@ import com.sun.javadoc.FieldDoc;
  */
 public final class FieldDocUtils
 {
-	private static Predicate<FieldDoc> IS_PUBLIC_FIELD = f -> f.isPublic();
+	private static Predicate<FieldDoc> IS_ACCESSIBLE_FIELD = f -> f.isPublic() || f.isPackagePrivate();
 
 	/**
 	 * Capitalize the first letter of the field name.
@@ -39,7 +39,7 @@ public final class FieldDocUtils
 	 */
 	public static List<FieldDoc> getPublicDeclaredFields(ClassDoc toScan)
 	{
-		return Arrays.asList(toScan.fields()).stream().filter(IS_PUBLIC_FIELD).collect(Collectors.toList());
+		return Arrays.asList(toScan.fields()).stream().filter(IS_ACCESSIBLE_FIELD).collect(Collectors.toList());
 	}
 
 	/**
@@ -59,7 +59,7 @@ public final class FieldDocUtils
 	{
 		if(!Object.class.getName().equals(toScan.qualifiedName()))
 		{
-			buffer.addAll(Arrays.asList(toScan.fields()).stream().filter(IS_PUBLIC_FIELD).collect(Collectors.toList())) ;
+			buffer.addAll(Arrays.asList(toScan.fields()).stream().filter(IS_ACCESSIBLE_FIELD).collect(Collectors.toList())) ;
 			collectPublicFieldsInto(buffer, toScan.superclass());
 		}
 	}

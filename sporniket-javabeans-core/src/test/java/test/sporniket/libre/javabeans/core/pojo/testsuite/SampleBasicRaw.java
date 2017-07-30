@@ -16,6 +16,6 @@ class SampleBasicRaw
 	 */
 	@Deprecated
 	public Date date ;
-	public List<String> names ;
+	List<String> names ;
 	private String ignored ;
 }

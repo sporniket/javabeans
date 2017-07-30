@@ -4,5 +4,5 @@ import java.util.Map;
 
 public class SampleGenericsRaw<T, R extends Number> extends SampleBasicRaw
 {
-	public Map<T, R> registry ;
+	Map<T, R> registry ;
 }
