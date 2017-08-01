@@ -1,6 +1,6 @@
-package com.sporniket.libre.javabeans.core.pojo.encapsulator;
+package com.sporniket.libre.javabeans.doclet.encapsulator;
 
-import static com.sporniket.libre.javabeans.core.pojo.encapsulator.UtilsClassname.computeOutputClassname;
+import static com.sporniket.libre.javabeans.doclet.encapsulator.UtilsClassname.computeOutputClassname;
 
 import java.util.Arrays;
 import java.util.Collection;

@@ -1,8 +1,8 @@
 package test.sporniket.libre.javabeans.core.pojo.encapsulator;
 
-import static com.sporniket.libre.javabeans.core.pojo.encapsulator.UtilsClassDoc.*;
-import static com.sporniket.libre.javabeans.core.pojo.encapsulator.UtilsClassname.*;
-import static com.sporniket.libre.javabeans.core.pojo.encapsulator.UtilsFieldDoc.*;
+import static com.sporniket.libre.javabeans.doclet.encapsulator.UtilsClassDoc.*;
+import static com.sporniket.libre.javabeans.doclet.encapsulator.UtilsClassname.*;
+import static com.sporniket.libre.javabeans.doclet.encapsulator.UtilsFieldDoc.*;
 
 import java.io.PrintStream;
 import java.util.Arrays;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import javax.tools.DocumentationTool;
 import javax.tools.ToolProvider;
 
-import com.sporniket.libre.javabeans.core.pojo.encapsulator.UtilsFieldname;
+import com.sporniket.libre.javabeans.doclet.encapsulator.UtilsFieldname;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.LanguageVersion;

@@ -1,4 +1,4 @@
-package com.sporniket.libre.javabeans.core.pojo.encapsulator;
+package com.sporniket.libre.javabeans.doclet.encapsulator;
 
 /**
  * Utility class for Field names.

@@ -13,7 +13,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import com.sporniket.libre.javabeans.core.pojo.encapsulator.UtilsClassname;
+import com.sporniket.libre.javabeans.doclet.encapsulator.UtilsClassname;
 
 public class TestUtilsClassname
 {

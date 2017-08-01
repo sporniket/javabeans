@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.sporniket.libre.javabeans.core.pojo.encapsulator;
+package com.sporniket.libre.javabeans.doclet.encapsulator;
 
 import java.util.Collection;
 import java.util.HashMap;
