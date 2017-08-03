@@ -24,10 +24,247 @@ import com.sun.javadoc.WildcardType;
  */
 public final class UtilsClassDoc
 {
+	public static class ClassDeclaration {
+		/**
+		 * Output the type name.
+		 *
+		 * @param into
+		 *            the buffer into which to output the class name.
+		 * @param toOutput
+		 *            the class to output.
+		 * @param translations
+		 *            translation map.
+		 * @param shortables
+		 *            set of class that can be output as a simple name instead of fully qualified.
+		 */
+		public static void outputType(StringBuilder into, Type toOutput, Map<String, String> translations, Set<String> shortables)
+		{
+
+			// Either Parametrized type ...
+			final ParameterizedType _pType = toOutput.asParameterizedType();
+			if (null != _pType)
+			{
+				outputType__ParameterizedType(into, _pType, translations, shortables);
+				return; // done
+			}
+
+			// ... or Wildcard type ...
+			final WildcardType _wType = toOutput.asWildcardType();
+			if (null != _wType)
+			{
+				outputType__WildcardType(into, _wType, translations, shortables);
+				return; // done
+			}
+
+			// ... or type variable ...
+			final TypeVariable _tVar = toOutput.asTypeVariable();
+			if (null != _tVar)
+			{
+				outputType__TypeVariable(into, _tVar, translations, shortables);
+				return; // done
+			}
+
+			// ... or normal type.
+			into.append(UtilsClassname.computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
+		}
+
+		/**
+		 * Output the type name when the type is a parametrized type.
+		 *
+		 * @param into
+		 *            the buffer into which to output the class name.
+		 * @param toOutput
+		 *            the class to output.
+		 * @param translations
+		 *            translation map.
+		 * @param shortables
+		 *            set of class that can be output as a simple name instead of fully qualified.
+		 */
+		private static void outputType__ParameterizedType(StringBuilder into, ParameterizedType toOutput,
+				Map<String, String> translations, Set<String> shortables)
+		{
+			into.append(computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
+			final Type[] _typeArguments = toOutput.typeArguments();
+			for (int _i = 0; _i < _typeArguments.length; _i++)
+			{
+				into.append((0 == _i) ? "<" : ", ");
+				outputType(into, _typeArguments[_i], translations, shortables);
+			}
+			into.append(">");
+		}
+
+		/**
+		 * Output the type name when the type is a type variable.
+		 *
+		 * @param into
+		 *            the buffer into which to output the class name.
+		 * @param toOutput
+		 *            the class to output.
+		 * @param translations
+		 *            translation map.
+		 * @param shortables
+		 *            set of class that can be output as a simple name instead of fully qualified.
+		 */
+		private static void outputType__TypeVariable(StringBuilder into, TypeVariable toOutput, Map<String, String> translations,
+				Set<String> shortables)
+		{
+			into.append(toOutput.typeName());
+			final Type[] _bounds = toOutput.bounds();
+			if (_bounds.length > 0)
+			{
+				into.append(" extends ");
+				outputType(into, _bounds[0], translations, shortables);
+			}
+		}
+
+		/**
+		 * Output the type name when the type is a wildcard type.
+		 *
+		 * @param into
+		 *            the buffer into which to output the class name.
+		 * @param toOutput
+		 *            the class to output.
+		 * @param translations
+		 *            translation map.
+		 * @param shortables
+		 *            set of class that can be output as a simple name instead of fully qualified.
+		 */
+		private static void outputType__WildcardType(StringBuilder into, WildcardType toOutput, Map<String, String> translations,
+				Set<String> shortables)
+		{
+			into.append("?");
+			final Type[] _extendsBounds = toOutput.extendsBounds();
+			if (_extendsBounds.length > 0)
+			{
+				into.append(" extends ");
+				outputType(into, _extendsBounds[0], translations, shortables);
+			}
+			final Type[] _superBounds = toOutput.superBounds();
+			if (_superBounds.length > 0)
+			{
+				into.append(" super ");
+				outputType(into, _superBounds[0], translations, shortables);
+			}
+		}
+	}
+	
+	public static class TypeInvocation {
+		/**
+		 * Output the type name.
+		 *
+		 * @param into
+		 *            the buffer into which to output the class name.
+		 * @param toOutput
+		 *            the class to output.
+		 * @param translations
+		 *            translation map.
+		 * @param shortables
+		 *            set of class that can be output as a simple name instead of fully qualified.
+		 */
+		public static void outputType(StringBuilder into, Type toOutput, Map<String, String> translations, Set<String> shortables)
+		{
+
+			// Either Parametrized type ...
+			final ParameterizedType _pType = toOutput.asParameterizedType();
+			if (null != _pType)
+			{
+				outputType__ParameterizedType(into, _pType, translations, shortables);
+				return; // done
+			}
+
+			// ... or Wildcard type ...
+			final WildcardType _wType = toOutput.asWildcardType();
+			if (null != _wType)
+			{
+				outputType__WildcardType(into, _wType, translations, shortables);
+				return; // done
+			}
+
+			// ... or type variable ...
+			final TypeVariable _tVar = toOutput.asTypeVariable();
+			if (null != _tVar)
+			{
+				outputType__TypeVariable(into, _tVar, translations, shortables);
+				return; // done
+			}
+
+			// ... or normal type.
+			into.append(UtilsClassname.computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
+		}
+
+		/**
+		 * Output the type name when the type is a parametrized type.
+		 *
+		 * @param into
+		 *            the buffer into which to output the class name.
+		 * @param toOutput
+		 *            the class to output.
+		 * @param translations
+		 *            translation map.
+		 * @param shortables
+		 *            set of class that can be output as a simple name instead of fully qualified.
+		 */
+		private static void outputType__ParameterizedType(StringBuilder into, ParameterizedType toOutput,
+				Map<String, String> translations, Set<String> shortables)
+		{
+			into.append(computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
+			final Type[] _typeArguments = toOutput.typeArguments();
+			for (int _i = 0; _i < _typeArguments.length; _i++)
+			{
+				into.append((0 == _i) ? "<" : ", ");
+				into.append(computeOutputClassname(_typeArguments[_i].qualifiedTypeName(), translations, shortables));
+			}
+			into.append(">");
+		}
+
+		/**
+		 * Output the type name when the type is a type variable.
+		 *
+		 * @param into
+		 *            the buffer into which to output the class name.
+		 * @param toOutput
+		 *            the class to output.
+		 * @param translations
+		 *            translation map.
+		 * @param shortables
+		 *            set of class that can be output as a simple name instead of fully qualified.
+		 */
+		private static void outputType__TypeVariable(StringBuilder into, TypeVariable toOutput, Map<String, String> translations,
+				Set<String> shortables)
+		{
+			into.append(toOutput.typeName());
+		}
+
+		/**
+		 * Output the type name when the type is a wildcard type.
+		 *
+		 * @param into
+		 *            the buffer into which to output the class name.
+		 * @param toOutput
+		 *            the class to output.
+		 * @param translations
+		 *            translation map.
+		 * @param shortables
+		 *            set of class that can be output as a simple name instead of fully qualified.
+		 */
+		private static void outputType__WildcardType(StringBuilder into, WildcardType toOutput, Map<String, String> translations,
+				Set<String> shortables)
+		{
+			into.append("?");
+		}
+	}
+	
 	public static String computeOutputType(Type toOutput, Map<String, String> translations, Set<String> shortables)
 	{
 		final StringBuilder _buffer = new StringBuilder();
-		outputType(_buffer, toOutput, translations, shortables);
+		ClassDeclaration.outputType(_buffer, toOutput, translations, shortables);
+		return _buffer.toString();
+	}
+	
+	public static String computeOutputType_invocation(Type toOutput, Map<String, String> translations, Set<String> shortables)
+	{
+		final StringBuilder _buffer = new StringBuilder();
+		TypeInvocation.outputType(_buffer, toOutput, translations, shortables);
 		return _buffer.toString();
 	}
 
@@ -52,7 +289,7 @@ public final class UtilsClassDoc
 		for (int _i = 0; _i < _typeArguments.length; _i++)
 		{
 			into.append((0 == _i) ? "<" : ", ");
-			outputType__TypeVariable(into, _typeArguments[_i], translations, shortables);
+			ClassDeclaration.outputType__TypeVariable(into, _typeArguments[_i], translations, shortables);
 		}
 		into.append(">");
 	}
@@ -156,128 +393,6 @@ public final class UtilsClassDoc
 				into.append(_typeArguments[_i].simpleTypeName());
 			}
 			into.append(">");
-		}
-	}
-
-	/**
-	 * Output the type name.
-	 *
-	 * @param into
-	 *            the buffer into which to output the class name.
-	 * @param toOutput
-	 *            the class to output.
-	 * @param translations
-	 *            translation map.
-	 * @param shortables
-	 *            set of class that can be output as a simple name instead of fully qualified.
-	 */
-	private static void outputType(StringBuilder into, Type toOutput, Map<String, String> translations, Set<String> shortables)
-	{
-
-		// Either Parametrized type ...
-		final ParameterizedType _pType = toOutput.asParameterizedType();
-		if (null != _pType)
-		{
-			outputType__ParameterizedType(into, _pType, translations, shortables);
-			return; // done
-		}
-
-		// ... or Wildcard type ...
-		final WildcardType _wType = toOutput.asWildcardType();
-		if (null != _wType)
-		{
-			outputType__WildcardType(into, _wType, translations, shortables);
-			return; // done
-		}
-
-		// ... or type variable ...
-		final TypeVariable _tVar = toOutput.asTypeVariable();
-		if (null != _tVar)
-		{
-			outputType__TypeVariable(into, _tVar, translations, shortables);
-			return; // done
-		}
-
-		// ... or normal type.
-		into.append(UtilsClassname.computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
-	}
-
-	/**
-	 * Output the type name when the type is a parametrized type.
-	 *
-	 * @param into
-	 *            the buffer into which to output the class name.
-	 * @param toOutput
-	 *            the class to output.
-	 * @param translations
-	 *            translation map.
-	 * @param shortables
-	 *            set of class that can be output as a simple name instead of fully qualified.
-	 */
-	private static void outputType__ParameterizedType(StringBuilder into, ParameterizedType toOutput,
-			Map<String, String> translations, Set<String> shortables)
-	{
-		into.append(computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
-		final Type[] _typeArguments = toOutput.typeArguments();
-		for (int _i = 0; _i < _typeArguments.length; _i++)
-		{
-			into.append((0 == _i) ? "<" : ", ");
-			outputType(into, _typeArguments[_i], translations, shortables);
-		}
-		into.append(">");
-	}
-
-	/**
-	 * Output the type name when the type is a type variable.
-	 *
-	 * @param into
-	 *            the buffer into which to output the class name.
-	 * @param toOutput
-	 *            the class to output.
-	 * @param translations
-	 *            translation map.
-	 * @param shortables
-	 *            set of class that can be output as a simple name instead of fully qualified.
-	 */
-	private static void outputType__TypeVariable(StringBuilder into, TypeVariable toOutput, Map<String, String> translations,
-			Set<String> shortables)
-	{
-		into.append(toOutput.typeName());
-		final Type[] _bounds = toOutput.bounds();
-		if (_bounds.length > 0)
-		{
-			into.append(" extends ");
-			outputType(into, _bounds[0], translations, shortables);
-		}
-	}
-
-	/**
-	 * Output the type name when the type is a wildcard type.
-	 *
-	 * @param into
-	 *            the buffer into which to output the class name.
-	 * @param toOutput
-	 *            the class to output.
-	 * @param translations
-	 *            translation map.
-	 * @param shortables
-	 *            set of class that can be output as a simple name instead of fully qualified.
-	 */
-	private static void outputType__WildcardType(StringBuilder into, WildcardType toOutput, Map<String, String> translations,
-			Set<String> shortables)
-	{
-		into.append("?");
-		final Type[] _extendsBounds = toOutput.extendsBounds();
-		if (_extendsBounds.length > 0)
-		{
-			into.append(" extends ");
-			outputType(into, _extendsBounds[0], translations, shortables);
-		}
-		final Type[] _superBounds = toOutput.superBounds();
-		if (_superBounds.length > 0)
-		{
-			into.append(" super ");
-			outputType(into, _superBounds[0], translations, shortables);
 		}
 	}
 
