@@ -3,4 +3,4 @@
  * @author dsporn
  *
  */
-package com.sporniket.libre.javabeans.doclet.encapsulator.basic;
+package com.sporniket.libre.javabeans.doclet.expander.basic;

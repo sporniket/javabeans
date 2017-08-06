@@ -1,15 +1,15 @@
-package com.sporniket.libre.javabeans.doclet.encapsulator.basic;
+package com.sporniket.libre.javabeans.doclet.expander.basic;
 
-import static com.sporniket.libre.javabeans.doclet.encapsulator.UtilsClassDoc.*;
-import static com.sporniket.libre.javabeans.doclet.encapsulator.UtilsClassname.*;
-import static com.sporniket.libre.javabeans.doclet.encapsulator.UtilsFieldDoc.getAccessibleDeclaredFields;
+import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassDoc.*;
+import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassname.*;
+import static com.sporniket.libre.javabeans.doclet.expander.UtilsFieldDoc.getAccessibleDeclaredFields;
 
 import java.util.TreeSet;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import com.sporniket.libre.javabeans.doclet.encapsulator.JavabeanGenerator;
-import com.sporniket.libre.javabeans.doclet.encapsulator.UtilsFieldname;
+import com.sporniket.libre.javabeans.doclet.expander.JavabeanGenerator;
+import com.sporniket.libre.javabeans.doclet.expander.UtilsFieldname;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
 

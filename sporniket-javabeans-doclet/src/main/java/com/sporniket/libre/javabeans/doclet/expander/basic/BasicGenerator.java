@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.sporniket.libre.javabeans.doclet.encapsulator.basic;
+package com.sporniket.libre.javabeans.doclet.expander.basic;
 
 import java.io.PrintStream;
 import java.util.Map;

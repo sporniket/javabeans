@@ -1,4 +1,4 @@
-package com.sporniket.libre.javabeans.doclet.encapsulator;
+package com.sporniket.libre.javabeans.doclet.expander;
 
 public interface BuilderGenerator
 {

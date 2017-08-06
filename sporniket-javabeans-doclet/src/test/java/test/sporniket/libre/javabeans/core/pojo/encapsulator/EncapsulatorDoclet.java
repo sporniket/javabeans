@@ -1,7 +1,7 @@
 package test.sporniket.libre.javabeans.core.pojo.encapsulator;
 
-import static com.sporniket.libre.javabeans.doclet.encapsulator.UtilsClassDoc.updateKnowClasses;
-import static com.sporniket.libre.javabeans.doclet.encapsulator.UtilsClassname.*;
+import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassDoc.updateKnowClasses;
+import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassname.*;
 
 import java.io.PrintStream;
 import java.util.Arrays;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import javax.tools.DocumentationTool;
 import javax.tools.ToolProvider;
 
-import com.sporniket.libre.javabeans.doclet.encapsulator.basic.BasicJavabeanGenerator;
+import com.sporniket.libre.javabeans.doclet.expander.basic.BasicJavabeanGenerator;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.LanguageVersion;
 import com.sun.javadoc.RootDoc;

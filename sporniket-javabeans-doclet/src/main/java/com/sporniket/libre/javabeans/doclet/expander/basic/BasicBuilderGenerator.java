@@ -1,14 +1,14 @@
-package com.sporniket.libre.javabeans.doclet.encapsulator.basic;
+package com.sporniket.libre.javabeans.doclet.expander.basic;
 
-import static com.sporniket.libre.javabeans.doclet.encapsulator.UtilsClassDoc.*;
-import static com.sporniket.libre.javabeans.doclet.encapsulator.UtilsFieldDoc.getAccessibleFields;
+import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassDoc.*;
+import static com.sporniket.libre.javabeans.doclet.expander.UtilsFieldDoc.getAccessibleFields;
 
 import java.io.PrintStream;
 import java.util.Map;
 import java.util.Set;
 
-import com.sporniket.libre.javabeans.doclet.encapsulator.BuilderGenerator;
-import com.sporniket.libre.javabeans.doclet.encapsulator.UtilsFieldname;
+import com.sporniket.libre.javabeans.doclet.expander.BuilderGenerator;
+import com.sporniket.libre.javabeans.doclet.expander.UtilsFieldname;
 import com.sun.javadoc.FieldDoc;
 
 public class BasicBuilderGenerator extends BasicGenerator implements BuilderGenerator

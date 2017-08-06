@@ -1,6 +1,6 @@
-package com.sporniket.libre.javabeans.doclet.encapsulator;
+package com.sporniket.libre.javabeans.doclet.expander;
 
-import static com.sporniket.libre.javabeans.doclet.encapsulator.UtilsClassname.computeOutputClassname;
+import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassname.computeOutputClassname;
 
 import java.util.Arrays;
 import java.util.Collection;
