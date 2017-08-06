@@ -15,7 +15,8 @@ import com.sun.javadoc.FieldDoc;
 
 public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGenerator
 {
-	private static final Predicate<? super String> IS_NOT_JAVA_LANG_TYPE = c -> !Object.class.getPackage().getName().equals(getPackageName(c));
+	private static final Predicate<? super String> IS_NOT_JAVA_LANG_TYPE = c -> !Object.class.getPackage().getName()
+			.equals(getPackageName(c));
 
 	private void outputAccessor(FieldDoc field)
 	{
@@ -23,10 +24,10 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 		final String _type = computeOutputType_invocation(field.type(), getTranslations(), getShortables());
 
 		// getter
-		getOut().printf("    public %s get%s() {return pojo.%s ;}\n", _type, _accessorSuffix, field.name());
+		getOut().printf("    public %s get%s() {return my%s ;}\n", _type, _accessorSuffix, _accessorSuffix);
 
 		// setter
-		getOut().printf("    public void set%s(%s value) {pojo.%s = value;}\n", _accessorSuffix, _type, field.name());
+		getOut().printf("    public void set%s(%s value) {my%s = value;}\n", _accessorSuffix, _type, _accessorSuffix);
 
 		getOut().println();
 	}
@@ -37,21 +38,21 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 		getAccessibleDeclaredFields(getSource()).forEach(_field -> {
 			outputAccessor(_field);
 		});
-		
+
 	}
 
 	@Override
 	public void outputBuilderPattern()
 	{
-		BasicBuilderGenerator _generator = new BasicBuilderGenerator() ;
+		final BasicBuilderGenerator _generator = new BasicBuilderGenerator();
 		_generator.setKnownClasses(getKnownClasses());
 		_generator.setOut(getOut());
 		_generator.setShortables(getShortables());
 		_generator.setSource(getSource());
 		_generator.setTranslations(getTranslations());
-		
+
 		_generator.generate();
-		
+
 	}
 
 	@Override
@@ -59,14 +60,14 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 	{
 		getOut().println();
 
-		StringBuilder _builderUtility = new StringBuilder("    public static ");
+		final StringBuilder _builderUtility = new StringBuilder("    public static ");
 		outputClassName__beanType(_builderUtility, getSource(), getTranslations(), getShortables());
 		_builderUtility.append(".Builder build() {return new ");
 		outputClassName__beanType(_builderUtility, getSource(), getTranslations(), getShortables());
 		_builderUtility.append(".Builder() ;}");
 		getOut().println(_builderUtility.toString());
 
-		getOut().println();		
+		getOut().println();
 	}
 
 	@Override
@@ -92,7 +93,7 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 
 		getOut().printf(_classDecl.append("\n{\n").toString());
 
-		getOut().println();		
+		getOut().println();
 	}
 
 	@Override
@@ -101,24 +102,33 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 		getOut().println("}\n");
 	}
 
+	private void outputField(FieldDoc field)
+	{
+		final String _accessorSuffix = UtilsFieldname.computeFieldAccessorSuffix(field.name());
+		final String _type = computeOutputType_invocation(field.type(), getTranslations(), getShortables());
+
+		// field declaration
+		getOut().printf("    private %s my%s ;\n", _type, _accessorSuffix);
+	}
+
 	@Override
 	public void outputFields()
 	{
-		final StringBuilder _pojoDecl = new StringBuilder("    private final ");
-		outputClassName__pojoType(_pojoDecl, getSource(), getTranslations(), getShortables());
-		_pojoDecl.append(" pojo = new ");
-		outputClassName__pojoInstanciation(_pojoDecl, getSource(), getTranslations(), getShortables());
+		getAccessibleDeclaredFields(getSource()).forEach(_field -> {
+			outputField(_field);
+		});
 
-		getOut().printf(_pojoDecl.append("() ;\n\n").toString());
+		getOut().println();
 	}
 
 	@Override
 	public void outputImportStatements()
 	{
-		final Predicate<? super String> _isNotInSamePackage = c -> !getSource().containingPackage().name().equals(getPackageName(c));
+		final Predicate<? super String> _isNotInSamePackage = c -> !getSource().containingPackage().name()
+				.equals(getPackageName(c));
 
-		getKnownClasses().stream().filter(IS_NOT_JAVA_LANG_TYPE).filter(_isNotInSamePackage).collect(Collectors.toCollection(TreeSet::new))
-				.forEach(c -> getOut().printf("import %s;\n", c));
+		getKnownClasses().stream().filter(IS_NOT_JAVA_LANG_TYPE).filter(_isNotInSamePackage)
+				.collect(Collectors.toCollection(TreeSet::new)).forEach(c -> getOut().printf("import %s;\n", c));
 
 		getOut().println();
 	}
