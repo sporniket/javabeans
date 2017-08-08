@@ -7,6 +7,7 @@ import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassDoc.update
 import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassname.*;
 
 import java.io.PrintStream;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,6 +29,14 @@ import com.sun.javadoc.RootDoc;
  */
 public class ExpanderDoclet
 {
+	private static class CommandOptions
+	{
+		/**
+		 * Store the <code>-d</code> option value (target directory).
+		 */
+		private String d;
+	}
+
 	/**
 	 * Supports generics and annotations.
 	 *
@@ -40,6 +49,7 @@ public class ExpanderDoclet
 
 	public static boolean start(RootDoc root)
 	{
+		CommandOptions _options = readOptions(root.options());
 		final ClassDoc[] classes = root.classes();
 		for (int i = 0; i < classes.length; ++i)
 		{
@@ -47,6 +57,43 @@ public class ExpanderDoclet
 			new ExpanderDoclet().processPojoClass(classes[i], System.out);
 		}
 		return true;
+	}
+	
+	private static CommandOptions readOptions(String[][] options)
+	{
+		CommandOptions result = new CommandOptions() ;
+		//FIXME HERE
+		return result ;
+	}
+
+	/**
+	 * Return 1 or 2 for supported args.
+	 * 
+	 * Supported args and their type are found by reflection.
+	 * 
+	 * @param option
+	 *            the option name to test.
+	 * @return 0, 1 (flag arguments) or 2 (value argument).
+	 */
+	public static int optionLength(String option)
+	{
+		try
+		{
+			Field _declaredField = CommandOptions.class.getDeclaredField(option);
+			if (String.class.equals(_declaredField.getType()))
+			{
+				return 2;
+			}
+			else if (_declaredField.getType().isPrimitive() && _declaredField.getType().equals(boolean.class))
+			{
+				return 1;
+			}
+		}
+		catch (Exception _exception)
+		{
+			return 0;
+		}
+		return 0;
 	}
 
 	private void processPojoClass(ClassDoc toScan, PrintStream _out)
