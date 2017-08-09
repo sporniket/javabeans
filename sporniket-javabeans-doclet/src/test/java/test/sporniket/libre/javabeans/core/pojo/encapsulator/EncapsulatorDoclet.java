@@ -46,6 +46,8 @@ public class EncapsulatorDoclet
 		{
 				"-sourcepath",
 				"/home/dsporn/dev/00-src/javabeans/sporniket-javabeans-doclet/src/test/java",
+				"-d",
+				"target/generated-classes/javabeans",
 				"-private",
 				"-doclet",
 				"com.sporniket.libre.javabeans.doclet.expander.ExpanderDoclet",
