@@ -17,8 +17,6 @@ public interface JavabeanGenerator
 
 	void outputBuilderPattern();
 
-	void outputBuilderSection();
-
 	void outputFields();
 
 	void outputAccessors();
@@ -31,7 +29,6 @@ public interface JavabeanGenerator
 		outputImportStatements();
 		outputClassBegin();
 		outputBuilderPattern();
-		outputBuilderSection();
 		outputFields();
 		outputAccessors();
 		outputClassEnd();

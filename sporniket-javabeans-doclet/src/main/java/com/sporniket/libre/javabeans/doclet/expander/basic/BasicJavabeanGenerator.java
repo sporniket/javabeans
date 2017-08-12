@@ -9,9 +9,11 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import com.sporniket.libre.javabeans.doclet.expander.JavabeanGenerator;
+import com.sporniket.libre.javabeans.doclet.expander.UtilsClassDoc;
 import com.sporniket.libre.javabeans.doclet.expander.UtilsFieldname;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
+import com.sun.tools.internal.ws.processor.generator.GeneratorBase;
 
 public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGenerator
 {
@@ -53,21 +55,6 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 
 		_generator.generate();
 
-	}
-
-	@Override
-	public void outputBuilderSection()
-	{
-		getOut().println();
-
-		final StringBuilder _builderUtility = new StringBuilder("    public static ");
-		outputClassName__beanType(_builderUtility, getSource(), getTranslations(), getShortables());
-		_builderUtility.append(".Builder build() {return new ");
-		outputClassName__beanType(_builderUtility, getSource(), getTranslations(), getShortables());
-		_builderUtility.append(".Builder() ;}");
-		getOut().println(_builderUtility.toString());
-
-		getOut().println();
 	}
 
 	@Override

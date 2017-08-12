@@ -8,6 +8,8 @@ import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassname.*;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toCollection;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -120,18 +122,64 @@ public class ExpanderDoclet
 	{
 		CommandOptions _options = readOptions(root.options());
 
+		new ExpanderDoclet().execute(root, _options);
+
+		return true;
+	}
+
+	private void execute(RootDoc root, CommandOptions options)
+	{
 		List<ClassDoc> _sourceClasses = asList(root.classes());
 
 		final Set<String> _packages = asList(root.specifiedPackages()).stream().map(PackageDoc::name)
 				.collect(toCollection(TreeSet::new));
 		final Set<String> _classes = _sourceClasses.stream().map(ClassDoc::qualifiedName).collect(toCollection(TreeSet::new));
-		final Map<String, String> _translations = getTranslationMapWhenPojosAreSuffixed(_classes, _packages, _options.pojoSuffix);
+		final Map<String, String> _translations = getTranslationMapWhenPojosAreSuffixed(_classes, _packages, options.pojoSuffix);
 
 		_sourceClasses.stream() //
 				.filter(c -> _translations.containsKey(c.qualifiedName())) //
-				.forEach(p -> new ExpanderDoclet().processPojoClass(p, System.out, _translations));
+				.forEach(p -> processPojoClass(p, _translations, options));
 
-		return true;
+	}
+
+	/**
+	 * Get the file to generate the expanded source code.
+	 * 
+	 * @param qualifiedName
+	 *            the qualified name of the expanded source code.
+	 * @param options
+	 *            the options.
+	 * @return a File descriptor.
+	 */
+	private File getFileToGenerate(String qualifiedName, CommandOptions options)
+	{
+		String filePath = options.d + File.separatorChar + qualifiedName.replace('.', File.separatorChar) + ".java";
+		File _result = new File(filePath);
+		File _targetFolder = _result.getParentFile();
+		if (!_targetFolder.exists())
+		{
+			_targetFolder.mkdirs();
+		}
+		return _result;
+	}
+
+	private void processPojoClass(ClassDoc pojo, final Map<String, String> translations, CommandOptions options)
+	{
+		try
+		{
+			PrintStream _out = (null != options.d)
+					? new PrintStream(getFileToGenerate(translations.get(pojo.qualifiedName()), options))
+					: System.out;
+			processPojoClass(pojo, _out, translations);
+			if (null != options.d)
+			{
+				_out.close();
+			}
+		}
+		catch (FileNotFoundException _exception)
+		{
+			_exception.printStackTrace();
+		}
 	}
 
 	private void processPojoClass(ClassDoc toScan, PrintStream _out, Map<String, String> translations)

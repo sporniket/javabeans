@@ -30,8 +30,12 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 	@Override
 	public void outputClassBegin()
 	{
-		getOut().println("    public static class Builder");
-		getOut().println("    {");
+		StringBuilder _builderDecl = new StringBuilder("    public static class Builder");
+		outputClassParameters__classDeclaration(_builderDecl, getSource().typeParameters(), getTranslations(), getShortables());
+		
+		_builderDecl.append("\n    {");
+		
+		getOut().println(_builderDecl.toString());
 	}
 
 	@Override

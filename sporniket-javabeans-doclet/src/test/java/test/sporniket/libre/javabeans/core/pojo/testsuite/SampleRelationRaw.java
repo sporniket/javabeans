@@ -8,7 +8,7 @@ package test.sporniket.libre.javabeans.core.pojo.testsuite;
  * @author dsporn
  *
  */
-public class SampleRelationRaw
+public class SampleRelationRaw extends SampleBasicRaw
 {
 	SampleBasicRaw source ;
 }

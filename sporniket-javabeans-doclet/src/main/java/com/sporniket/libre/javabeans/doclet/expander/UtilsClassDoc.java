@@ -24,7 +24,8 @@ import com.sun.javadoc.WildcardType;
  */
 public final class UtilsClassDoc
 {
-	public static class ClassDeclaration {
+	public static class ClassDeclaration
+	{
 		/**
 		 * Output the type name.
 		 *
@@ -147,8 +148,9 @@ public final class UtilsClassDoc
 			}
 		}
 	}
-	
-	public static class TypeInvocation {
+
+	public static class TypeInvocation
+	{
 		/**
 		 * Output the type name.
 		 *
@@ -209,12 +211,7 @@ public final class UtilsClassDoc
 		{
 			into.append(computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
 			final Type[] _typeArguments = toOutput.typeArguments();
-			for (int _i = 0; _i < _typeArguments.length; _i++)
-			{
-				into.append((0 == _i) ? "<" : ", ");
-				into.append(computeOutputClassname(_typeArguments[_i].qualifiedTypeName(), translations, shortables));
-			}
-			into.append(">");
+			outputTypeArguments(into, _typeArguments, translations, shortables);
 		}
 
 		/**
@@ -252,20 +249,97 @@ public final class UtilsClassDoc
 		{
 			into.append("?");
 		}
+
+		/**
+		 * Output the type arguments.
+		 * 
+		 * @param into
+		 *            the buffer into which to output the class name.
+		 * @param arguments
+		 *            the arguments of the type
+		 * @param translations
+		 *            translation map.
+		 * @param shortables
+		 *            set of class that can be output as a simple name instead of fully qualified.
+		 */
+		public static void outputTypeArguments(StringBuilder into, final Type[] arguments, Map<String, String> translations,
+				Set<String> shortables)
+		{
+			if (arguments.length > 0)
+			{
+				for (int _i = 0; _i < arguments.length; _i++)
+				{
+					into.append((0 == _i) ? "<" : ", ");
+					into.append(computeOutputClassname(arguments[_i].qualifiedTypeName(), translations, shortables));
+				}
+				into.append(">");
+			}
+		}
 	}
-	
+
 	public static String computeOutputType(Type toOutput, Map<String, String> translations, Set<String> shortables)
 	{
 		final StringBuilder _buffer = new StringBuilder();
 		ClassDeclaration.outputType(_buffer, toOutput, translations, shortables);
 		return _buffer.toString();
 	}
-	
+
 	public static String computeOutputType_invocation(Type toOutput, Map<String, String> translations, Set<String> shortables)
 	{
 		final StringBuilder _buffer = new StringBuilder();
 		TypeInvocation.outputType(_buffer, toOutput, translations, shortables);
 		return _buffer.toString();
+	}
+
+	/**
+	 * Output the class name for the bean type instanciation, e.g. "<code>... pojo = new SampleBasicBean<>() ;</code>".
+	 *
+	 * @param into
+	 *            the buffer into which to output the class name.
+	 * @param toOutput
+	 *            the class to output.
+	 * @param translations
+	 *            translation map.
+	 * @param shortables
+	 *            set of class that can be output as a simple name instead of fully qualified.
+	 */
+	public static void outputClassName__beanInstanciation(StringBuilder into, ClassDoc toOutput, Map<String, String> translations,
+			Set<String> shortables)
+	{
+		into.append(UtilsClassname.computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
+		final TypeVariable[] _typeArguments = toOutput.typeParameters();
+		if (_typeArguments.length > 0)
+		{
+			into.append("<>");
+		}
+	}
+
+	/**
+	 * Output the class name for the bean type declaration, e.g. "<code>private final SampleBasicBean<T, R> bean = ...</code>".
+	 *
+	 * @param into
+	 *            the buffer into which to output the class name.
+	 * @param toOutput
+	 *            the class to output.
+	 * @param translations
+	 *            translation map.
+	 * @param shortables
+	 *            set of class that can be output as a simple name instead of fully qualified.
+	 */
+	public static void outputClassName__beanType(StringBuilder into, ClassDoc toOutput, Map<String, String> translations,
+			Set<String> shortables)
+	{
+		into.append(UtilsClassname.computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
+		final TypeVariable[] _typeArguments = toOutput.typeParameters();
+		if (_typeArguments.length > 0)
+		{
+			for (int _i = 0; _i < _typeArguments.length; _i++)
+			{
+				into.append((0 == _i) ? "<" : ", ");
+				into.append(_typeArguments[_i].simpleTypeName());
+			}
+			into.append(">");
+		}
 	}
 
 	/**
@@ -286,68 +360,11 @@ public final class UtilsClassDoc
 	{
 		into.append(UtilsClassname.computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
 		final TypeVariable[] _typeArguments = toOutput.typeParameters();
-		for (int _i = 0; _i < _typeArguments.length; _i++)
-		{
-			into.append((0 == _i) ? "<" : ", ");
-			ClassDeclaration.outputType__TypeVariable(into, _typeArguments[_i], translations, shortables);
-		}
-		into.append(">");
+		outputClassParameters__classDeclaration(into, _typeArguments, translations, shortables);
 	}
-	
+
 	/**
-	 * Output the class name for the bean type instanciation, e.g.
-	 * "<code>... pojo = new SampleBasicBean<>() ;</code>".
-	 *
-	 * @param into
-	 *            the buffer into which to output the class name.
-	 * @param toOutput
-	 *            the class to output.
-	 * @param translations
-	 *            translation map.
-	 * @param shortables
-	 *            set of class that can be output as a simple name instead of fully qualified.
-	 */
-	public static void outputClassName__beanInstanciation(StringBuilder into, ClassDoc toOutput, Map<String, String> translations,
-			Set<String> shortables) {
-		into.append(UtilsClassname.computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
-		final TypeVariable[] _typeArguments = toOutput.typeParameters();
-		if(_typeArguments.length > 0)
-		{
-			into.append("<>");
-		}
-	}
-	
-	/**
-	 * Output the class name for the bean type declaration, e.g.
-	 * "<code>private final SampleBasicBean<T, R> bean = ...</code>".
-	 *
-	 * @param into
-	 *            the buffer into which to output the class name.
-	 * @param toOutput
-	 *            the class to output.
-	 * @param translations
-	 *            translation map.
-	 * @param shortables
-	 *            set of class that can be output as a simple name instead of fully qualified.
-	 */
-	public static void outputClassName__beanType(StringBuilder into, ClassDoc toOutput, Map<String, String> translations,
-			Set<String> shortables) {
-		into.append(UtilsClassname.computeOutputClassname(toOutput.qualifiedTypeName(), translations, shortables));
-		final TypeVariable[] _typeArguments = toOutput.typeParameters();
-		if(_typeArguments.length > 0)
-		{
-			for(int _i = 0 ; _i < _typeArguments.length ; _i++)
-			{
-				into.append((0 == _i) ? "<" : ", ") ;
-				into.append(_typeArguments[_i].simpleTypeName());
-			}
-			into.append(">");
-		}
-	}
-	
-	/**
-	 * Output the class name for the pojo type instanciation, e.g.
-	 * "<code>... pojo = new SampleBasicBeanRaw<>() ;</code>".
+	 * Output the class name for the pojo type instanciation, e.g. "<code>... pojo = new SampleBasicBeanRaw<>() ;</code>".
 	 *
 	 * @param into
 	 *            the buffer into which to output the class name.
@@ -359,18 +376,18 @@ public final class UtilsClassDoc
 	 *            set of class that can be output as a simple name instead of fully qualified.
 	 */
 	public static void outputClassName__pojoInstanciation(StringBuilder into, ClassDoc toOutput, Map<String, String> translations,
-			Set<String> shortables) {
+			Set<String> shortables)
+	{
 		into.append(UtilsClassname.computeOutputClassname(toOutput.qualifiedTypeName(), shortables));
 		final TypeVariable[] _typeArguments = toOutput.typeParameters();
-		if(_typeArguments.length > 0)
+		if (_typeArguments.length > 0)
 		{
 			into.append("<>");
 		}
 	}
-	
+
 	/**
-	 * Output the class name for the pojo type declaration, e.g.
-	 * "<code>private final SampleBasicBeanRaw<T, R> pojo = ...</code>".
+	 * Output the class name for the pojo type declaration, e.g. "<code>private final SampleBasicBeanRaw<T, R> pojo = ...</code>".
 	 *
 	 * @param into
 	 *            the buffer into which to output the class name.
@@ -382,15 +399,42 @@ public final class UtilsClassDoc
 	 *            set of class that can be output as a simple name instead of fully qualified.
 	 */
 	public static void outputClassName__pojoType(StringBuilder into, ClassDoc toOutput, Map<String, String> translations,
-			Set<String> shortables) {
+			Set<String> shortables)
+	{
 		into.append(UtilsClassname.computeOutputClassname(toOutput.qualifiedTypeName(), shortables));
 		final TypeVariable[] _typeArguments = toOutput.typeParameters();
-		if(_typeArguments.length > 0)
+		if (_typeArguments.length > 0)
 		{
-			for(int _i = 0 ; _i < _typeArguments.length ; _i++)
+			for (int _i = 0; _i < _typeArguments.length; _i++)
 			{
-				into.append((0 == _i) ? "<" : ", ") ;
+				into.append((0 == _i) ? "<" : ", ");
 				into.append(_typeArguments[_i].simpleTypeName());
+			}
+			into.append(">");
+		}
+	}
+
+	/**
+	 * Output the parameters of the class.
+	 * 
+	 * @param into
+	 *            the buffer into which to output the class name.
+	 * @param parameters
+	 *            the parameters to output.
+	 * @param translations
+	 *            translation map.
+	 * @param shortables
+	 *            set of class that can be output as a simple name instead of fully qualified.
+	 */
+	public static void outputClassParameters__classDeclaration(StringBuilder into, final TypeVariable[] parameters,
+			Map<String, String> translations, Set<String> shortables)
+	{
+		if (parameters.length > 0)
+		{
+			for (int _i = 0; _i < parameters.length; _i++)
+			{
+				into.append((0 == _i) ? "<" : ", ");
+				ClassDeclaration.outputType__TypeVariable(into, parameters[_i], translations, shortables);
 			}
 			into.append(">");
 		}
@@ -429,10 +473,10 @@ public final class UtilsClassDoc
 	 */
 	private static void updateKnownClasses(Collection<String> knownClasses, Type toScan)
 	{
-		if(null != toScan.asTypeVariable())
+		if (null != toScan.asTypeVariable())
 		{
-			//skip type variables
-			return ;
+			// skip type variables
+			return;
 		}
 		final ParameterizedType _pt = toScan.asParameterizedType();
 		if (null != _pt)
