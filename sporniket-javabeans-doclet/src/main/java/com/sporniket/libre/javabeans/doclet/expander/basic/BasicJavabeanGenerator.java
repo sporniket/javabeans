@@ -43,7 +43,6 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 
 	}
 
-	@Override
 	public void outputBuilderPattern()
 	{
 		final BasicBuilderGenerator _generator = new BasicBuilderGenerator();

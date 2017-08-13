@@ -252,7 +252,7 @@ public final class UtilsClassDoc
 
 		/**
 		 * Output the type arguments.
-		 * 
+		 *
 		 * @param into
 		 *            the buffer into which to output the class name.
 		 * @param arguments
@@ -416,7 +416,7 @@ public final class UtilsClassDoc
 
 	/**
 	 * Output the parameters of the class.
-	 * 
+	 *
 	 * @param into
 	 *            the buffer into which to output the class name.
 	 * @param parameters

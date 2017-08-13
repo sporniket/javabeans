@@ -1,5 +1,6 @@
 /**
  * Encapsulate a given POJO into a Javabean.
+ * 
  * @author dsporn
  *
  */

@@ -19,6 +19,15 @@ public final class UtilsFieldDoc
 {
 	private static Predicate<FieldDoc> IS_ACCESSIBLE_FIELD = f -> f.isPublic() || f.isPackagePrivate();
 
+	private static void collectPublicFieldsInto(List<FieldDoc> buffer, ClassDoc toScan)
+	{
+		buffer.addAll(Arrays.asList(toScan.fields()).stream().filter(IS_ACCESSIBLE_FIELD).collect(Collectors.toList()));
+		if (!Object.class.getName().equals(toScan.qualifiedName()))
+		{
+			collectPublicFieldsInto(buffer, toScan.superclass());
+		}
+	}
+
 	/**
 	 * Capitalize the first letter of the field name.
 	 *
@@ -50,18 +59,9 @@ public final class UtilsFieldDoc
 	 */
 	public static List<FieldDoc> getAccessibleFields(ClassDoc toScan)
 	{
-		List<FieldDoc> _buffer = new ArrayList<>();
+		final List<FieldDoc> _buffer = new ArrayList<>();
 		collectPublicFieldsInto(_buffer, toScan);
 		return new ArrayList<>(_buffer);
-	}
-	
-	private static void collectPublicFieldsInto(List<FieldDoc> buffer, ClassDoc toScan)
-	{
-		buffer.addAll(Arrays.asList(toScan.fields()).stream().filter(IS_ACCESSIBLE_FIELD).collect(Collectors.toList())) ;
-		if(!Object.class.getName().equals(toScan.qualifiedName()))
-		{
-			collectPublicFieldsInto(buffer, toScan.superclass());
-		}
 	}
 
 }

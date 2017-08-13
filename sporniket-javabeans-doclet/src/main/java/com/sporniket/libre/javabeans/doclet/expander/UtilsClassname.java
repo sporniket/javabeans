@@ -19,7 +19,7 @@ public final class UtilsClassname
 {
 	/**
 	 * Output the class name.
-	 * 
+	 *
 	 * @param classToOutput
 	 *            the fully qualified class name to output.
 	 * @param translations
@@ -36,7 +36,7 @@ public final class UtilsClassname
 
 	/**
 	 * Output the class name.
-	 * 
+	 *
 	 * @param classToOutput
 	 *            the fully qualified class name to output.
 	 * @param shortables
@@ -50,20 +50,20 @@ public final class UtilsClassname
 
 	/**
 	 * Extract the package name from a fully qualified class name.
-	 * 
+	 *
 	 * @param fullClassName
 	 *            the fully qualified class name.
 	 * @return the fully qualified package name of the class.
 	 */
 	public static String getPackageName(String fullClassName)
 	{
-		int _lastIndexOfDot = fullClassName.lastIndexOf('.');
+		final int _lastIndexOfDot = fullClassName.lastIndexOf('.');
 		return fullClassName.substring(0, (_lastIndexOfDot < 0) ? 0 : _lastIndexOfDot);
 	}
 
 	/**
 	 * Extract the class simple name from a fully qualified class name.
-	 * 
+	 *
 	 * @param fullClassName
 	 *            the fully qualified class name.
 	 * @return the class simple name.
@@ -76,7 +76,7 @@ public final class UtilsClassname
 	/**
 	 * Create a translation map from pojo qualified class names to javabean qualified class names where pojos class names are
 	 * recognised by their suffix.
-	 * 
+	 *
 	 * @param registry
 	 *            a list of fully qualified class names, pojos are inside the list.
 	 * @param sourcePackages
@@ -101,7 +101,7 @@ public final class UtilsClassname
 
 	/**
 	 * Remove the given suffix from the given class name.
-	 * 
+	 *
 	 * @param name
 	 *            the class name.
 	 * @param suffix
@@ -115,7 +115,7 @@ public final class UtilsClassname
 
 	/**
 	 * Update a mapping of fully qualified class names that may be adressed using their simple name.
-	 * 
+	 *
 	 * @param mapping
 	 *            the mapping to update.
 	 * @param registry

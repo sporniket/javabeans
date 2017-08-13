@@ -2,14 +2,6 @@ package com.sporniket.libre.javabeans.doclet.expander;
 
 public interface BuilderGenerator
 {
-	void outputClassBegin();
-
-	void outputFields();
-
-	void outputSetters();
-
-	void outputClassEnd();
-
 	default void generate()
 	{
 		outputClassBegin();
@@ -17,4 +9,12 @@ public interface BuilderGenerator
 		outputSetters();
 		outputClassEnd();
 	}
+
+	void outputClassBegin();
+
+	void outputClassEnd();
+
+	void outputFields();
+
+	void outputSetters();
 }

@@ -8,20 +8,25 @@ import java.util.Map;
 import java.util.Set;
 
 import com.sporniket.libre.javabeans.doclet.expander.BuilderGenerator;
+import com.sporniket.libre.javabeans.doclet.expander.UtilsClassDoc;
+import com.sporniket.libre.javabeans.doclet.expander.UtilsClassname;
 import com.sporniket.libre.javabeans.doclet.expander.UtilsFieldname;
 import com.sun.javadoc.FieldDoc;
 
-public class BasicBuilderGenerator extends BasicGenerator implements BuilderGenerator
+public class BasicBuilderGenerator extends BasicJavabeanGenerator
 {
 
-	private static void outputSetter(final FieldDoc field, PrintStream out, final Map<String, String> translations,
+	private void outputSetter(final FieldDoc field, PrintStream out, final Map<String, String> translations,
 			final Set<String> shortables)
 	{
+		final String _baseName = UtilsClassname.computeOutputClassname(getSource().qualifiedName(), getTranslations(), getShortables()) ;
+		final StringBuilder _builderTypeArguments = new StringBuilder() ;
+		UtilsClassDoc.TypeInvocation.outputTypeArguments(_builderTypeArguments, getSource().typeParameters(), translations, shortables);
 		final String _accessorSuffix = UtilsFieldname.computeFieldAccessorSuffix(field.name());
 		final String _type = computeOutputType_invocation(field.type(), translations, shortables);
 
 		// setter
-		out.printf("        public Builder with%s(%s value) {bean.set%s(value); return this;}\n", _accessorSuffix, _type,
+		out.printf("    public %s_Builder%s with%s(%s value) {bean.set%s(value); return this;}\n", _baseName, _builderTypeArguments.toString(), _accessorSuffix, _type,
 				_accessorSuffix);
 
 		out.println();
@@ -30,32 +35,28 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 	@Override
 	public void outputClassBegin()
 	{
-		StringBuilder _builderDecl = new StringBuilder("    public static class Builder");
+		StringBuilder _builderDecl = new StringBuilder("public class ");
+		_builderDecl.append(UtilsClassname.computeOutputClassname(getSource().qualifiedName(), getTranslations(), getShortables())) ;
+		_builderDecl.append("_Builder");
 		outputClassParameters__classDeclaration(_builderDecl, getSource().typeParameters(), getTranslations(), getShortables());
 		
-		_builderDecl.append("\n    {");
+		_builderDecl.append("{");
 		
 		getOut().println(_builderDecl.toString());
-	}
-
-	@Override
-	public void outputClassEnd()
-	{
-		getOut().println("    }");
 	}
 
 	@Override
 	public void outputFields()
 	{
 		// bean instance
-		final StringBuilder _pojoDecl = new StringBuilder("        private final ");
+		final StringBuilder _pojoDecl = new StringBuilder("    private final ");
 		outputClassName__beanType(_pojoDecl, getSource(), getTranslations(), getShortables());
 		_pojoDecl.append(" bean = new ");
 		outputClassName__beanInstanciation(_pojoDecl, getSource(), getTranslations(), getShortables());
 		_pojoDecl.append("() ;\n\n");
 
 		// bean getter
-		_pojoDecl.append("        public ");
+		_pojoDecl.append("    public ");
 		outputClassName__beanType(_pojoDecl, getSource(), getTranslations(), getShortables());
 		_pojoDecl.append(" done() {return bean ;}\n");
 
@@ -64,7 +65,7 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 	}
 
 	@Override
-	public void outputSetters()
+	public void outputAccessors()
 	{
 		getAccessibleFields(getSource()).forEach(f -> outputSetter(f, getOut(), getTranslations(), getShortables()));
 	}

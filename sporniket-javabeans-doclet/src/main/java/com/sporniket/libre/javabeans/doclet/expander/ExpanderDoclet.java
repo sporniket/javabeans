@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.sporniket.libre.javabeans.doclet.expander.basic.BasicBuilderGenerator;
 import com.sporniket.libre.javabeans.doclet.expander.basic.BasicJavabeanGenerator;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.LanguageVersion;
@@ -27,7 +28,7 @@ import com.sun.javadoc.RootDoc;
 
 /**
  * Use hierarchy of POJO structs to generate a hierarchy of Javabeans.
- * 
+ *
  * @author dsporn
  *
  */
@@ -63,9 +64,9 @@ public class ExpanderDoclet
 
 	/**
 	 * Return 1 or 2 for supported args.
-	 * 
+	 *
 	 * Supported args and their type are found by reflection.
-	 * 
+	 *
 	 * @param option
 	 *            the option name to test.
 	 * @return 0, 1 (flag arguments) or 2 (value argument).
@@ -74,7 +75,7 @@ public class ExpanderDoclet
 	{
 		try
 		{
-			Field _declaredField = CommandOptions.class.getDeclaredField(extractOptionName(option));
+			final Field _declaredField = CommandOptions.class.getDeclaredField(extractOptionName(option));
 			if (String.class.equals(_declaredField.getType()))
 			{
 				return 2;
@@ -84,7 +85,7 @@ public class ExpanderDoclet
 				return 1;
 			}
 		}
-		catch (Exception _exception)
+		catch (final Exception _exception)
 		{
 			return 0;
 		}
@@ -93,13 +94,13 @@ public class ExpanderDoclet
 
 	private static CommandOptions readOptions(String[][] options)
 	{
-		CommandOptions _result = new CommandOptions();
-		for (String[] _option : options)
+		final CommandOptions _result = new CommandOptions();
+		for (final String[] _option : options)
 		{
-			String _optionName = extractOptionName(_option[0]); // remove leading "-" or "--"
+			final String _optionName = extractOptionName(_option[0]); // remove leading "-" or "--"
 			try
 			{
-				Field _optionField = _result.getClass().getDeclaredField(_optionName);
+				final Field _optionField = _result.getClass().getDeclaredField(_optionName);
 				if (String.class.equals(_optionField.getType()))
 				{
 					_optionField.set(_result, _option[1]);
@@ -120,7 +121,7 @@ public class ExpanderDoclet
 
 	public static boolean start(RootDoc root)
 	{
-		CommandOptions _options = readOptions(root.options());
+		final CommandOptions _options = readOptions(root.options());
 
 		new ExpanderDoclet().execute(root, _options);
 
@@ -129,7 +130,7 @@ public class ExpanderDoclet
 
 	private void execute(RootDoc root, CommandOptions options)
 	{
-		List<ClassDoc> _sourceClasses = asList(root.classes());
+		final List<ClassDoc> _sourceClasses = asList(root.classes());
 
 		final Set<String> _packages = asList(root.specifiedPackages()).stream().map(PackageDoc::name)
 				.collect(toCollection(TreeSet::new));
@@ -142,9 +143,39 @@ public class ExpanderDoclet
 
 	}
 
+	private void generateBuilder(ClassDoc pojo, PrintStream _out, Set<String> knownClasses, Map<String, String> translations,
+			Set<String> shortables)
+	{
+		// ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
+		// generate class
+		final BasicBuilderGenerator _generator = new BasicBuilderGenerator();
+		_generator.setKnownClasses(knownClasses);
+		_generator.setOut(_out);
+		_generator.setShortables(shortables);
+		_generator.setSource(pojo);
+		_generator.setTranslations(translations);
+
+		_generator.generate();
+	}
+
+	private void generateJavabean(ClassDoc pojo, PrintStream _out, Set<String> knownClasses, Map<String, String> translations,
+			Set<String> shortables)
+	{
+		// ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
+		// generate class
+		final BasicJavabeanGenerator _generator = new BasicJavabeanGenerator();
+		_generator.setKnownClasses(knownClasses);
+		_generator.setOut(_out);
+		_generator.setShortables(shortables);
+		_generator.setSource(pojo);
+		_generator.setTranslations(translations);
+
+		_generator.generate();
+	}
+
 	/**
 	 * Get the file to generate the expanded source code.
-	 * 
+	 *
 	 * @param qualifiedName
 	 *            the qualified name of the expanded source code.
 	 * @param options
@@ -153,9 +184,9 @@ public class ExpanderDoclet
 	 */
 	private File getFileToGenerate(String qualifiedName, CommandOptions options)
 	{
-		String filePath = options.d + File.separatorChar + qualifiedName.replace('.', File.separatorChar) + ".java";
-		File _result = new File(filePath);
-		File _targetFolder = _result.getParentFile();
+		final String filePath = options.d + File.separatorChar + qualifiedName.replace('.', File.separatorChar) + ".java";
+		final File _result = new File(filePath);
+		final File _targetFolder = _result.getParentFile();
 		if (!_targetFolder.exists())
 		{
 			_targetFolder.mkdirs();
@@ -165,43 +196,37 @@ public class ExpanderDoclet
 
 	private void processPojoClass(ClassDoc pojo, final Map<String, String> translations, CommandOptions options)
 	{
-		try
-		{
-			PrintStream _out = (null != options.d)
-					? new PrintStream(getFileToGenerate(translations.get(pojo.qualifiedName()), options))
-					: System.out;
-			processPojoClass(pojo, _out, translations);
-			if (null != options.d)
-			{
-				_out.close();
-			}
-		}
-		catch (FileNotFoundException _exception)
-		{
-			_exception.printStackTrace();
-		}
-	}
-
-	private void processPojoClass(ClassDoc toScan, PrintStream _out, Map<String, String> translations)
-	{
 		final Set<String> _knownClasses = new TreeSet<>();
-		updateKnowClasses(_knownClasses, toScan);
+		updateKnowClasses(_knownClasses, pojo);
 
 		final Map<String, String> _shortNameMapping = new HashMap<>(_knownClasses.size() + translations.size());
 		updateShortClassnameMappingFromClassnames(_shortNameMapping, _knownClasses);
 		updateShortClassnameMappingFromClassnames(_shortNameMapping, translations.values());
 		final Set<String> _shortables = new HashSet<>(_shortNameMapping.values());
 
-		// ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
-		// generate class
-		final BasicJavabeanGenerator _generator = new BasicJavabeanGenerator();
-		_generator.setKnownClasses(_knownClasses);
-		_generator.setOut(_out);
-		_generator.setShortables(_shortables);
-		_generator.setSource(toScan);
-		_generator.setTranslations(translations);
-
-		_generator.generate();
+		try
+		{
+			PrintStream _out = (null != options.d)
+					? new PrintStream(getFileToGenerate(translations.get(pojo.qualifiedName()), options))
+					: System.out;
+			generateJavabean(pojo, _out, _knownClasses, translations, _shortables);
+			if (null != options.d)
+			{
+				_out.close();
+			}
+			_out = (null != options.d)
+					? new PrintStream(getFileToGenerate(translations.get(pojo.qualifiedName()) + "_Builder", options))
+					: System.out;
+			generateBuilder(pojo, _out, _knownClasses, translations, _shortables);
+			if (null != options.d)
+			{
+				_out.close();
+			}
+		}
+		catch (final FileNotFoundException _exception)
+		{
+			_exception.printStackTrace();
+		}
 	}
 
 }
