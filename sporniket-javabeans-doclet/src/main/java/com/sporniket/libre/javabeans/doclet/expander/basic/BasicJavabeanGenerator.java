@@ -11,6 +11,7 @@ import com.sun.javadoc.FieldDoc;
 
 public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGenerator
 {
+	//FIXME use DocletOptions.getBeanFieldPrefix() to optionnaly prefix the field name, or use 'this.field'.
 
 	private void outputAccessor(FieldDoc field)
 	{

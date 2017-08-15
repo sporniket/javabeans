@@ -32,7 +32,7 @@ public abstract class BasicGenerator extends BasicGeneratorBase implements JavaS
 		final Predicate<? super String> _isNotInSamePackage = c -> !getSource().containingPackage().name()
 				.equals(getPackageName(c));
 
-		getKnownClasses().stream().filter(IS_NOT_JAVA_LANG_TYPE).filter(_isNotInSamePackage)
+		getKnownClasses().stream().filter(c -> !"?".equals(c)).filter(IS_NOT_JAVA_LANG_TYPE).filter(_isNotInSamePackage)
 				.collect(Collectors.toCollection(TreeSet::new)).forEach(c -> getOut().printf("import %s;\n", c));
 
 		getOut().println();
