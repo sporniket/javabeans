@@ -1,19 +1,13 @@
 package com.sporniket.libre.javabeans.doclet.expander.basic;
 
 import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassDoc.*;
-import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassname.*;
+import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassname.computeOutputClassname;
 import static com.sporniket.libre.javabeans.doclet.expander.UtilsFieldDoc.getAccessibleDeclaredFields;
 
-import java.util.TreeSet;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
 import com.sporniket.libre.javabeans.doclet.expander.JavabeanGenerator;
-import com.sporniket.libre.javabeans.doclet.expander.UtilsClassDoc;
 import com.sporniket.libre.javabeans.doclet.expander.UtilsFieldname;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
-import com.sun.tools.internal.ws.processor.generator.GeneratorBase;
 
 public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGenerator
 {
