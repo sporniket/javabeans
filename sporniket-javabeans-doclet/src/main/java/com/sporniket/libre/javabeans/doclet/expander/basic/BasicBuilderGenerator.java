@@ -13,24 +13,8 @@ import com.sporniket.libre.javabeans.doclet.expander.UtilsClassname;
 import com.sporniket.libre.javabeans.doclet.expander.UtilsFieldname;
 import com.sun.javadoc.FieldDoc;
 
-public class BasicBuilderGenerator extends BasicJavabeanGenerator
+public class BasicBuilderGenerator extends BasicGenerator implements BuilderGenerator
 {
-
-	private void outputSetter(final FieldDoc field, PrintStream out, final Map<String, String> translations,
-			final Set<String> shortables)
-	{
-		final String _baseName = UtilsClassname.computeOutputClassname(getSource().qualifiedName(), getTranslations(), getShortables()) ;
-		final StringBuilder _builderTypeArguments = new StringBuilder() ;
-		UtilsClassDoc.TypeInvocation.outputTypeArguments(_builderTypeArguments, getSource().typeParameters(), translations, shortables);
-		final String _accessorSuffix = UtilsFieldname.computeFieldAccessorSuffix(field.name());
-		final String _type = computeOutputType_invocation(field.type(), translations, shortables);
-
-		// setter
-		out.printf("    public %s_Builder%s with%s(%s value) {bean.set%s(value); return this;}\n", _baseName, _builderTypeArguments.toString(), _accessorSuffix, _type,
-				_accessorSuffix);
-
-		out.println();
-	}
 
 	@Override
 	public void outputClassBegin()
@@ -64,8 +48,24 @@ public class BasicBuilderGenerator extends BasicJavabeanGenerator
 		getOut().println(_pojoDecl.toString());
 	}
 
+	private void outputSetter(final FieldDoc field, PrintStream out, final Map<String, String> translations,
+			final Set<String> shortables)
+	{
+		final String _baseName = UtilsClassname.computeOutputClassname(getSource().qualifiedName(), getTranslations(), getShortables()) ;
+		final StringBuilder _builderTypeArguments = new StringBuilder() ;
+		UtilsClassDoc.TypeInvocation.outputTypeArguments(_builderTypeArguments, getSource().typeParameters(), translations, shortables);
+		final String _accessorSuffix = UtilsFieldname.computeFieldAccessorSuffix(field.name());
+		final String _type = computeOutputType_invocation(field.type(), translations, shortables);
+
+		// setter
+		out.printf("    public %s_Builder%s with%s(%s value) {bean.set%s(value); return this;}\n", _baseName, _builderTypeArguments.toString(), _accessorSuffix, _type,
+				_accessorSuffix);
+
+		out.println();
+	}
+
 	@Override
-	public void outputAccessors()
+	public void outputSetters()
 	{
 		getAccessibleFields(getSource()).forEach(f -> outputSetter(f, getOut(), getTranslations(), getShortables()));
 	}

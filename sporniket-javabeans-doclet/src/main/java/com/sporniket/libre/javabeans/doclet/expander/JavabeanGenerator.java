@@ -7,27 +7,18 @@ package com.sporniket.libre.javabeans.doclet.expander;
  * @author dsporn
  *
  */
-public interface JavabeanGenerator
+public interface JavabeanGenerator extends JavaSourceGenerator
 {
-	default void generate()
-	{
-		outputPackageStatement();
-		outputImportStatements();
-		outputClassBegin();
-		outputFields();
-		outputAccessors();
-		outputClassEnd();
-	}
-
 	void outputAccessors();
 
-	void outputClassBegin();
+	@Override
+	default void outputClassBody()
+	{
+		outputFields();
 
-	void outputClassEnd();
+		outputAccessors();
+	}
 
 	void outputFields();
 
-	void outputImportStatements();
-
-	void outputPackageStatement();
 }

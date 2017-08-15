@@ -3,63 +3,46 @@
  */
 package com.sporniket.libre.javabeans.doclet.expander.basic;
 
-import java.io.PrintStream;
-import java.util.Map;
-import java.util.Set;
+import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassname.getPackageName;
+import static com.sporniket.libre.javabeans.doclet.expander.basic.Utils.IS_NOT_JAVA_LANG_TYPE;
 
-import com.sun.javadoc.ClassDoc;
+import java.util.TreeSet;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import com.sporniket.libre.javabeans.doclet.expander.JavaSourceGenerator;
 
 /**
  * Base class for generating java code.
+ * 
  * @author dsporn
  *
  */
-public class BasicGenerator
+public abstract class BasicGenerator extends BasicGeneratorBase implements JavaSourceGenerator
 {
-	private Set<String> myKnownClasses ;
-	private PrintStream myOut ;
-	private Set<String> myShortables ;
-	private ClassDoc mySource ;
-	private Map<String, String> myTranslations ;
-	
-	public Set<String> getKnownClasses()
+	@Override
+	public void outputClassEnd()
 	{
-		return myKnownClasses;
+		getOut().println("}\n");
 	}
-	public PrintStream getOut()
+
+	@Override
+	public void outputImportStatements()
 	{
-		return myOut;
+		final Predicate<? super String> _isNotInSamePackage = c -> !getSource().containingPackage().name()
+				.equals(getPackageName(c));
+
+		getKnownClasses().stream().filter(IS_NOT_JAVA_LANG_TYPE).filter(_isNotInSamePackage)
+				.collect(Collectors.toCollection(TreeSet::new)).forEach(c -> getOut().printf("import %s;\n", c));
+
+		getOut().println();
 	}
-	public Set<String> getShortables()
+
+	@Override
+	public void outputPackageStatement()
 	{
-		return myShortables;
-	}
-	public ClassDoc getSource()
-	{
-		return mySource;
-	}
-	public Map<String, String> getTranslations()
-	{
-		return myTranslations;
-	}
-	public void setKnownClasses(Set<String> knownClasses)
-	{
-		myKnownClasses = knownClasses;
-	}
-	public void setOut(PrintStream out)
-	{
-		myOut = out;
-	}
-	public void setShortables(Set<String> shortables)
-	{
-		myShortables = shortables;
-	}
-	public void setSource(ClassDoc source)
-	{
-		mySource = source;
-	}
-	public void setTranslations(Map<String, String> translations)
-	{
-		myTranslations = translations;
+		getOut().printf("package %s;\n", getSource().containingPackage().name());
+
+		getOut().println();
 	}
 }

@@ -1,18 +1,15 @@
 package com.sporniket.libre.javabeans.doclet.expander;
 
-public interface BuilderGenerator
+public interface BuilderGenerator extends JavaSourceGenerator
 {
-	default void generate()
+
+	@Override
+	default void outputClassBody()
 	{
-		outputClassBegin();
 		outputFields();
+
 		outputSetters();
-		outputClassEnd();
 	}
-
-	void outputClassBegin();
-
-	void outputClassEnd();
 
 	void outputFields();
 

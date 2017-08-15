@@ -17,8 +17,6 @@ import com.sun.tools.internal.ws.processor.generator.GeneratorBase;
 
 public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGenerator
 {
-	private static final Predicate<? super String> IS_NOT_JAVA_LANG_TYPE = c -> !Object.class.getPackage().getName()
-			.equals(getPackageName(c));
 
 	private void outputAccessor(FieldDoc field)
 	{
@@ -40,19 +38,6 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 		getAccessibleDeclaredFields(getSource()).forEach(_field -> {
 			outputAccessor(_field);
 		});
-
-	}
-
-	public void outputBuilderPattern()
-	{
-		final BasicBuilderGenerator _generator = new BasicBuilderGenerator();
-		_generator.setKnownClasses(getKnownClasses());
-		_generator.setOut(getOut());
-		_generator.setShortables(getShortables());
-		_generator.setSource(getSource());
-		_generator.setTranslations(getTranslations());
-
-		_generator.generate();
 
 	}
 
@@ -82,12 +67,6 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 		getOut().println();
 	}
 
-	@Override
-	public void outputClassEnd()
-	{
-		getOut().println("}\n");
-	}
-
 	private void outputField(FieldDoc field)
 	{
 		final String _accessorSuffix = UtilsFieldname.computeFieldAccessorSuffix(field.name());
@@ -103,26 +82,6 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 		getAccessibleDeclaredFields(getSource()).forEach(_field -> {
 			outputField(_field);
 		});
-
-		getOut().println();
-	}
-
-	@Override
-	public void outputImportStatements()
-	{
-		final Predicate<? super String> _isNotInSamePackage = c -> !getSource().containingPackage().name()
-				.equals(getPackageName(c));
-
-		getKnownClasses().stream().filter(IS_NOT_JAVA_LANG_TYPE).filter(_isNotInSamePackage)
-				.collect(Collectors.toCollection(TreeSet::new)).forEach(c -> getOut().printf("import %s;\n", c));
-
-		getOut().println();
-	}
-
-	@Override
-	public void outputPackageStatement()
-	{
-		getOut().printf("package %s;\n", getSource().containingPackage().name());
 
 		getOut().println();
 	}
