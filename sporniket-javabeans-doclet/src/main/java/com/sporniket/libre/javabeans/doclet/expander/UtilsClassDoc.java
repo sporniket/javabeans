@@ -461,6 +461,7 @@ public final class UtilsClassDoc
 		Arrays.asList(toScan.interfaces()).stream().map(ClassDoc::qualifiedName).filter(_isNotRegistered)
 				.forEach(_registerKnownClass);
 		UtilsFieldDoc.getAccessibleFields(toScan).stream().map(FieldDoc::type).forEach(_processType);
+		UtilsFieldDoc.getPrivateDeclaredFields(toScan).stream().map(FieldDoc::type).forEach(_processType);
 	}
 
 	/**

@@ -44,11 +44,24 @@ public final class UtilsFieldDoc
 	 * Get the declared public fields of a given class, inherited fields are excluded.
 	 *
 	 * @param toScan
-	 * @return
+	 *            the class to scan.
+	 * @return a list of fields.
 	 */
 	public static List<FieldDoc> getAccessibleDeclaredFields(ClassDoc toScan)
 	{
 		return Arrays.asList(toScan.fields()).stream().filter(IS_ACCESSIBLE_FIELD).collect(Collectors.toList());
+	}
+
+	/**
+	 * Get the declared private fields of a given class, inherited fields are excluded.
+	 *
+	 * @param toScan
+	 *            the class to scan.
+	 * @return a list of fields.
+	 */
+	public static List<FieldDoc> getPrivateDeclaredFields(ClassDoc toScan)
+	{
+		return Arrays.asList(toScan.fields()).stream().filter(f -> f.isPrivate()).collect(Collectors.toList());
 	}
 
 	/**

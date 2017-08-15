@@ -9,6 +9,11 @@ package com.sporniket.libre.javabeans.doclet.expander;
 public class DocletOptions
 {
 	/**
+	 * Prefix used for the fields of the javabeans.
+	 */
+	String beanFieldPrefix = "my" ;
+
+	/**
 	 * Suffix of a generated Builder for a Javabean.
 	 */
 	String builderSuffix = "_Builder";
@@ -17,11 +22,16 @@ public class DocletOptions
 	 * Store the <code>-d</code> option value (target directory).
 	 */
 	String d;
-
+	
 	/**
 	 * Suffix of a Pojo that should be expanded into a Javabean.
 	 */
 	String pojoSuffix = "Raw";
+
+	public String getBeanFieldPrefix()
+	{
+		return beanFieldPrefix;
+	}
 
 	public String getBuilderSuffix()
 	{

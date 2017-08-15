@@ -100,6 +100,34 @@ public final class UtilsClassname
 	}
 
 	/**
+	 * Create a translation map from javabean qualified class names to pojo qualified class names where pojos class names are
+	 * recognised by their suffix.
+	 *
+	 * @param registry
+	 *            a list of fully qualified class names, pojos are inside the list.
+	 * @param sourcePackages
+	 *            a registry of fully qualified package names, class names outside of theses packages are ignored.
+	 * @param pojoSuffix
+	 *            the suffix that pojo class names MUST have, excluding class that have the suffix for name.
+	 * @return the translation map.
+	 */
+	public static Map<String, String> getReverseTranslationMapWhenPojosAreSuffixed(Set<String> registry, Set<String> sourcePackages,
+			String pojoSuffix, String builderSuffix)
+	{
+		final Map<String, String> result = new HashMap<>(registry.size());
+		final Predicate<String> _isPojo = c -> sourcePackages.contains(getPackageName(c)) && !pojoSuffix.equals(getSimpleName(c))
+				&& c.endsWith(pojoSuffix);
+		final Predicate<String> _isBuilder = c -> sourcePackages.contains(getPackageName(c))
+				&& !builderSuffix.equals(getSimpleName(c)) && c.endsWith(builderSuffix);
+
+		registry.stream().filter(_isBuilder.negate()).filter(_isPojo.negate()).forEach(c -> {
+			result.put(c, c + pojoSuffix);
+		});
+
+		return result;
+	}
+
+	/**
 	 * Remove the given suffix from the given class name.
 	 *
 	 * @param name
