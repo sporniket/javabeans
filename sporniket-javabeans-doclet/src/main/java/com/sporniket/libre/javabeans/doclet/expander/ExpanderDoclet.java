@@ -35,19 +35,6 @@ import com.sun.javadoc.RootDoc;
  */
 public class ExpanderDoclet
 {
-	private static class CommandOptions
-	{
-		/**
-		 * Store the <code>-d</code> option value (target directory).
-		 */
-		String d;
-
-		/**
-		 * Suffix of a Pojo that should be expanded into a Javabean.
-		 */
-		String pojoSuffix = "Raw";
-	}
-
 	private static String extractOptionName(String optionName)
 	{
 		return (optionName.startsWith("--")) ? optionName.substring(2) : optionName.substring(1);
@@ -76,7 +63,7 @@ public class ExpanderDoclet
 	{
 		try
 		{
-			final Field _declaredField = CommandOptions.class.getDeclaredField(extractOptionName(option));
+			final Field _declaredField = DocletOptions.class.getDeclaredField(extractOptionName(option));
 			if (String.class.equals(_declaredField.getType()))
 			{
 				return 2;
@@ -93,9 +80,9 @@ public class ExpanderDoclet
 		return 0;
 	}
 
-	private static CommandOptions readOptions(String[][] options)
+	private static DocletOptions readOptions(String[][] options)
 	{
-		final CommandOptions _result = new CommandOptions();
+		final DocletOptions _result = new DocletOptions();
 		for (final String[] _option : options)
 		{
 			final String _optionName = extractOptionName(_option[0]); // remove leading "-" or "--"
@@ -122,14 +109,14 @@ public class ExpanderDoclet
 
 	public static boolean start(RootDoc root)
 	{
-		final CommandOptions _options = readOptions(root.options());
+		final DocletOptions _options = readOptions(root.options());
 
 		new ExpanderDoclet().execute(root, _options);
 
 		return true;
 	}
 
-	private void execute(RootDoc root, CommandOptions options)
+	private void execute(RootDoc root, DocletOptions options)
 	{
 		final List<ClassDoc> _sourceClasses = asList(root.classes());
 
@@ -145,7 +132,7 @@ public class ExpanderDoclet
 	}
 
 	private void generateBuilder(ClassDoc pojo, PrintStream out, Set<String> knownClasses, Map<String, String> translations,
-			Set<String> shortables)
+			Set<String> shortables, DocletOptions options)
 	{
 		new Builder<>(new BasicBuilderGenerator())//
 				.withKnownClasses(knownClasses)//
@@ -153,11 +140,12 @@ public class ExpanderDoclet
 				.withShortables(shortables)//
 				.withSource(pojo)//
 				.withTranslations(translations)//
+				.withOptions(options)//
 				.done().generate();
 	}
 
 	private void generateJavabean(ClassDoc pojo, PrintStream out, Set<String> knownClasses, Map<String, String> translations,
-			Set<String> shortables)
+			Set<String> shortables, DocletOptions options)
 	{
 		new Builder<>(new BasicJavabeanGenerator())//
 				.withKnownClasses(knownClasses)//
@@ -165,6 +153,7 @@ public class ExpanderDoclet
 				.withShortables(shortables)//
 				.withSource(pojo)//
 				.withTranslations(translations)//
+				.withOptions(options)//
 				.done().generate();
 	}
 
@@ -177,7 +166,7 @@ public class ExpanderDoclet
 	 *            the options.
 	 * @return a File descriptor.
 	 */
-	private File getFileToGenerate(String qualifiedName, CommandOptions options)
+	private File getFileToGenerate(String qualifiedName, DocletOptions options)
 	{
 		final String filePath = options.d + File.separatorChar + qualifiedName.replace('.', File.separatorChar) + ".java";
 		final File _result = new File(filePath);
@@ -189,7 +178,7 @@ public class ExpanderDoclet
 		return _result;
 	}
 
-	private void processPojoClass(ClassDoc pojo, final Map<String, String> translations, CommandOptions options)
+	private void processPojoClass(ClassDoc pojo, final Map<String, String> translations, DocletOptions options)
 	{
 		final Set<String> _knownClasses = new TreeSet<>();
 		updateKnowClasses(_knownClasses, pojo);
@@ -204,7 +193,7 @@ public class ExpanderDoclet
 			PrintStream _out = (null != options.d)
 					? new PrintStream(getFileToGenerate(translations.get(pojo.qualifiedName()), options))
 					: System.out;
-			generateJavabean(pojo, _out, _knownClasses, translations, _shortables);
+			generateJavabean(pojo, _out, _knownClasses, translations, _shortables, options);
 			if (null != options.d)
 			{
 				_out.close();
@@ -212,7 +201,7 @@ public class ExpanderDoclet
 			_out = (null != options.d)
 					? new PrintStream(getFileToGenerate(translations.get(pojo.qualifiedName()) + "_Builder", options))
 					: System.out;
-			generateBuilder(pojo, _out, _knownClasses, translations, _shortables);
+			generateBuilder(pojo, _out, _knownClasses, translations, _shortables, options);
 			if (null != options.d)
 			{
 				_out.close();

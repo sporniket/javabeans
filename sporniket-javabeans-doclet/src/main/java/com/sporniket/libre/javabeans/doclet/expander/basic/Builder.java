@@ -7,6 +7,7 @@ import java.io.PrintStream;
 import java.util.Map;
 import java.util.Set;
 
+import com.sporniket.libre.javabeans.doclet.expander.DocletOptions;
 import com.sun.javadoc.ClassDoc;
 
 /**
@@ -33,6 +34,12 @@ public class Builder<G extends BasicGenerator>
 	public Builder<G> withKnownClasses(Set<String> knownClasses)
 	{
 		myGenerator.setKnownClasses(knownClasses);
+		return this;
+	}
+
+	public Builder<G> withOptions(DocletOptions options)
+	{
+		myGenerator.setOptions(options);
 		return this;
 	}
 

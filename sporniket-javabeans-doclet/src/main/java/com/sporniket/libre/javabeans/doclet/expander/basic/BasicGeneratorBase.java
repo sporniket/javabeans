@@ -4,6 +4,7 @@ import java.io.PrintStream;
 import java.util.Map;
 import java.util.Set;
 
+import com.sporniket.libre.javabeans.doclet.expander.DocletOptions;
 import com.sun.javadoc.ClassDoc;
 
 /**
@@ -17,12 +18,14 @@ public class BasicGeneratorBase
 
 	private Set<String> myKnownClasses;
 
+	private DocletOptions myOptions ;
+
 	private PrintStream myOut;
 
 	private Set<String> myShortables;
 
 	private ClassDoc mySource;
-
+	
 	private Map<String, String> myTranslations;
 
 	public BasicGeneratorBase()
@@ -33,6 +36,11 @@ public class BasicGeneratorBase
 	public Set<String> getKnownClasses()
 	{
 		return myKnownClasses;
+	}
+
+	public DocletOptions getOptions()
+	{
+		return myOptions;
 	}
 
 	public PrintStream getOut()
@@ -58,6 +66,11 @@ public class BasicGeneratorBase
 	public void setKnownClasses(Set<String> knownClasses)
 	{
 		myKnownClasses = knownClasses;
+	}
+
+	public void setOptions(DocletOptions options)
+	{
+		myOptions = options;
 	}
 
 	public void setOut(PrintStream out)

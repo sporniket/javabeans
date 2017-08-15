@@ -21,7 +21,7 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 	{
 		StringBuilder _builderDecl = new StringBuilder("public class ");
 		_builderDecl.append(UtilsClassname.computeOutputClassname(getSource().qualifiedName(), getTranslations(), getShortables())) ;
-		_builderDecl.append("_Builder");
+		_builderDecl.append(getOptions().getBuilderSuffix());
 		outputClassParameters__classDeclaration(_builderDecl, getSource().typeParameters(), getTranslations(), getShortables());
 		
 		_builderDecl.append("{");
@@ -58,7 +58,7 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 		final String _type = computeOutputType_invocation(field.type(), translations, shortables);
 
 		// setter
-		out.printf("    public %s_Builder%s with%s(%s value) {bean.set%s(value); return this;}\n", _baseName, _builderTypeArguments.toString(), _accessorSuffix, _type,
+		out.printf("    public %s%s%s with%s(%s value) {bean.set%s(value); return this;}\n", _baseName, getOptions().getBuilderSuffix(), _builderTypeArguments.toString(), _accessorSuffix, _type,
 				_accessorSuffix);
 
 		out.println();
