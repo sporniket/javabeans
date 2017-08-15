@@ -21,6 +21,7 @@ import java.util.TreeSet;
 
 import com.sporniket.libre.javabeans.doclet.expander.basic.BasicBuilderGenerator;
 import com.sporniket.libre.javabeans.doclet.expander.basic.BasicJavabeanGenerator;
+import com.sporniket.libre.javabeans.doclet.expander.basic.Builder;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.LanguageVersion;
 import com.sun.javadoc.PackageDoc;
@@ -143,34 +144,28 @@ public class ExpanderDoclet
 
 	}
 
-	private void generateBuilder(ClassDoc pojo, PrintStream _out, Set<String> knownClasses, Map<String, String> translations,
+	private void generateBuilder(ClassDoc pojo, PrintStream out, Set<String> knownClasses, Map<String, String> translations,
 			Set<String> shortables)
 	{
-		// ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
-		// generate class
-		final BasicBuilderGenerator _generator = new BasicBuilderGenerator();
-		_generator.setKnownClasses(knownClasses);
-		_generator.setOut(_out);
-		_generator.setShortables(shortables);
-		_generator.setSource(pojo);
-		_generator.setTranslations(translations);
-
-		_generator.generate();
+		new Builder<>(new BasicBuilderGenerator())//
+				.withKnownClasses(knownClasses)//
+				.withOut(out)//
+				.withShortables(shortables)//
+				.withSource(pojo)//
+				.withTranslations(translations)//
+				.done().generate();
 	}
 
-	private void generateJavabean(ClassDoc pojo, PrintStream _out, Set<String> knownClasses, Map<String, String> translations,
+	private void generateJavabean(ClassDoc pojo, PrintStream out, Set<String> knownClasses, Map<String, String> translations,
 			Set<String> shortables)
 	{
-		// ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
-		// generate class
-		final BasicJavabeanGenerator _generator = new BasicJavabeanGenerator();
-		_generator.setKnownClasses(knownClasses);
-		_generator.setOut(_out);
-		_generator.setShortables(shortables);
-		_generator.setSource(pojo);
-		_generator.setTranslations(translations);
-
-		_generator.generate();
+		new Builder<>(new BasicJavabeanGenerator())//
+				.withKnownClasses(knownClasses)//
+				.withOut(out)//
+				.withShortables(shortables)//
+				.withSource(pojo)//
+				.withTranslations(translations)//
+				.done().generate();
 	}
 
 	/**

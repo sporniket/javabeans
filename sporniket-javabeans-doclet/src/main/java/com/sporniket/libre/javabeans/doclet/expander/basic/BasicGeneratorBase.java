@@ -4,7 +4,6 @@ import java.io.PrintStream;
 import java.util.Map;
 import java.util.Set;
 
-import com.sporniket.libre.javabeans.doclet.expander.JavaSourceGenerator;
 import com.sun.javadoc.ClassDoc;
 
 /**
