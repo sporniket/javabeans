@@ -39,7 +39,7 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 	@Override
 	public void outputClassBegin()
 	{
-		final StringBuilder _classDecl = new StringBuilder("public class ");
+		final StringBuilder _classDecl = new StringBuilder(shouldBeAbstract(getSource()) ? "public abstract class " : "public class ");
 		outputClassName__classDeclaration(_classDecl, getSource(), getTranslations(), getShortables());
 
 		final String _supername = getSource().superclass().qualifiedName();

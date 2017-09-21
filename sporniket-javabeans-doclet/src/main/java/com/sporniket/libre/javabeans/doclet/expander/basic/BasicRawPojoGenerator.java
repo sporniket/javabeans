@@ -4,7 +4,14 @@ import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassDoc.*;
 import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassname.computeOutputClassname;
 import static com.sporniket.libre.javabeans.doclet.expander.UtilsFieldDoc.getPrivateDeclaredFields;
 
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import com.sporniket.libre.javabeans.doclet.expander.JavabeanGenerator;
+import com.sporniket.libre.javabeans.doclet.expander.UtilsClassDoc;
 import com.sporniket.libre.javabeans.doclet.expander.UtilsFieldname;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
@@ -21,7 +28,7 @@ public class BasicRawPojoGenerator extends BasicGenerator implements JavabeanGen
 	@Override
 	public void outputClassBegin()
 	{
-		final StringBuilder _classDecl = new StringBuilder("abstract class ");
+		final StringBuilder _classDecl = new StringBuilder(shouldBeAbstract(getSource()) ? "abstract class " : "class ");
 		outputClassName__classDeclaration(_classDecl, getSource(), getTranslations(), getShortables());
 
 		final String _supername = getSource().superclass().qualifiedName();

@@ -2,12 +2,15 @@ package com.sporniket.libre.javabeans.doclet.expander;
 
 import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassname.computeOutputClassname;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
@@ -277,6 +280,12 @@ public final class UtilsClassDoc
 		}
 	}
 
+	/**
+	 * List of "markers intenfaces", i.e. interfaces that require no methods to implement.
+	 */
+	private static final Set<String> MARKERS_INTERFACES = new HashSet<>(
+			Arrays.asList(Serializable.class.getName(), Cloneable.class.getName()));
+
 	public static String computeOutputType(Type toOutput, Map<String, String> translations, Set<String> shortables)
 	{
 		final StringBuilder _buffer = new StringBuilder();
@@ -438,6 +447,22 @@ public final class UtilsClassDoc
 			}
 			into.append(">");
 		}
+	}
+
+	/**
+	 * @return <code>true</code> when the class is abstract or implements any interface that require to implement a method.
+	 */
+	public static boolean shouldBeAbstract(ClassDoc toScan)
+	{
+		boolean result = toScan.isAbstract();
+		if (!result && toScan.interfaceTypes() != null && toScan.interfaceTypes().length > 0)
+		{
+			result = !Arrays.asList(toScan.interfaceTypes()).stream()//
+					.filter(t -> !MARKERS_INTERFACES.contains(t.qualifiedTypeName()))//
+					.collect(Collectors.toList())//
+					.isEmpty();
+		}
+		return result;
 	}
 
 	/**

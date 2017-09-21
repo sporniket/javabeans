@@ -3,7 +3,7 @@
  */
 package com.sporniket.libre.javabeans.doclet.expander;
 
-import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassDoc.updateKnowClasses;
+import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassDoc.*;
 import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassname.*;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toCollection;
@@ -198,13 +198,16 @@ public class ExpanderDoclet
 			{
 				_out.close();
 			}
-			_out = (null != options.d)
-					? new PrintStream(getFileToGenerate(translations.get(pojo.qualifiedName()) + "_Builder", options))
-					: System.out;
-			generateBuilder(pojo, _out, _knownClasses, translations, _shortables, options);
-			if (null != options.d)
+			if (!shouldBeAbstract(pojo)) //abstract classes do not need builders...
 			{
-				_out.close();
+				_out = (null != options.d)
+						? new PrintStream(getFileToGenerate(translations.get(pojo.qualifiedName()) + "_Builder", options))
+						: System.out;
+				generateBuilder(pojo, _out, _knownClasses, translations, _shortables, options);
+				if (null != options.d)
+				{
+					_out.close();
+				}
 			}
 		}
 		catch (final FileNotFoundException _exception)

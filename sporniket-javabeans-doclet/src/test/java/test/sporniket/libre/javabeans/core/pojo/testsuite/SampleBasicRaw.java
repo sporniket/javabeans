@@ -9,7 +9,7 @@ import java.util.List;
  * @since foo
  * @version bar
  */
-class SampleBasicRaw
+abstract class SampleBasicRaw
 {
 	/**
 	 * Date of creation.
