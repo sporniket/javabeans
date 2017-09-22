@@ -1,10 +1,10 @@
-package com.sporniket.libre.javabeans.doclet.expander.basic;
+package com.sporniket.libre.javabeans.doclet.basic;
 
 import java.io.PrintStream;
 import java.util.Map;
 import java.util.Set;
 
-import com.sporniket.libre.javabeans.doclet.expander.DocletOptions;
+import com.sporniket.libre.javabeans.doclet.DocletOptions;
 import com.sun.javadoc.ClassDoc;
 
 /**

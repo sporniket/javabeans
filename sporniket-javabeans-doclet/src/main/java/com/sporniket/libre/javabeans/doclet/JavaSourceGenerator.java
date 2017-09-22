@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.sporniket.libre.javabeans.doclet.expander;
+package com.sporniket.libre.javabeans.doclet;
 
 /**
  * Interface of a java source code generator.

@@ -1,4 +1,4 @@
-package com.sporniket.libre.javabeans.doclet.expander;
+package com.sporniket.libre.javabeans.doclet;
 
 /**
  * Command line arguments supported by the javabeans doclets.

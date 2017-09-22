@@ -1,6 +1,6 @@
-package com.sporniket.libre.javabeans.doclet.expander;
+package com.sporniket.libre.javabeans.doclet;
 
-import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassname.computeOutputClassname;
+import static com.sporniket.libre.javabeans.doclet.UtilsClassname.computeOutputClassname;
 
 import java.io.Serializable;
 import java.util.Arrays;

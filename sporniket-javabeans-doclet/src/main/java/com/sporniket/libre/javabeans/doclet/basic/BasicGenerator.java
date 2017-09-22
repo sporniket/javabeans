@@ -1,16 +1,16 @@
 /**
  * 
  */
-package com.sporniket.libre.javabeans.doclet.expander.basic;
+package com.sporniket.libre.javabeans.doclet.basic;
 
-import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassname.getPackageName;
-import static com.sporniket.libre.javabeans.doclet.expander.basic.Utils.IS_NOT_JAVA_LANG_TYPE;
+import static com.sporniket.libre.javabeans.doclet.UtilsClassname.getPackageName;
+import static com.sporniket.libre.javabeans.doclet.basic.Utils.IS_NOT_JAVA_LANG_TYPE;
 
 import java.util.TreeSet;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import com.sporniket.libre.javabeans.doclet.expander.JavaSourceGenerator;
+import com.sporniket.libre.javabeans.doclet.JavaSourceGenerator;
 
 /**
  * Base class for generating java code.

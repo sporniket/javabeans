@@ -1,9 +1,9 @@
 /**
  * 
  */
-package com.sporniket.libre.javabeans.doclet.expander.basic;
+package com.sporniket.libre.javabeans.doclet.basic;
 
-import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassname.getPackageName;
+import static com.sporniket.libre.javabeans.doclet.UtilsClassname.getPackageName;
 
 import java.util.function.Predicate;
 

@@ -1,11 +1,11 @@
-package com.sporniket.libre.javabeans.doclet.expander.basic;
+package com.sporniket.libre.javabeans.doclet.basic;
 
-import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassDoc.*;
-import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassname.computeOutputClassname;
-import static com.sporniket.libre.javabeans.doclet.expander.UtilsFieldDoc.getAccessibleDeclaredFields;
+import static com.sporniket.libre.javabeans.doclet.UtilsClassDoc.*;
+import static com.sporniket.libre.javabeans.doclet.UtilsClassname.computeOutputClassname;
+import static com.sporniket.libre.javabeans.doclet.UtilsFieldDoc.getAccessibleDeclaredFields;
 
-import com.sporniket.libre.javabeans.doclet.expander.JavabeanGenerator;
-import com.sporniket.libre.javabeans.doclet.expander.UtilsFieldname;
+import com.sporniket.libre.javabeans.doclet.JavabeanGenerator;
+import com.sporniket.libre.javabeans.doclet.UtilsFieldname;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
 

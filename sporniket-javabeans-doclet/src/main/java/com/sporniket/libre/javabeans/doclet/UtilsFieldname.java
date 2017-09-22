@@ -1,4 +1,4 @@
-package com.sporniket.libre.javabeans.doclet.expander;
+package com.sporniket.libre.javabeans.doclet;
 
 /**
  * Utility class for Field names.

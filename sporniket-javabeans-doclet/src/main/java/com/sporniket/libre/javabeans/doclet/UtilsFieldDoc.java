@@ -1,4 +1,4 @@
-package com.sporniket.libre.javabeans.doclet.expander;
+package com.sporniket.libre.javabeans.doclet;
 
 import java.util.ArrayList;
 import java.util.Arrays;

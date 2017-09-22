@@ -1,4 +1,4 @@
-package com.sporniket.libre.javabeans.doclet.expander;
+package com.sporniket.libre.javabeans.doclet;
 
 public interface BuilderGenerator extends JavaSourceGenerator
 {

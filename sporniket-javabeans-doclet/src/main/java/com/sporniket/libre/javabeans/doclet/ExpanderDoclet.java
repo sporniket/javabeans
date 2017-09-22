@@ -1,10 +1,10 @@
 /**
  *
  */
-package com.sporniket.libre.javabeans.doclet.expander;
+package com.sporniket.libre.javabeans.doclet;
 
-import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassDoc.*;
-import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassname.*;
+import static com.sporniket.libre.javabeans.doclet.UtilsClassDoc.*;
+import static com.sporniket.libre.javabeans.doclet.UtilsClassname.*;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toCollection;
 
@@ -19,9 +19,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.sporniket.libre.javabeans.doclet.expander.basic.BasicBuilderGenerator;
-import com.sporniket.libre.javabeans.doclet.expander.basic.BasicJavabeanGenerator;
-import com.sporniket.libre.javabeans.doclet.expander.basic.Builder;
+import com.sporniket.libre.javabeans.doclet.basic.BasicBuilderGenerator;
+import com.sporniket.libre.javabeans.doclet.basic.BasicJavabeanGenerator;
+import com.sporniket.libre.javabeans.doclet.basic.Builder;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.LanguageVersion;
 import com.sun.javadoc.PackageDoc;

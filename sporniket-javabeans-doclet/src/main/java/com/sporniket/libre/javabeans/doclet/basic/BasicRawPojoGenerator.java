@@ -1,8 +1,8 @@
-package com.sporniket.libre.javabeans.doclet.expander.basic;
+package com.sporniket.libre.javabeans.doclet.basic;
 
-import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassDoc.*;
-import static com.sporniket.libre.javabeans.doclet.expander.UtilsClassname.computeOutputClassname;
-import static com.sporniket.libre.javabeans.doclet.expander.UtilsFieldDoc.getPrivateDeclaredFields;
+import static com.sporniket.libre.javabeans.doclet.UtilsClassDoc.*;
+import static com.sporniket.libre.javabeans.doclet.UtilsClassname.computeOutputClassname;
+import static com.sporniket.libre.javabeans.doclet.UtilsFieldDoc.getPrivateDeclaredFields;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -10,9 +10,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.sporniket.libre.javabeans.doclet.expander.JavabeanGenerator;
-import com.sporniket.libre.javabeans.doclet.expander.UtilsClassDoc;
-import com.sporniket.libre.javabeans.doclet.expander.UtilsFieldname;
+import com.sporniket.libre.javabeans.doclet.JavabeanGenerator;
+import com.sporniket.libre.javabeans.doclet.UtilsClassDoc;
+import com.sporniket.libre.javabeans.doclet.UtilsFieldname;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
 
