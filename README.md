@@ -11,12 +11,12 @@ use normalized README.
 
 Sporniket Javabeans requires at least a JDK 8, and is tested on JDK 8.
 
-###DONE
+### DONE
 * generate Javabeans with basic getter/setter (not bounded, not constrained)
 * fluent builder api, e.g. ```bean = MyBeautifulBean.build().withId(...).withDescription(...).done() ;```
-
-###TO DO
 * reverse engineering of existing simple Javabeans hierarchy, to convert existing projects.
+
+### TO DO
 * replicate javadoc tags when appropriate : descriptions, deprecation, properties summary, ...
 * can generate boundable and constrainable properties (will use annotation)
 * allows true encapsulation of collections and maps (idem)
@@ -36,5 +36,4 @@ In the packages where you want to generate the javabeans.
 
 ## Pojo requirements
 
-The pojo and it's properties MUST be accessible : public or package private. If no code depends directly on the pojo, it is recommended to make it package private, as well as it's properties.
-
+The pojo and it's properties MUST be accessible : public or package private. If no code depends directly on the pojo, it is recommended to make it package private, as well as it's properties. Package private code is also shorter to type.
