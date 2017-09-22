@@ -53,6 +53,7 @@ import com.sporniket.studio.schema.model.set.javabean.BeanSet;
  * @goal generate
  * @phase generate-sources
  * @requiresDependencyResolution compile
+ * @deprecated
  * 
  */
 public class JavabeansGeneratorMojo extends AbstractMojo

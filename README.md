@@ -1,186 +1,39 @@
 # Sporniket-Javabeans
-a project to generate Javabeans from a XML model.
+A project to encapsulate hierarchised Java POJO structures into Javabeans replicating the hierarchy, a.k.a. "Yet Another Javabeans Generator".
+
+Before Septembre 2017, it WAS
+a project to generate Javabeans from a XML model. There is a legacy branch in the git repository for interested people.
+
+TODO
+use normalized README.
 
 ## Features
 
-* can generate boundable and constrainable properties
-* allows true encapsulation of collections and maps
-* fluent api support.
+Sporniket Javabeans requires at least a JDK 8, and is tested on JDK 8.
 
-# How to use the maven plugin
+### DONE
+* generate Javabeans with basic getter/setter (not bounded, not constrained)
+* fluent builder api, e.g. ```bean = MyBeautifulBean.build().withId(...).withDescription(...).done() ;```
+* reverse engineering of existing simple Javabeans hierarchy, to convert existing projects.
 
-## Installation and plugin declaration
+### TO DO
+* replicate javadoc tags when appropriate : descriptions, deprecation, properties summary, ...
+* can generate boundable and constrainable properties (will use annotation)
+* allows true encapsulation of collections and maps (idem)
+* the fluent builder api 'done()' method name may be specified.
 
-As of now, there is no central repository to get the plugin. Thus one should clone the git repository and build/install the plugin, and before that do the same for a required library :
+# How to use the generator in a maven project
 
-```
-git clone https://github.com/sporniket/core.git
-git checkout v15.03.00.01-jdk6
-cd core/sporniket-core
-mvn install
+The generator is a doclet, hence setting a call to the javadoc maven plugin with the rigth parameters for the "generate-sources" phase will do the job.
 
-cd ../..
+## Javadoc plugin call
 
-git clone https://github.com/sporniket/javabeans.git
-cd javabeans/sporniket-javabeans
-mvn install
-```
+TODO : call to maven plugin using plugin dependencies to sporniket-javabean-doclet
 
-Then, the plugin can be declared in the project poms :
+## Pojo location
 
-```maven
-<!-- For generating javabeans -->
-<plugin>
-	<groupId>com.sporniket.javabeans</groupId>
-	<artifactId>sporniket-javabeans-maven</artifactId>
-	<version>[the version to use]</version>
-	<executions>
-		<execution>
-			<phase>generate-sources</phase>
-			<goals>
-				<goal>generate</goal>
-			</goals>
-		</execution>
-	</executions>
-</plugin>
-```
+In the packages where you want to generate the javabeans.
 
-## XML model files location
+## Pojo requirements
 
-XML model files MUST be in *src/main/sporniket-javabeans*.
-
-## Run the plugin
-
-The plugin is invoked during the build lifecycle.
-
-Should you need to run the plugin manually :
-
-```
-mvn com.sporniket.javabeans:sporniket-javabeans-maven:generate
-```
-
-## Model files
-
-
-
-### Overall structure
-
-An XML model file describe a set of javabeans (*BeanSet*), consisting of one or more *package* containing one or more *bean* made of one or more *property*. The XML grammar of the file is located at [http://schema.sporniket-studio.com/model/set/javabean].
-
-Thus, a model file looks like this :
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<BeanSet xmlns="http://schema.sporniket-studio.com/model/set/javabean">
-	<package name="test.sporniket.javabean.generator.core">
-		<bean name="MyUsefullBean">
-			<property name="testJavaBasic" type="java:java.util.Date" mode="basic" />
-			...
-		</bean>
-	</package>
-</BeanSet>
-```
-
-### Element annotation
-
-*BeanSet*, *package*, *bean* and *property* supports an *annotation* that will be converted into javadoc or comments in the generated code.
-
-#### Beanset annotation
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<BeanSet xmlns="http://schema.sporniket-studio.com/model/set/javabean">
-	<annotation>
-		<author>David SPORN</author>
-		<author>etc...</author>
-		<licencenotice>This software is licensed under ...</licencenotice>
-		<licencenotice>etc...</licencenotice>
-		<version>1.0.5</version>
-		<see>Boolean</see>
-		<see>etc...</see>
-	</annotation>
-</BeanSet>
-```
-
-
-#### package and bean annotation
-
-```xml
-<package name="test.sporniket.javabean.generator.core">
-	<annotation>
-		<summary>One phrase that will be seen in the summary table of the javadoc.</summary>
-		<description>long description</description>
-		<description>...</description>
-		<see>Boolean</see>
-		<see>etc...</see>
-	</annotation>
-</package>
-```
-
-```xml
-<bean name="MyUsefullBean">
-	<annotation>
-		<summary>One phrase that will be seen in the summary table of the javadoc.</summary>
-		<description>long description</description>
-		<description>...</description>
-		<see>Boolean</see>
-		<see>etc...</see>
-	</annotation>
-</bean>
-```
-
-#### property annotation
-
-
-```xml
-<property name="testJavaBasic" type="java:java.util.Date" mode="basic">
-	<annotation>
-		<summary>One phrase that will be seen in the summary table of the javadoc.</summary>
-		<description>long description</description>
-		<description>...</description>
-		<see>Boolean</see>
-		<see>etc...</see>
-	</annotation>
-</property>
-```
-
-### property definition
-
-A *property* tag has 3 attributes :
-
-* *name*
-* *type*
-* *mode* (optionnal)
-
-#### name
-
-This attribute is the property name, following the javabean convention : camel case, first letter is lower case.
-
-#### type
-
-This attribute specify the type of the property, and follows the pattern *type:def*, where *type* can be :
-
-* *java* : then *def* is a Java class full name, e.g. "java.lang.String".
-* *enum* : then *def* specifies an internal enumeration, following the pattern *name:value1,value2,...* ; *name* may be empty.
-* *coll* : then *def* specifies a _collection_, following the pattern *interface:implementationClass:elementClass:mode*.
-* *map* : then *def* specifies a _map_, following the pattern *implementationClass:keyClass:valueClass:mode*.
-
-##### collection and map specifications
-
-For a *collection*, the type of the property for the getter/setter will be the specified *interface*, *implementationClass* will be the type of the internal field, *elementClass* is the type of elements stored in the collection.
-
-For a *map*, *implementationClass* will be the type of the internal field, *keyClass* is the type of the map keys, *valueClass* is the type of the map values.
-
-For a *collection* and a *map*, *mode* can be :
-
-* *notNull* : the getter return an non null container.
-* *isolated* : the container is encapsulated (the getter returns a clone, the setter does not replace the container), the javabeans act as a proxy (e.g. add/addAll/clear/remove for a collection, put/putAll/remove/clear for a map)
-
-#### mode
-
-This attribute specify the kind of Javabean property :
-
-* *basic* : the classical getter/setter. This is the default value.
-* *boundable* : the property can be listened for change (*PropertyChangeListener*).
-* *vetoable* : the property can also be constrained (*VetoableChangeListener*).
-
+The pojo and it's properties MUST be accessible : public or package private. If no code depends directly on the pojo, it is recommended to make it package private, as well as it's properties. Package private code is also shorter to type.
