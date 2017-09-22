@@ -2,7 +2,7 @@
 A project to encapsulate hierarchised Java POJO structures into Javabeans replicating the hierarchy, a.k.a. "Yet Another Javabeans Generator".
 
 Before Septembre 2017, it WAS
-a project to generate Javabeans from a XML model. There is a legacy branch in the git repository for interested people.
+a project to generate Javabeans from a XML model. Interested people may checkout the v15.04.00 or v15.04.01 and fork from there.
 
 TODO
 use normalized README.
@@ -13,7 +13,7 @@ Sporniket Javabeans requires at least a JDK 8, and is tested on JDK 8.
 
 ### DONE
 * generate Javabeans with basic getter/setter (not bounded, not constrained)
-* fluent builder api, e.g. ```bean = MyBeautifulBean.build().withId(...).withDescription(...).done() ;```
+* fluent builder api, e.g. ```bean = new MyBeautifulBean_Builder.withId(...).withDescription(...).done() ;```
 * reverse engineering of existing simple Javabeans hierarchy, to convert existing projects.
 
 ### TO DO
