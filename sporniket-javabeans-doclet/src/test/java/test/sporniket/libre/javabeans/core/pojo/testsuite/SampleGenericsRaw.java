@@ -39,7 +39,7 @@ import java.util.Map;
  *            MUST extends {@link Number}.
  * 
  */
-public class SampleGenericsRaw<T, R extends Number> extends SampleBasicRaw
+class SampleGenericsRaw<T, R extends Number> extends SampleBasicRaw
 {
 	Map<T, R> registry;
 }

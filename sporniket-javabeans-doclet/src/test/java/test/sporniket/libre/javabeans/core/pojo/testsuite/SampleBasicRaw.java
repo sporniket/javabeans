@@ -40,5 +40,6 @@ abstract class SampleBasicRaw
 	@Deprecated
 	public Date date ;
 	private String ignored ;
+	protected String ignoredToo ;
 	List<String> names ;
 }

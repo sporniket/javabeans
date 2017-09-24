@@ -34,7 +34,7 @@ package test.sporniket.libre.javabeans.core.pojo.testsuite;
  * @version 17.09.01
  * @since 17.09.01
  */
-public class SampleRelationRaw extends SampleBasicRaw
+class SampleRelationRaw extends SampleBasicRaw
 {
 	SampleBasicRaw source ;
 }
