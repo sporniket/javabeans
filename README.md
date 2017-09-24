@@ -22,6 +22,7 @@ a project to generate Javabeans from a XML model. Interested people may checkout
 * can generate boundable and constrainable properties (will use annotation)
 * allows true encapsulation of collections and maps (idem)
 * the fluent builder api 'done()' method name may be specified.
+* replicate annotations (springframework, ...) if possible, or provide a set of annotations to generate annotations on the generated code (classes and fields) (supported by the reverse-engineering doclet).
 
 
 ### What's new in v17.09.00
