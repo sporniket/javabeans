@@ -12,8 +12,33 @@ import java.util.function.Predicate;
 /**
  * Utility package for class names.
  *
- * @author dsporn
- *
+ * <p>
+ * &copy; Copyright 2012-2017 David Sporn
+ * </p>
+ * <hr>
+ * 
+ * <p>
+ * This file is part of <i>The Sporniket Javabeans Library &#8211; doclet</i>.
+ * 
+ * <p>
+ * <i>The Sporniket Javabeans Library &#8211; doclet</i> is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ * 
+ * <p>
+ * <i>The Sporniket Javabeans Library &#8211; doclet</i> is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * <p>
+ * You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library &#8211; 
+ * core</i>. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. 2
+ * 
+ * <hr>
+ * 
+ * @author David SPORN 
+ * @version 17.09.01
+ * @since 17.09.01
  */
 public final class UtilsClassname
 {
@@ -62,6 +87,34 @@ public final class UtilsClassname
 	}
 
 	/**
+	 * Create a translation map from javabean qualified class names to pojo qualified class names where pojos class names are
+	 * recognised by their suffix.
+	 *
+	 * @param registry
+	 *            a list of fully qualified class names, pojos are inside the list.
+	 * @param sourcePackages
+	 *            a registry of fully qualified package names, class names outside of theses packages are ignored.
+	 * @param pojoSuffix
+	 *            the suffix that pojo class names MUST have, excluding class that have the suffix for name.
+	 * @return the translation map.
+	 */
+	public static Map<String, String> getReverseTranslationMapWhenPojosAreSuffixed(Set<String> registry, Set<String> sourcePackages,
+			String pojoSuffix, String builderSuffix)
+	{
+		final Map<String, String> result = new HashMap<>(registry.size());
+		final Predicate<String> _isPojo = c -> sourcePackages.contains(getPackageName(c)) && !pojoSuffix.equals(getSimpleName(c))
+				&& c.endsWith(pojoSuffix);
+		final Predicate<String> _isBuilder = c -> sourcePackages.contains(getPackageName(c))
+				&& !builderSuffix.equals(getSimpleName(c)) && c.endsWith(builderSuffix);
+
+		registry.stream().filter(_isBuilder.negate()).filter(_isPojo.negate()).forEach(c -> {
+			result.put(c, c + pojoSuffix);
+		});
+
+		return result;
+	}
+
+	/**
 	 * Extract the class simple name from a fully qualified class name.
 	 *
 	 * @param fullClassName
@@ -94,34 +147,6 @@ public final class UtilsClassname
 
 		registry.stream().filter(_isPojo).forEach(c -> {
 			result.put(c, removeSuffixFromClassName(c, pojoSuffix));
-		});
-
-		return result;
-	}
-
-	/**
-	 * Create a translation map from javabean qualified class names to pojo qualified class names where pojos class names are
-	 * recognised by their suffix.
-	 *
-	 * @param registry
-	 *            a list of fully qualified class names, pojos are inside the list.
-	 * @param sourcePackages
-	 *            a registry of fully qualified package names, class names outside of theses packages are ignored.
-	 * @param pojoSuffix
-	 *            the suffix that pojo class names MUST have, excluding class that have the suffix for name.
-	 * @return the translation map.
-	 */
-	public static Map<String, String> getReverseTranslationMapWhenPojosAreSuffixed(Set<String> registry, Set<String> sourcePackages,
-			String pojoSuffix, String builderSuffix)
-	{
-		final Map<String, String> result = new HashMap<>(registry.size());
-		final Predicate<String> _isPojo = c -> sourcePackages.contains(getPackageName(c)) && !pojoSuffix.equals(getSimpleName(c))
-				&& c.endsWith(pojoSuffix);
-		final Predicate<String> _isBuilder = c -> sourcePackages.contains(getPackageName(c))
-				&& !builderSuffix.equals(getSimpleName(c)) && c.endsWith(builderSuffix);
-
-		registry.stream().filter(_isBuilder.negate()).filter(_isPojo.negate()).forEach(c -> {
-			result.put(c, c + pojoSuffix);
 		});
 
 		return result;
