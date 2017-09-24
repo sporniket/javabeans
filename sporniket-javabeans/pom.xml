@@ -4,7 +4,7 @@
 	<groupId>com.sporniket.javabeans</groupId>
 	<artifactId>sporniket-javabeans</artifactId>
 	<packaging>pom</packaging>
-	<version>15.04.02-SNAPSHOT</version>
+	<version>17.09.00-SNAPSHOT</version>
 
 	<properties>
 		<url.base>https://github.com/sporniket/core</url.base>
