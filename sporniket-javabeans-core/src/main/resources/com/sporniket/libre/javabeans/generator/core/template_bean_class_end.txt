@@ -1,2 +1,0 @@
-'}'
-//Generation date : {0,date,yyyy-MM-dd HH:mm:ss.SSS}. 

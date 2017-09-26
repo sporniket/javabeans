@@ -13,7 +13,6 @@
 
 		<version.dependency.sporniket.core>15.03.01-jdk</version.dependency.sporniket.core>
 		<version.dependency.junit>4.12</version.dependency.junit>
-		<version.dependency.castor.xml>1.3.2</version.dependency.castor.xml>
 
 		<!-- maven plugins version -->
 		<version.maven-compiler-plugin>3.2</version.maven-compiler-plugin>
@@ -33,11 +32,6 @@
 
 	<modules>
 		<module>../sporniket-javabeans-doclet</module>
-<!--
-		<module>../sporniket-javabeans-core</module>
-		<module>../sporniket-javabeans-cli</module>
-		<module>../sporniket-javabeans-maven</module>
--->
 	</modules>
 
 	<dependencyManagement>
@@ -55,13 +49,6 @@
 				<groupId>com.sporniket.core</groupId>
 				<artifactId>sporniket-core-io</artifactId>
 				<version>${version.dependency.sporniket.core}</version>
-			</dependency>
-
-			<!-- Castor generated classes support -->
-			<dependency>
-				<groupId>org.codehaus.castor</groupId>
-				<artifactId>castor-xml</artifactId>
-				<version>${version.dependency.castor.xml}</version>
 			</dependency>
 
 			<!-- ===TEST DEPENDENCIES -->
