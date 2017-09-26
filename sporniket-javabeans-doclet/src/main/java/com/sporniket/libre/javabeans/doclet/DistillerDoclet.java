@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.sporniket.libre.javabeans.doclet.basic.BasicBuilderGenerator;
 import com.sporniket.libre.javabeans.doclet.basic.BasicRawPojoGenerator;
 import com.sporniket.libre.javabeans.doclet.basic.Builder;
 import com.sun.javadoc.ClassDoc;
@@ -157,19 +156,6 @@ public class DistillerDoclet
 				.filter(c -> _translations.containsKey(c.qualifiedName())) //
 				.forEach(p -> processPojoClass(p, _translations, options));
 
-	}
-
-	private void generateBuilder(ClassDoc pojo, PrintStream out, Set<String> knownClasses, Map<String, String> translations,
-			Set<String> shortables, DocletOptions options)
-	{
-		new Builder<>(new BasicBuilderGenerator())//
-				.withKnownClasses(knownClasses)//
-				.withOut(out)//
-				.withShortables(shortables)//
-				.withSource(pojo)//
-				.withTranslations(translations)//
-				.withOptions(options)//
-				.done().generate();
 	}
 
 	private void generatePojo(ClassDoc pojo, PrintStream out, Set<String> knownClasses, Map<String, String> translations,
