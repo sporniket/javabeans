@@ -1,10 +1,5 @@
 /**
- * 
- */
-package test.sporniket.libre.javabeans.core.pojo.testsuite;
-
-/**
- * This sample pojo use another pojo.
+ * Collection of javabeans to test the pojo extractor.
  * 
  * <p>
  * &copy; Copyright 2012-2017 David Sporn
@@ -34,7 +29,4 @@ package test.sporniket.libre.javabeans.core.pojo.testsuite;
  * @version 17.09.01
  * @since 17.09.01
  */
-class SampleRelationRaw extends SampleBasicRaw
-{
-	SampleBasicRaw source ;
-}
+package com.sporniket.sample.javabeans;

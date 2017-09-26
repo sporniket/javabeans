@@ -1,9 +1,6 @@
-package test.sporniket.libre.javabeans.core.pojo.testsuite;
-
-import java.util.Date;
-import java.util.List;
-
 /**
+ * Collection of pojos to test the javabean generator.
+ * 
  * <p>
  * &copy; Copyright 2012-2017 David Sporn
  * </p>
@@ -32,14 +29,4 @@ import java.util.List;
  * @version 17.09.01
  * @since 17.09.01
  */
-abstract class SampleBasicRaw
-{
-	/**
-	 * Date of creation.
-	 */
-	@Deprecated
-	public Date date ;
-	private String ignored ;
-	protected String ignoredToo ;
-	List<String> names ;
-}
+package com.sporniket.sample.pojos;

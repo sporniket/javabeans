@@ -1,0 +1,119 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.sporniket.javabeans</groupId>
+  <version>17.09.00-SNAPSHOT</version>
+  <artifactId>sporniket-javabeans-doclet-sample</artifactId>
+  <packaging>jar</packaging>
+
+  <properties>
+    <version.jdk>1.8</version.jdk>
+    <version.sporniket-javabeans-doclet>${project.version}</version.sporniket-javabeans-doclet>
+
+    <!-- maven plugins version -->
+    <version.maven-compiler-plugin>3.2</version.maven-compiler-plugin>
+    <version.maven-javadoc-plugin>3.0.0-M1</version.maven-javadoc-plugin>
+  </properties>
+
+  <name>sporniket-javabeans-doclet-sample</name>
+  <description>Sample project to demonstrate sporniket-javabeans-doclet use.</description>
+  <dependencies>
+    <!-- ===INTERNAL DEPENDENCIES=== -->
+
+    <!-- ===EXTERNAL DEPENDENCIES (non test)=== -->
+    <!-- Sample manual use of the doclet -->
+    <dependency>
+      <groupId>com.sporniket.javabeans</groupId>
+      <artifactId>sporniket-javabeans-doclet</artifactId>
+      <version>${version.sporniket-javabeans-doclet}</version>
+    </dependency>
+
+    <!-- ===TEST DEPENDENCIES=== -->
+  </dependencies>
+  <build>
+    <plugins>
+      <!-- Version of Java supported -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${version.maven-compiler-plugin}</version>
+        <configuration>
+          <source>${version.jdk}</source>
+          <target>${version.jdk}</target>
+        </configuration>
+      </plugin>
+      <!-- === DEMO : code generation using the doclets === -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${version.maven-javadoc-plugin}</version>
+        <executions>
+          <!-- === DEMO : Javabeans generation === -->
+          <execution>
+            <id>expandJavabeans</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>javadoc-no-fork</goal>
+            </goals>
+            <configuration>
+              <doclet>com.sporniket.libre.javabeans.doclet.ExpanderDoclet</doclet>
+              <docletArtifact>
+                <groupId>com.sporniket.javabeans</groupId>
+                <artifactId>sporniket-javabeans-doclet</artifactId>
+                <version>${version.sporniket-javabeans-doclet}</version>
+              </docletArtifact>
+              <additionalparam>-d ${project.build.directory}/generated-classes/javabeans</additionalparam>
+              <show>private</show>
+              <sourceFileIncludes>
+                <sourceFileIncludes>com\/sporniket\/sample\/pojos\/\*.java</sourceFileIncludes>
+              </sourceFileIncludes>
+              <useStandardDocletOptions>false</useStandardDocletOptions>
+            </configuration>
+          </execution>
+          <!-- === DEMO : POJO generation when generating sources === -->
+          <execution>
+            <id>distilPojos</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>javadoc-no-fork</goal>
+            </goals>
+            <configuration>
+              <doclet>com.sporniket.libre.javabeans.doclet.DistillerDoclet</doclet>
+              <docletArtifact>
+                <groupId>com.sporniket.javabeans</groupId>
+                <artifactId>sporniket-javabeans-doclet</artifactId>
+                <version>${version.sporniket-javabeans-doclet}</version>
+              </docletArtifact>
+              <additionalparam>-d ${project.build.directory}/generated-classes/pojos</additionalparam>
+              <show>private</show>
+              <sourceFileIncludes>
+                <sourceFileIncludes>com\/sporniket\/sample\/javabeans\/\*.java</sourceFileIncludes>
+              </sourceFileIncludes>
+              <useStandardDocletOptions>false</useStandardDocletOptions>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- === DEMO : add generated Javabeans as source folder, not generated pojos === -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/generated-classes/javabeans</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

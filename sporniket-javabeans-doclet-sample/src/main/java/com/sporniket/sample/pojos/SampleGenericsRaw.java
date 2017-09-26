@@ -1,4 +1,4 @@
-package test.sporniket.libre.javabeans.core.pojo.testsuite;
+package com.sporniket.sample.pojos;
 
 import java.util.Map;
 

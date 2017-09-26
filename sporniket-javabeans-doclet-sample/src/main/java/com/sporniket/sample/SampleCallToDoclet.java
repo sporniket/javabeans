@@ -1,4 +1,4 @@
-package test.sporniket.libre.javabeans.core.pojo.encapsulator;
+package com.sporniket.sample;
 
 import java.io.File;
 
@@ -34,7 +34,7 @@ import javax.tools.ToolProvider;
  * @version 17.09.01
  * @since 17.09.01
  */
-public class EncapsulatorDoclet
+public class SampleCallToDoclet
 {
 	private static final String ENV_NAME__PROJECT_LOCATION = "project.base.dir";
 
@@ -69,13 +69,14 @@ public class EncapsulatorDoclet
 		String[] _argsExpander =
 		{
 				"-sourcepath",
-				projectBaseDir + "/src/test/java",
+				projectBaseDir + "/src/main/java",
 				"-d",
-				"target/generated-sources/javabeans",
+				projectBaseDir + "/generated-sources/manual-javabeans",
 				"-private",
+				"-verbose",
 				"-doclet",
 				"com.sporniket.libre.javabeans.doclet.ExpanderDoclet",
-				"test.sporniket.libre.javabeans.core.pojo.testsuite"
+				"com.sporniket.sample.pojos"
 		};
 
 		javadoc.run(System.in, System.out, System.err, _argsExpander);
@@ -85,11 +86,13 @@ public class EncapsulatorDoclet
 				"-sourcepath",
 				projectBaseDir + "/src/main/java",
 				"-d",
-				"target/generated-sources/javabeans",
+				projectBaseDir + "/generated-sources/manual-pojos",
 				"-private",
+				"-pojoSuffix",
+				"_Prototype",
 				"-doclet",
 				"com.sporniket.libre.javabeans.doclet.DistillerDoclet",
-				"com.sporniket.libre.javabeans.doclet.basic"
+				"com.sporniket.sample.javabeans"
 		};
 
 		javadoc.run(System.in, System.out, System.err, _argsDistiller);

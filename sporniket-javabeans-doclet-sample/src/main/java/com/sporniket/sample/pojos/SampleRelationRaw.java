@@ -1,5 +1,10 @@
 /**
- * Collection of classes to test the pojo encapsulator and the pojo extractor.
+ * 
+ */
+package com.sporniket.sample.pojos;
+
+/**
+ * This sample pojo use another pojo.
  * 
  * <p>
  * &copy; Copyright 2012-2017 David Sporn
@@ -29,4 +34,7 @@
  * @version 17.09.01
  * @since 17.09.01
  */
-package test.sporniket.libre.javabeans.core.pojo.testsuite;
+class SampleRelationRaw extends SampleBasicRaw
+{
+	SampleBasicRaw source ;
+}
