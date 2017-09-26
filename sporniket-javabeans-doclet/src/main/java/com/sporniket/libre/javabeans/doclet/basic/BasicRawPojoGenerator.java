@@ -9,6 +9,7 @@ import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
 
 /**
+ * Basic generator for pojos from javabeans.
  * <p>
  * &copy; Copyright 2012-2017 David Sporn
  * </p>

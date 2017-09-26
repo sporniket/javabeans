@@ -4,6 +4,8 @@
 package com.sporniket.libre.javabeans.doclet;
 
 /**
+ * Specialized source generator for generating javabeans.
+ * 
  * <p>
  * &copy; Copyright 2012-2017 David Sporn
  * </p>

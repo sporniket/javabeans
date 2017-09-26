@@ -14,6 +14,8 @@ import com.sporniket.libre.javabeans.doclet.UtilsFieldname;
 import com.sun.javadoc.FieldDoc;
 
 /**
+ * Basic builder generator.
+ * 
  * <p>
  * &copy; Copyright 2012-2017 David Sporn
  * </p>

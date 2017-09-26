@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 /**
- * Utility package for class names.
+ * Utility package for class names stored in a String.
  *
  * <p>
  * &copy; Copyright 2012-2017 David Sporn

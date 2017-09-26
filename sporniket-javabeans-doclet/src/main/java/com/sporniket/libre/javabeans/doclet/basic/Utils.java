@@ -38,7 +38,7 @@ import java.util.function.Predicate;
  * @version 17.09.00
  * @since 17.09.00
  */
-public class Utils
+class Utils
 {
 	public static final Predicate<? super String> IS_NOT_JAVA_LANG_TYPE = c -> !Object.class.getPackage().getName()
 			.equals(getPackageName(c));

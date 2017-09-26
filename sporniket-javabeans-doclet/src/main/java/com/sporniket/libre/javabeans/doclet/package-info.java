@@ -1,5 +1,5 @@
 /**
- * Encapsulate a given POJO into a Javabean.
+ * Code generator to expand a pojo into a javabeans, and to reverse engineer a javabean into a pojo.
  *
  * <p>
  * &copy; Copyright 2012-2017 David Sporn
