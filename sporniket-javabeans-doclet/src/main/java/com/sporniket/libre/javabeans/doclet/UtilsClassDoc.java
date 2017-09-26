@@ -26,26 +26,26 @@ import com.sun.javadoc.WildcardType;
  * &copy; Copyright 2012-2017 David Sporn
  * </p>
  * <hr>
- * 
+ *
  * <p>
  * This file is part of <i>The Sporniket Javabeans Library &#8211; doclet</i>.
- * 
+ *
  * <p>
  * <i>The Sporniket Javabeans Library &#8211; doclet</i> is free software: you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at
  * your option) any later version.
- * 
+ *
  * <p>
  * <i>The Sporniket Javabeans Library &#8211; doclet</i> is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
  * Public License for more details.
- * 
+ *
  * <p>
  * You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library &#8211;
  * core</i>. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. 2
- * 
+ *
  * <hr>
- * 
+ *
  * @author David SPORN
  * @version 17.09.00
  * @since 17.09.00
@@ -57,26 +57,26 @@ public final class UtilsClassDoc
 	 * &copy; Copyright 2012-2017 David Sporn
 	 * </p>
 	 * <hr>
-	 * 
+	 *
 	 * <p>
 	 * This file is part of <i>The Sporniket Javabeans Library &#8211; doclet</i>.
-	 * 
+	 *
 	 * <p>
 	 * <i>The Sporniket Javabeans Library &#8211; doclet</i> is free software: you can redistribute it and/or modify it under the
 	 * terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License,
 	 * or (at your option) any later version.
-	 * 
+	 *
 	 * <p>
 	 * <i>The Sporniket Javabeans Library &#8211; doclet</i> is distributed in the hope that it will be useful, but WITHOUT ANY
 	 * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
 	 * General Public License for more details.
-	 * 
+	 *
 	 * <p>
 	 * You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library
 	 * &#8211; core</i>. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. 2
-	 * 
+	 *
 	 * <hr>
-	 * 
+	 *
 	 * @author David SPORN
 	 * @version 17.09.00
 	 * @since 17.09.00
@@ -211,26 +211,26 @@ public final class UtilsClassDoc
 	 * &copy; Copyright 2012-2017 David Sporn
 	 * </p>
 	 * <hr>
-	 * 
+	 *
 	 * <p>
 	 * This file is part of <i>The Sporniket Javabeans Library &#8211; doclet</i>.
-	 * 
+	 *
 	 * <p>
 	 * <i>The Sporniket Javabeans Library &#8211; doclet</i> is free software: you can redistribute it and/or modify it under the
 	 * terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License,
 	 * or (at your option) any later version.
-	 * 
+	 *
 	 * <p>
 	 * <i>The Sporniket Javabeans Library &#8211; doclet</i> is distributed in the hope that it will be useful, but WITHOUT ANY
 	 * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
 	 * General Public License for more details.
-	 * 
+	 *
 	 * <p>
 	 * You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library
 	 * &#8211; core</i>. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. 2
-	 * 
+	 *
 	 * <hr>
-	 * 
+	 *
 	 * @author David SPORN
 	 * @version 17.09.00
 	 * @since 17.09.00
@@ -384,7 +384,7 @@ public final class UtilsClassDoc
 	}
 
 	/**
-	 * Output the class name for the bean type instanciation, e.g. "<code>... pojo = new SampleBasicBean<>() ;</code>".
+	 * Output the class name for the bean type instanciation, e.g. "<code>... pojo = new SampleBasicBean&lt;&gt;() ;</code>".
 	 *
 	 * @param into
 	 *            the buffer into which to output the class name.
@@ -407,7 +407,8 @@ public final class UtilsClassDoc
 	}
 
 	/**
-	 * Output the class name for the bean type declaration, e.g. "<code>private final SampleBasicBean<T, R> bean = ...</code>".
+	 * Output the class name for the bean type declaration, e.g.
+	 * "<code>private final SampleBasicBean&lt;T, R&gt; bean = ...</code>".
 	 *
 	 * @param into
 	 *            the buffer into which to output the class name.
@@ -456,7 +457,7 @@ public final class UtilsClassDoc
 	}
 
 	/**
-	 * Output the class name for the pojo type instanciation, e.g. "<code>... pojo = new SampleBasicBeanRaw<>() ;</code>".
+	 * Output the class name for the pojo type instanciation, e.g. "<code>... pojo = new SampleBasicBeanRaw&lt;&gt;() ;</code>".
 	 *
 	 * @param into
 	 *            the buffer into which to output the class name.
@@ -479,7 +480,8 @@ public final class UtilsClassDoc
 	}
 
 	/**
-	 * Output the class name for the pojo type declaration, e.g. "<code>private final SampleBasicBeanRaw<T, R> pojo = ...</code>".
+	 * Output the class name for the pojo type declaration, e.g.
+	 * "<code>private final SampleBasicBeanRaw&lt;T, R&gt; pojo = ...</code>".
 	 *
 	 * @param into
 	 *            the buffer into which to output the class name.
@@ -533,12 +535,14 @@ public final class UtilsClassDoc
 	}
 
 	/**
+	 * @param toScan
+	 *            the class to scan.
 	 * @return <code>true</code> when the class is abstract or implements any interface that require to implement a method.
 	 */
 	public static boolean shouldBeAbstract(ClassDoc toScan)
 	{
 		boolean result = toScan.isAbstract();
-		if (!result && toScan.interfaceTypes() != null && toScan.interfaceTypes().length > 0)
+		if (!result && (toScan.interfaceTypes() != null) && (toScan.interfaceTypes().length > 0))
 		{
 			result = !Arrays.asList(toScan.interfaceTypes()).stream()//
 					.filter(t -> !MARKERS_INTERFACES.contains(t.qualifiedTypeName()))//
