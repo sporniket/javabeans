@@ -34,27 +34,27 @@ import com.sun.javadoc.RootDoc;
  * &copy; Copyright 2012-2017 David Sporn
  * </p>
  * <hr>
- * 
+ *
  * <p>
  * This file is part of <i>The Sporniket Javabeans Library &#8211; doclet</i>.
- * 
+ *
  * <p>
- * <i>The Sporniket Javabeans Library &#8211; doclet</i> is free software: you can redistribute it and/or modify it under the terms of the
- * GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
+ * <i>The Sporniket Javabeans Library &#8211; doclet</i> is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at
+ * your option) any later version.
+ *
  * <p>
- * <i>The Sporniket Javabeans Library &#8211; doclet</i> is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
- * License for more details.
- * 
+ * <i>The Sporniket Javabeans Library &#8211; doclet</i> is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details.
+ *
  * <p>
- * You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library &#8211; 
+ * You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library &#8211;
  * core</i>. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. 2
- * 
+ *
  * <hr>
- * 
- * @author David SPORN 
+ *
+ * @author David SPORN
  * @version 17.09.00
  * @since 17.09.00
  */
@@ -143,6 +143,8 @@ public class ExpanderDoclet
 
 	private void execute(RootDoc root, DocletOptions options)
 	{
+		System.out.println("ExpanderDoclet running with : \n" + options.toString());
+
 		final List<ClassDoc> _sourceClasses = asList(root.classes());
 
 		final Set<String> _packages = asList(root.specifiedPackages()).stream().map(PackageDoc::name)
@@ -151,7 +153,7 @@ public class ExpanderDoclet
 		final Map<String, String> _translations = getTranslationMapWhenPojosAreSuffixed(_classes, _packages, options.pojoSuffix);
 
 		_sourceClasses.stream() //
-				.filter(c -> _translations.containsKey(c.qualifiedName())) //
+				// .filter(c -> _translations.containsKey(c.qualifiedName())) //
 				.forEach(p -> processPojoClass(p, _translations, options));
 
 	}
@@ -215,19 +217,26 @@ public class ExpanderDoclet
 
 		try
 		{
+			final String _qualifiedName = pojo.qualifiedName();
+			final String _javabeanQualifiedName = translations.get(_qualifiedName);
+
+			System.out.printf("Generating javabean %s from %s \n", _javabeanQualifiedName, _qualifiedName);
+
 			PrintStream _out = (null != options.d)
-					? new PrintStream(getFileToGenerate(translations.get(pojo.qualifiedName()), options))
+					? new PrintStream(getFileToGenerate(_javabeanQualifiedName, options))
 					: System.out;
 			generateJavabean(pojo, _out, _knownClasses, translations, _shortables, options);
 			if (null != options.d)
 			{
 				_out.close();
 			}
-			if (!shouldBeAbstract(pojo)) //abstract classes do not need builders...
+			if (!shouldBeAbstract(pojo)) // abstract classes do not need builders...
 			{
-				_out = (null != options.d)
-						? new PrintStream(getFileToGenerate(translations.get(pojo.qualifiedName()) + "_Builder", options))
-						: System.out;
+				final String _builderQualifiedName = _javabeanQualifiedName + "_Builder";
+
+				System.out.printf("Generating builder %s from %s \n", _builderQualifiedName, _qualifiedName);
+
+				_out = (null != options.d) ? new PrintStream(getFileToGenerate(_builderQualifiedName, options)) : System.out;
 				generateBuilder(pojo, _out, _knownClasses, translations, _shortables, options);
 				if (null != options.d)
 				{
