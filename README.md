@@ -52,44 +52,10 @@ a project to generate Javabeans from a XML model. Interested people may checkout
 
 ## 3. How to use **Sporniket-Javabeans** ?
 
-### How to write POJO structures from scratch.
-
-* Write package private code, unless your POJOs tree spans on multiple packages. *There is less typing when writing package private code.*
-* A POJO is suffixed, the default suffix is ```Raw```.
-* Only public or package private fields will be the fields of a generated Javabean.
-
-*See the test package ```test.sporniket.libre.javabeans.core.pojo.testsuite``` for a few samples.*
-
-
-### Manually generate javabeans
-
-Invoke javadoc with the doclet ```com.sporniket.libre.javabeans.doclet.ExpanderDoclet``` on the package list containing the POJOs. Use ```-d <path>``` option to specify the target directory for generated source code. Use ```-private``` to be able to scan the POJOs.
-
-```
-javadoc -sourcepath path/to/source -d target/generated-sources/javabeans -private -doclet com.sporniket.libre.javabeans.doclet.ExpanderDoclet my.package.with.pojos
-```
-
-### Manually reverse-engineer POJOs
-
-Invoke javadoc with the doclet ```com.sporniket.libre.javabeans.doclet.DistillerDoclet``` on the packages containing the javabeans. Use ```-d <path>``` option to specify the target directory for generated source code. Use ```-private``` to be able to scan the POJOs.
-
-```
-javadoc -sourcepath path/to/source -d target/generated-sources/javabeans -private -doclet com.sporniket.libre.javabeans.doclet.DistillerDoclet my.package.with.javabeans
-```
-
-### Maven
-Call the javadoc plugin during ```generate-sources``` like described for the manual procedure, the plugin dependency will be :
-
-```
-<dependency>
-	<groupId>com.sporniket.javabeans</groupId>
-	<artifactId>sporniket-javabeans-doclet</artifactId>
-	<version>17.09.00</version>
-</dependency>
-```
-
-### Directions and sample code
-Read the javadoc and look at the test code.
+> See the demo project ```sporniket-javabeans-doclet-sample```. It demonstrate :
+>
+> * Javabeans and POJOs generation, integrated in the build process of maven.
+> * Manual call in a sample program.
 
 ## 4. Known issues
 See the [project issues](https://github.com/sporniket/javabeans/issues) page.
