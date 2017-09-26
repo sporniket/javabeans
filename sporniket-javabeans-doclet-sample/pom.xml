@@ -62,7 +62,7 @@
                 <artifactId>sporniket-javabeans-doclet</artifactId>
                 <version>${version.sporniket-javabeans-doclet}</version>
               </docletArtifact>
-              <additionalparam>-d ${project.build.directory}/generated-classes/javabeans</additionalparam>
+              <additionalparam>-d ${project.build.directory}/generated-classes/javabeans -beanFieldPrefix ''</additionalparam>
               <show>private</show>
               <sourceFileIncludes>
                 <sourceFileIncludes>com\/sporniket\/sample\/pojos\/\*.java</sourceFileIncludes>

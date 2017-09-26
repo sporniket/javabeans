@@ -6,10 +6,13 @@ import static com.sporniket.libre.javabeans.doclet.UtilsFieldDoc.getAccessibleDe
 
 import com.sporniket.libre.javabeans.doclet.JavabeanGenerator;
 import com.sporniket.libre.javabeans.doclet.UtilsFieldname;
+import com.sporniket.libre.lang.string.StringTools;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
 
 /**
+ * Basic generator of javabeans from pojos.
+ * 
  * <p>
  * &copy; Copyright 2012-2017 David Sporn
  * </p>
@@ -19,39 +22,39 @@ import com.sun.javadoc.FieldDoc;
  * This file is part of <i>The Sporniket Javabeans Library &#8211; doclet</i>.
  * 
  * <p>
- * <i>The Sporniket Javabeans Library &#8211; doclet</i> is free software: you can redistribute it and/or modify it under the terms of the
- * GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * <i>The Sporniket Javabeans Library &#8211; doclet</i> is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at
+ * your option) any later version.
  * 
  * <p>
- * <i>The Sporniket Javabeans Library &#8211; doclet</i> is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
- * License for more details.
+ * <i>The Sporniket Javabeans Library &#8211; doclet</i> is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details.
  * 
  * <p>
- * You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library &#8211; 
+ * You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library &#8211;
  * core</i>. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. 2
  * 
  * <hr>
  * 
- * @author David SPORN 
+ * @author David SPORN
  * @version 17.09.00
  * @since 17.09.00
  */
 public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGenerator
 {
-	//FIXME use DocletOptions.getBeanFieldPrefix() to optionnaly prefix the field name, or use 'this.field'.
-
 	private void outputAccessor(FieldDoc field)
 	{
-		final String _accessorSuffix = UtilsFieldname.computeFieldAccessorSuffix(field.name());
+		final boolean _noPrefix = StringTools.isEmptyString(getOptions().getBeanFieldPrefix());
+		final String _fieldPrefix = _noPrefix ? "this." : getOptions().getBeanFieldPrefix();
+		final String _accessorSuffix = _noPrefix ? field.name() : UtilsFieldname.computeFieldAccessorSuffix(field.name());
 		final String _type = computeOutputType_invocation(field.type(), getTranslations(), getShortables());
 
 		// getter
-		getOut().printf("    public %s get%s() {return my%s ;}\n", _type, _accessorSuffix, _accessorSuffix);
+		getOut().printf("    public %s get%s() {return %s%s ;}\n", _type, _accessorSuffix, _fieldPrefix, _accessorSuffix);
 
 		// setter
-		getOut().printf("    public void set%s(%s value) {my%s = value;}\n", _accessorSuffix, _type, _accessorSuffix);
+		getOut().printf("    public void set%s(%s value) {%s%s = value;}\n", _accessorSuffix, _type, _fieldPrefix, _accessorSuffix);
 
 		getOut().println();
 	}
@@ -68,7 +71,8 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 	@Override
 	public void outputClassBegin()
 	{
-		final StringBuilder _classDecl = new StringBuilder(shouldBeAbstract(getSource()) ? "public abstract class " : "public class ");
+		final StringBuilder _classDecl = new StringBuilder(
+				shouldBeAbstract(getSource()) ? "public abstract class " : "public class ");
 		outputClassName__classDeclaration(_classDecl, getSource(), getTranslations(), getShortables());
 
 		final String _supername = getSource().superclass().qualifiedName();
@@ -93,11 +97,13 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 
 	private void outputField(FieldDoc field)
 	{
-		final String _accessorSuffix = UtilsFieldname.computeFieldAccessorSuffix(field.name());
+		final boolean _noPrefix = StringTools.isEmptyString(getOptions().getBeanFieldPrefix());
+		final String _fieldPrefix = getOptions().getBeanFieldPrefix();
+		final String _accessorSuffix = _noPrefix ? field.name() : UtilsFieldname.computeFieldAccessorSuffix(field.name());
 		final String _type = computeOutputType_invocation(field.type(), getTranslations(), getShortables());
 
 		// field declaration
-		getOut().printf("    private %s my%s ;\n", _type, _accessorSuffix);
+		getOut().printf("    private %s %s%s ;\n", _type, _fieldPrefix, _accessorSuffix);
 	}
 
 	@Override
