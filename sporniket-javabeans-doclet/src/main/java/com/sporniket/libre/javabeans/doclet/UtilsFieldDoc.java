@@ -46,23 +46,11 @@ public final class UtilsFieldDoc
 
 	private static void collectPublicFieldsInto(List<FieldDoc> buffer, ClassDoc toScan)
 	{
-		buffer.addAll(Arrays.asList(toScan.fields()).stream().filter(IS_ACCESSIBLE_FIELD).collect(Collectors.toList()));
 		if (!Object.class.getName().equals(toScan.qualifiedName()))
 		{
+			buffer.addAll(Arrays.asList(toScan.fields()).stream().filter(IS_ACCESSIBLE_FIELD).collect(Collectors.toList()));
 			collectPublicFieldsInto(buffer, toScan.superclass());
 		}
-	}
-
-	/**
-	 * Capitalize the first letter of the field name.
-	 *
-	 * @param field
-	 *            the field name to transform.
-	 * @return the transformed field name, e.g. <code>fooBar</code> will give <code>FooBar</code>.
-	 */
-	public static String computeFieldAccessorSuffix(FieldDoc field)
-	{
-		return field.name().substring(0, 1).toUpperCase() + field.name().substring(1);
 	}
 
 	/**
