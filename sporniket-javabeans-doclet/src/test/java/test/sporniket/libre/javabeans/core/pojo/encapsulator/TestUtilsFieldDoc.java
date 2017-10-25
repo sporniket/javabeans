@@ -41,6 +41,38 @@ public class TestUtilsFieldDoc
 	FieldDoc field4;
 
 	@Test
+	public void test__getAccessibleDeclaredFields()
+	{
+		// prepare
+		// * field 1
+		when(field1.isPublic()).thenReturn(true);
+
+		// * field 2
+		when(field2.isPublic()).thenReturn(false);
+		when(field2.isPackagePrivate()).thenReturn(true);
+
+		// * field 3
+		when(field3.isPublic()).thenReturn(false);
+		when(field3.isPackagePrivate()).thenReturn(false);
+
+		// * class 1
+		when(class1.fields()).thenReturn(new FieldDoc[]
+		{
+				field1,
+				field2,
+				field3
+		});
+
+		// execute
+		List<FieldDoc> _toTest = UtilsFieldDoc.getAccessibleDeclaredFields(class1);
+
+		// verify
+		assertThat(_toTest, hasItem(field1));
+		assertThat(_toTest, hasItem(field2));
+		assertThat(_toTest, not(hasItem(field3)));
+	}
+
+	@Test
 	public void test__getAccessibleFields()
 	{
 		// prepare
@@ -103,5 +135,27 @@ public class TestUtilsFieldDoc
 
 		// verify
 		assertThat(_toTest, hasItem(field1));
+	}
+
+	@Test
+	public void test__getPrivateDeclaredFields()
+	{
+		// prepare
+		// * field 1
+		when(field1.isPrivate()).thenReturn(true);
+
+		// * class 1
+		when(class1.fields()).thenReturn(new FieldDoc[]
+		{
+				field1,
+				field2
+		});
+
+		// execute
+		List<FieldDoc> _toTest = UtilsFieldDoc.getPrivateDeclaredFields(class1);
+
+		// verify
+		assertThat(_toTest, hasItem(field1));
+		assertThat(_toTest, not(hasItem(field2)));
 	}
 }
