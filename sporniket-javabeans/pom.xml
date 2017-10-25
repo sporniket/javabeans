@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.sporniket.javabeans</groupId>
@@ -13,6 +14,7 @@
 
 		<version.dependency.sporniket.core>15.03.01-jdk</version.dependency.sporniket.core>
 		<version.dependency.junit>4.12</version.dependency.junit>
+		<version.dependency.mockito>[2.0,3.0)</version.dependency.mockito>
 
 		<!-- maven plugins version -->
 		<version.maven-compiler-plugin>3.2</version.maven-compiler-plugin>
@@ -52,6 +54,16 @@
 			</dependency>
 
 			<!-- ===TEST DEPENDENCIES -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${version.dependency.junit}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>${version.dependency.mockito}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -180,8 +192,8 @@
 	<scm>
 		<connection>scm:git:https://github.com/sporniket/javabeans.git</connection>
 		<url>https://github.com/sporniket/javabeans</url>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 
 	<issueManagement>
 		<system>GitHub.com</system>
