@@ -27,4 +27,4 @@
  * @version 17.09.01
  * @since 17.09.01
  */
-package test.sporniket.libre.javabeans.core.pojo.encapsulator;
+package test.sporniket.libre.javabeans.doclet;

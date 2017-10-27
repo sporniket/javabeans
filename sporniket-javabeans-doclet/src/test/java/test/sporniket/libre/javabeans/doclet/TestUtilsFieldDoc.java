@@ -1,4 +1,4 @@
-package test.sporniket.libre.javabeans.core.pojo.encapsulator;
+package test.sporniket.libre.javabeans.doclet;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;

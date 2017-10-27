@@ -1,4 +1,4 @@
-package test.sporniket.libre.javabeans.core.pojo.encapsulator;
+package test.sporniket.libre.javabeans.doclet;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
