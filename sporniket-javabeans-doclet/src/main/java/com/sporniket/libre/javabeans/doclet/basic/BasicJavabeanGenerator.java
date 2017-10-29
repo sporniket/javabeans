@@ -47,14 +47,15 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 	{
 		final boolean _noPrefix = StringTools.isEmptyString(getOptions().getBeanFieldPrefix());
 		final String _fieldPrefix = _noPrefix ? "this." : getOptions().getBeanFieldPrefix();
-		final String _accessorSuffix = _noPrefix ? field.name() : UtilsFieldname.computeFieldAccessorSuffix(field.name());
+		final String _accessorSuffix = UtilsFieldname.computeFieldAccessorSuffix(field.name());
+		final String _fieldSuffix = _noPrefix ? field.name() : UtilsFieldname.computeFieldAccessorSuffix(field.name());
 		final String _type = computeOutputType_invocation(field.type(), getTranslations(), getShortables());
 
 		// getter
-		getOut().printf("    public %s get%s() {return %s%s ;}\n", _type, _accessorSuffix, _fieldPrefix, _accessorSuffix);
+		getOut().printf("    public %s get%s() {return %s%s ;}\n", _type, _accessorSuffix, _fieldPrefix, _fieldSuffix);
 
 		// setter
-		getOut().printf("    public void set%s(%s value) {%s%s = value;}\n", _accessorSuffix, _type, _fieldPrefix, _accessorSuffix);
+		getOut().printf("    public void set%s(%s value) {%s%s = value;}\n", _accessorSuffix, _type, _fieldPrefix, _fieldSuffix);
 
 		getOut().println();
 	}

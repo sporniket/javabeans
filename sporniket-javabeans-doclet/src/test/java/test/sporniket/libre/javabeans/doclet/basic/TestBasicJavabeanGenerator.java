@@ -41,9 +41,6 @@ public class TestBasicJavabeanGenerator
 
 	@Mock
 	ClassDoc class1;
-
-	@Mock
-	ClassDoc class2;
 	
 	@Mock Type type1 ;
 
@@ -52,7 +49,7 @@ public class TestBasicJavabeanGenerator
 	 * @see https://github.com/sporniket/javabeans/issues/19
 	 */
 	@Test
-	public void accessorsNameMustBeCamelCasedWhenBeanFieldPrefixIsEmpty() throws UnsupportedEncodingException
+	public void testOutputAccessorsWhenBeanFieldPrefixIsEmpty() throws UnsupportedEncodingException
 	{
 		// prepare
 		Mockito.when(options.getBeanFieldPrefix()).thenReturn("");
@@ -65,9 +62,6 @@ public class TestBasicJavabeanGenerator
 		{
 				field1
 		});
-		Mockito.when(class1.superclass()).thenReturn(class2);
-		// * class hierarchy - class2
-		Mockito.when(class2.qualifiedName()).thenReturn(Object.class.getName());
 
 		final Charset _charset = StandardCharsets.UTF_8;
 		ByteArrayOutputStream _baos = new ByteArrayOutputStream();
@@ -82,6 +76,8 @@ public class TestBasicJavabeanGenerator
 		// verify
 		Assert.assertThat(_result, CoreMatchers.containsString("public foo getTheField("));
 		Assert.assertThat(_result, CoreMatchers.containsString("public void setTheField("));
+		Assert.assertThat(_result, CoreMatchers.containsString("{return this.theField ;}"));
+		Assert.assertThat(_result, CoreMatchers.containsString("{this.theField = value;}"));
 	}
 
 	/**
@@ -89,7 +85,7 @@ public class TestBasicJavabeanGenerator
 	 * @see https://github.com/sporniket/javabeans/issues/19
 	 */
 	@Test
-	public void accessorsNameMustBeCamelCasedWhenBeanFieldPrefixIsSpecified() throws UnsupportedEncodingException
+	public void testOutputAccessorsWhenBeanFieldPrefixIsSpecified() throws UnsupportedEncodingException
 	{
 		// prepare
 		Mockito.when(options.getBeanFieldPrefix()).thenReturn("my");
@@ -102,9 +98,6 @@ public class TestBasicJavabeanGenerator
 		{
 				field1
 		});
-		Mockito.when(class1.superclass()).thenReturn(class2);
-		// * class hierarchy - class2
-		Mockito.when(class2.qualifiedName()).thenReturn(Object.class.getName());
 
 		final Charset _charset = StandardCharsets.UTF_8;
 		ByteArrayOutputStream _baos = new ByteArrayOutputStream();
@@ -119,5 +112,7 @@ public class TestBasicJavabeanGenerator
 		// verify
 		Assert.assertThat(_result, CoreMatchers.containsString("public foo getTheField("));
 		Assert.assertThat(_result, CoreMatchers.containsString("public void setTheField("));
+		Assert.assertThat(_result, CoreMatchers.containsString("{return myTheField ;}"));
+		Assert.assertThat(_result, CoreMatchers.containsString("{myTheField = value;}"));
 	}
 }
