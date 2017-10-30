@@ -25,6 +25,16 @@ a project to generate Javabeans from a XML model. Interested people may checkout
 * replicate annotations (springframework, ...) if possible, or provide a set of annotations to generate annotations on the generated code (classes and fields) (supported by the reverse-engineering doclet).
 
 
+### What's new in v17.09.01
+
+Technical matters :
+
+* extending the code coverage using Mockito
+
+Issues fixed :
+
+* #19 : Accessors are not following CamelCase
+
 ### What's in v17.09.00
 * generate Javabeans with basic getter/setter (not bounded, not constrained).
 * fluent builder api, e.g. ```bean = new MyBeautifulBean_Builder.withId(...).withDescription(...).done() ;```
