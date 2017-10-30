@@ -47,7 +47,7 @@ import com.sun.javadoc.WildcardType;
  * <hr>
  *
  * @author David SPORN
- * @version 17.09.00
+ * @version 17.09.01
  * @since 17.09.00
  */
 public final class UtilsClassDoc
@@ -78,7 +78,7 @@ public final class UtilsClassDoc
 	 * <hr>
 	 *
 	 * @author David SPORN
-	 * @version 17.09.00
+	 * @version 17.09.01
 	 * @since 17.09.00
 	 */
 	public static class ClassDeclaration
@@ -232,7 +232,7 @@ public final class UtilsClassDoc
 	 * <hr>
 	 *
 	 * @author David SPORN
-	 * @version 17.09.00
+	 * @version 17.09.01
 	 * @since 17.09.00
 	 */
 	public static class TypeInvocation

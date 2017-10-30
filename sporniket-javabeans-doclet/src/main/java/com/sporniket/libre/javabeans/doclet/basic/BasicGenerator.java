@@ -40,7 +40,7 @@ import com.sporniket.libre.javabeans.doclet.JavaSourceGenerator;
  * <hr>
  * 
  * @author David SPORN 
- * @version 17.09.00
+ * @version 17.09.01
  * @since 17.09.00
  */
 public abstract class BasicGenerator extends BasicGeneratorBase implements JavaSourceGenerator
