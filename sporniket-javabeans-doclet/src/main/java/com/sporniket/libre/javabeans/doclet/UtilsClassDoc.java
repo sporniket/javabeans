@@ -12,6 +12,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.ParameterizedType;
@@ -601,6 +602,37 @@ public final class UtilsClassDoc
 		{
 			knownClasses.add(_qualifiedTypeName);
 		}
+	}
+
+	/**
+	 * Add into a collection of 'classes to import' the specified class, its superclass and implemented interfaces, and the type of
+	 * its public fields.
+	 *
+	 * @param knownClasses
+	 *            the collection to update.
+	 * @param toScan
+	 *            the class to scan.
+	 */
+	public static void updateKnownClasses(Collection<ImportSpecs> knownClasses, ClassDoc toScan)
+	{
+		updateKnownClasses(knownClasses, toScan, true);
+	}
+
+	/**
+	 * Add into a collection of 'classes to import' the specified class, its superclass and implemented interfaces, and the type of
+	 * its public fields.
+	 *
+	 * @param knownClasses
+	 *            the collection to update.
+	 * @param toScan
+	 *            the class to scan.
+	 * @param isDirectlyRequired
+	 *            <code>true</code> when the import is required for the java class to generate. <code>false</code> when the class is
+	 *            required only for a builder of class.
+	 */
+	private static void updateKnownClasses(Collection<ImportSpecs> knownClasses, ClassDoc toScan, boolean isDirectlyRequired)
+	{
+		//FIXME
 	}
 
 }
