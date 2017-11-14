@@ -5,6 +5,7 @@ import static com.sporniket.libre.javabeans.doclet.UtilsClassname.computeOutputC
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -13,6 +14,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs;
+import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs_Builder;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.ParameterizedType;
@@ -613,9 +615,16 @@ public final class UtilsClassDoc
 	 * @param toScan
 	 *            the class to scan.
 	 */
-	public static void updateKnownClasses(Collection<ImportSpecs> knownClasses, ClassDoc toScan)
+	public static Collection<ImportSpecs> updateKnownClasses(ClassDoc toScan)
 	{
-		updateKnownClasses(knownClasses, toScan, true);
+		Map<String, Boolean> _knownClasses = new HashMap<>();
+		updateKnownClasses(_knownClasses, toScan, true);
+		return _knownClasses.keySet().parallelStream()//
+				.map(cls->new ImportSpecs_Builder()//
+						.withClassName(cls)//
+						.withDirectlyRequired(_knownClasses.get(cls))//
+						.done())//
+				.collect(Collectors.toList());
 	}
 
 	/**
@@ -630,9 +639,50 @@ public final class UtilsClassDoc
 	 *            <code>true</code> when the import is required for the java class to generate. <code>false</code> when the class is
 	 *            required only for a builder of class.
 	 */
-	private static void updateKnownClasses(Collection<ImportSpecs> knownClasses, ClassDoc toScan, boolean isDirectlyRequired)
+	private static void updateKnownClasses(Map<String, Boolean> knownClasses, ClassDoc toScan, boolean isDirectlyRequired)
 	{
-		//FIXME
+		final Predicate<String> _isNotRegistered = i -> !knownClasses.containsKey(i);
+		final Consumer<String> _registerKnownClass = i -> knownClasses.put(i, isDirectlyRequired); // do not support parametrized types
+		final Consumer<Type> _processType = t -> updateKnownClasses(knownClasses, t, isDirectlyRequired);
+		final Consumer<Type> _processTypeUndirect = t -> updateKnownClasses(knownClasses, t, false);
+
+		Arrays.asList(toScan.qualifiedName(), toScan.superclass().qualifiedName()).stream().filter(_isNotRegistered)
+				.forEach(_registerKnownClass);
+
+		Arrays.asList(toScan.interfaces()).stream().map(ClassDoc::qualifiedName).filter(_isNotRegistered)
+				.forEach(_registerKnownClass);
+		UtilsFieldDoc.getPrivateDeclaredFields(toScan).stream().map(FieldDoc::type).forEach(_processType);
+		UtilsFieldDoc.getAccessibleDeclaredFields(toScan).stream().map(FieldDoc::type).forEach(_processType);
+		
+		//require to process again accessible declared fields, but they are already registered.
+		UtilsFieldDoc.getAccessibleFields(toScan).stream().map(FieldDoc::type).forEach(_processTypeUndirect); 
+	}
+
+	/**
+	 * Add into a collection of 'known classes' the specified type, and the type of its parameters if any.
+	 *
+	 * @param knownClasses
+	 *            the collection to update.
+	 * @param toScan
+	 *            the type to scan.
+	 */
+	private static void updateKnownClasses(Map<String, Boolean> knownClasses, Type toScan, boolean isDirectlyRequired)
+	{
+		if (null != toScan.asTypeVariable())
+		{
+			// skip type variables
+			return;
+		}
+		final ParameterizedType _pt = toScan.asParameterizedType();
+		if (null != _pt)
+		{
+			Arrays.asList(_pt.typeArguments()).forEach(t -> updateKnownClasses(knownClasses, t, isDirectlyRequired));
+		}
+		final String _qualifiedTypeName = toScan.qualifiedTypeName();
+		if (!knownClasses.containsKey(_qualifiedTypeName))
+		{
+			knownClasses.put(_qualifiedTypeName, isDirectlyRequired);
+		}
 	}
 
 }
