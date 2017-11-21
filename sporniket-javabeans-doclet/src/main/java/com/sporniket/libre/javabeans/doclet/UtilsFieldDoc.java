@@ -54,7 +54,7 @@ public final class UtilsFieldDoc
 	}
 
 	/**
-	 * Get the declared public fields of a given class, inherited fields are excluded.
+	 * Get the declared public or package private fields of a given class, inherited fields are excluded.
 	 *
 	 * @param toScan
 	 *            the class to scan.
@@ -66,7 +66,7 @@ public final class UtilsFieldDoc
 	}
 
 	/**
-	 * Get the public fields of a given class, inherited fields are included.
+	 * Get the public or package private fields of a given class, inherited fields are included.
 	 *
 	 * @param toScan
 	 *            the class to scan.
