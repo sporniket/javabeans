@@ -372,6 +372,16 @@ public final class UtilsClassDoc
 	private static final Set<String> MARKERS_INTERFACES = new HashSet<>(
 			Arrays.asList(Serializable.class.getName(), Cloneable.class.getName()));
 
+	private static final Set<String> PRIMITIVE_TYPES = new HashSet<>(Arrays.asList(//
+			boolean.class.getName()//
+			, byte.class.getName()//
+			, char.class.getName()//
+			, int.class.getName()//
+			, long.class.getName()//
+			, float.class.getName()//
+			, double.class.getName()//
+			));
+
 	public static String computeOutputType(Type toOutput, Map<String, String> translations, Set<String> shortables)
 	{
 		final StringBuilder _buffer = new StringBuilder();
@@ -580,6 +590,28 @@ public final class UtilsClassDoc
 	}
 
 	/**
+	 * Add into a collection of 'classes to import' the specified class, its superclass and implemented interfaces, and the type of
+	 * its public fields.
+	 *
+	 * @param knownClasses
+	 *            the collection to update.
+	 * @param toScan
+	 *            the class to scan.
+	 */
+	public static Collection<ImportSpecs> updateKnownClasses(ClassDoc toScan)
+	{
+		Map<String, Boolean> _knownClasses = new HashMap<>();
+		updateKnownClasses(_knownClasses, toScan, true);
+		return _knownClasses.keySet().parallelStream()//
+				.map(cls -> new ImportSpecs_Builder()//
+						.withClassName(cls)//
+						.withDirectlyRequired(_knownClasses.get(cls))//
+						.done())//
+				.filter(i -> !PRIMITIVE_TYPES.contains(i.getClassName()))
+				.collect(Collectors.toList());
+	}
+
+	/**
 	 * Add into a collection of 'known classes' the specified type, and the type of its parameters if any.
 	 *
 	 * @param knownClasses
@@ -614,27 +646,6 @@ public final class UtilsClassDoc
 	 *            the collection to update.
 	 * @param toScan
 	 *            the class to scan.
-	 */
-	public static Collection<ImportSpecs> updateKnownClasses(ClassDoc toScan)
-	{
-		Map<String, Boolean> _knownClasses = new HashMap<>();
-		updateKnownClasses(_knownClasses, toScan, true);
-		return _knownClasses.keySet().parallelStream()//
-				.map(cls->new ImportSpecs_Builder()//
-						.withClassName(cls)//
-						.withDirectlyRequired(_knownClasses.get(cls))//
-						.done())//
-				.collect(Collectors.toList());
-	}
-
-	/**
-	 * Add into a collection of 'classes to import' the specified class, its superclass and implemented interfaces, and the type of
-	 * its public fields.
-	 *
-	 * @param knownClasses
-	 *            the collection to update.
-	 * @param toScan
-	 *            the class to scan.
 	 * @param isDirectlyRequired
 	 *            <code>true</code> when the import is required for the java class to generate. <code>false</code> when the class is
 	 *            required only for a builder of class.
@@ -642,7 +653,8 @@ public final class UtilsClassDoc
 	private static void updateKnownClasses(Map<String, Boolean> knownClasses, ClassDoc toScan, boolean isDirectlyRequired)
 	{
 		final Predicate<String> _isNotRegistered = i -> !knownClasses.containsKey(i);
-		final Consumer<String> _registerKnownClass = i -> knownClasses.put(i, isDirectlyRequired); // do not support parametrized types
+		final Consumer<String> _registerKnownClass = i -> knownClasses.put(i, isDirectlyRequired); // do not support parametrized
+																									// types
 		final Consumer<Type> _processType = t -> updateKnownClasses(knownClasses, t, isDirectlyRequired);
 		final Consumer<Type> _processTypeUndirect = t -> updateKnownClasses(knownClasses, t, false);
 
@@ -653,9 +665,9 @@ public final class UtilsClassDoc
 				.forEach(_registerKnownClass);
 		UtilsFieldDoc.getPrivateDeclaredFields(toScan).stream().map(FieldDoc::type).forEach(_processType);
 		UtilsFieldDoc.getAccessibleDeclaredFields(toScan).stream().map(FieldDoc::type).forEach(_processType);
-		
-		//require to process again accessible declared fields, but they are already registered.
-		UtilsFieldDoc.getAccessibleFields(toScan).stream().map(FieldDoc::type).forEach(_processTypeUndirect); 
+
+		// require to process again accessible declared fields, but they are already registered.
+		UtilsFieldDoc.getAccessibleFields(toScan).stream().map(FieldDoc::type).forEach(_processTypeUndirect);
 	}
 
 	/**
