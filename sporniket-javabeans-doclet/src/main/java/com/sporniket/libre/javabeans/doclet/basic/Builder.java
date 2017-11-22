@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.sporniket.libre.javabeans.doclet.DocletOptions;
+import com.sporniket.libre.javabeans.doclet.codespecs.ClassSpecs;
 import com.sun.javadoc.ClassDoc;
 
 /**
@@ -56,6 +57,13 @@ public class Builder<G extends BasicGenerator>
 		return myGenerator;
 	}
 
+	public Builder<G> withClassSpecs(ClassSpecs classSpecs)
+	{
+		myGenerator.setClassSpecs(classSpecs);
+		return this;
+	}
+
+	@Deprecated
 	public Builder<G> withKnownClasses(Set<String> knownClasses)
 	{
 		myGenerator.setKnownClasses(knownClasses);
@@ -74,18 +82,21 @@ public class Builder<G extends BasicGenerator>
 		return this;
 	}
 
+	@Deprecated
 	public Builder<G> withShortables(Set<String> shortables)
 	{
 		myGenerator.setShortables(shortables);
 		return this;
 	}
 
+	@Deprecated
 	public Builder<G> withSource(ClassDoc source)
 	{
 		myGenerator.setSource(source);
 		return this;
 	}
 
+	@Deprecated
 	public Builder<G> withTranslations(Map<String, String> translations)
 	{
 		myGenerator.setTranslations(translations);

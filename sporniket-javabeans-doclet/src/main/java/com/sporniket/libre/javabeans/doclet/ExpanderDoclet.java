@@ -3,8 +3,7 @@
  */
 package com.sporniket.libre.javabeans.doclet;
 
-import static com.sporniket.libre.javabeans.doclet.UtilsClassDoc.*;
-import static com.sporniket.libre.javabeans.doclet.UtilsClassname.*;
+import static com.sporniket.libre.javabeans.doclet.UtilsClassname.getTranslationMapWhenPojosAreSuffixed;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toCollection;
 
@@ -12,8 +11,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,6 +19,7 @@ import java.util.TreeSet;
 import com.sporniket.libre.javabeans.doclet.basic.BasicBuilderGenerator;
 import com.sporniket.libre.javabeans.doclet.basic.BasicJavabeanGenerator;
 import com.sporniket.libre.javabeans.doclet.basic.Builder;
+import com.sporniket.libre.javabeans.doclet.codespecs.ClassSpecs;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.LanguageVersion;
 import com.sun.javadoc.PackageDoc;
@@ -158,28 +156,20 @@ public class ExpanderDoclet
 
 	}
 
-	private void generateBuilder(ClassDoc pojo, PrintStream out, Set<String> knownClasses, Map<String, String> translations,
-			Set<String> shortables, DocletOptions options)
+	private void generateBuilder(ClassSpecs classSpecs, PrintStream out, DocletOptions options)
 	{
 		new Builder<>(new BasicBuilderGenerator())//
-				.withKnownClasses(knownClasses)//
 				.withOut(out)//
-				.withShortables(shortables)//
-				.withSource(pojo)//
-				.withTranslations(translations)//
+				.withClassSpecs(classSpecs)//
 				.withOptions(options)//
 				.done().generate();
 	}
 
-	private void generateJavabean(ClassDoc pojo, PrintStream out, Set<String> knownClasses, Map<String, String> translations,
-			Set<String> shortables, DocletOptions options)
+	private void generateJavabean(ClassSpecs classSpecs, PrintStream out, DocletOptions options)
 	{
 		new Builder<>(new BasicJavabeanGenerator())//
-				.withKnownClasses(knownClasses)//
 				.withOut(out)//
-				.withShortables(shortables)//
-				.withSource(pojo)//
-				.withTranslations(translations)//
+				.withClassSpecs(classSpecs)//
 				.withOptions(options)//
 				.done().generate();
 	}
@@ -207,13 +197,7 @@ public class ExpanderDoclet
 
 	private void processPojoClass(ClassDoc pojo, final Map<String, String> translations, DocletOptions options)
 	{
-		final Set<String> _knownClasses = new TreeSet<>();
-		updateKnowClasses(_knownClasses, pojo);
-
-		final Map<String, String> _shortNameMapping = new HashMap<>(_knownClasses.size() + translations.size());
-		updateShortClassnameMappingFromClassnames(_shortNameMapping, _knownClasses);
-		updateShortClassnameMappingFromClassnames(_shortNameMapping, translations.values());
-		final Set<String> _shortables = new HashSet<>(_shortNameMapping.values());
+		final ClassSpecs _classSpecs = new CodeSpecsExtractor().extractSpecs(pojo, translations, options);
 
 		try
 		{
@@ -225,19 +209,20 @@ public class ExpanderDoclet
 			PrintStream _out = (null != options.d)
 					? new PrintStream(getFileToGenerate(_javabeanQualifiedName, options))
 					: System.out;
-			generateJavabean(pojo, _out, _knownClasses, translations, _shortables, options);
+			generateJavabean(_classSpecs, _out, options);
 			if (null != options.d)
 			{
 				_out.close();
 			}
-			if (!shouldBeAbstract(pojo)) // abstract classes do not need builders...
+			
+			if (!_classSpecs.getAbstractRequired()) // abstract classes do not need builders...
 			{
 				final String _builderQualifiedName = _javabeanQualifiedName + "_Builder";
 
 				System.out.printf("Generating builder %s from %s \n", _builderQualifiedName, _qualifiedName);
 
 				_out = (null != options.d) ? new PrintStream(getFileToGenerate(_builderQualifiedName, options)) : System.out;
-				generateBuilder(pojo, _out, _knownClasses, translations, _shortables, options);
+				generateBuilder(_classSpecs, _out, options);
 				if (null != options.d)
 				{
 					_out.close();

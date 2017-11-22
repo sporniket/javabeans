@@ -25,4 +25,6 @@ class ClassSpecsRaw
 	 * Class simple name (without package).
 	 */
 	String className;
+	
+	Boolean abstractRequired;
 }

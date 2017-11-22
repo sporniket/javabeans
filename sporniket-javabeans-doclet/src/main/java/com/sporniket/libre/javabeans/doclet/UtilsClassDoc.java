@@ -17,6 +17,7 @@ import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs;
 import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs_Builder;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
+import com.sun.javadoc.MethodDoc;
 import com.sun.javadoc.ParameterizedType;
 import com.sun.javadoc.Type;
 import com.sun.javadoc.TypeVariable;
@@ -380,7 +381,7 @@ public final class UtilsClassDoc
 			, long.class.getName()//
 			, float.class.getName()//
 			, double.class.getName()//
-			));
+	));
 
 	public static String computeOutputType(Type toOutput, Map<String, String> translations, Set<String> shortables)
 	{
@@ -394,6 +395,20 @@ public final class UtilsClassDoc
 		final StringBuilder _buffer = new StringBuilder();
 		TypeInvocation.outputType(_buffer, toOutput, translations, shortables);
 		return _buffer.toString();
+	}
+
+	/**
+	 * @param toScan
+	 *            an interface
+	 * @return true if there are any abstract method.
+	 */
+	private static boolean hasAbstractMethods(ClassDoc toScan)
+	{
+		return !Arrays.asList(toScan.methods(false))//
+				.stream()//
+				.filter(MethodDoc::isAbstract)//
+				.collect(Collectors.toList())//
+				.isEmpty();
 	}
 
 	/**
@@ -559,7 +574,7 @@ public final class UtilsClassDoc
 		{
 			result = !Arrays.asList(toScan.interfaceTypes()).stream()//
 					.filter(t -> !MARKERS_INTERFACES.contains(t.qualifiedTypeName()))//
-					.collect(Collectors.toList())//
+					.filter(t -> hasAbstractMethods(t.asClassDoc())).collect(Collectors.toList())//
 					.isEmpty();
 		}
 		return result;
@@ -607,8 +622,7 @@ public final class UtilsClassDoc
 						.withClassName(cls)//
 						.withDirectlyRequired(_knownClasses.get(cls))//
 						.done())//
-				.filter(i -> !PRIMITIVE_TYPES.contains(i.getClassName()))
-				.collect(Collectors.toList());
+				.filter(i -> !PRIMITIVE_TYPES.contains(i.getClassName())).collect(Collectors.toList());
 	}
 
 	/**

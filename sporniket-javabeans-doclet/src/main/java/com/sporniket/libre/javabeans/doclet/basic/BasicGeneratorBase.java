@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.sporniket.libre.javabeans.doclet.DocletOptions;
+import com.sporniket.libre.javabeans.doclet.codespecs.ClassSpecs;
 import com.sun.javadoc.ClassDoc;
 
 /**
@@ -41,23 +42,38 @@ import com.sun.javadoc.ClassDoc;
 public class BasicGeneratorBase
 {
 
+	private ClassSpecs myClassSpecs;
+
+	@Deprecated
 	private Set<String> myKnownClasses;
 
 	private DocletOptions myOptions ;
-
+	
 	private PrintStream myOut;
 
+	@Deprecated
 	private Set<String> myShortables;
 
+	@Deprecated
 	private ClassDoc mySource;
-	
+
+
+	@Deprecated
 	private Map<String, String> myTranslations;
+
 
 	public BasicGeneratorBase()
 	{
 		super();
 	}
+	
 
+	public ClassSpecs getClassSpecs()
+	{
+		return myClassSpecs;
+	}
+
+	@Deprecated
 	public Set<String> getKnownClasses()
 	{
 		return myKnownClasses;
@@ -73,21 +89,33 @@ public class BasicGeneratorBase
 		return myOut;
 	}
 
+	@Deprecated
 	public Set<String> getShortables()
 	{
 		return myShortables;
 	}
 
+
+	@Deprecated
 	public ClassDoc getSource()
 	{
 		return mySource;
 	}
 
+
+	@Deprecated
 	public Map<String, String> getTranslations()
 	{
 		return myTranslations;
 	}
 
+
+	public void setClassSpecs(ClassSpecs classSpecs)
+	{
+		myClassSpecs = classSpecs;
+	}
+
+	@Deprecated
 	public void setKnownClasses(Set<String> knownClasses)
 	{
 		myKnownClasses = knownClasses;
@@ -103,16 +131,22 @@ public class BasicGeneratorBase
 		myOut = out;
 	}
 
+
+	@Deprecated
 	public void setShortables(Set<String> shortables)
 	{
 		myShortables = shortables;
 	}
 
+
+	@Deprecated
 	public void setSource(ClassDoc source)
 	{
 		mySource = source;
 	}
 
+
+	@Deprecated
 	public void setTranslations(Map<String, String> translations)
 	{
 		myTranslations = translations;
