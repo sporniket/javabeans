@@ -6,6 +6,7 @@ import static com.sporniket.libre.javabeans.doclet.UtilsFieldDoc.getAccessibleDe
 
 import com.sporniket.libre.javabeans.doclet.JavabeanGenerator;
 import com.sporniket.libre.javabeans.doclet.UtilsFieldname;
+import com.sporniket.libre.javabeans.doclet.codespecs.FieldSpecs;
 import com.sporniket.libre.lang.string.StringTools;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
@@ -43,19 +44,15 @@ import com.sun.javadoc.FieldDoc;
  */
 public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGenerator
 {
-	private void outputAccessor(FieldDoc field)
+	private void outputAccessor(FieldSpecs field)
 	{
-		final boolean _noPrefix = StringTools.isEmptyString(getOptions().getBeanFieldPrefix());
-		final String _fieldPrefix = _noPrefix ? "this." : getOptions().getBeanFieldPrefix();
-		final String _accessorSuffix = UtilsFieldname.computeFieldAccessorSuffix(field.name());
-		final String _fieldSuffix = _noPrefix ? field.name() : UtilsFieldname.computeFieldAccessorSuffix(field.name());
-		final String _type = computeOutputType_invocation(field.type(), getTranslations(), getShortables());
-
 		// getter
-		getOut().printf("    public %s get%s() {return %s%s ;}\n", _type, _accessorSuffix, _fieldPrefix, _fieldSuffix);
+		getOut().printf("    public %s get%s() {return %s%s ;}\n", field.getTypeInvocation(), field.getNameForAccessor(),
+				field.getFieldPrefix(), field.getNameForField());
 
 		// setter
-		getOut().printf("    public void set%s(%s value) {%s%s = value;}\n", _accessorSuffix, _type, _fieldPrefix, _fieldSuffix);
+		getOut().printf("    public void set%s(%s value) {%s%s = value;}\n", field.getNameForAccessor(), field.getTypeInvocation(),
+				field.getFieldPrefix(), field.getNameForField());
 
 		getOut().println();
 	}
@@ -63,37 +60,21 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 	@Override
 	public void outputAccessors()
 	{
-		getAccessibleDeclaredFields(getSource()).forEach(_field -> {
-			outputAccessor(_field);
-		});
-
+		getClassSpecs().getFields().stream().filter(f -> f.getDirectlyRequired()).forEach(f -> outputAccessor(f));
 	}
 
 	@Override
 	public void outputClassBegin()
 	{
-		final StringBuilder _classDecl = new StringBuilder(
-				shouldBeAbstract(getSource()) ? "public abstract class " : "public class ");
-		outputClassName__classDeclaration(_classDecl, getSource(), getTranslations(), getShortables());
+		// last preparations
+		String _abstractMarker = getClassSpecs().getAbstractRequired() ? " abstract" : "";
+		String _extendsMarker = StringTools.isEmptyString(getClassSpecs().getSuperClassName()) ? "" : "\n        extends ";
+		String _implementsMarker = StringTools.isEmptyString(getClassSpecs().getInterfaceList()) ? "" : "\n      implements ";
 
-		final String _supername = getSource().superclass().qualifiedName();
-		if (!Object.class.getName().equals(_supername))
-		{
-			_classDecl.append(" extends ").append(computeOutputClassname(_supername, getTranslations(), getShortables()));
-		}
-		final ClassDoc[] _interfaces = getSource().interfaces();
-		if (_interfaces.length > 0)
-		{
-			for (int _i = 0; _i < _interfaces.length; _i++)
-			{
-				_classDecl.append((0 == _i) ? " implements " : ", ")
-						.append(computeOutputClassname(_interfaces[_i].name(), getTranslations(), getShortables()));
-			}
-		}
-
-		getOut().printf(_classDecl.append("\n{\n").toString());
-
-		getOut().println();
+		getOut().printf("public%s class %s %s%s%s%s\n{\n\n", //
+				_abstractMarker, getClassSpecs().getDeclaredTypeArguments()//
+				,_extendsMarker, getClassSpecs().getSuperClassName()//
+				,_implementsMarker, getClassSpecs().getInterfaceList());
 	}
 
 	private void outputField(FieldDoc field)
