@@ -23,9 +23,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.sporniket.libre.javabeans.doclet.CodeSpecsExtractor;
 import com.sporniket.libre.javabeans.doclet.DocletOptions;
 import com.sporniket.libre.javabeans.doclet.basic.BasicJavabeanGenerator;
 import com.sporniket.libre.javabeans.doclet.basic.Builder;
+import com.sporniket.libre.javabeans.doclet.codespecs.ClassSpecs;
+import com.sporniket.libre.javabeans.doclet.codespecs.ClassSpecs_Builder;
+import com.sporniket.libre.javabeans.doclet.codespecs.FieldSpecs_Builder;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.Type;
@@ -81,23 +85,24 @@ public class TestBasicJavabeanGenerator
 	public void testOutputAccessorsWhenBeanFieldPrefixIsEmpty() throws UnsupportedEncodingException
 	{
 		// prepare
-		Mockito.when(options.getBeanFieldPrefix()).thenReturn("");
-		Mockito.when(field1.name()).thenReturn("theField");
-		Mockito.when(field1.isPackagePrivate()).thenReturn(true);
-		Mockito.when(field1.type()).thenReturn(type1);
-		Mockito.when(type1.qualifiedTypeName()).thenReturn("foo");
-		// * class hierarchy - class1
-		Mockito.when(class1.fields()).thenReturn(new FieldDoc[]
-		{
-				field1
-		});
+		ClassSpecs specs = new ClassSpecs_Builder()//
+				.withFields(Arrays.asList(new FieldSpecs_Builder()//
+						.withDirectlyRequired(true)//
+						.withFieldPrefix("this.")//
+						.withNameForAccessor("TheField")//
+						.withNameForField("theField")//
+						.withTypeInvocation("foo")//
+						.done()))//
+				.done() ;
 
 		final Charset _charset = StandardCharsets.UTF_8;
 		ByteArrayOutputStream _baos = new ByteArrayOutputStream();
 		PrintStream _ps = new PrintStream(_baos, true, _charset.name());
-		BasicJavabeanGenerator _generator = new Builder<BasicJavabeanGenerator>(new BasicJavabeanGenerator())
-				.withKnownClasses(new HashSet<>()).withShortables(new HashSet<>()).withOptions(options)
-				.withTranslations(new HashMap<>()).withOut(new PrintStream(_ps)).withSource(class1).done();
+		BasicJavabeanGenerator _generator = new Builder<BasicJavabeanGenerator>(new BasicJavabeanGenerator())//
+				.withOptions(options)//
+				.withOut(_ps)//
+				.withClassSpecs(specs)//
+				.done();
 		// execute
 		_generator.outputAccessors();
 		String _result = new String(_baos.toByteArray(), _charset);
@@ -117,23 +122,25 @@ public class TestBasicJavabeanGenerator
 	public void testOutputAccessorsWhenBeanFieldPrefixIsSpecified() throws UnsupportedEncodingException
 	{
 		// prepare
-		Mockito.when(options.getBeanFieldPrefix()).thenReturn("my");
-		Mockito.when(field1.name()).thenReturn("theField");
-		Mockito.when(field1.isPackagePrivate()).thenReturn(true);
-		Mockito.when(field1.type()).thenReturn(type1);
-		Mockito.when(type1.qualifiedTypeName()).thenReturn("foo");
-		// * class hierarchy - class1
-		Mockito.when(class1.fields()).thenReturn(new FieldDoc[]
-		{
-				field1
-		});
+		ClassSpecs specs = new ClassSpecs_Builder()//
+				.withFields(Arrays.asList(new FieldSpecs_Builder()//
+						.withDirectlyRequired(true)//
+						.withFieldPrefix("my")//
+						.withNameForAccessor("TheField")//
+						.withNameForField("TheField")//
+						.withTypeInvocation("foo")//
+						.done()))//
+				.done() ;
+		
 
 		final Charset _charset = StandardCharsets.UTF_8;
 		ByteArrayOutputStream _baos = new ByteArrayOutputStream();
 		PrintStream _ps = new PrintStream(_baos, true, _charset.name());
-		BasicJavabeanGenerator _generator = new Builder<BasicJavabeanGenerator>(new BasicJavabeanGenerator())
-				.withKnownClasses(new HashSet<>()).withShortables(new HashSet<>()).withOptions(options)
-				.withTranslations(new HashMap<>()).withOut(new PrintStream(_ps)).withSource(class1).done();
+		BasicJavabeanGenerator _generator = new Builder<BasicJavabeanGenerator>(new BasicJavabeanGenerator())//
+				.withOptions(options)//
+				.withOut(_ps)//
+				.withClassSpecs(specs)//
+				.done();
 		// execute
 		_generator.outputAccessors();
 		String _result = new String(_baos.toByteArray(), _charset);

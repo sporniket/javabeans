@@ -73,27 +73,22 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 
 		getOut().printf("public%s class %s %s%s%s%s\n{\n\n", //
 				_abstractMarker, getClassSpecs().getDeclaredTypeArguments()//
-				,_extendsMarker, getClassSpecs().getSuperClassName()//
-				,_implementsMarker, getClassSpecs().getInterfaceList());
+				, _extendsMarker, getClassSpecs().getSuperClassName()//
+				, _implementsMarker, getClassSpecs().getInterfaceList());
 	}
 
-	private void outputField(FieldDoc field)
+	private void outputField(FieldSpecs field)
 	{
-		final boolean _noPrefix = StringTools.isEmptyString(getOptions().getBeanFieldPrefix());
-		final String _fieldPrefix = getOptions().getBeanFieldPrefix();
-		final String _accessorSuffix = _noPrefix ? field.name() : UtilsFieldname.computeFieldAccessorSuffix(field.name());
-		final String _type = computeOutputType_invocation(field.type(), getTranslations(), getShortables());
-
-		// field declaration
-		getOut().printf("    private %s %s%s ;\n", _type, _fieldPrefix, _accessorSuffix);
+		getOut().printf("    private %s %s%s ;\n", field.getTypeInvocation(), getOptions().getBeanFieldPrefix(),
+				field.getNameForField());
 	}
 
 	@Override
 	public void outputFields()
 	{
-		getAccessibleDeclaredFields(getSource()).forEach(_field -> {
-			outputField(_field);
-		});
+		getClassSpecs().getFields().stream()//
+				.filter(FieldSpecs::getDirectlyRequired)//
+				.forEach(_field -> outputField(_field));
 
 		getOut().println();
 	}
