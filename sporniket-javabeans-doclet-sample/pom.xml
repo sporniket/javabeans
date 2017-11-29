@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.sporniket.javabeans</groupId>
-  <version>17.09.01-SNAPSHOT</version>
+  <version>17.09.02-SNAPSHOT</version>
   <artifactId>sporniket-javabeans-doclet-sample</artifactId>
   <packaging>jar</packaging>
 
