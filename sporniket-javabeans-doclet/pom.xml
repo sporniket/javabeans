@@ -14,7 +14,7 @@
 
 	<properties>
 		<!-- Using my own tool -->
-		<version.sporniket-javabeans-doclet>17.09.01</version.sporniket-javabeans-doclet>
+		<version.sporniket-javabeans-doclet>17.09.02-SNAPSHOT</version.sporniket-javabeans-doclet>
 		<!-- maven plugins version -->
 		<version.maven-javadoc-plugin>3.0.0-M1</version.maven-javadoc-plugin>
 	</properties>
