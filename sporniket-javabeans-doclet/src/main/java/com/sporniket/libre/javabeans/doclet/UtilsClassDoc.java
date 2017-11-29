@@ -608,8 +608,6 @@ public final class UtilsClassDoc
 	 * Add into a collection of 'classes to import' the specified class, its superclass and implemented interfaces, and the type of
 	 * its public fields.
 	 *
-	 * @param knownClasses
-	 *            the collection to update.
 	 * @param toScan
 	 *            the class to scan.
 	 */
