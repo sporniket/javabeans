@@ -151,7 +151,8 @@ public class ExpanderDoclet
 		final Map<String, String> _translations = getTranslationMapWhenPojosAreSuffixed(_classes, _packages, options.pojoSuffix);
 
 		_sourceClasses.stream() //
-				// .filter(c -> _translations.containsKey(c.qualifiedName())) //
+				.filter(c -> _translations.containsKey(c.qualifiedName())) //
+				//.filter(c -> c.qualifiedName().endsWith(options.getPojoSuffix()) && c.qualifiedName().endsWith("."+options.getPojoSuffix()))
 				.forEach(p -> processPojoClass(p, _translations, options));
 
 	}
