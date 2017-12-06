@@ -29,6 +29,11 @@ class ClassSpecsRaw
 	String invokedTypeArguments;
 	
 	/**
+	 * fully qualified package name.
+	 */
+	String packageName;
+	
+	/**
 	 * (NOT NULL) Simple name of the extended class (MUST be imported), or empty if the super class is <code>Object</code>.
 	 */
 	String superClassName ;

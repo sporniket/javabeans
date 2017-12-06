@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.sporniket.libre.javabeans.doclet.CodeSpecsExtractor.ExtractionMode;
 import com.sporniket.libre.javabeans.doclet.basic.BasicBuilderGenerator;
 import com.sporniket.libre.javabeans.doclet.basic.BasicJavabeanGenerator;
 import com.sporniket.libre.javabeans.doclet.basic.Builder;
@@ -198,7 +199,7 @@ public class ExpanderDoclet
 
 	private void processPojoClass(ClassDoc pojo, final Map<String, String> translations, DocletOptions options)
 	{
-		final ClassSpecs _classSpecs = new CodeSpecsExtractor().extractSpecs(pojo, translations, options);
+		final ClassSpecs _classSpecs = new CodeSpecsExtractor().extractSpecs(pojo, translations, options, ExtractionMode.EXPANDER);
 
 		try
 		{

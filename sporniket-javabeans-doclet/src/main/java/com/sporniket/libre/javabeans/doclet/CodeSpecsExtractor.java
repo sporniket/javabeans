@@ -3,10 +3,11 @@
  */
 package com.sporniket.libre.javabeans.doclet;
 
+import static com.sporniket.libre.javabeans.doclet.CodeSpecsExtractor.ExtractionMode.EXPANDER;
 import static com.sporniket.libre.javabeans.doclet.UtilsClassDoc.*;
 import static com.sporniket.libre.javabeans.doclet.UtilsClassname.*;
 import static com.sporniket.libre.javabeans.doclet.UtilsFieldDoc.*;
-import static com.sporniket.libre.javabeans.doclet.UtilsFieldname.computeFieldAccessorSuffix;
+import static com.sporniket.libre.javabeans.doclet.UtilsFieldname.*;
 import static java.util.stream.Collectors.*;
 
 import java.util.Collection;
@@ -36,6 +37,12 @@ import com.sun.javadoc.TypeVariable;
  */
 public class CodeSpecsExtractor
 {
+	public static enum ExtractionMode
+	{
+		DISTILLER,
+		EXPANDER;
+	}
+
 	private String extractClassDeclaredTypeArguments(ClassDoc from, Map<String, String> translations, Set<String> shortables)
 	{
 		StringBuilder _result = new StringBuilder();
@@ -55,16 +62,20 @@ public class CodeSpecsExtractor
 	}
 
 	private List<FieldSpecs> extractFields(ClassDoc from, Map<String, String> translations, Set<String> shortables,
-			DocletOptions options)
+			DocletOptions options, ExtractionMode mode)
 	{
-		final TreeSet<String> _directlyRequiredFields = getAccessibleDeclaredFields(from)//
+		final boolean _noPrefix = StringTools.isEmptyString(options.getBeanFieldPrefix());
+
+		final List<FieldDoc> _directFields = (EXPANDER == mode)
+				? getAccessibleDeclaredFields(from)
+				: getPrivateDeclaredFields(from);
+
+		final TreeSet<String> _directlyRequiredFields = _directFields//
 				.stream()//
 				.map(FieldDoc::name)//
 				.collect(toCollection(TreeSet::new));
 
-		final boolean _noPrefix = StringTools.isEmptyString(options.getBeanFieldPrefix());
-
-		final Function<? super FieldDoc, ? extends FieldSpecs> _toFieldSpecs = f -> {
+		final Function<? super FieldDoc, ? extends FieldSpecs> _toFieldSpecs = (EXPANDER == mode) ? (f -> {
 			String _capitalizedName = computeFieldAccessorSuffix(f.name());
 			return new FieldSpecs_Builder()//
 					.withNameForField(_noPrefix ? f.name() : _capitalizedName)//
@@ -73,9 +84,17 @@ public class CodeSpecsExtractor
 					.withTypeInvocation(computeOutputType_invocation(f.type(), translations, shortables))//
 					.withDirectlyRequired(_directlyRequiredFields.contains(f.name()))//
 					.done();
-		};
+		}) : (f -> {
+			String _unprefixedName = removePrefix(f.name(), options.getBeanFieldPrefix());
+			return new FieldSpecs_Builder()//
+					.withNameForField(_unprefixedName)//
+					.withTypeInvocation(computeOutputType_invocation(f.type(), translations, shortables))//
+					.withDirectlyRequired(_directlyRequiredFields.contains(f.name()))//
+					.done();
+		});
 
-		return getAccessibleFields(from).stream()//
+		final List<FieldDoc> _fields = (EXPANDER == mode) ? getAccessibleFields(from) : _directFields;
+		return _fields.stream()//
 				.map(_toFieldSpecs)//
 				.collect(toList());
 	}
@@ -96,7 +115,7 @@ public class CodeSpecsExtractor
 		return _result.toString();
 	}
 
-	public ClassSpecs extractSpecs(ClassDoc from, Map<String, String> translations, DocletOptions options)
+	public ClassSpecs extractSpecs(ClassDoc from, Map<String, String> translations, DocletOptions options, ExtractionMode mode)
 	{
 		final Collection<ImportSpecs> _knownClasses = updateKnownClasses(from);
 
@@ -109,9 +128,10 @@ public class CodeSpecsExtractor
 		return new ClassSpecs_Builder()//
 				.withImports(_knownClasses)//
 				.withClassName(computeOutputClassname(from.qualifiedTypeName(), translations, _shortables))//
+				.withPackageName(from.containingPackage().name())//
 				.withDeclaredTypeArguments(extractClassDeclaredTypeArguments(from, translations, _shortables))//
 				.withInvokedTypeArguments(extractClassInvokedTypeArguments(from, translations, _shortables))//
-				.withFields(extractFields(from, translations, _shortables, options))//
+				.withFields(extractFields(from, translations, _shortables, options, mode))//
 				.withAbstractRequired(shouldBeAbstract(from))//
 				.withSuperClassName(extractSuperClassName(from.superclass(), translations, _shortables))//
 				.withInterfaceList(extractInterfaceList(from, translations, _shortables))//

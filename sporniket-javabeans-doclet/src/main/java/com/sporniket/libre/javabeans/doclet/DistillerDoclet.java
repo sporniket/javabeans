@@ -3,8 +3,7 @@
  */
 package com.sporniket.libre.javabeans.doclet;
 
-import static com.sporniket.libre.javabeans.doclet.UtilsClassDoc.updateKnowClasses;
-import static com.sporniket.libre.javabeans.doclet.UtilsClassname.*;
+import static com.sporniket.libre.javabeans.doclet.UtilsClassname.getReverseTranslationMapWhenPojosAreSuffixed;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toCollection;
 
@@ -12,15 +11,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.sporniket.libre.javabeans.doclet.CodeSpecsExtractor.ExtractionMode;
 import com.sporniket.libre.javabeans.doclet.basic.BasicRawPojoGenerator;
 import com.sporniket.libre.javabeans.doclet.basic.Builder;
+import com.sporniket.libre.javabeans.doclet.codespecs.ClassSpecs;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.LanguageVersion;
 import com.sun.javadoc.PackageDoc;
@@ -158,16 +157,12 @@ public class DistillerDoclet
 
 	}
 
-	private void generatePojo(ClassDoc pojo, PrintStream out, Set<String> knownClasses, Map<String, String> translations,
-			Set<String> shortables, DocletOptions options)
+	private void generatePojo(ClassSpecs classSpecs, PrintStream out, DocletOptions options)
 	{
 		new Builder<>(new BasicRawPojoGenerator())//
-				.withKnownClasses(knownClasses)//
 				.withOut(out)//
-				.withShortables(shortables)//
-				.withSource(pojo)//
-				.withTranslations(translations)//
 				.withOptions(options)//
+				.withClassSpecs(classSpecs)//
 				.done().generate();
 	}
 
@@ -194,13 +189,7 @@ public class DistillerDoclet
 
 	private void processPojoClass(ClassDoc pojo, final Map<String, String> translations, DocletOptions options)
 	{
-		final Set<String> _knownClasses = new TreeSet<>();
-		updateKnowClasses(_knownClasses, pojo);
-
-		final Map<String, String> _shortNameMapping = new HashMap<>(_knownClasses.size() + translations.size());
-		updateShortClassnameMappingFromClassnames(_shortNameMapping, _knownClasses);
-		updateShortClassnameMappingFromClassnames(_shortNameMapping, translations.values());
-		final Set<String> _shortables = new HashSet<>(_shortNameMapping.values());
+		final ClassSpecs _classSpecs = new CodeSpecsExtractor().extractSpecs(pojo, translations, options, ExtractionMode.DISTILLER);
 
 		try
 		{
@@ -212,7 +201,7 @@ public class DistillerDoclet
 			final PrintStream _out = (null != options.d)
 					? new PrintStream(getFileToGenerate(_pojoQualifiedName, options))
 					: System.out;
-			generatePojo(pojo, _out, _knownClasses, translations, _shortables, options);
+			generatePojo(_classSpecs, _out, options);
 			if (null != options.d)
 			{
 				_out.close();

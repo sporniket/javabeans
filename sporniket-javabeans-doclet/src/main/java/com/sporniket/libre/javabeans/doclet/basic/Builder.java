@@ -4,12 +4,9 @@
 package com.sporniket.libre.javabeans.doclet.basic;
 
 import java.io.PrintStream;
-import java.util.Map;
-import java.util.Set;
 
 import com.sporniket.libre.javabeans.doclet.DocletOptions;
 import com.sporniket.libre.javabeans.doclet.codespecs.ClassSpecs;
-import com.sun.javadoc.ClassDoc;
 
 /**
  * Genenator builder.
@@ -63,13 +60,6 @@ public class Builder<G extends BasicGenerator>
 		return this;
 	}
 
-	@Deprecated
-	public Builder<G> withKnownClasses(Set<String> knownClasses)
-	{
-		myGenerator.setKnownClasses(knownClasses);
-		return this;
-	}
-
 	public Builder<G> withOptions(DocletOptions options)
 	{
 		myGenerator.setOptions(options);
@@ -82,24 +72,4 @@ public class Builder<G extends BasicGenerator>
 		return this;
 	}
 
-	@Deprecated
-	public Builder<G> withShortables(Set<String> shortables)
-	{
-		myGenerator.setShortables(shortables);
-		return this;
-	}
-
-	@Deprecated
-	public Builder<G> withSource(ClassDoc source)
-	{
-		myGenerator.setSource(source);
-		return this;
-	}
-
-	@Deprecated
-	public Builder<G> withTranslations(Map<String, String> translations)
-	{
-		myGenerator.setTranslations(translations);
-		return this;
-	}
 }

@@ -1,15 +1,9 @@
 package com.sporniket.libre.javabeans.doclet.basic;
 
-import static com.sporniket.libre.javabeans.doclet.UtilsClassDoc.*;
-import static com.sporniket.libre.javabeans.doclet.UtilsClassname.computeOutputClassname;
-import static com.sporniket.libre.javabeans.doclet.UtilsFieldDoc.getAccessibleDeclaredFields;
-
 import com.sporniket.libre.javabeans.doclet.JavabeanGenerator;
-import com.sporniket.libre.javabeans.doclet.UtilsFieldname;
 import com.sporniket.libre.javabeans.doclet.codespecs.FieldSpecs;
+import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs;
 import com.sporniket.libre.lang.string.StringTools;
-import com.sun.javadoc.ClassDoc;
-import com.sun.javadoc.FieldDoc;
 
 /**
  * Basic generator of javabeans from pojos.
@@ -71,8 +65,8 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 		String _extendsMarker = StringTools.isEmptyString(getClassSpecs().getSuperClassName()) ? "" : "\n        extends ";
 		String _implementsMarker = StringTools.isEmptyString(getClassSpecs().getInterfaceList()) ? "" : "\n      implements ";
 
-		getOut().printf("public%s class %s %s%s%s%s\n{\n\n", //
-				_abstractMarker, getClassSpecs().getDeclaredTypeArguments()//
+		getOut().printf("public%s class %s%s %s%s%s%s\n{\n\n", //
+				_abstractMarker, getClassSpecs().getClassName(), getClassSpecs().getDeclaredTypeArguments()//
 				, _extendsMarker, getClassSpecs().getSuperClassName()//
 				, _implementsMarker, getClassSpecs().getInterfaceList());
 	}
@@ -89,6 +83,15 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 		getClassSpecs().getFields().stream()//
 				.filter(FieldSpecs::getDirectlyRequired)//
 				.forEach(_field -> outputField(_field));
+
+		getOut().println();
+	}
+
+	@Override
+	public void outputImportStatements()
+	{
+		// TODO Auto-generated method stub
+		getClassSpecs().getImports().stream().filter(ImportSpecs::getDirectlyRequired).forEach(i -> outputImportSpecIfValid(i));
 
 		getOut().println();
 	}
