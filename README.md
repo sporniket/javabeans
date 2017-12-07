@@ -25,11 +25,17 @@ a project to generate Javabeans from a XML model. Interested people may checkout
 * replicate annotations (springframework, ...) if possible, or provide a set of annotations to generate annotations on the generated code (classes and fields) (supported by the reverse-engineering doclet).
 
 
-### What's new in v17.09.02
+### What's new in v17.12.00
+
+Technical matters :
+
+* #20 : Refactor code generation to separate data preparation from data injection into a template
 
 Issues fixed :
 
-* #25 : Class to process are not filtered against PojoSuffix
+* #21 : The generated javabean imports class required by inherited fields
+* #23 : Generated classes import native types
+* #24 : Boolean/boolean read accessor should be prefixed by 'is' instead of 'get'
 
 ### What's new in v17.09.01
 
