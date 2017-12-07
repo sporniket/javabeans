@@ -53,7 +53,7 @@ import com.sun.javadoc.RootDoc;
  * <hr>
  *
  * @author David SPORN
- * @version 17.09.01
+ * @version 17.12.00
  * @since 17.09.00
  */
 public class DistillerDoclet

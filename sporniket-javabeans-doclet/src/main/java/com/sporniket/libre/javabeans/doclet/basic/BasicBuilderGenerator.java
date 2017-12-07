@@ -32,7 +32,7 @@ import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs;
  * <hr>
  * 
  * @author David SPORN
- * @version 17.09.01
+ * @version 17.12.00
  * @since 17.09.00
  */
 public class BasicBuilderGenerator extends BasicGenerator implements BuilderGenerator

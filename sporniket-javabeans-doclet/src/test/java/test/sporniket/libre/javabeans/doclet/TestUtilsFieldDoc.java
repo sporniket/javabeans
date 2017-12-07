@@ -42,7 +42,7 @@ import com.sun.javadoc.FieldDoc;
  * <hr>
  *
  * @author David SPORN
- * @version 17.09.01
+ * @version 17.12.00
  * @since 17.09.01
  */
 @RunWith(MockitoJUnitRunner.class)
