@@ -381,6 +381,7 @@ public final class UtilsClassDoc
 			, long.class.getName()//
 			, float.class.getName()//
 			, double.class.getName()//
+			, short.class.getName()//
 	));
 
 	public static String computeOutputType(Type toOutput, Map<String, String> translations, Set<String> shortables)

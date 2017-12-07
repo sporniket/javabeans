@@ -238,4 +238,10 @@ public class TestUtilsClassDoc
 	{
 		doTestUpdateKnownClasses__givenPrimitiveIsFilteredOut(long.class.getName());
 	}
+
+	@Test
+	public void testUpdateKnownClasses__primitiveShortIsFilteredOut()
+	{
+		doTestUpdateKnownClasses__givenPrimitiveIsFilteredOut(short.class.getName());
+	}
 }
