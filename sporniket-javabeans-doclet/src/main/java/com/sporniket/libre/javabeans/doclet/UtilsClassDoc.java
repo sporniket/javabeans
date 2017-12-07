@@ -5,6 +5,7 @@ import static com.sporniket.libre.javabeans.doclet.UtilsClassname.computeOutputC
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -12,8 +13,11 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs;
+import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs_Builder;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
+import com.sun.javadoc.MethodDoc;
 import com.sun.javadoc.ParameterizedType;
 import com.sun.javadoc.Type;
 import com.sun.javadoc.TypeVariable;
@@ -47,7 +51,7 @@ import com.sun.javadoc.WildcardType;
  * <hr>
  *
  * @author David SPORN
- * @version 17.09.01
+ * @version 17.12.00
  * @since 17.09.00
  */
 public final class UtilsClassDoc
@@ -78,7 +82,7 @@ public final class UtilsClassDoc
 	 * <hr>
 	 *
 	 * @author David SPORN
-	 * @version 17.09.01
+	 * @version 17.12.00
 	 * @since 17.09.00
 	 */
 	public static class ClassDeclaration
@@ -232,7 +236,7 @@ public final class UtilsClassDoc
 	 * <hr>
 	 *
 	 * @author David SPORN
-	 * @version 17.09.01
+	 * @version 17.12.00
 	 * @since 17.09.00
 	 */
 	public static class TypeInvocation
@@ -369,6 +373,16 @@ public final class UtilsClassDoc
 	private static final Set<String> MARKERS_INTERFACES = new HashSet<>(
 			Arrays.asList(Serializable.class.getName(), Cloneable.class.getName()));
 
+	private static final Set<String> PRIMITIVE_TYPES = new HashSet<>(Arrays.asList(//
+			boolean.class.getName()//
+			, byte.class.getName()//
+			, char.class.getName()//
+			, int.class.getName()//
+			, long.class.getName()//
+			, float.class.getName()//
+			, double.class.getName()//
+	));
+
 	public static String computeOutputType(Type toOutput, Map<String, String> translations, Set<String> shortables)
 	{
 		final StringBuilder _buffer = new StringBuilder();
@@ -381,6 +395,20 @@ public final class UtilsClassDoc
 		final StringBuilder _buffer = new StringBuilder();
 		TypeInvocation.outputType(_buffer, toOutput, translations, shortables);
 		return _buffer.toString();
+	}
+
+	/**
+	 * @param toScan
+	 *            an interface
+	 * @return true if there are any abstract method.
+	 */
+	private static boolean hasAbstractMethods(ClassDoc toScan)
+	{
+		return !Arrays.asList(toScan.methods(false))//
+				.stream()//
+				.filter(MethodDoc::isAbstract)//
+				.collect(Collectors.toList())//
+				.isEmpty();
 	}
 
 	/**
@@ -546,7 +574,7 @@ public final class UtilsClassDoc
 		{
 			result = !Arrays.asList(toScan.interfaceTypes()).stream()//
 					.filter(t -> !MARKERS_INTERFACES.contains(t.qualifiedTypeName()))//
-					.collect(Collectors.toList())//
+					.filter(t -> hasAbstractMethods(t.asClassDoc())).collect(Collectors.toList())//
 					.isEmpty();
 		}
 		return result;
@@ -577,6 +605,25 @@ public final class UtilsClassDoc
 	}
 
 	/**
+	 * Add into a collection of 'classes to import' the specified class, its superclass and implemented interfaces, and the type of
+	 * its public fields.
+	 *
+	 * @param toScan
+	 *            the class to scan.
+	 */
+	public static Collection<ImportSpecs> updateKnownClasses(ClassDoc toScan)
+	{
+		final Map<String, Boolean> _knownClasses = new HashMap<>();
+		updateKnownClasses(_knownClasses, toScan, true);
+		return _knownClasses.keySet().parallelStream()//
+				.map(cls -> new ImportSpecs_Builder()//
+						.withClassName(cls)//
+						.withDirectlyRequired(_knownClasses.get(cls))//
+						.done())//
+				.filter(i -> !PRIMITIVE_TYPES.contains(i.getClassName())).collect(Collectors.toList());
+	}
+
+	/**
 	 * Add into a collection of 'known classes' the specified type, and the type of its parameters if any.
 	 *
 	 * @param knownClasses
@@ -600,6 +647,65 @@ public final class UtilsClassDoc
 		if (!knownClasses.contains(_qualifiedTypeName))
 		{
 			knownClasses.add(_qualifiedTypeName);
+		}
+	}
+
+	/**
+	 * Add into a collection of 'classes to import' the specified class, its superclass and implemented interfaces, and the type of
+	 * its public fields.
+	 *
+	 * @param knownClasses
+	 *            the collection to update.
+	 * @param toScan
+	 *            the class to scan.
+	 * @param isDirectlyRequired
+	 *            <code>true</code> when the import is required for the java class to generate. <code>false</code> when the class is
+	 *            required only for a builder of class.
+	 */
+	private static void updateKnownClasses(Map<String, Boolean> knownClasses, ClassDoc toScan, boolean isDirectlyRequired)
+	{
+		final Predicate<String> _isNotRegistered = i -> !knownClasses.containsKey(i);
+		final Consumer<String> _registerKnownClass = i -> knownClasses.put(i, isDirectlyRequired); // do not support parametrized
+																									// types
+		final Consumer<Type> _processType = t -> updateKnownClasses(knownClasses, t, isDirectlyRequired);
+		final Consumer<Type> _processTypeUndirect = t -> updateKnownClasses(knownClasses, t, false);
+
+		Arrays.asList(toScan.qualifiedName(), toScan.superclass().qualifiedName()).stream().filter(_isNotRegistered)
+				.forEach(_registerKnownClass);
+
+		Arrays.asList(toScan.interfaces()).stream().map(ClassDoc::qualifiedName).filter(_isNotRegistered)
+				.forEach(_registerKnownClass);
+		UtilsFieldDoc.getPrivateDeclaredFields(toScan).stream().map(FieldDoc::type).forEach(_processType);
+		UtilsFieldDoc.getAccessibleDeclaredFields(toScan).stream().map(FieldDoc::type).forEach(_processType);
+
+		// require to process again accessible declared fields, but they are already registered.
+		UtilsFieldDoc.getAccessibleFields(toScan).stream().map(FieldDoc::type).forEach(_processTypeUndirect);
+	}
+
+	/**
+	 * Add into a collection of 'known classes' the specified type, and the type of its parameters if any.
+	 *
+	 * @param knownClasses
+	 *            the collection to update.
+	 * @param toScan
+	 *            the type to scan.
+	 */
+	private static void updateKnownClasses(Map<String, Boolean> knownClasses, Type toScan, boolean isDirectlyRequired)
+	{
+		if (null != toScan.asTypeVariable())
+		{
+			// skip type variables
+			return;
+		}
+		final ParameterizedType _pt = toScan.asParameterizedType();
+		if (null != _pt)
+		{
+			Arrays.asList(_pt.typeArguments()).forEach(t -> updateKnownClasses(knownClasses, t, isDirectlyRequired));
+		}
+		final String _qualifiedTypeName = toScan.qualifiedTypeName();
+		if (!knownClasses.containsKey(_qualifiedTypeName))
+		{
+			knownClasses.put(_qualifiedTypeName, isDirectlyRequired);
 		}
 	}
 

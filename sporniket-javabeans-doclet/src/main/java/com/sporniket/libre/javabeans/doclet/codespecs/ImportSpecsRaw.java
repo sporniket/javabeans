@@ -1,6 +1,9 @@
 /**
- * Basic implementation for code generation
  *
+ */
+package com.sporniket.libre.javabeans.doclet.codespecs;
+
+/**
  * <p>
  * &copy; Copyright 2012-2017 David Sporn
  * </p>
@@ -27,6 +30,11 @@
  *
  * @author David SPORN
  * @version 17.12.00
- * @since 17.09.00
+ * @since 17.12.00
  */
-package com.sporniket.libre.javabeans.doclet.basic;
+class ImportSpecsRaw
+{
+	String className;
+
+	Boolean directlyRequired;
+}

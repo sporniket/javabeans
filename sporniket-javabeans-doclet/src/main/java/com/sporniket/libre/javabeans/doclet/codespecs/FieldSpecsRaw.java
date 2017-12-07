@@ -1,6 +1,10 @@
+package com.sporniket.libre.javabeans.doclet.codespecs;
+
+import java.util.List;
+
+import com.sporniket.libre.javabeans.doclet.DocletOptions;
+
 /**
- * Basic implementation for code generation
- *
  * <p>
  * &copy; Copyright 2012-2017 David Sporn
  * </p>
@@ -27,6 +31,34 @@
  *
  * @author David SPORN
  * @version 17.12.00
- * @since 17.09.00
+ * @since 17.12.00
  */
-package com.sporniket.libre.javabeans.doclet.basic;
+class FieldSpecsRaw
+{
+	List<AnnotationSpecsRaw> annotations;
+
+	/**
+	 * Field defined in the current class (not inherited)
+	 */
+	Boolean directlyRequired;
+
+	/**
+	 * Either <code>this.</code> or {@link DocletOptions#getBeanFieldPrefix()}
+	 */
+	String fieldPrefix;
+
+	/**
+	 * Unprefixed name for the accessor.
+	 */
+	String nameForAccessor;
+
+	/**
+	 * Unprefixed for the Javabean field.
+	 */
+	String nameForField;
+
+	/**
+	 * Expression of the field type.
+	 */
+	String typeInvocation;
+}

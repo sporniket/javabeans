@@ -1,6 +1,5 @@
 /**
- * Basic implementation for code generation
- *
+ * Model of data to inject in a code template.
  * <p>
  * &copy; Copyright 2012-2017 David Sporn
  * </p>
@@ -27,6 +26,6 @@
  *
  * @author David SPORN
  * @version 17.12.00
- * @since 17.09.00
+ * @since 17.12.00
  */
-package com.sporniket.libre.javabeans.doclet.basic;
+package com.sporniket.libre.javabeans.doclet.codespecs;

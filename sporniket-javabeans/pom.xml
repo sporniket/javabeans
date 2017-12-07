@@ -22,8 +22,6 @@
 		<version.maven-pmd-plugin>3.4</version.maven-pmd-plugin>
 		<version.maven-release-plugin>2.5.2</version.maven-release-plugin>
 
-		<!-- excluded packages for javadoc plugin -->
-		<javadoc.excludePackageNames>com.sporniket.studio.schema.model.set.javabean:com.sporniket.studio.schema.model.set.javabean.*:com.sporniket.libre.javabeans.generator.maven</javadoc.excludePackageNames>
 	</properties>
 
 	<name>sporniket-javabeans</name>

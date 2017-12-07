@@ -5,7 +5,7 @@ package com.sporniket.libre.javabeans.doclet;
 
 /**
  * Specialized source generator for generating javabeans.
- * 
+ *
  * <p>
  * &copy; Copyright 2012-2017 David Sporn
  * </p>
@@ -31,7 +31,7 @@ package com.sporniket.libre.javabeans.doclet;
  * <hr>
  *
  * @author David SPORN
- * @version 17.09.01
+ * @version 17.12.00
  * @since 17.09.00
  */
 public interface JavabeanGenerator extends JavaSourceGenerator

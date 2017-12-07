@@ -1,6 +1,9 @@
+package com.sporniket.libre.javabeans.doclet.codespecs;
+
+import java.util.Collection;
+import java.util.List;
+
 /**
- * Basic implementation for code generation
- *
  * <p>
  * &copy; Copyright 2012-2017 David Sporn
  * </p>
@@ -27,6 +30,47 @@
  *
  * @author David SPORN
  * @version 17.12.00
- * @since 17.09.00
+ * @since 17.12.00
  */
-package com.sporniket.libre.javabeans.doclet.basic;
+class ClassSpecsRaw
+{
+	Boolean abstractRequired;
+
+	List<AnnotationSpecsRaw> annotations;
+
+	/**
+	 * Class simple name (without package).
+	 */
+	String className;
+
+	/**
+	 * Type arguments when defining the class (<code>class</code> keyword).
+	 */
+	String declaredTypeArguments;
+
+	List<FieldSpecsRaw> fields;
+
+	Collection<ImportSpecsRaw> imports;
+
+	/**
+	 * (NOT NULL) Comma separated values of interfaces names.
+	 *
+	 * Each name SHOULD be simple, unless the type name is not in the list of shortable types.
+	 */
+	String interfaceList;
+
+	/**
+	 * Type arguments when invoking the class (e.g. in the builder).
+	 */
+	String invokedTypeArguments;
+
+	/**
+	 * fully qualified package name.
+	 */
+	String packageName;
+
+	/**
+	 * (NOT NULL) Simple name of the extended class (MUST be imported), or empty if the super class is <code>Object</code>.
+	 */
+	String superClassName;
+}

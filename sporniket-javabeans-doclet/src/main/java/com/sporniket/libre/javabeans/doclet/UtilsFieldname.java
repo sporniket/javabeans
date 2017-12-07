@@ -1,5 +1,7 @@
 package com.sporniket.libre.javabeans.doclet;
 
+import com.sporniket.libre.lang.string.StringTools;
+
 /**
  * Utility class for Field names.
  *
@@ -28,7 +30,7 @@ package com.sporniket.libre.javabeans.doclet;
  * <hr>
  *
  * @author David SPORN
- * @version 17.09.01
+ * @version 17.12.00
  * @since 17.09.00
  */
 public final class UtilsFieldname
@@ -43,6 +45,25 @@ public final class UtilsFieldname
 	public static String computeFieldAccessorSuffix(String fieldName)
 	{
 		return fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+	}
+
+	/**
+	 * Remove the prefix and uncapitalize the field name if applicable.
+	 *
+	 * @param fieldName
+	 *            the field name to transform.
+	 * @param prefix
+	 *            the prefix to remove.
+	 * @return the transformed field name, e.g. <code>myFooBar</code> without <code>my</code> will give <code>fooBar</code>.
+	 * @since 17.12.00
+	 */
+	public static String removePrefix(String fieldName, String prefix)
+	{
+		if (StringTools.isEmptyString(prefix) || (fieldName.length() <= prefix.length()) || !fieldName.startsWith(prefix))
+		{
+			return fieldName;
+		}
+		return fieldName.substring(prefix.length(), prefix.length() + 1).toLowerCase() + fieldName.substring(prefix.length() + 1);
 	}
 
 }

@@ -1,6 +1,6 @@
+package com.sporniket.libre.javabeans.doclet.codespecs;
+
 /**
- * Basic implementation for code generation
- *
  * <p>
  * &copy; Copyright 2012-2017 David Sporn
  * </p>
@@ -27,6 +27,11 @@
  *
  * @author David SPORN
  * @version 17.12.00
- * @since 17.09.00
+ * @since 17.12.00
  */
-package com.sporniket.libre.javabeans.doclet.basic;
+abstract class AnnotationSpecsRaw
+{
+	String name;
+
+	String type;
+}

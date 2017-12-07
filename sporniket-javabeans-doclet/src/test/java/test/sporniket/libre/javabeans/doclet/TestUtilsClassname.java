@@ -41,7 +41,7 @@ import com.sporniket.libre.javabeans.doclet.UtilsClassname;
  * <hr>
  * 
  * @author David SPORN 
- * @version 17.09.01
+ * @version 17.12.00
  * @since 17.09.01
  */
 public class TestUtilsClassname

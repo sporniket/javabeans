@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -12,7 +13,10 @@
 	<packaging>jar</packaging>
 
 	<properties>
-		<!-- FIXME no properties -->
+		<!-- Using my own tool -->
+		<version.sporniket-javabeans-doclet>17.09.02</version.sporniket-javabeans-doclet>
+		<!-- maven plugins version -->
+		<version.maven-javadoc-plugin>3.0.0-M1</version.maven-javadoc-plugin>
 	</properties>
 
 	<name>sporniket-javabeans-doclet</name>
@@ -59,7 +63,56 @@
 	</dependencies>
 	<build>
 		<plugins>
-			<!-- FIXME no plugin required for now -->
+			<!-- === javabeans generation using the doclets === -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${version.maven-javadoc-plugin}</version>
+				<executions>
+					<execution>
+						<id>expandJavabeans</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>javadoc-no-fork</goal>
+						</goals>
+						<configuration>
+							<doclet>com.sporniket.libre.javabeans.doclet.ExpanderDoclet</doclet>
+							<docletArtifact>
+								<groupId>com.sporniket.javabeans</groupId>
+								<artifactId>sporniket-javabeans-doclet</artifactId>
+								<version>${version.sporniket-javabeans-doclet}</version>
+							</docletArtifact>
+							<additionalparam>-d
+								${project.build.directory}/generated-classes/javabeans</additionalparam>
+							<show>private</show>
+							<sourceFileIncludes>
+								<sourceFileIncludes>com\/sporniket\/libre\/javabeans\/doclet\/codespecs\/\*.java</sourceFileIncludes>
+							</sourceFileIncludes>
+							<useStandardDocletOptions>false</useStandardDocletOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- === add generated Javabeans as source folder === -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-classes/javabeans</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>
