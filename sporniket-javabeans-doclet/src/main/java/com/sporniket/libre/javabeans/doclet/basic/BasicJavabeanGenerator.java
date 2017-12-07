@@ -41,8 +41,9 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 	private void outputAccessor(FieldSpecs field)
 	{
 		// getter
-		getOut().printf("    public %s get%s() {return %s%s ;}\n", field.getTypeInvocation(), field.getNameForAccessor(),
-				field.getFieldPrefix(), field.getNameForField());
+		getOut().printf("    public %s %s%s() {return %s%s ;}\n", field.getTypeInvocation(),
+				(field.getBooleanGetter()) ? "is" : "get", field.getNameForAccessor(), field.getFieldPrefix(),
+				field.getNameForField());
 
 		// setter
 		getOut().printf("    public void set%s(%s value) {%s%s = value;}\n", field.getNameForAccessor(), field.getTypeInvocation(),

@@ -106,6 +106,7 @@ public class CodeSpecsExtractor
 					.withFieldPrefix(_noPrefix ? "this." : options.getBeanFieldPrefix())//
 					.withTypeInvocation(computeOutputType_invocation(f.type(), translations, shortables))//
 					.withDirectlyRequired(_directlyRequiredFields.contains(f.name()))//
+					.withBooleanGetter(("boolean".equals(f.type().qualifiedTypeName())) || ("java.lang.Boolean".equals(f.type().qualifiedTypeName())))
 					.done();
 		}) : (f -> {
 			final String _unprefixedName = removePrefix(f.name(), options.getBeanFieldPrefix());

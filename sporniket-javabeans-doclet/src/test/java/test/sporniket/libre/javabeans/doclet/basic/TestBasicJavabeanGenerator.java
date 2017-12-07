@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package test.sporniket.libre.javabeans.doclet.basic;
 
@@ -67,8 +67,44 @@ public class TestBasicJavabeanGenerator
 
 	@Mock
 	DocletOptions options;
-	
-	@Mock Type type1 ;
+
+	@Mock
+	Type type1;
+
+	/**
+	 * @throws UnsupportedEncodingException
+	 * @see https://github.com/sporniket/javabeans/issues/19
+	 */
+	@Test
+	public void testBooleanGetterPrefixShouldBeIsInsteadOfGet() throws UnsupportedEncodingException
+	{
+		// prepare
+		final ClassSpecs specs = new ClassSpecs_Builder()//
+				.withFields(Arrays.asList(new FieldSpecs_Builder()//
+						.withDirectlyRequired(true)//
+						.withFieldPrefix("my")//
+						.withNameForAccessor("TheField")//
+						.withNameForField("TheField")//
+						.withTypeInvocation("foo")//
+						.withBooleanGetter(true)//
+						.done()))//
+				.done();
+
+		final Charset _charset = StandardCharsets.UTF_8;
+		final ByteArrayOutputStream _baos = new ByteArrayOutputStream();
+		final PrintStream _ps = new PrintStream(_baos, true, _charset.name());
+		final BasicJavabeanGenerator _generator = new Builder<>(new BasicJavabeanGenerator())//
+				.withOptions(options)//
+				.withOut(_ps)//
+				.withClassSpecs(specs)//
+				.done();
+		// execute
+		_generator.outputAccessors();
+		final String _result = new String(_baos.toByteArray(), _charset);
+
+		// verify
+		Assert.assertThat(_result, CoreMatchers.containsString("public foo isTheField("));
+	}
 
 	/**
 	 * @throws UnsupportedEncodingException
@@ -78,27 +114,28 @@ public class TestBasicJavabeanGenerator
 	public void testOutputAccessorsWhenBeanFieldPrefixIsEmpty() throws UnsupportedEncodingException
 	{
 		// prepare
-		ClassSpecs specs = new ClassSpecs_Builder()//
+		final ClassSpecs specs = new ClassSpecs_Builder()//
 				.withFields(Arrays.asList(new FieldSpecs_Builder()//
 						.withDirectlyRequired(true)//
 						.withFieldPrefix("this.")//
 						.withNameForAccessor("TheField")//
 						.withNameForField("theField")//
 						.withTypeInvocation("foo")//
+						.withBooleanGetter(false)//
 						.done()))//
-				.done() ;
+				.done();
 
 		final Charset _charset = StandardCharsets.UTF_8;
-		ByteArrayOutputStream _baos = new ByteArrayOutputStream();
-		PrintStream _ps = new PrintStream(_baos, true, _charset.name());
-		BasicJavabeanGenerator _generator = new Builder<BasicJavabeanGenerator>(new BasicJavabeanGenerator())//
+		final ByteArrayOutputStream _baos = new ByteArrayOutputStream();
+		final PrintStream _ps = new PrintStream(_baos, true, _charset.name());
+		final BasicJavabeanGenerator _generator = new Builder<>(new BasicJavabeanGenerator())//
 				.withOptions(options)//
 				.withOut(_ps)//
 				.withClassSpecs(specs)//
 				.done();
 		// execute
 		_generator.outputAccessors();
-		String _result = new String(_baos.toByteArray(), _charset);
+		final String _result = new String(_baos.toByteArray(), _charset);
 
 		// verify
 		Assert.assertThat(_result, CoreMatchers.containsString("public foo getTheField("));
@@ -115,28 +152,28 @@ public class TestBasicJavabeanGenerator
 	public void testOutputAccessorsWhenBeanFieldPrefixIsSpecified() throws UnsupportedEncodingException
 	{
 		// prepare
-		ClassSpecs specs = new ClassSpecs_Builder()//
+		final ClassSpecs specs = new ClassSpecs_Builder()//
 				.withFields(Arrays.asList(new FieldSpecs_Builder()//
 						.withDirectlyRequired(true)//
 						.withFieldPrefix("my")//
 						.withNameForAccessor("TheField")//
 						.withNameForField("TheField")//
 						.withTypeInvocation("foo")//
+						.withBooleanGetter(false)//
 						.done()))//
-				.done() ;
-		
+				.done();
 
 		final Charset _charset = StandardCharsets.UTF_8;
-		ByteArrayOutputStream _baos = new ByteArrayOutputStream();
-		PrintStream _ps = new PrintStream(_baos, true, _charset.name());
-		BasicJavabeanGenerator _generator = new Builder<BasicJavabeanGenerator>(new BasicJavabeanGenerator())//
+		final ByteArrayOutputStream _baos = new ByteArrayOutputStream();
+		final PrintStream _ps = new PrintStream(_baos, true, _charset.name());
+		final BasicJavabeanGenerator _generator = new Builder<>(new BasicJavabeanGenerator())//
 				.withOptions(options)//
 				.withOut(_ps)//
 				.withClassSpecs(specs)//
 				.done();
 		// execute
 		_generator.outputAccessors();
-		String _result = new String(_baos.toByteArray(), _charset);
+		final String _result = new String(_baos.toByteArray(), _charset);
 
 		// verify
 		Assert.assertThat(_result, CoreMatchers.containsString("public foo getTheField("));
