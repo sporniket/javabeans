@@ -57,18 +57,6 @@ public abstract class BasicGenerator extends BasicGeneratorBase implements JavaS
 	{
 		getOut().println("}\n");
 	}
-	//
-	// @Override
-	// public void outputImportStatements()
-	// {
-	// final Predicate<? super String> _isNotInSamePackage = c -> !getSource().containingPackage().name()
-	// .equals(getPackageName(c));
-	//
-	// getKnownClasses().stream().filter(FILTER__IS_NOT_TYPE_PARAMETER).filter(IS_NOT_JAVA_LANG_TYPE).filter(_isNotInSamePackage)
-	// .collect(Collectors.toCollection(TreeSet::new)).forEach(c -> getOut().printf("import %s;\n", c));
-	//
-	// getOut().println();
-	// }
 
 	protected void outputImportSpecIfValid(ImportSpecs specs)
 	{
