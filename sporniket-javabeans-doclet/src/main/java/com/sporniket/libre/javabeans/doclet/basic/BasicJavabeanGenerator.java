@@ -7,31 +7,31 @@ import com.sporniket.libre.lang.string.StringTools;
 
 /**
  * Basic generator of javabeans from pojos.
- * 
+ *
  * <p>
  * &copy; Copyright 2012-2017 David Sporn
  * </p>
  * <hr>
- * 
+ *
  * <p>
  * This file is part of <i>The Sporniket Javabeans Library &#8211; doclet</i>.
- * 
+ *
  * <p>
  * <i>The Sporniket Javabeans Library &#8211; doclet</i> is free software: you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at
  * your option) any later version.
- * 
+ *
  * <p>
  * <i>The Sporniket Javabeans Library &#8211; doclet</i> is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
  * Public License for more details.
- * 
+ *
  * <p>
  * You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library &#8211;
  * core</i>. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. 2
- * 
+ *
  * <hr>
- * 
+ *
  * @author David SPORN
  * @version 17.12.00
  * @since 17.09.00
@@ -61,9 +61,9 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 	public void outputClassBegin()
 	{
 		// last preparations
-		String _abstractMarker = getClassSpecs().getAbstractRequired() ? " abstract" : "";
-		String _extendsMarker = StringTools.isEmptyString(getClassSpecs().getSuperClassName()) ? "" : "\n        extends ";
-		String _implementsMarker = StringTools.isEmptyString(getClassSpecs().getInterfaceList()) ? "" : "\n      implements ";
+		final String _abstractMarker = getClassSpecs().getAbstractRequired() ? " abstract" : "";
+		final String _extendsMarker = StringTools.isEmptyString(getClassSpecs().getSuperClassName()) ? "" : "\n        extends ";
+		final String _implementsMarker = StringTools.isEmptyString(getClassSpecs().getInterfaceList()) ? "" : "\n      implements ";
 
 		getOut().printf("public%s class %s%s %s%s%s%s\n{\n\n", //
 				_abstractMarker, getClassSpecs().getClassName(), getClassSpecs().getDeclaredTypeArguments()//

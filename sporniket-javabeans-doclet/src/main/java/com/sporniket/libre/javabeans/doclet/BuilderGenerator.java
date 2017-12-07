@@ -2,7 +2,7 @@ package com.sporniket.libre.javabeans.doclet;
 
 /**
  * Specialized source generator for generating javabean builders.
- * 
+ *
  * <p>
  * &copy; Copyright 2012-2017 David Sporn
  * </p>

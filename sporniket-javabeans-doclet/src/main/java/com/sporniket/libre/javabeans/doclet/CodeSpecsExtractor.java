@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.sporniket.libre.javabeans.doclet;
 
@@ -68,7 +68,7 @@ public class CodeSpecsExtractor
 
 	private String extractClassDeclaredTypeArguments(ClassDoc from, Map<String, String> translations, Set<String> shortables)
 	{
-		StringBuilder _result = new StringBuilder();
+		final StringBuilder _result = new StringBuilder();
 		final TypeVariable[] _typeArguments = from.typeParameters();
 		UtilsClassDoc.outputClassParameters__classDeclaration(_result, _typeArguments, translations, shortables);
 
@@ -77,7 +77,7 @@ public class CodeSpecsExtractor
 
 	private String extractClassInvokedTypeArguments(ClassDoc from, Map<String, String> translations, Set<String> shortables)
 	{
-		StringBuilder _result = new StringBuilder();
+		final StringBuilder _result = new StringBuilder();
 		final TypeVariable[] _typeArguments = from.typeParameters();
 		UtilsClassDoc.TypeInvocation.outputTypeArguments(_result, _typeArguments, translations, shortables);
 
@@ -99,7 +99,7 @@ public class CodeSpecsExtractor
 				.collect(toCollection(TreeSet::new));
 
 		final Function<? super FieldDoc, ? extends FieldSpecs> _toFieldSpecs = (EXPANDER == mode) ? (f -> {
-			String _capitalizedName = computeFieldAccessorSuffix(f.name());
+			final String _capitalizedName = computeFieldAccessorSuffix(f.name());
 			return new FieldSpecs_Builder()//
 					.withNameForField(_noPrefix ? f.name() : _capitalizedName)//
 					.withNameForAccessor(_capitalizedName)//
@@ -108,7 +108,7 @@ public class CodeSpecsExtractor
 					.withDirectlyRequired(_directlyRequiredFields.contains(f.name()))//
 					.done();
 		}) : (f -> {
-			String _unprefixedName = removePrefix(f.name(), options.getBeanFieldPrefix());
+			final String _unprefixedName = removePrefix(f.name(), options.getBeanFieldPrefix());
 			return new FieldSpecs_Builder()//
 					.withNameForField(_unprefixedName)//
 					.withTypeInvocation(computeOutputType_invocation(f.type(), translations, shortables))//
@@ -124,7 +124,7 @@ public class CodeSpecsExtractor
 
 	private String extractInterfaceList(ClassDoc from, Map<String, String> translations, Set<String> shortables)
 	{
-		StringBuilder _result = new StringBuilder();
+		final StringBuilder _result = new StringBuilder();
 		final ClassDoc[] _interfaces = from.interfaces();
 		if (_interfaces.length > 0)
 		{
@@ -142,11 +142,11 @@ public class CodeSpecsExtractor
 	{
 		final Collection<ImportSpecs> _knownClasses = updateKnownClasses(from);
 
-		Map<String, String> _shortNameMapping = new HashMap<>(_knownClasses.size() + translations.size());
+		final Map<String, String> _shortNameMapping = new HashMap<>(_knownClasses.size() + translations.size());
 		updateShortClassnameMappingFromClassnames(_shortNameMapping,
 				_knownClasses.stream().map(ImportSpecs::getClassName).collect(toList()));
 		updateShortClassnameMappingFromClassnames(_shortNameMapping, translations.values());
-		Set<String> _shortables = new HashSet<>(_shortNameMapping.values());
+		final Set<String> _shortables = new HashSet<>(_shortNameMapping.values());
 
 		return new ClassSpecs_Builder()//
 				.withImports(_knownClasses)//
@@ -163,7 +163,7 @@ public class CodeSpecsExtractor
 
 	private String extractSuperClassName(ClassDoc superclass, Map<String, String> translations, Set<String> shortables)
 	{
-		StringBuilder _result = new StringBuilder();
+		final StringBuilder _result = new StringBuilder();
 		if (!Object.class.getName().equals(superclass.qualifiedName()))
 		{
 			_result//

@@ -49,7 +49,7 @@ public final class UtilsFieldname
 
 	/**
 	 * Remove the prefix and uncapitalize the field name if applicable.
-	 * 
+	 *
 	 * @param fieldName
 	 *            the field name to transform.
 	 * @param prefix
@@ -59,7 +59,7 @@ public final class UtilsFieldname
 	 */
 	public static String removePrefix(String fieldName, String prefix)
 	{
-		if (StringTools.isEmptyString(prefix) || fieldName.length() <= prefix.length() || !fieldName.startsWith(prefix))
+		if (StringTools.isEmptyString(prefix) || (fieldName.length() <= prefix.length()) || !fieldName.startsWith(prefix))
 		{
 			return fieldName;
 		}

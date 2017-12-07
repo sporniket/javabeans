@@ -4,26 +4,19 @@
 package test.sporniket.libre.javabeans.doclet.basic;
 
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 import java.io.PrintStream;
-import java.io.StringBufferInputStream;
-import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.sporniket.libre.javabeans.doclet.CodeSpecsExtractor;
 import com.sporniket.libre.javabeans.doclet.DocletOptions;
 import com.sporniket.libre.javabeans.doclet.basic.BasicJavabeanGenerator;
 import com.sporniket.libre.javabeans.doclet.basic.Builder;
@@ -67,13 +60,13 @@ import com.sun.javadoc.Type;
 public class TestBasicJavabeanGenerator
 {
 	@Mock
-	DocletOptions options;
+	ClassDoc class1;
 
 	@Mock
 	FieldDoc field1;
 
 	@Mock
-	ClassDoc class1;
+	DocletOptions options;
 	
 	@Mock Type type1 ;
 

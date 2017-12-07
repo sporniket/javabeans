@@ -613,7 +613,7 @@ public final class UtilsClassDoc
 	 */
 	public static Collection<ImportSpecs> updateKnownClasses(ClassDoc toScan)
 	{
-		Map<String, Boolean> _knownClasses = new HashMap<>();
+		final Map<String, Boolean> _knownClasses = new HashMap<>();
 		updateKnownClasses(_knownClasses, toScan, true);
 		return _knownClasses.keySet().parallelStream()//
 				.map(cls -> new ImportSpecs_Builder()//

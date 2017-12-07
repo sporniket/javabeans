@@ -153,7 +153,8 @@ public class ExpanderDoclet
 
 		_sourceClasses.stream() //
 				.filter(c -> _translations.containsKey(c.qualifiedName())) //
-				//.filter(c -> c.qualifiedName().endsWith(options.getPojoSuffix()) && c.qualifiedName().endsWith("."+options.getPojoSuffix()))
+				// .filter(c -> c.qualifiedName().endsWith(options.getPojoSuffix()) &&
+				// c.qualifiedName().endsWith("."+options.getPojoSuffix()))
 				.forEach(p -> processPojoClass(p, _translations, options));
 
 	}
@@ -216,7 +217,7 @@ public class ExpanderDoclet
 			{
 				_out.close();
 			}
-			
+
 			if (!_classSpecs.getAbstractRequired()) // abstract classes do not need builders...
 			{
 				final String _builderQualifiedName = _javabeanQualifiedName + "_Builder";

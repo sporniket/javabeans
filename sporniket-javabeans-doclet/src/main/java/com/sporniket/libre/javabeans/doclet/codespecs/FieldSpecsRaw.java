@@ -38,6 +38,11 @@ class FieldSpecsRaw
 	List<AnnotationSpecsRaw> annotations;
 
 	/**
+	 * Field defined in the current class (not inherited)
+	 */
+	Boolean directlyRequired;
+
+	/**
 	 * Either <code>this.</code> or {@link DocletOptions#getBeanFieldPrefix()}
 	 */
 	String fieldPrefix;
@@ -46,19 +51,14 @@ class FieldSpecsRaw
 	 * Unprefixed name for the accessor.
 	 */
 	String nameForAccessor;
-	
+
 	/**
 	 * Unprefixed for the Javabean field.
 	 */
 	String nameForField;
-	
+
 	/**
 	 * Expression of the field type.
 	 */
 	String typeInvocation;
-	
-	/**
-	 * Field defined in the current class (not inherited)
-	 */
-	Boolean directlyRequired ;
 }

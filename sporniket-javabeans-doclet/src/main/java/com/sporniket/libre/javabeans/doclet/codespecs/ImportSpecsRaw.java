@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.sporniket.libre.javabeans.doclet.codespecs;
 
@@ -34,7 +34,7 @@ package com.sporniket.libre.javabeans.doclet.codespecs;
  */
 class ImportSpecsRaw
 {
-	String className ;
+	String className;
 
-	Boolean directlyRequired ;
+	Boolean directlyRequired;
 }
