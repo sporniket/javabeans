@@ -29,9 +29,27 @@ package com.sporniket.libre.javabeans.doclet.codespecs;
  * @version 17.12.00
  * @since 17.12.00
  */
-abstract class AnnotationSpecsRaw
+class AnnotationSpecsRaw
 {
-	String name;
+	/**
+	 * <code>true</code> when the annotation MUST annotate the builder.
+	 */
+	boolean onBuilder;
+
+	/**
+	 * <code>true</code> when the annotation MUST annotate the field.
+	 */
+	boolean onField;
+
+	/**
+	 * <code>true</code> when the annotation MUST annotate the getter.
+	 */
+	boolean onGetter;
+
+	/**
+	 * <code>true</code> when the annotation MUST annotate the setter.
+	 */
+	boolean onSetter;
 
 	String type;
 }

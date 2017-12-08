@@ -34,7 +34,12 @@ package com.sporniket.libre.javabeans.doclet.codespecs;
  */
 class ImportSpecsRaw
 {
+	/**
+	 * <code>true</code> if the import is required by an annotation.
+	 */
+	boolean annotation;
+
 	String className;
 
-	Boolean directlyRequired;
+	boolean directlyRequired;
 }

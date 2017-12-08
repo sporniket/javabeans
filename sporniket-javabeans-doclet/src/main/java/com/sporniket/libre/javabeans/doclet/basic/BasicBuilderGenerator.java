@@ -1,6 +1,7 @@
 package com.sporniket.libre.javabeans.doclet.basic;
 
 import com.sporniket.libre.javabeans.doclet.BuilderGenerator;
+import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationSpecs;
 import com.sporniket.libre.javabeans.doclet.codespecs.FieldSpecs;
 
 /**
@@ -40,6 +41,9 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 	@Override
 	public void outputClassBegin()
 	{
+		getClassSpecs().getAnnotations().stream()//
+				.filter(AnnotationSpecs::isOnBuilder)//
+				.forEach(a -> getOut().printf("@%s\n", a.getType()));
 		getOut().printf("public class %s%s%s {\n", //
 				getClassSpecs().getClassName(), //
 				getOptions().getBuilderSuffix(), //
@@ -76,6 +80,10 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 	private void outputSetter(final FieldSpecs field)
 	{
 		// setter
+		field.getAnnotations().stream()//
+				.filter(AnnotationSpecs::isOnBuilder)//
+				.filter(AnnotationSpecs::isOnSetter)//
+				.forEach(a -> getOut().printf("    @%s\n", a.getType()));
 		getOut().printf("    public %s%s%s with%s(%s value) {bean.set%s(value); return this;}\n", //
 				getClassSpecs().getClassName(), //
 				getOptions().getBuilderSuffix(), //

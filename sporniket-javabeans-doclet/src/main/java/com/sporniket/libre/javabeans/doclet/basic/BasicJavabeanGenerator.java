@@ -1,6 +1,7 @@
 package com.sporniket.libre.javabeans.doclet.basic;
 
 import com.sporniket.libre.javabeans.doclet.JavabeanGenerator;
+import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationSpecs;
 import com.sporniket.libre.javabeans.doclet.codespecs.FieldSpecs;
 import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs;
 import com.sporniket.libre.lang.string.StringTools;
@@ -41,11 +42,17 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 	private void outputAccessor(FieldSpecs field)
 	{
 		// getter
+		field.getAnnotations().stream()//
+				.filter(AnnotationSpecs::isOnGetter)//
+				.forEach(a -> getOut().printf("    @%s\n", a.getType()));
 		getOut().printf("    public %s %s%s() {return %s%s ;}\n", field.getTypeInvocation(),
 				(field.isBooleanGetter()) ? "is" : "get", field.getNameForAccessor(), field.getFieldPrefix(),
 				field.getNameForField());
 
 		// setter
+		field.getAnnotations().stream()//
+				.filter(AnnotationSpecs::isOnSetter)//
+				.forEach(a -> getOut().printf("    @%s\n", a.getType()));
 		getOut().printf("    public void set%s(%s value) {%s%s = value;}\n", field.getNameForAccessor(), field.getTypeInvocation(),
 				field.getFieldPrefix(), field.getNameForField());
 
@@ -66,6 +73,8 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 		final String _extendsMarker = StringTools.isEmptyString(getClassSpecs().getSuperClassName()) ? "" : "\n        extends ";
 		final String _implementsMarker = StringTools.isEmptyString(getClassSpecs().getInterfaceList()) ? "" : "\n      implements ";
 
+		getClassSpecs().getAnnotations().stream()//
+				.forEach(a -> getOut().printf("@%s\n", a.getType()));
 		getOut().printf("public%s class %s%s %s%s%s%s\n{\n\n", //
 				_abstractMarker, getClassSpecs().getClassName(), getClassSpecs().getDeclaredTypeArguments()//
 				, _extendsMarker, getClassSpecs().getSuperClassName()//
@@ -74,6 +83,9 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 
 	private void outputField(FieldSpecs field)
 	{
+		field.getAnnotations().stream()//
+				.filter(AnnotationSpecs::isOnField)//
+				.forEach(a -> getOut().printf("    @%s\n", a.getType()));
 		getOut().printf("    private %s %s%s ;\n", field.getTypeInvocation(), getOptions().getBeanFieldPrefix(),
 				field.getNameForField());
 	}

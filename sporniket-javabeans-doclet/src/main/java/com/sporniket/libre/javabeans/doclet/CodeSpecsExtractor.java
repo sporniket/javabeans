@@ -10,6 +10,8 @@ import static com.sporniket.libre.javabeans.doclet.UtilsFieldDoc.*;
 import static com.sporniket.libre.javabeans.doclet.UtilsFieldname.*;
 import static java.util.stream.Collectors.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,12 +21,15 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
 
+import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationSpecs;
+import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationSpecs_Builder;
 import com.sporniket.libre.javabeans.doclet.codespecs.ClassSpecs;
 import com.sporniket.libre.javabeans.doclet.codespecs.ClassSpecs_Builder;
 import com.sporniket.libre.javabeans.doclet.codespecs.FieldSpecs;
 import com.sporniket.libre.javabeans.doclet.codespecs.FieldSpecs_Builder;
 import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs;
 import com.sporniket.libre.lang.string.StringTools;
+import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.TypeVariable;
@@ -66,6 +71,8 @@ public class CodeSpecsExtractor
 		EXPANDER;
 	}
 
+	private static final String JAVA_LANG_DEPRECATED = "java.lang.Deprecated";
+
 	private String extractClassDeclaredTypeArguments(ClassDoc from, Map<String, String> translations, Set<String> shortables)
 	{
 		final StringBuilder _result = new StringBuilder();
@@ -82,6 +89,60 @@ public class CodeSpecsExtractor
 		UtilsClassDoc.TypeInvocation.outputTypeArguments(_result, _typeArguments, translations, shortables);
 
 		return _result.toString();
+	}
+
+	private List<AnnotationSpecs> extractFieldAnnotations(ClassDoc srcClass, Map<String, String> translations,
+			Set<String> shortables)
+	{
+		List<AnnotationSpecs> _result = new ArrayList<>(srcClass.annotations().length);
+		for (AnnotationDesc annotation : srcClass.annotations())
+		{
+			final String _qualifiedName = annotation.annotationType().qualifiedName();
+			boolean _needParametersProcessing = annotation.elementValues().length > 0;
+			if (!_needParametersProcessing)
+			{
+				_result.add(new AnnotationSpecs_Builder()
+						.withType(computeOutputType(annotation.annotationType(), translations, shortables))//
+						.withOnBuilder(JAVA_LANG_DEPRECATED.equals(_qualifiedName))//
+						.done());
+			}
+			else
+			{
+				System.out.printf("Cannot process annotation '%s'[%s] with parameters : {%s}, resulting in '%s'", //
+						_qualifiedName, //
+						annotation.annotationType(), //
+						Arrays.asList(annotation.elementValues()));
+			}
+		}
+		return _result;
+	}
+
+	private List<AnnotationSpecs> extractFieldAnnotations(FieldDoc field, Map<String, String> translations, Set<String> shortables)
+	{
+		List<AnnotationSpecs> _result = new ArrayList<>(field.annotations().length);
+		for (AnnotationDesc annotation : field.annotations())
+		{
+			final String _qualifiedName = annotation.annotationType().qualifiedName();
+			boolean _needParametersProcessing = annotation.elementValues().length > 0;
+			if (!_needParametersProcessing)
+			{
+				_result.add(new AnnotationSpecs_Builder()
+						.withType(computeOutputType(annotation.annotationType(), translations, shortables))//
+						.withOnField(true)//
+						.withOnGetter(JAVA_LANG_DEPRECATED.equals(_qualifiedName))//
+						.withOnSetter(JAVA_LANG_DEPRECATED.equals(_qualifiedName))//
+						.withOnBuilder(JAVA_LANG_DEPRECATED.equals(_qualifiedName))//
+						.done());
+			}
+			else
+			{
+				System.out.printf("Cannot process annotation '%s'[%s] with parameters : {%s}, resulting in '%s'", //
+						_qualifiedName, //
+						annotation.annotationType(), //
+						Arrays.asList(annotation.elementValues()));
+			}
+		}
+		return _result;
 	}
 
 	private List<FieldSpecs> extractFields(ClassDoc from, Map<String, String> translations, Set<String> shortables,
@@ -106,7 +167,9 @@ public class CodeSpecsExtractor
 					.withFieldPrefix(_noPrefix ? "this." : options.getBeanFieldPrefix())//
 					.withTypeInvocation(computeOutputType_invocation(f.type(), translations, shortables))//
 					.withDirectlyRequired(_directlyRequiredFields.contains(f.name()))//
-					.withBooleanGetter(("boolean".equals(f.type().qualifiedTypeName())) || ("java.lang.Boolean".equals(f.type().qualifiedTypeName())))
+					.withBooleanGetter(("boolean".equals(f.type().qualifiedTypeName()))
+							|| ("java.lang.Boolean".equals(f.type().qualifiedTypeName())))//
+					.withAnnotations(extractFieldAnnotations(f, translations, shortables))//
 					.done();
 		}) : (f -> {
 			final String _unprefixedName = removePrefix(f.name(), options.getBeanFieldPrefix());
@@ -114,6 +177,7 @@ public class CodeSpecsExtractor
 					.withNameForField(_unprefixedName)//
 					.withTypeInvocation(computeOutputType_invocation(f.type(), translations, shortables))//
 					.withDirectlyRequired(_directlyRequiredFields.contains(f.name()))//
+					.withAnnotations(extractFieldAnnotations(f, translations, shortables))//
 					.done();
 		});
 
@@ -159,6 +223,7 @@ public class CodeSpecsExtractor
 				.withAbstractRequired(shouldBeAbstract(from))//
 				.withSuperClassName(extractSuperClassName(from.superclass(), translations, _shortables))//
 				.withInterfaceList(extractInterfaceList(from, translations, _shortables))//
+				.withAnnotations(extractFieldAnnotations(from, translations, _shortables))//
 				.done();
 	}
 

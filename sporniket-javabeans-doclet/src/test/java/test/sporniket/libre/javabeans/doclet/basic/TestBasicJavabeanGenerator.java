@@ -8,6 +8,7 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.hamcrest.CoreMatchers;
@@ -87,6 +88,7 @@ public class TestBasicJavabeanGenerator
 						.withNameForField("TheField")//
 						.withTypeInvocation("foo")//
 						.withBooleanGetter(true)//
+						.withAnnotations(new ArrayList<>(0))//
 						.done()))//
 				.done();
 
@@ -122,6 +124,7 @@ public class TestBasicJavabeanGenerator
 						.withNameForField("theField")//
 						.withTypeInvocation("foo")//
 						.withBooleanGetter(false)//
+						.withAnnotations(new ArrayList<>(0))//
 						.done()))//
 				.done();
 
@@ -160,6 +163,7 @@ public class TestBasicJavabeanGenerator
 						.withNameForField("TheField")//
 						.withTypeInvocation("foo")//
 						.withBooleanGetter(false)//
+						.withAnnotations(new ArrayList<>(0))//
 						.done()))//
 				.done();
 
