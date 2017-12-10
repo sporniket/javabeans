@@ -4,7 +4,7 @@
 	<groupId>com.sporniket.javabeans</groupId>
 	<artifactId>sporniket-javabeans</artifactId>
 	<packaging>pom</packaging>
-	<version>17.12.00</version>
+	<version>17.12.01-SNAPSHOT</version>
 
 	<properties>
 		<url.base>https://github.com/sporniket/core</url.base>
@@ -183,7 +183,7 @@
 	<scm>
 		<connection>scm:git:https://github.com/sporniket/javabeans.git</connection>
 		<url>https://github.com/sporniket/javabeans</url>
-		<tag>v17.12.00</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<issueManagement>
