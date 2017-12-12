@@ -40,12 +40,12 @@ class FieldSpecsRaw
 	/**
 	 * <code>true</code> if the type of the field is native <code>boolean</code> or <code>java.lang.Boolean</code>.
 	 */
-	Boolean booleanGetter;
+	boolean booleanGetter;
 
 	/**
 	 * Field defined in the current class (not inherited)
 	 */
-	Boolean directlyRequired;
+	boolean directlyRequired;
 
 	/**
 	 * Either <code>this.</code> or {@link DocletOptions#getBeanFieldPrefix()}

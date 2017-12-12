@@ -1,6 +1,7 @@
 package com.sporniket.libre.javabeans.doclet.basic;
 
 import com.sporniket.libre.javabeans.doclet.JavabeanGenerator;
+import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationSpecs;
 import com.sporniket.libre.javabeans.doclet.codespecs.FieldSpecs;
 import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs;
 import com.sporniket.libre.lang.string.StringTools;
@@ -47,10 +48,12 @@ public class BasicRawPojoGenerator extends BasicGenerator implements JavabeanGen
 	@Override
 	public void outputClassBegin()
 	{
-		final String _classMarker = getClassSpecs().getAbstractRequired() ? "abstract class" : "class";
+		final String _classMarker = getClassSpecs().isAbstractRequired() ? "abstract class" : "class";
 		final String _extendsMarker = StringTools.isEmptyString(getClassSpecs().getSuperClassName()) ? "" : "\n        extends ";
 		final String _implementsMarker = StringTools.isEmptyString(getClassSpecs().getInterfaceList()) ? "" : "\n      implements ";
 
+		getClassSpecs().getAnnotations().stream()//
+				.forEach(a -> getOut().printf("@%s\n", a.getType()));
 		getOut().printf("%s %s%s%s%s%s%s\n{\n\n", //
 				_classMarker, getClassSpecs().getClassName(), getClassSpecs().getDeclaredTypeArguments()//
 				, _extendsMarker, getClassSpecs().getSuperClassName()//
@@ -60,20 +63,22 @@ public class BasicRawPojoGenerator extends BasicGenerator implements JavabeanGen
 
 	private void outputField(FieldSpecs field)
 	{
-		// field declaration
+		field.getAnnotations().stream()//
+				.filter(AnnotationSpecs::isOnField)//
+				.forEach(a -> getOut().printf("    @%s\n", a.getType()));
 		getOut().printf("    %s %s ;\n", field.getTypeInvocation(), field.getNameForField());
 	}
 
 	@Override
 	public void outputFields()
 	{
-		getClassSpecs().getFields().stream().filter(FieldSpecs::getDirectlyRequired).forEach(f -> outputField(f));
+		getClassSpecs().getFields().stream().filter(FieldSpecs::isDirectlyRequired).forEach(f -> outputField(f));
 	}
 
 	@Override
 	public void outputImportStatements()
 	{
-		getClassSpecs().getImports().stream().filter(ImportSpecs::getDirectlyRequired).forEach(i -> outputImportSpecIfValid(i));
+		getClassSpecs().getImports().stream().filter(ImportSpecs::isDirectlyRequired).forEach(i -> outputImportSpecIfValid(i));
 
 		getOut().println();
 	}

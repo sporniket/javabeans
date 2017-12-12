@@ -34,7 +34,7 @@ import java.util.List;
  */
 class ClassSpecsRaw
 {
-	Boolean abstractRequired;
+	boolean abstractRequired;
 
 	List<AnnotationSpecsRaw> annotations;
 

@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs;
 import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs_Builder;
+import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.MethodDoc;
@@ -590,6 +591,7 @@ public final class UtilsClassDoc
 	 * @param toScan
 	 *            the class to scan.
 	 */
+	@Deprecated
 	public static void updateKnowClasses(Collection<String> knownClasses, ClassDoc toScan)
 	{
 		final Predicate<String> _isNotRegistered = i -> !knownClasses.contains(i);
@@ -614,13 +616,9 @@ public final class UtilsClassDoc
 	 */
 	public static Collection<ImportSpecs> updateKnownClasses(ClassDoc toScan)
 	{
-		final Map<String, Boolean> _knownClasses = new HashMap<>();
-		updateKnownClasses(_knownClasses, toScan, true);
-		return _knownClasses.keySet().parallelStream()//
-				.map(cls -> new ImportSpecs_Builder()//
-						.withClassName(cls)//
-						.withDirectlyRequired(_knownClasses.get(cls))//
-						.done())//
+		final Map<String, ImportSpecs> _knownClasses = new HashMap<>();
+		updateKnownClasses(_knownClasses, toScan, true, false);
+		return _knownClasses.values().parallelStream()//
 				.filter(i -> !PRIMITIVE_TYPES.contains(i.getClassName())).collect(Collectors.toList());
 	}
 
@@ -632,6 +630,7 @@ public final class UtilsClassDoc
 	 * @param toScan
 	 *            the type to scan.
 	 */
+	@Deprecated
 	private static void updateKnownClasses(Collection<String> knownClasses, Type toScan)
 	{
 		if (null != toScan.asTypeVariable())
@@ -663,24 +662,61 @@ public final class UtilsClassDoc
 	 *            <code>true</code> when the import is required for the java class to generate. <code>false</code> when the class is
 	 *            required only for a builder of class.
 	 */
-	private static void updateKnownClasses(Map<String, Boolean> knownClasses, ClassDoc toScan, boolean isDirectlyRequired)
+	private static void updateKnownClasses(Map<String, ImportSpecs> knownClasses, ClassDoc toScan, boolean isDirectlyRequired,
+			boolean isRequiredByAnnotation)
 	{
 		final Predicate<String> _isNotRegistered = i -> !knownClasses.containsKey(i);
-		final Consumer<String> _registerKnownClass = i -> knownClasses.put(i, isDirectlyRequired); // do not support parametrized
-																									// types
-		final Consumer<Type> _processType = t -> updateKnownClasses(knownClasses, t, isDirectlyRequired);
-		final Consumer<Type> _processTypeUndirect = t -> updateKnownClasses(knownClasses, t, false);
+		final Consumer<String> _registerKnownClass = //
+				i -> knownClasses.put(i,
+						new ImportSpecs_Builder()//
+								.withClassName(i)//
+								.withDirectlyRequired(isDirectlyRequired)//
+								.withAnnotation(isRequiredByAnnotation)//
+								.done()); // do not support parametrized types
 
+		final Consumer<Type> _processTypeAnnotation = t -> updateKnownClasses(knownClasses, t, isDirectlyRequired, true);
+		final Consumer<FieldDoc> _processDirectField = f -> {
+			updateKnownClasses(knownClasses, f.type(), isDirectlyRequired, false);
+			if (null != f.annotations())
+			{
+				Arrays.asList(f.annotations()).stream()//
+						.filter(d -> 0 == d.elementValues().length)// FIXME do not support parameters
+						.map(AnnotationDesc::annotationType)//
+						.forEach(_processTypeAnnotation);
+			}
+		};
+
+		final Consumer<Type> _processTypeInheritedAnnotation = t -> updateKnownClasses(knownClasses, t, false, true);
+		final Consumer<FieldDoc> _processInheritedField = f -> {
+			updateKnownClasses(knownClasses, f.type(), false, false);
+			if (null != f.annotations())
+			{
+				Arrays.asList(f.annotations()).stream()//
+						.filter(d -> 0 == d.elementValues().length)// FIXME do not support parameters
+						.map(AnnotationDesc::annotationType)//
+						.forEach(_processTypeInheritedAnnotation);
+			}
+		};
+
+		// process this class and its superclass
 		Arrays.asList(toScan.qualifiedName(), toScan.superclass().qualifiedName()).stream().filter(_isNotRegistered)
 				.forEach(_registerKnownClass);
 
+		// process this class interfaces and annotations
 		Arrays.asList(toScan.interfaces()).stream().map(ClassDoc::qualifiedName).filter(_isNotRegistered)
 				.forEach(_registerKnownClass);
-		UtilsFieldDoc.getPrivateDeclaredFields(toScan).stream().map(FieldDoc::type).forEach(_processType);
-		UtilsFieldDoc.getAccessibleDeclaredFields(toScan).stream().map(FieldDoc::type).forEach(_processType);
+		if (null != toScan.annotations())
+		{
+			Arrays.asList(toScan.annotations()).stream().map(a -> a.annotationType().qualifiedName()).filter(_isNotRegistered)
+					.forEach(_registerKnownClass);
+		}
+
+		// process fields
+		UtilsFieldDoc.getPrivateDeclaredFields(toScan).stream().forEach(_processDirectField);
+		UtilsFieldDoc.getAccessibleDeclaredFields(toScan).stream().forEach(_processDirectField);
 
 		// require to process again accessible declared fields, but they are already registered.
-		UtilsFieldDoc.getAccessibleFields(toScan).stream().map(FieldDoc::type).forEach(_processTypeUndirect);
+		UtilsFieldDoc.getAccessibleFields(toScan).stream().forEach(_processInheritedField);
 	}
 
 	/**
@@ -691,7 +727,8 @@ public final class UtilsClassDoc
 	 * @param toScan
 	 *            the type to scan.
 	 */
-	private static void updateKnownClasses(Map<String, Boolean> knownClasses, Type toScan, boolean isDirectlyRequired)
+	private static void updateKnownClasses(Map<String, ImportSpecs> knownClasses, Type toScan, boolean isDirectlyRequired,
+			boolean isRequiredByAnnotation)
 	{
 		if (null != toScan.asTypeVariable())
 		{
@@ -701,12 +738,18 @@ public final class UtilsClassDoc
 		final ParameterizedType _pt = toScan.asParameterizedType();
 		if (null != _pt)
 		{
-			Arrays.asList(_pt.typeArguments()).forEach(t -> updateKnownClasses(knownClasses, t, isDirectlyRequired));
+			Arrays.asList(_pt.typeArguments())
+					.forEach(t -> updateKnownClasses(knownClasses, t, isDirectlyRequired, isRequiredByAnnotation));
 		}
 		final String _qualifiedTypeName = toScan.qualifiedTypeName();
 		if (!knownClasses.containsKey(_qualifiedTypeName))
 		{
-			knownClasses.put(_qualifiedTypeName, isDirectlyRequired);
+			knownClasses.put(_qualifiedTypeName,
+					new ImportSpecs_Builder()//
+							.withClassName(_qualifiedTypeName)//
+							.withDirectlyRequired(isDirectlyRequired)//
+							.withAnnotation(isRequiredByAnnotation)//
+							.done());
 		}
 	}
 

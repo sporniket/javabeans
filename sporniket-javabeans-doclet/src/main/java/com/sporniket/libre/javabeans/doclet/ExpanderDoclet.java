@@ -218,7 +218,7 @@ public class ExpanderDoclet
 				_out.close();
 			}
 
-			if (!_classSpecs.getAbstractRequired()) // abstract classes do not need builders...
+			if (!_classSpecs.isAbstractRequired()) // abstract classes do not need builders...
 			{
 				final String _builderQualifiedName = _javabeanQualifiedName + "_Builder";
 
