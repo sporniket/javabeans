@@ -42,7 +42,7 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 	{
 		// getter
 		getOut().printf("    public %s %s%s() {return %s%s ;}\n", field.getTypeInvocation(),
-				(field.getBooleanGetter()) ? "is" : "get", field.getNameForAccessor(), field.getFieldPrefix(),
+				(field.isBooleanGetter()) ? "is" : "get", field.getNameForAccessor(), field.getFieldPrefix(),
 				field.getNameForField());
 
 		// setter
@@ -55,14 +55,14 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 	@Override
 	public void outputAccessors()
 	{
-		getClassSpecs().getFields().stream().filter(f -> f.getDirectlyRequired()).forEach(f -> outputAccessor(f));
+		getClassSpecs().getFields().stream().filter(f -> f.isDirectlyRequired()).forEach(f -> outputAccessor(f));
 	}
 
 	@Override
 	public void outputClassBegin()
 	{
 		// last preparations
-		final String _abstractMarker = getClassSpecs().getAbstractRequired() ? " abstract" : "";
+		final String _abstractMarker = getClassSpecs().isAbstractRequired() ? " abstract" : "";
 		final String _extendsMarker = StringTools.isEmptyString(getClassSpecs().getSuperClassName()) ? "" : "\n        extends ";
 		final String _implementsMarker = StringTools.isEmptyString(getClassSpecs().getInterfaceList()) ? "" : "\n      implements ";
 
@@ -82,7 +82,7 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 	public void outputFields()
 	{
 		getClassSpecs().getFields().stream()//
-				.filter(FieldSpecs::getDirectlyRequired)//
+				.filter(FieldSpecs::isDirectlyRequired)//
 				.forEach(_field -> outputField(_field));
 
 		getOut().println();
@@ -92,7 +92,7 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 	public void outputImportStatements()
 	{
 		// TODO Auto-generated method stub
-		getClassSpecs().getImports().stream().filter(ImportSpecs::getDirectlyRequired).forEach(i -> outputImportSpecIfValid(i));
+		getClassSpecs().getImports().stream().filter(ImportSpecs::isDirectlyRequired).forEach(i -> outputImportSpecIfValid(i));
 
 		getOut().println();
 	}

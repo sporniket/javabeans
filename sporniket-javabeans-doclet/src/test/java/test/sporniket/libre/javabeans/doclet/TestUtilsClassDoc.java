@@ -193,7 +193,7 @@ public class TestUtilsClassDoc
 		// verify
 		assertThat(_result.isEmpty(), is(false));
 
-		assertThat(_result.stream().filter(i -> Boolean.FALSE.equals(i.getDirectlyRequired())).map(ImportSpecs::getClassName)
+		assertThat(_result.stream().filter(i -> Boolean.FALSE.equals(i.isDirectlyRequired())).map(ImportSpecs::getClassName)
 				.collect(toList()), hasItem(Date.class.getName()));
 	}
 
