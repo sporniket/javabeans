@@ -1,5 +1,7 @@
 package com.sporniket.sample.pojos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * <p>
  * &copy; Copyright 2012-2017 David Sporn
@@ -31,17 +33,18 @@ package com.sporniket.sample.pojos;
  */
 public class SampleAutoboxedRaw extends SampleBasicRaw
 {
-	Boolean valid;
-
 	Integer count;
 
-	Float value;
+	Character letter;
 
 	Double precise;
 
-	Long systime;
-
 	Short small;
 
-	Character letter;
+	@JsonProperty("system_time") // annotation with simple parameter
+	Long systime;
+
+	Boolean valid;
+
+	Float value;
 }

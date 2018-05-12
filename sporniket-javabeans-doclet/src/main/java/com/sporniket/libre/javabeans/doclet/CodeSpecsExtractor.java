@@ -11,7 +11,6 @@ import static com.sporniket.libre.javabeans.doclet.UtilsFieldname.*;
 import static java.util.stream.Collectors.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -30,6 +29,8 @@ import com.sporniket.libre.javabeans.doclet.codespecs.FieldSpecs_Builder;
 import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs;
 import com.sporniket.libre.lang.string.StringTools;
 import com.sun.javadoc.AnnotationDesc;
+import com.sun.javadoc.AnnotationTypeElementDoc;
+import com.sun.javadoc.AnnotationValue;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.TypeVariable;
@@ -91,6 +92,26 @@ public class CodeSpecsExtractor
 		return _result.toString();
 	}
 
+	private void extractFieldAnnotationParameters(AnnotationDesc annotation, final String annotationQualifiedName)
+	{
+		System.out.println("========================================================");
+		System.out.printf("dump parameters of annotation '%s'\n", annotationQualifiedName);
+		for (AnnotationDesc.ElementValuePair valuePair : annotation.elementValues())
+		{
+			final AnnotationTypeElementDoc _element = valuePair.element();
+			System.out.printf("--> %s:\n", _element.name(), _element.qualifiedName());
+			final AnnotationValue _value = valuePair.value();
+			Object _realValue = _value.value();
+			Class<?> _valueClass = _realValue.getClass();
+			System.out.printf("    value of type '%s' (is array = %s)", _valueClass.getName(),
+					Boolean.toString(_valueClass.isArray()));
+			System.out.printf(" = %s", _realValue.toString());
+
+			System.out.println();
+		}
+		System.out.println("========================================================");
+	}
+
 	private List<AnnotationSpecs> extractFieldAnnotations(ClassDoc srcClass, Map<String, String> translations,
 			Set<String> shortables)
 	{
@@ -108,10 +129,7 @@ public class CodeSpecsExtractor
 			}
 			else
 			{
-				System.out.printf("Cannot process annotation '%s'[%s] with parameters : {%s}, resulting in '%s'", //
-						_qualifiedName, //
-						annotation.annotationType(), //
-						Arrays.asList(annotation.elementValues()));
+				extractFieldAnnotationParameters(annotation, _qualifiedName);
 			}
 		}
 		return _result;
@@ -136,10 +154,7 @@ public class CodeSpecsExtractor
 			}
 			else
 			{
-				System.out.printf("Cannot process annotation '%s'[%s] with parameters : {%s}, resulting in '%s'", //
-						_qualifiedName, //
-						annotation.annotationType(), //
-						Arrays.asList(annotation.elementValues()));
+				extractFieldAnnotationParameters(annotation, _qualifiedName);
 			}
 		}
 		return _result;
