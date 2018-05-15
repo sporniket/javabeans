@@ -1,8 +1,13 @@
+/**
+ * 
+ */
 package com.sporniket.libre.javabeans.doclet.codespecs;
 
 import java.util.List;
 
 /**
+ * Model for an annotation parameter that is an array.
+ * 
  * <p>
  * &copy; Copyright 2012-2017 David Sporn
  * </p>
@@ -29,31 +34,9 @@ import java.util.List;
  *
  * @author David SPORN
  * @version 17.12.00
- * @since 17.12.00
+ * @since 18.06.00
  */
-class AnnotationSpecsRaw
+class AnnotationParameterSpecsValuesArrayRaw extends AnnotationParameterSpecsRaw
 {
-	/**
-	 * <code>true</code> when the annotation MUST annotate the builder.
-	 */
-	boolean onBuilder;
-
-	/**
-	 * <code>true</code> when the annotation MUST annotate the field.
-	 */
-	boolean onField;
-
-	/**
-	 * <code>true</code> when the annotation MUST annotate the getter.
-	 */
-	boolean onGetter;
-
-	/**
-	 * <code>true</code> when the annotation MUST annotate the setter.
-	 */
-	boolean onSetter;
-
-	List<AnnotationParameterSpecsRaw> parameters;
-
-	String type;
+	List<?> values;
 }

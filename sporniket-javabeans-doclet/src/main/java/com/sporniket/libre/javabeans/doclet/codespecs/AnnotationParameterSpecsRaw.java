@@ -1,6 +1,7 @@
+/**
+ * 
+ */
 package com.sporniket.libre.javabeans.doclet.codespecs;
-
-import java.util.List;
 
 /**
  * <p>
@@ -29,31 +30,9 @@ import java.util.List;
  *
  * @author David SPORN
  * @version 17.12.00
- * @since 17.12.00
+ * @since 18.06.00
  */
-class AnnotationSpecsRaw
+abstract class AnnotationParameterSpecsRaw
 {
-	/**
-	 * <code>true</code> when the annotation MUST annotate the builder.
-	 */
-	boolean onBuilder;
-
-	/**
-	 * <code>true</code> when the annotation MUST annotate the field.
-	 */
-	boolean onField;
-
-	/**
-	 * <code>true</code> when the annotation MUST annotate the getter.
-	 */
-	boolean onGetter;
-
-	/**
-	 * <code>true</code> when the annotation MUST annotate the setter.
-	 */
-	boolean onSetter;
-
-	List<AnnotationParameterSpecsRaw> parameters;
-
-	String type;
+	String name;
 }

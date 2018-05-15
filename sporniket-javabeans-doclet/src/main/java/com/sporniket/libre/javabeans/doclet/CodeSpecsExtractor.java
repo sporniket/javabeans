@@ -11,6 +11,7 @@ import static com.sporniket.libre.javabeans.doclet.UtilsFieldname.*;
 import static java.util.stream.Collectors.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,15 +21,10 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
 
-import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationSpecs;
-import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationSpecs_Builder;
-import com.sporniket.libre.javabeans.doclet.codespecs.ClassSpecs;
-import com.sporniket.libre.javabeans.doclet.codespecs.ClassSpecs_Builder;
-import com.sporniket.libre.javabeans.doclet.codespecs.FieldSpecs;
-import com.sporniket.libre.javabeans.doclet.codespecs.FieldSpecs_Builder;
-import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs;
+import com.sporniket.libre.javabeans.doclet.codespecs.*;
 import com.sporniket.libre.lang.string.StringTools;
 import com.sun.javadoc.AnnotationDesc;
+import com.sun.javadoc.AnnotationDesc.ElementValuePair;
 import com.sun.javadoc.AnnotationTypeElementDoc;
 import com.sun.javadoc.AnnotationValue;
 import com.sun.javadoc.ClassDoc;
@@ -92,11 +88,15 @@ public class CodeSpecsExtractor
 		return _result.toString();
 	}
 
-	private void extractFieldAnnotationParameters(AnnotationDesc annotation, final String annotationQualifiedName)
+	private List<AnnotationParameterSpecs> extractFieldAnnotationParameters(AnnotationDesc annotation,
+			final String annotationQualifiedName)
 	{
+		final ElementValuePair[] _elementValues = annotation.elementValues();
+		final List<AnnotationParameterSpecs> result = new ArrayList<>(_elementValues.length);
+
 		System.out.println("========================================================");
 		System.out.printf("dump parameters of annotation '%s'\n", annotationQualifiedName);
-		for (AnnotationDesc.ElementValuePair valuePair : annotation.elementValues())
+		for (AnnotationDesc.ElementValuePair valuePair : _elementValues)
 		{
 			final AnnotationTypeElementDoc _element = valuePair.element();
 			System.out.printf("--> %s:\n", _element.name(), _element.qualifiedName());
@@ -108,8 +108,24 @@ public class CodeSpecsExtractor
 			System.out.printf(" = %s", _realValue.toString());
 
 			System.out.println();
+
+			if (!_valueClass.isArray())
+			{
+				result.add(new AnnotationParameterSpecsSingleValue_Builder()//
+						.withName(_element.name())//
+						.withValue(_realValue)//
+						.done());
+			}
+			else
+			{
+				result.add(new AnnotationParameterSpecsValuesArray_Builder()//
+						.withName(_element.name())//
+						.withValues(Arrays.asList((Object[]) _realValue))//
+						.done());
+			}
 		}
 		System.out.println("========================================================");
+		return result;
 	}
 
 	private List<AnnotationSpecs> extractFieldAnnotations(ClassDoc srcClass, Map<String, String> translations,
@@ -120,17 +136,17 @@ public class CodeSpecsExtractor
 		{
 			final String _qualifiedName = annotation.annotationType().qualifiedName();
 			boolean _needParametersProcessing = annotation.elementValues().length > 0;
-			if (!_needParametersProcessing)
+
+			final AnnotationSpecs_Builder _annotationBuilder = new AnnotationSpecs_Builder()//
+					.withType(computeOutputType(annotation.annotationType(), translations, shortables))//
+					.withOnBuilder(JAVA_LANG_DEPRECATED.equals(_qualifiedName));
+
+			if (_needParametersProcessing)
 			{
-				_result.add(new AnnotationSpecs_Builder()
-						.withType(computeOutputType(annotation.annotationType(), translations, shortables))//
-						.withOnBuilder(JAVA_LANG_DEPRECATED.equals(_qualifiedName))//
-						.done());
+				_annotationBuilder.withParameters(extractFieldAnnotationParameters(annotation, _qualifiedName));
 			}
-			else
-			{
-				extractFieldAnnotationParameters(annotation, _qualifiedName);
-			}
+
+			_result.add(_annotationBuilder.done());
 		}
 		return _result;
 	}
