@@ -89,7 +89,7 @@ public class CodeSpecsExtractor
 	}
 
 	private List<AnnotationParameterSpecs> extractFieldAnnotationParameters(AnnotationDesc annotation,
-			final String annotationQualifiedName)
+			final String annotationQualifiedName, Map<String, String> translations, Set<String> shortables)
 	{
 		final ElementValuePair[] _elementValues = annotation.elementValues();
 		final List<AnnotationParameterSpecs> result = new ArrayList<>(_elementValues.length);
@@ -113,14 +113,24 @@ public class CodeSpecsExtractor
 			{
 				result.add(new AnnotationParameterSpecsSingleValue_Builder()//
 						.withName(_element.name())//
-						.withValue(_realValue)//
+						.withValue(translateAnnotationValue(_realValue, translations))//
+						.withString(_realValue instanceof String)//
 						.done());
 			}
 			else
 			{
 				result.add(new AnnotationParameterSpecsValuesArray_Builder()//
 						.withName(_element.name())//
-						.withValues(Arrays.asList((Object[]) _realValue))//
+						.withValues(Arrays.asList((AnnotationValue[]) _realValue)//
+								.stream()//
+								.map(AnnotationValue::value)//
+								.map(v -> {
+									return new AnnotationParameterSpecsSingleValue_Builder()//
+											.withValue(translateAnnotationValue(v, translations))//
+											.withString(v instanceof String)//
+											.done();
+								})//
+								.collect(toList()))//
 						.done());
 			}
 		}
@@ -143,7 +153,8 @@ public class CodeSpecsExtractor
 
 			if (_needParametersProcessing)
 			{
-				_annotationBuilder.withParameters(extractFieldAnnotationParameters(annotation, _qualifiedName));
+				_annotationBuilder
+						.withParameters(extractFieldAnnotationParameters(annotation, _qualifiedName, translations, shortables));
 			}
 
 			_result.add(_annotationBuilder.done());
@@ -158,20 +169,20 @@ public class CodeSpecsExtractor
 		{
 			final String _qualifiedName = annotation.annotationType().qualifiedName();
 			boolean _needParametersProcessing = annotation.elementValues().length > 0;
-			if (!_needParametersProcessing)
+			final AnnotationSpecs_Builder _annotationBuilder = new AnnotationSpecs_Builder()
+					.withType(computeOutputType(annotation.annotationType(), translations, shortables))//
+					.withOnField(true)//
+					.withOnGetter(JAVA_LANG_DEPRECATED.equals(_qualifiedName))//
+					.withOnSetter(JAVA_LANG_DEPRECATED.equals(_qualifiedName))//
+					.withOnBuilder(JAVA_LANG_DEPRECATED.equals(_qualifiedName));
+
+			if (_needParametersProcessing)
 			{
-				_result.add(new AnnotationSpecs_Builder()
-						.withType(computeOutputType(annotation.annotationType(), translations, shortables))//
-						.withOnField(true)//
-						.withOnGetter(JAVA_LANG_DEPRECATED.equals(_qualifiedName))//
-						.withOnSetter(JAVA_LANG_DEPRECATED.equals(_qualifiedName))//
-						.withOnBuilder(JAVA_LANG_DEPRECATED.equals(_qualifiedName))//
-						.done());
+				_annotationBuilder
+						.withParameters(extractFieldAnnotationParameters(annotation, _qualifiedName, translations, shortables));
 			}
-			else
-			{
-				extractFieldAnnotationParameters(annotation, _qualifiedName);
-			}
+
+			_result.add(_annotationBuilder.done());
 		}
 		return _result;
 	}
@@ -269,5 +280,21 @@ public class CodeSpecsExtractor
 		}
 
 		return _result.toString();
+	}
+
+	private String translateAnnotationValue(Object value, Map<String, String> translations)
+	{
+		String _asString = value.toString();
+		boolean _foundTranslation = false;
+		for (Map.Entry<String, String> translation : translations.entrySet())
+		{
+			// !!! SLOW !!!
+			while (_asString.indexOf(translation.getKey()) > -1)
+			{
+				_asString = _asString.replace(translation.getKey(), translation.getValue());
+				_foundTranslation = true;
+			}
+		}
+		return _asString;
 	}
 }

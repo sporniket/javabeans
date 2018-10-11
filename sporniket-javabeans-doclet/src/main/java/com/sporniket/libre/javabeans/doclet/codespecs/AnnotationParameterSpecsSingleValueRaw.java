@@ -36,5 +36,10 @@ package com.sporniket.libre.javabeans.doclet.codespecs;
  */
 class AnnotationParameterSpecsSingleValueRaw extends AnnotationParameterSpecsRaw
 {
+	/**
+	 * <code>true</code> when the value is of type String
+	 */
+	boolean string;
+
 	Object value;
 }

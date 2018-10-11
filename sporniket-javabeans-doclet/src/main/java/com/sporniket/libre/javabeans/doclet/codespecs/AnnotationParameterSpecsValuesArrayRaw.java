@@ -38,5 +38,5 @@ import java.util.List;
  */
 class AnnotationParameterSpecsValuesArrayRaw extends AnnotationParameterSpecsRaw
 {
-	List<?> values;
+	List<AnnotationParameterSpecsSingleValueRaw> values;
 }
