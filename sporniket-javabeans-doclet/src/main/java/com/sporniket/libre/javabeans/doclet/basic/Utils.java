@@ -40,7 +40,9 @@ import java.util.function.Predicate;
  */
 class Utils
 {
-	public static final Predicate<? super String> IS_NOT_JAVA_LANG_TYPE = c -> !Object.class.getPackage().getName()
+	static final Predicate<? super String> IS_NOT_JAVA_LANG_TYPE = c -> !Object.class.getPackage().getName()
 			.equals(getPackageName(c));
+
+	static final String NEXT_INDENTATION = "    ";
 
 }

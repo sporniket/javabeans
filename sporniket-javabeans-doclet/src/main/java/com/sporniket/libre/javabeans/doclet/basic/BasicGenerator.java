@@ -5,9 +5,11 @@ package com.sporniket.libre.javabeans.doclet.basic;
 
 import static com.sporniket.libre.javabeans.doclet.UtilsClassname.getPackageName;
 
+import java.io.PrintStream;
 import java.util.function.Predicate;
 
 import com.sporniket.libre.javabeans.doclet.JavaSourceGenerator;
+import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationSpecs;
 import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs;
 
 /**
@@ -47,9 +49,16 @@ public abstract class BasicGenerator extends BasicGeneratorBase implements JavaS
 
 	private static final String PACKAGE_NAME__JAVA_LANG = Object.class.getPackage().getName();
 
+	private AnnotationGenerator annotationGenerator = new AnnotationGenerator();
+
 	protected Predicate<? super String> getFilterNotInSamePackage(String containingPackageName)
 	{
 		return c -> (!containingPackageName.equals(getPackageName(c)));
+	}
+
+	protected void outputAnnotation(AnnotationSpecs annotations, String indentation)
+	{
+		annotationGenerator.outputAnnotation(annotations, indentation);
 	}
 
 	@Override
@@ -75,5 +84,12 @@ public abstract class BasicGenerator extends BasicGeneratorBase implements JavaS
 		getOut().printf("package %s;\n", getClassSpecs().getPackageName());
 
 		getOut().println();
+	}
+
+	@Override
+	public void setOut(PrintStream out)
+	{
+		super.setOut(out);
+		annotationGenerator.setOut(out);
 	}
 }
