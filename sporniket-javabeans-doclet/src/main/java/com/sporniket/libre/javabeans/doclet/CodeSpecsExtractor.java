@@ -289,10 +289,14 @@ public class CodeSpecsExtractor
 		for (Map.Entry<String, String> translation : translations.entrySet())
 		{
 			// !!! SLOW !!!
-			while (_asString.indexOf(translation.getKey()) > -1)
+			int startFrom = 0;
+			int lastFound = _asString.indexOf(translation.getKey(), startFrom);
+			while (lastFound > -1)
 			{
 				_asString = _asString.replace(translation.getKey(), translation.getValue());
 				_foundTranslation = true;
+				startFrom += lastFound + 1;
+				lastFound = _asString.indexOf(translation.getKey(), startFrom);
 			}
 		}
 		return _asString;

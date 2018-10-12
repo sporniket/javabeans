@@ -1,5 +1,9 @@
 package com.sporniket.libre.javabeans.doclet.basic;
 
+import static com.sporniket.libre.javabeans.doclet.basic.Utils.NEXT_INDENTATION;
+
+import java.util.function.Consumer;
+
 import com.sporniket.libre.javabeans.doclet.JavabeanGenerator;
 import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationSpecs;
 import com.sporniket.libre.javabeans.doclet.codespecs.FieldSpecs;
@@ -52,8 +56,9 @@ public class BasicRawPojoGenerator extends BasicGenerator implements JavabeanGen
 		final String _extendsMarker = StringTools.isEmptyString(getClassSpecs().getSuperClassName()) ? "" : "\n        extends ";
 		final String _implementsMarker = StringTools.isEmptyString(getClassSpecs().getInterfaceList()) ? "" : "\n      implements ";
 
+		final Consumer<? super AnnotationSpecs> _outputAnnotation = a -> outputAnnotation(a, "");
 		getClassSpecs().getAnnotations().stream()//
-				.forEach(a -> getOut().printf("@%s\n", a.getType()));
+				.forEach(_outputAnnotation);
 		getOut().printf("%s %s%s%s%s%s%s\n{\n\n", //
 				_classMarker, getClassSpecs().getClassName(), getClassSpecs().getDeclaredTypeArguments()//
 				, _extendsMarker, getClassSpecs().getSuperClassName()//
@@ -65,7 +70,7 @@ public class BasicRawPojoGenerator extends BasicGenerator implements JavabeanGen
 	{
 		field.getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnField)//
-				.forEach(a -> getOut().printf("    @%s\n", a.getType()));
+				.forEach(a -> outputAnnotation(a, NEXT_INDENTATION));
 		getOut().printf("    %s %s ;\n", field.getTypeInvocation(), field.getNameForField());
 	}
 
