@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -7,13 +8,17 @@
 	<artifactId>sporniket-javabeans-doclet-sample</artifactId>
 	<packaging>jar</packaging>
 
+	<prerequisites>
+		<maven>3.0</maven>
+	</prerequisites>
+
 	<properties>
 		<version.jdk>1.8</version.jdk>
 		<version.sporniket-javabeans-doclet>17.12.01-SNAPSHOT</version.sporniket-javabeans-doclet>
 
 		<!-- maven plugins version -->
 		<version.maven-compiler-plugin>3.2</version.maven-compiler-plugin>
-		<version.maven-javadoc-plugin>3.0.0-M1</version.maven-javadoc-plugin>
+		<version.maven-javadoc-plugin>3.0.1</version.maven-javadoc-plugin>
 
 		<!-- external libs/frameworks -->
 		<version.jackson>2.9.5</version.jackson>
@@ -84,9 +89,9 @@
 								<artifactId>sporniket-javabeans-doclet</artifactId>
 								<version>${version.sporniket-javabeans-doclet}</version>
 							</docletArtifact>
-							<additionalparam>-d
+							<additionalOptions>-d
 								${project.build.directory}/generated-classes/javabeans
-								-beanFieldPrefix ''</additionalparam>
+								-beanFieldPrefix ''</additionalOptions>
 							<show>private</show>
 							<sourceFileIncludes>
 								<sourceFileIncludes>com\/sporniket\/sample\/pojos\/\*.java</sourceFileIncludes>
@@ -108,8 +113,8 @@
 								<artifactId>sporniket-javabeans-doclet</artifactId>
 								<version>${version.sporniket-javabeans-doclet}</version>
 							</docletArtifact>
-							<additionalparam>-d
-								${project.build.directory}/generated-classes/pojos</additionalparam>
+							<additionalOptions>-d
+								${project.build.directory}/generated-classes/pojos</additionalOptions>
 							<show>private</show>
 							<sourceFileIncludes>
 								<sourceFileIncludes>com\/sporniket\/sample\/javabeans\/\*.java</sourceFileIncludes>
