@@ -1,15 +1,11 @@
 /**
- *
+ * 
  */
-package com.sporniket.libre.javabeans.doclet.basic;
-
-import static com.sporniket.libre.javabeans.doclet.UtilsClassname.getPackageName;
-
-import java.util.function.Predicate;
+package com.sporniket.libre.javabeans.doclet.codespecs;
 
 /**
- * Utility class.
- *
+ * Model for a single value annotation parameter.
+ * 
  * <p>
  * &copy; Copyright 2012-2017 David Sporn
  * </p>
@@ -36,13 +32,14 @@ import java.util.function.Predicate;
  *
  * @author David SPORN
  * @version 18.10.00
- * @since 17.09.00
+ * @since 18.10.00
  */
-class Utils
+class AnnotationParameterSpecsSingleValueRaw extends AnnotationParameterSpecsRaw
 {
-	static final Predicate<? super String> IS_NOT_JAVA_LANG_TYPE = c -> !Object.class.getPackage().getName()
-			.equals(getPackageName(c));
+	/**
+	 * <code>true</code> when the value is of type String
+	 */
+	boolean string;
 
-	static final String NEXT_INDENTATION = "    ";
-
+	Object value;
 }

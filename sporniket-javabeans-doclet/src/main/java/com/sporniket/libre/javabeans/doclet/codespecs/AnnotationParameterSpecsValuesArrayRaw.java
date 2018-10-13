@@ -1,15 +1,13 @@
 /**
- *
+ * 
  */
-package com.sporniket.libre.javabeans.doclet.basic;
+package com.sporniket.libre.javabeans.doclet.codespecs;
 
-import static com.sporniket.libre.javabeans.doclet.UtilsClassname.getPackageName;
-
-import java.util.function.Predicate;
+import java.util.List;
 
 /**
- * Utility class.
- *
+ * Model for an annotation parameter that is an array.
+ * 
  * <p>
  * &copy; Copyright 2012-2017 David Sporn
  * </p>
@@ -36,13 +34,9 @@ import java.util.function.Predicate;
  *
  * @author David SPORN
  * @version 18.10.00
- * @since 17.09.00
+ * @since 18.10.00
  */
-class Utils
+class AnnotationParameterSpecsValuesArrayRaw extends AnnotationParameterSpecsRaw
 {
-	static final Predicate<? super String> IS_NOT_JAVA_LANG_TYPE = c -> !Object.class.getPackage().getName()
-			.equals(getPackageName(c));
-
-	static final String NEXT_INDENTATION = "    ";
-
+	List<AnnotationParameterSpecsSingleValueRaw> values;
 }

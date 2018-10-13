@@ -21,15 +21,12 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
 
-import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationSpecs;
-import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationSpecs_Builder;
-import com.sporniket.libre.javabeans.doclet.codespecs.ClassSpecs;
-import com.sporniket.libre.javabeans.doclet.codespecs.ClassSpecs_Builder;
-import com.sporniket.libre.javabeans.doclet.codespecs.FieldSpecs;
-import com.sporniket.libre.javabeans.doclet.codespecs.FieldSpecs_Builder;
-import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs;
+import com.sporniket.libre.javabeans.doclet.codespecs.*;
 import com.sporniket.libre.lang.string.StringTools;
 import com.sun.javadoc.AnnotationDesc;
+import com.sun.javadoc.AnnotationDesc.ElementValuePair;
+import com.sun.javadoc.AnnotationTypeElementDoc;
+import com.sun.javadoc.AnnotationValue;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.TypeVariable;
@@ -60,7 +57,7 @@ import com.sun.javadoc.TypeVariable;
  * <hr>
  *
  * @author David SPORN
- * @version 17.12.00
+ * @version 18.10.00
  * @since 17.12.00
  */
 public class CodeSpecsExtractor
@@ -91,6 +88,47 @@ public class CodeSpecsExtractor
 		return _result.toString();
 	}
 
+	private List<AnnotationParameterSpecs> extractFieldAnnotationParameters(AnnotationDesc annotation,
+			final String annotationQualifiedName, Map<String, String> translations, Set<String> shortables)
+	{
+		final ElementValuePair[] _elementValues = annotation.elementValues();
+		final List<AnnotationParameterSpecs> result = new ArrayList<>(_elementValues.length);
+
+		for (AnnotationDesc.ElementValuePair valuePair : _elementValues)
+		{
+			final AnnotationTypeElementDoc _element = valuePair.element();
+			final AnnotationValue _value = valuePair.value();
+			Object _realValue = _value.value();
+			Class<?> _valueClass = _realValue.getClass();
+
+			if (!_valueClass.isArray())
+			{
+				result.add(new AnnotationParameterSpecsSingleValue_Builder()//
+						.withName(_element.name())//
+						.withValue(translateAnnotationValue(_realValue, translations))//
+						.withString(_realValue instanceof String)//
+						.done());
+			}
+			else
+			{
+				result.add(new AnnotationParameterSpecsValuesArray_Builder()//
+						.withName(_element.name())//
+						.withValues(Arrays.asList((AnnotationValue[]) _realValue)//
+								.stream()//
+								.map(AnnotationValue::value)//
+								.map(v -> {
+									return new AnnotationParameterSpecsSingleValue_Builder()//
+											.withValue(translateAnnotationValue(v, translations))//
+											.withString(v instanceof String)//
+											.done();
+								})//
+								.collect(toList()))//
+						.done());
+			}
+		}
+		return result;
+	}
+
 	private List<AnnotationSpecs> extractFieldAnnotations(ClassDoc srcClass, Map<String, String> translations,
 			Set<String> shortables)
 	{
@@ -99,20 +137,18 @@ public class CodeSpecsExtractor
 		{
 			final String _qualifiedName = annotation.annotationType().qualifiedName();
 			boolean _needParametersProcessing = annotation.elementValues().length > 0;
-			if (!_needParametersProcessing)
+
+			final AnnotationSpecs_Builder _annotationBuilder = new AnnotationSpecs_Builder()//
+					.withType(computeOutputType(annotation.annotationType(), translations, shortables))//
+					.withOnBuilder(JAVA_LANG_DEPRECATED.equals(_qualifiedName));
+
+			if (_needParametersProcessing)
 			{
-				_result.add(new AnnotationSpecs_Builder()
-						.withType(computeOutputType(annotation.annotationType(), translations, shortables))//
-						.withOnBuilder(JAVA_LANG_DEPRECATED.equals(_qualifiedName))//
-						.done());
+				_annotationBuilder
+						.withParameters(extractFieldAnnotationParameters(annotation, _qualifiedName, translations, shortables));
 			}
-			else
-			{
-				System.out.printf("Cannot process annotation '%s'[%s] with parameters : {%s}, resulting in '%s'", //
-						_qualifiedName, //
-						annotation.annotationType(), //
-						Arrays.asList(annotation.elementValues()));
-			}
+
+			_result.add(_annotationBuilder.done());
 		}
 		return _result;
 	}
@@ -124,23 +160,20 @@ public class CodeSpecsExtractor
 		{
 			final String _qualifiedName = annotation.annotationType().qualifiedName();
 			boolean _needParametersProcessing = annotation.elementValues().length > 0;
-			if (!_needParametersProcessing)
+			final AnnotationSpecs_Builder _annotationBuilder = new AnnotationSpecs_Builder()
+					.withType(computeOutputType(annotation.annotationType(), translations, shortables))//
+					.withOnField(true)//
+					.withOnGetter(JAVA_LANG_DEPRECATED.equals(_qualifiedName))//
+					.withOnSetter(JAVA_LANG_DEPRECATED.equals(_qualifiedName))//
+					.withOnBuilder(JAVA_LANG_DEPRECATED.equals(_qualifiedName));
+
+			if (_needParametersProcessing)
 			{
-				_result.add(new AnnotationSpecs_Builder()
-						.withType(computeOutputType(annotation.annotationType(), translations, shortables))//
-						.withOnField(true)//
-						.withOnGetter(JAVA_LANG_DEPRECATED.equals(_qualifiedName))//
-						.withOnSetter(JAVA_LANG_DEPRECATED.equals(_qualifiedName))//
-						.withOnBuilder(JAVA_LANG_DEPRECATED.equals(_qualifiedName))//
-						.done());
+				_annotationBuilder
+						.withParameters(extractFieldAnnotationParameters(annotation, _qualifiedName, translations, shortables));
 			}
-			else
-			{
-				System.out.printf("Cannot process annotation '%s'[%s] with parameters : {%s}, resulting in '%s'", //
-						_qualifiedName, //
-						annotation.annotationType(), //
-						Arrays.asList(annotation.elementValues()));
-			}
+
+			_result.add(_annotationBuilder.done());
 		}
 		return _result;
 	}
@@ -238,5 +271,25 @@ public class CodeSpecsExtractor
 		}
 
 		return _result.toString();
+	}
+
+	private String translateAnnotationValue(Object value, Map<String, String> translations)
+	{
+		String _asString = value.toString();
+		boolean _foundTranslation = false;
+		for (Map.Entry<String, String> translation : translations.entrySet())
+		{
+			// !!! SLOW !!!
+			int startFrom = 0;
+			int lastFound = _asString.indexOf(translation.getKey(), startFrom);
+			while (lastFound > -1)
+			{
+				_asString = _asString.replace(translation.getKey(), translation.getValue());
+				_foundTranslation = true;
+				startFrom += lastFound + 1;
+				lastFound = _asString.indexOf(translation.getKey(), startFrom);
+			}
+		}
+		return _asString;
 	}
 }

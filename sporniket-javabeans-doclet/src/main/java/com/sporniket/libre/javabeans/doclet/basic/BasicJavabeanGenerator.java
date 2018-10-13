@@ -1,5 +1,9 @@
 package com.sporniket.libre.javabeans.doclet.basic;
 
+import static com.sporniket.libre.javabeans.doclet.basic.Utils.NEXT_INDENTATION;
+
+import java.util.function.Consumer;
+
 import com.sporniket.libre.javabeans.doclet.JavabeanGenerator;
 import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationSpecs;
 import com.sporniket.libre.javabeans.doclet.codespecs.FieldSpecs;
@@ -34,7 +38,7 @@ import com.sporniket.libre.lang.string.StringTools;
  * <hr>
  *
  * @author David SPORN
- * @version 17.12.00
+ * @version 18.10.00
  * @since 17.09.00
  */
 public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGenerator
@@ -73,8 +77,9 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 		final String _extendsMarker = StringTools.isEmptyString(getClassSpecs().getSuperClassName()) ? "" : "\n        extends ";
 		final String _implementsMarker = StringTools.isEmptyString(getClassSpecs().getInterfaceList()) ? "" : "\n      implements ";
 
+		final Consumer<? super AnnotationSpecs> _outputAnnotation = a -> outputAnnotation(a, "");
 		getClassSpecs().getAnnotations().stream()//
-				.forEach(a -> getOut().printf("@%s\n", a.getType()));
+				.forEach(_outputAnnotation);
 		getOut().printf("public%s class %s%s %s%s%s%s\n{\n\n", //
 				_abstractMarker, getClassSpecs().getClassName(), getClassSpecs().getDeclaredTypeArguments()//
 				, _extendsMarker, getClassSpecs().getSuperClassName()//
@@ -85,8 +90,8 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 	{
 		field.getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnField)//
-				.forEach(a -> getOut().printf("    @%s\n", a.getType()));
-		getOut().printf("    private %s %s%s ;\n", field.getTypeInvocation(), getOptions().getBeanFieldPrefix(),
+				.forEach(a -> outputAnnotation(a, NEXT_INDENTATION));
+		getOut().printf("    private %s %s%s ;\n\n", field.getTypeInvocation(), getOptions().getBeanFieldPrefix(),
 				field.getNameForField());
 	}
 

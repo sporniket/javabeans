@@ -1,5 +1,7 @@
 package com.sporniket.libre.javabeans.doclet.codespecs;
 
+import java.util.List;
+
 /**
  * <p>
  * &copy; Copyright 2012-2017 David Sporn
@@ -26,7 +28,7 @@ package com.sporniket.libre.javabeans.doclet.codespecs;
  * <hr>
  *
  * @author David SPORN
- * @version 17.12.00
+ * @version 18.10.00
  * @since 17.12.00
  */
 class AnnotationSpecsRaw
@@ -50,6 +52,8 @@ class AnnotationSpecsRaw
 	 * <code>true</code> when the annotation MUST annotate the setter.
 	 */
 	boolean onSetter;
+
+	List<AnnotationParameterSpecsRaw> parameters;
 
 	String type;
 }

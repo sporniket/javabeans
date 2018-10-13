@@ -1,7 +1,9 @@
 package com.sporniket.sample.javabeans;
 
-import java.beans.*;
-import java.util.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
  * Coordinate (x,y)..
@@ -14,12 +16,18 @@ import java.util.*;
  * @version 15.05.01-SNAPSHOT
  * @author David SPORN
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes(
+{
+		@Type(Box.class), @Type(SpriteInstance.class), @Type(SpriteDefinition.class)
+})
 public class Point
 {
 
 	/**
 	 * Property "x" : .
 	 */
+	@JsonProperty("system_time") // annotation with simple parameter
 	private Integer myX;
 
 	/**
