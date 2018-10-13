@@ -38,7 +38,7 @@ import com.sporniket.libre.lang.string.StringTools;
  * <hr>
  *
  * @author David SPORN
- * @version 17.12.00
+ * @version 18.10.00
  * @since 17.09.00
  */
 public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGenerator

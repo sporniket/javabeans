@@ -35,7 +35,7 @@ import java.util.function.Predicate;
  * <hr>
  *
  * @author David SPORN
- * @version 17.12.00
+ * @version 18.10.00
  * @since 17.09.00
  */
 class Utils

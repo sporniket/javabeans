@@ -31,8 +31,8 @@ package com.sporniket.libre.javabeans.doclet.codespecs;
  * <hr>
  *
  * @author David SPORN
- * @version 17.12.00
- * @since 18.06.00
+ * @version 18.10.00
+ * @since 18.10.00
  */
 class AnnotationParameterSpecsSingleValueRaw extends AnnotationParameterSpecsRaw
 {

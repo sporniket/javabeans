@@ -57,7 +57,7 @@ import com.sun.javadoc.TypeVariable;
  * <hr>
  *
  * @author David SPORN
- * @version 17.12.00
+ * @version 18.10.00
  * @since 17.12.00
  */
 public class CodeSpecsExtractor
