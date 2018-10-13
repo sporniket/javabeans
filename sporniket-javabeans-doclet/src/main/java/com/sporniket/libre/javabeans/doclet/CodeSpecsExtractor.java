@@ -94,20 +94,12 @@ public class CodeSpecsExtractor
 		final ElementValuePair[] _elementValues = annotation.elementValues();
 		final List<AnnotationParameterSpecs> result = new ArrayList<>(_elementValues.length);
 
-		System.out.println("========================================================");
-		System.out.printf("dump parameters of annotation '%s'\n", annotationQualifiedName);
 		for (AnnotationDesc.ElementValuePair valuePair : _elementValues)
 		{
 			final AnnotationTypeElementDoc _element = valuePair.element();
-			System.out.printf("--> %s:\n", _element.name(), _element.qualifiedName());
 			final AnnotationValue _value = valuePair.value();
 			Object _realValue = _value.value();
 			Class<?> _valueClass = _realValue.getClass();
-			System.out.printf("    value of type '%s' (is array = %s)", _valueClass.getName(),
-					Boolean.toString(_valueClass.isArray()));
-			System.out.printf(" = %s", _realValue.toString());
-
-			System.out.println();
 
 			if (!_valueClass.isArray())
 			{
@@ -134,7 +126,6 @@ public class CodeSpecsExtractor
 						.done());
 			}
 		}
-		System.out.println("========================================================");
 		return result;
 	}
 
