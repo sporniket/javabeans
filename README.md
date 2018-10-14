@@ -18,12 +18,18 @@ a project to generate Javabeans from a XML model. Interested people may checkout
 
 ### TODO list, a.k.a. "The roadmap"
 
+In no particular order :
+
 * replicate javadoc tags when appropriate : descriptions, deprecation, properties summary, ...
 * can generate boundable and constrainable properties (will use annotation)
 * allows true encapsulation of collections and maps (idem)
 * the fluent builder api 'done()' method name may be specified.
-* replicate annotations (springframework, ...) if possible, or provide a set of annotations to generate annotations on the generated code (classes and fields) (supported by the reverse-engineering doclet).
+* the fluent builder should be parametrized to build any subclass of the target javabean.
 
+
+### What's new in v18.10.00
+
+* #28, #30 : Support for class and field annotations, can handle typical use of Jackson annotations (`@JsonProperty`, `@JsonTypeInfo` and `@JsonSubTypes`)
 
 ### What's new in v17.12.00
 
@@ -77,6 +83,7 @@ Issues fixed :
 > See the demo project ```sporniket-javabeans-doclet-sample```. It demonstrate :
 >
 > * Javabeans and POJOs generation, integrated in the build process of maven.
+> * Typical supported java code support for conversion (e.g. generics, annotations).
 > * Manual call in a sample program.
 
 ## 4. Known issues
