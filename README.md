@@ -13,6 +13,8 @@ Content
 ## 1. What is **Sporniket-Javabeans**, and when to use it ?
 **Sporniket-Javabeans** is a project to generate Javabeans from a tree of Java POJO structures. The generated tree of Javabeans replicates the POJO tree, supports generics. Additionnally, a fluent builder class is generated for each non abstract generated Javabeans.
 
+**Sporniket-Javabeans** also provides a plugin to perform reverse engineering of an existing class hierarchy of Javabeans for the sake of helping as much as possible to migrate an existing project.
+
 *Before Septembre 2017, it WAS
 a project to generate Javabeans from a XML model. Interested people may checkout the v15.04.00 or v15.04.01 and fork from there.*
 
@@ -25,6 +27,36 @@ In no particular order :
 * allows true encapsulation of collections and maps (idem)
 * the fluent builder api 'done()' method name may be specified.
 * the fluent builder should be parametrized to build any subclass of the target javabean.
+
+
+### What's new in v18.10.01
+
+* #33 : Generate a builder that can handle a subclass. In other words, the builder has a default constructor to act as usual, and a constructor accepting an Javabean instance that should have been created.
+
+```java
+//SampleGenerics<T,R extends Number> has been generated
+static class Parametrized extends SampleGenerics<CharSequence, Double>
+{
+  public void doSomething()
+  {
+    System.out.println("hi !");
+  }
+}
+
+//Sample use of the builder class
+public static void main(String[] args)
+{
+  SampleGenerics<String, Long> sampleGenerics = new SampleGenerics_Builder<String, Long>()//
+      // ...etc...
+      .done();
+
+  //Create a subclass instance
+  Parametrized sampleGenericsSubclass = (Parametrized) new SampleGenerics_Builder<>(new Parametrized())
+      // ...etc...
+      .done();
+  sampleGenericsSubclass.doSomething();
+}
+```
 
 
 ### What's new in v18.10.00
