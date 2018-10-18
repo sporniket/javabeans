@@ -39,8 +39,12 @@ public interface BuilderGenerator extends JavaSourceGenerator
 	{
 		outputFields();
 
+		outputConstructors();
+
 		outputSetters();
 	}
+
+	void outputConstructors();
 
 	void outputFields();
 

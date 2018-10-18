@@ -52,12 +52,32 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 	}
 
 	@Override
+	public void outputConstructors()
+	{
+		String _constructorName = getClassSpecs().getClassName() + getOptions().getBuilderSuffix();
+
+		// default constructor.
+		getOut().printf("    /**Default constructor. \n     */\n    public %s() {bean = new %s%s() ;}\n\n", //
+				_constructorName, //
+				getClassSpecs().getClassName(), //
+				getClassSpecs().getInvokedTypeArguments() //
+		);
+
+		// constructor that delegates the bean instanciation.
+		getOut().printf(
+				"    /**Constructor that delegates the bean instanciation. \n     * @param newBean the instanciated bean to use.\n     */\n    public %s(%s%s newBean) {bean = newBean ;}\n\n", //
+				_constructorName, //
+				getClassSpecs().getClassName(), //
+				getClassSpecs().getInvokedTypeArguments() //
+		);
+
+	}
+
+	@Override
 	public void outputFields()
 	{
 		// bean instance
-		getOut().printf("    private final %s%s bean = new %s%s() ;\n\n", //
-				getClassSpecs().getClassName(), //
-				getClassSpecs().getInvokedTypeArguments(), //
+		getOut().printf("    private final %s%s bean ;\n\n", //
 				getClassSpecs().getClassName(), //
 				getClassSpecs().getInvokedTypeArguments()//
 		);
