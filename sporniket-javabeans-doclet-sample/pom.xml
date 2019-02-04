@@ -85,9 +85,12 @@
 								<artifactId>sporniket-javabeans-doclet</artifactId>
 								<version>${version.sporniket-javabeans-doclet}</version>
 							</docletArtifact>
-							<additionalOptions>-d
-								${project.build.directory}/generated-classes/javabeans
-								-beanFieldPrefix ''</additionalOptions>
+							<additionalOptions>
+								<additionalOption>-d</additionalOption>
+								<additionalOption>${project.build.directory}/generated-classes/javabeans</additionalOption>
+								<additionalOption>-beanFieldPrefix</additionalOption>
+								<additionalOption>""</additionalOption>
+							</additionalOptions>
 							<show>private</show>
 							<sourceFileIncludes>
 								<sourceFileIncludes>com\/sporniket\/sample\/pojos\/\*.java</sourceFileIncludes>
@@ -109,8 +112,10 @@
 								<artifactId>sporniket-javabeans-doclet</artifactId>
 								<version>${version.sporniket-javabeans-doclet}</version>
 							</docletArtifact>
-							<additionalOptions>-d
-								${project.build.directory}/generated-classes/pojos</additionalOptions>
+							<additionalOptions>
+								<additionalOption>-d</additionalOption>
+								<additionalOption>${project.build.directory}/generated-classes/pojos</additionalOption>
+							</additionalOptions>
 							<show>private</show>
 							<sourceFileIncludes>
 								<sourceFileIncludes>com\/sporniket\/sample\/javabeans\/\*.java</sourceFileIncludes>
