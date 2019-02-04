@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.sporniket.javabeans</groupId>
 		<artifactId>sporniket-javabeans</artifactId>
-		<version>18.10.02-SNAPSHOT</version>
+		<version>19.02.00-SNAPSHOT</version>
 		<relativePath>../sporniket-javabeans/pom.xml</relativePath>
 	</parent>
 
@@ -13,7 +13,7 @@
 
 	<properties>
 		<!-- Using my own tool -->
-		<version.sporniket-javabeans-doclet>17.12.00</version.sporniket-javabeans-doclet>
+		<version.sporniket-javabeans-doclet>18.10.01</version.sporniket-javabeans-doclet>
 		<!-- maven plugins version -->
 		<version.maven-javadoc-plugin>3.0.1</version.maven-javadoc-plugin>
 	</properties>
