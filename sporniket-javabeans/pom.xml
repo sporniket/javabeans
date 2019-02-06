@@ -10,7 +10,7 @@
 		<url.base>https://github.com/sporniket/core</url.base>
 		<version.jdk>1.8</version.jdk>
 
-		<version.dependency.sporniket.core>15.03.01-jdk</version.dependency.sporniket.core>
+		<version.dependency.sporniket.core>19.02.00</version.dependency.sporniket.core>
 		<version.dependency.junit>4.12</version.dependency.junit>
 		<version.dependency.mockito>[2.0,3.0)</version.dependency.mockito>
 
@@ -38,6 +38,11 @@
 
 			<!-- ===EXTERNAL DEPENDENCIES (non test) -->
 			<!-- Sporniket core -->
+			<dependency>
+				<groupId>com.sporniket.core</groupId>
+				<artifactId>sporniket-core-strings</artifactId>
+				<version>${version.dependency.sporniket.core}</version>
+			</dependency>
 			<dependency>
 				<groupId>com.sporniket.core</groupId>
 				<artifactId>sporniket-core-lang</artifactId>

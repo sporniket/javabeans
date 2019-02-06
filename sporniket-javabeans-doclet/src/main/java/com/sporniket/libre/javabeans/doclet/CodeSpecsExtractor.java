@@ -4,11 +4,19 @@
 package com.sporniket.libre.javabeans.doclet;
 
 import static com.sporniket.libre.javabeans.doclet.CodeSpecsExtractor.ExtractionMode.EXPANDER;
-import static com.sporniket.libre.javabeans.doclet.UtilsClassDoc.*;
-import static com.sporniket.libre.javabeans.doclet.UtilsClassname.*;
-import static com.sporniket.libre.javabeans.doclet.UtilsFieldDoc.*;
-import static com.sporniket.libre.javabeans.doclet.UtilsFieldname.*;
-import static java.util.stream.Collectors.*;
+import static com.sporniket.libre.javabeans.doclet.UtilsClassDoc.computeOutputType;
+import static com.sporniket.libre.javabeans.doclet.UtilsClassDoc.computeOutputType_invocation;
+import static com.sporniket.libre.javabeans.doclet.UtilsClassDoc.shouldBeAbstract;
+import static com.sporniket.libre.javabeans.doclet.UtilsClassDoc.updateKnownClasses;
+import static com.sporniket.libre.javabeans.doclet.UtilsClassname.computeOutputClassname;
+import static com.sporniket.libre.javabeans.doclet.UtilsClassname.updateShortClassnameMappingFromClassnames;
+import static com.sporniket.libre.javabeans.doclet.UtilsFieldDoc.getAccessibleDeclaredFields;
+import static com.sporniket.libre.javabeans.doclet.UtilsFieldDoc.getAccessibleFields;
+import static com.sporniket.libre.javabeans.doclet.UtilsFieldDoc.getPrivateDeclaredFields;
+import static com.sporniket.libre.javabeans.doclet.UtilsFieldname.computeFieldAccessorSuffix;
+import static com.sporniket.libre.javabeans.doclet.UtilsFieldname.removePrefix;
+import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +29,16 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
 
-import com.sporniket.libre.javabeans.doclet.codespecs.*;
+import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationParameterSpecs;
+import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationParameterSpecsSingleValue_Builder;
+import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationParameterSpecsValuesArray_Builder;
+import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationSpecs;
+import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationSpecs_Builder;
+import com.sporniket.libre.javabeans.doclet.codespecs.ClassSpecs;
+import com.sporniket.libre.javabeans.doclet.codespecs.ClassSpecs_Builder;
+import com.sporniket.libre.javabeans.doclet.codespecs.FieldSpecs;
+import com.sporniket.libre.javabeans.doclet.codespecs.FieldSpecs_Builder;
+import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs;
 import com.sporniket.libre.lang.string.StringTools;
 import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.AnnotationDesc.ElementValuePair;
@@ -247,7 +264,7 @@ public class CodeSpecsExtractor
 		final Set<String> _shortables = new HashSet<>(_shortNameMapping.values());
 
 		return new ClassSpecs_Builder()//
-				.withImports(_knownClasses)//
+				.withImports(_knownClasses)// FIXME SORT IN NATURAL ORDER
 				.withClassName(computeOutputClassname(from.qualifiedTypeName(), translations, _shortables))//
 				.withPackageName(from.containingPackage().name())//
 				.withDeclaredTypeArguments(extractClassDeclaredTypeArguments(from, translations, _shortables))//
@@ -276,19 +293,9 @@ public class CodeSpecsExtractor
 	private String translateAnnotationValue(Object value, Map<String, String> translations)
 	{
 		String _asString = value.toString();
-		boolean _foundTranslation = false;
 		for (Map.Entry<String, String> translation : translations.entrySet())
 		{
-			// !!! SLOW !!!
-			int startFrom = 0;
-			int lastFound = _asString.indexOf(translation.getKey(), startFrom);
-			while (lastFound > -1)
-			{
-				_asString = _asString.replace(translation.getKey(), translation.getValue());
-				_foundTranslation = true;
-				startFrom += lastFound + 1;
-				lastFound = _asString.indexOf(translation.getKey(), startFrom);
-			}
+			_asString = _asString.replace(translation.getKey(), translation.getValue());
 		}
 		return _asString;
 	}

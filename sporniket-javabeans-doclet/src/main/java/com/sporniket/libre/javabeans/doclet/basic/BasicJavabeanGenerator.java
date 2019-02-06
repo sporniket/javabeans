@@ -1,7 +1,9 @@
 package com.sporniket.libre.javabeans.doclet.basic;
 
 import static com.sporniket.libre.javabeans.doclet.basic.Utils.NEXT_INDENTATION;
+import static com.sporniket.libre.javabeans.doclet.codespecs.Comparators.IMPORT_SPECS_COMPARATOR_NATURAL;
 
+import java.util.TreeSet;
 import java.util.function.Consumer;
 
 import com.sporniket.libre.javabeans.doclet.JavabeanGenerator;
@@ -108,8 +110,9 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 	@Override
 	public void outputImportStatements()
 	{
-		// TODO Auto-generated method stub
-		getClassSpecs().getImports().stream().filter(ImportSpecs::isDirectlyRequired).forEach(i -> outputImportSpecIfValid(i));
+		TreeSet<ImportSpecs> _sortedImports = new TreeSet<ImportSpecs>(IMPORT_SPECS_COMPARATOR_NATURAL);
+		_sortedImports.addAll(getClassSpecs().getImports());
+		_sortedImports.stream().filter(ImportSpecs::isDirectlyRequired).forEach(i -> outputImportSpecIfValid(i));
 
 		getOut().println();
 	}

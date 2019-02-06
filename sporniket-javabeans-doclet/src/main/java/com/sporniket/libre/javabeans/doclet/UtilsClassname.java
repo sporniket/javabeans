@@ -3,10 +3,12 @@
  */
 package com.sporniket.libre.javabeans.doclet;
 
+import static com.sporniket.strings.StringComparators.STRING_COMPARATOR_REVERSE;
+
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.function.Predicate;
 
 /**
@@ -103,7 +105,8 @@ public final class UtilsClassname
 	public static Map<String, String> getReverseTranslationMapWhenPojosAreSuffixed(Set<String> registry, Set<String> sourcePackages,
 			String pojoSuffix, String builderSuffix)
 	{
-		final Map<String, String> result = new HashMap<>(registry.size());
+		// use a map with keys sorted in reverse order, so that looping on keys to translate something do not overlap.
+		final Map<String, String> result = new TreeMap<>(STRING_COMPARATOR_REVERSE);
 		final Predicate<String> _isPojo = c -> sourcePackages.contains(getPackageName(c)) && !pojoSuffix.equals(getSimpleName(c))
 				&& c.endsWith(pojoSuffix);
 		final Predicate<String> _isBuilder = c -> sourcePackages.contains(getPackageName(c))
@@ -144,7 +147,8 @@ public final class UtilsClassname
 	public static Map<String, String> getTranslationMapWhenPojosAreSuffixed(Set<String> registry, Set<String> sourcePackages,
 			String pojoSuffix)
 	{
-		final Map<String, String> result = new HashMap<>(registry.size());
+		// use a map with keys sorted in reverse order, so that looping on keys to translate something do not overlap.
+		final Map<String, String> result = new TreeMap<>(STRING_COMPARATOR_REVERSE);
 
 		final boolean _noPackageFiltering = (null == sourcePackages) || sourcePackages.isEmpty();
 		final Predicate<String> _isInPackageList = c -> _noPackageFiltering || sourcePackages.contains(getPackageName(c));

@@ -1,8 +1,13 @@
 package com.sporniket.libre.javabeans.doclet.basic;
 
+import static com.sporniket.libre.javabeans.doclet.codespecs.Comparators.IMPORT_SPECS_COMPARATOR_NATURAL;
+
+import java.util.TreeSet;
+
 import com.sporniket.libre.javabeans.doclet.BuilderGenerator;
 import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationSpecs;
 import com.sporniket.libre.javabeans.doclet.codespecs.FieldSpecs;
+import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs;
 
 /**
  * Basic builder generator.
@@ -92,7 +97,9 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 	@Override
 	public void outputImportStatements()
 	{
-		getClassSpecs().getImports().stream().forEach(i -> outputImportSpecIfValid(i));
+		TreeSet<ImportSpecs> _sortedImports = new TreeSet<ImportSpecs>(IMPORT_SPECS_COMPARATOR_NATURAL);
+		_sortedImports.addAll(getClassSpecs().getImports());
+		_sortedImports.stream().forEach(i -> outputImportSpecIfValid(i));
 
 		getOut().println();
 	}
