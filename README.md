@@ -29,6 +29,15 @@ In no particular order :
 * the fluent builder should be parametrized to build any subclass of the target javabean.
 
 
+### What's new in v19.02.00
+
+* Fixes an obvious problem of classname translation when looking for any replacement possible, e.g. when there are the following names to replace : `PrefixClassOfThings`, `PrefixClassOfThingsSpecial`, it tries to replace the longest first.
+
+Fixes to the demo project :
+
+* #34 : Wrong format for additionnal parameters in demo pom
+* address critical vulnerability warning in demo project about jackson version
+
 ### What's new in v18.10.01
 
 * #33 : Generate a builder that can handle a subclass. In other words, the builder has a default constructor to act as usual, and a constructor accepting an Javabean instance that should have been created.
