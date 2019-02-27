@@ -4,7 +4,7 @@
 	<groupId>com.sporniket.javabeans</groupId>
 	<artifactId>sporniket-javabeans</artifactId>
 	<packaging>pom</packaging>
-	<version>19.02.00-SNAPSHOT</version>
+	<version>19.02.00</version>
 
 	<properties>
 		<url.base>https://github.com/sporniket/core</url.base>
@@ -188,7 +188,7 @@
 	<scm>
 		<connection>scm:git:https://github.com/sporniket/javabeans.git</connection>
 		<url>https://github.com/sporniket/javabeans</url>
-		<tag>HEAD</tag>
+		<tag>v19.02.00</tag>
 	</scm>
 
 	<issueManagement>
