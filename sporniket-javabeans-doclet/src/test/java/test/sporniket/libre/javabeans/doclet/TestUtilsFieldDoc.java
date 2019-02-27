@@ -23,15 +23,15 @@ import com.sun.javadoc.FieldDoc;
  * <hr>
  *
  * <p>
- * This file is part of <i>The Sporniket Javabeans Library &#8211; doclet</i>.
+ * This file is part of <i>The Sporniket Javabeans Project &#8211; doclet</i>.
  *
  * <p>
- * <i>The Sporniket Javabeans Library &#8211; doclet</i> is free software: you can redistribute it and/or modify it under the terms
+ * <i>The Sporniket Javabeans Project &#8211; doclet</i> is free software: you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at
  * your option) any later version.
  *
  * <p>
- * <i>The Sporniket Javabeans Library &#8211; doclet</i> is distributed in the hope that it will be useful, but WITHOUT ANY
+ * <i>The Sporniket Javabeans Project &#8211; doclet</i> is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
  * Public License for more details.
  *
@@ -42,7 +42,7 @@ import com.sun.javadoc.FieldDoc;
  * <hr>
  *
  * @author David SPORN
- * @version 17.12.00
+ * @version 19.02.00
  * @since 17.09.01
  */
 @RunWith(MockitoJUnitRunner.class)
