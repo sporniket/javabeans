@@ -29,7 +29,7 @@
 	<url>${url.base}/blob/master/${project.artifactId}</url>
 
 	<modules>
-		<module>../sporniket-javabeans-doclet</module>
+		<module>sporniket-javabeans-doclet</module>
 	</modules>
 
 	<dependencyManagement>
