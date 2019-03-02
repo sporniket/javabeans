@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.sporniket.javabeans</groupId>
@@ -11,16 +13,18 @@
 		<version.jdk>1.8</version.jdk>
 
 		<version.dependency.sporniket.core>19.02.00</version.dependency.sporniket.core>
-		<version.dependency.junit>4.12</version.dependency.junit>
+		<version.dependency.junit>5.4.0</version.dependency.junit>
 		<version.dependency.mockito>[2.0,3.0)</version.dependency.mockito>
+		<version.dependency.assertj>[3.11,4.0)</version.dependency.assertj>
 
 		<!-- maven plugins version -->
-		<version.maven-compiler-plugin>3.2</version.maven-compiler-plugin>
-		<version.maven-source-plugin>2.4</version.maven-source-plugin>
-		<version.maven-javadoc-plugin>2.10.1</version.maven-javadoc-plugin>
-		<version.maven-surefire-report-plugin>2.18.1</version.maven-surefire-report-plugin>
+		<version.maven-enforcer-plugin>3.0.0-M2</version.maven-enforcer-plugin>
+		<version.maven-compiler-plugin>3.8.0</version.maven-compiler-plugin>
+		<version.maven-source-plugin>3.0.1</version.maven-source-plugin>
+		<version.maven-javadoc-plugin>3.0.1</version.maven-javadoc-plugin>
+		<version.maven-surefire-report-plugin>3.0.0-M3</version.maven-surefire-report-plugin>
 		<version.maven-pmd-plugin>3.4</version.maven-pmd-plugin>
-		<version.maven-release-plugin>2.5.2</version.maven-release-plugin>
+		<version.maven-release-plugin>2.5.3</version.maven-release-plugin>
 
 	</properties>
 
@@ -56,20 +60,46 @@
 
 			<!-- ===TEST DEPENDENCIES -->
 			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter</artifactId>
 				<version>${version.dependency.junit}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.mockito</groupId>
-				<artifactId>mockito-core</artifactId>
+				<artifactId>mockito-junit-jupiter</artifactId>
 				<version>${version.dependency.mockito}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.assertj</groupId>
+				<artifactId>assertj-core</artifactId>
+				<version>${version.dependency.assertj}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<build>
 		<plugins>
+			<!-- Enforcer -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>${version.maven-enforcer-plugin}</version>
+				<executions>
+					<execution>
+						<id>enforce-maven</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireMavenVersion>
+									<version>[3.5,4.0)</version>
+								</requireMavenVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<!-- Version of Java supported -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -110,6 +140,12 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<!-- surefire -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${version.maven-surefire-report-plugin}</version>
 			</plugin>
 			<!-- release -->
 			<plugin>

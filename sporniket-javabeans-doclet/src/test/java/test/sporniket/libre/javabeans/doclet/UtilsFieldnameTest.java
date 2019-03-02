@@ -1,10 +1,9 @@
 package test.sporniket.libre.javabeans.doclet;
 
 import static com.sporniket.libre.javabeans.doclet.UtilsFieldname.computeFieldAccessorSuffix;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.BDDAssertions.then;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * <p>
@@ -35,7 +34,7 @@ import org.junit.Test;
  * @version 19.02.00
  * @since 17.09.01
  */
-public class TestUtilsFieldname
+public class UtilsFieldnameTest
 {
 	@Test
 	public void test__computeFieldAccessorSuffix()
@@ -44,6 +43,6 @@ public class TestUtilsFieldname
 		// execute
 		String _toTest = computeFieldAccessorSuffix("blah");
 		// verify
-		assertThat(_toTest, is("Blah"));
+		then(_toTest).isEqualTo("Blah");
 	}
 }

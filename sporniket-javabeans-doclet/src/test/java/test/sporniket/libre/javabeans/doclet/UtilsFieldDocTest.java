@@ -1,16 +1,16 @@
 package test.sporniket.libre.javabeans.doclet;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.sporniket.libre.javabeans.doclet.UtilsFieldDoc;
 import com.sun.javadoc.ClassDoc;
@@ -45,8 +45,8 @@ import com.sun.javadoc.FieldDoc;
  * @version 19.02.00
  * @since 17.09.01
  */
-@RunWith(MockitoJUnitRunner.class)
-public class TestUtilsFieldDoc
+@ExtendWith(MockitoExtension.class)
+public class UtilsFieldDocTest
 {
 	@Mock
 	ClassDoc class1;
@@ -87,18 +87,16 @@ public class TestUtilsFieldDoc
 		// * class 1
 		when(class1.fields()).thenReturn(new FieldDoc[]
 		{
-				field1,
-				field2,
-				field3
+				field1, field2, field3
 		});
 
 		// execute
 		List<FieldDoc> _toTest = UtilsFieldDoc.getAccessibleDeclaredFields(class1);
 
 		// verify
-		assertThat(_toTest, hasItem(field1));
-		assertThat(_toTest, hasItem(field2));
-		assertThat(_toTest, not(hasItem(field3)));
+		then(_toTest)//
+				.contains(field1, field2)//
+				.doesNotContain(field3);
 	}
 
 	@Test
@@ -119,9 +117,7 @@ public class TestUtilsFieldDoc
 		// * class 1
 		when(class1.fields()).thenReturn(new FieldDoc[]
 		{
-				field1,
-				field2,
-				field3
+				field1, field2, field3
 		});
 		when(class1.superclass()).thenReturn(class2);
 
@@ -132,10 +128,10 @@ public class TestUtilsFieldDoc
 		List<FieldDoc> _toTest = UtilsFieldDoc.getAccessibleFields(class1);
 
 		// verify
-		Mockito.verify(class2, Mockito.never()).fields();
-		assertThat(_toTest, hasItem(field1));
-		assertThat(_toTest, hasItem(field2));
-		assertThat(_toTest, not(hasItem(field3)));
+		verify(class2, never()).fields();
+		then(_toTest)//
+				.contains(field1, field2)//
+				.doesNotContain(field3);
 	}
 
 	@Test
@@ -163,7 +159,7 @@ public class TestUtilsFieldDoc
 		List<FieldDoc> _toTest = UtilsFieldDoc.getAccessibleFields(class1);
 
 		// verify
-		assertThat(_toTest, hasItem(field1));
+		then(_toTest).contains(field1);
 	}
 
 	@Test
@@ -176,15 +172,15 @@ public class TestUtilsFieldDoc
 		// * class 1
 		when(class1.fields()).thenReturn(new FieldDoc[]
 		{
-				field1,
-				field2
+				field1, field2
 		});
 
 		// execute
 		List<FieldDoc> _toTest = UtilsFieldDoc.getPrivateDeclaredFields(class1);
 
 		// verify
-		assertThat(_toTest, hasItem(field1));
-		assertThat(_toTest, not(hasItem(field2)));
+		then(_toTest)//
+				.contains(field1)//
+				.doesNotContain(field2);
 	}
 }

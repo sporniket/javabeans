@@ -1,19 +1,19 @@
 package test.sporniket.libre.javabeans.doclet;
 
+import static java.lang.Boolean.FALSE;
 import static java.util.stream.Collectors.toList;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.mockito.Mockito.when;
 
 import java.net.URL;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.sporniket.libre.javabeans.doclet.UtilsClassDoc;
 import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs;
@@ -50,8 +50,8 @@ import com.sun.javadoc.Type;
  * @version 19.02.00
  * @since 17.12.00
  */
-@RunWith(MockitoJUnitRunner.class)
-public class TestUtilsClassDoc
+@ExtendWith(MockitoExtension.class)
+public class UtilsClassDocTest
 {
 	@Mock
 	ClassDoc class1;
@@ -77,20 +77,20 @@ public class TestUtilsClassDoc
 	private void doTestUpdateKnownClasses__givenPrimitiveIsFilteredOut(String primitive)
 	{
 		// prepare
-		Mockito.when(class1.qualifiedName()).thenReturn("test.class.this");
-		Mockito.when(class1.superclass()).thenReturn(class2);
-		Mockito.when(class1.interfaces()).thenReturn(new ClassDoc[] {});
-		Mockito.when(class1.fields()).thenReturn(new FieldDoc[]
+		when(class1.qualifiedName()).thenReturn("test.class.this");
+		when(class1.superclass()).thenReturn(class2);
+		when(class1.interfaces()).thenReturn(new ClassDoc[] {});
+		when(class1.fields()).thenReturn(new FieldDoc[]
 		{
 				field1
 		});
 
-		Mockito.when(class2.qualifiedName()).thenReturn(Object.class.getName());
+		when(class2.qualifiedName()).thenReturn(Object.class.getName());
 
-		Mockito.when(field1.isPublic()).thenReturn(true);
-		Mockito.when(field1.type()).thenReturn(type1);
+		when(field1.isPublic()).thenReturn(true);
+		when(field1.type()).thenReturn(type1);
 
-		Mockito.when(type1.qualifiedTypeName()).thenReturn(primitive);
+		when(type1.qualifiedTypeName()).thenReturn(primitive);
 
 		// execute
 		List<String> _result = UtilsClassDoc.updateKnownClasses(class1)//
@@ -99,9 +99,9 @@ public class TestUtilsClassDoc
 				.collect(toList());
 
 		// verify
-		assertThat(_result.isEmpty(), is(false));
-
-		assertThat(_result, not(hasItem(primitive)));
+		then(_result)//
+				.isNotEmpty()//
+				.doesNotContain(primitive);
 	}
 
 	@Test
@@ -109,48 +109,49 @@ public class TestUtilsClassDoc
 	{
 		// prepare
 		final String _thisClassName = "test.class.this";
-		Mockito.when(class1.qualifiedName()).thenReturn(_thisClassName);
-		Mockito.when(class1.superclass()).thenReturn(class2);
-		Mockito.when(class1.interfaces()).thenReturn(new ClassDoc[] {});
-		Mockito.when(class1.fields()).thenReturn(new FieldDoc[]
+		when(class1.qualifiedName()).thenReturn(_thisClassName);
+		when(class1.superclass()).thenReturn(class2);
+		when(class1.interfaces()).thenReturn(new ClassDoc[] {});
+		when(class1.fields()).thenReturn(new FieldDoc[]
 		{
 				field1
 		});
 
 		final String _superClassName = "test.class.super";
-		Mockito.when(class2.qualifiedName()).thenReturn(_superClassName);
-		Mockito.when(class2.superclass()).thenReturn(class3);
-		Mockito.when(class2.fields()).thenReturn(new FieldDoc[]
+		when(class2.qualifiedName()).thenReturn(_superClassName);
+		when(class2.superclass()).thenReturn(class3);
+		when(class2.fields()).thenReturn(new FieldDoc[]
 		{
 				field2
 		});
 
-		Mockito.when(class3.qualifiedName()).thenReturn(Object.class.getName());
+		when(class3.qualifiedName()).thenReturn(Object.class.getName());
 
-		Mockito.when(field1.isPublic()).thenReturn(false);
-		Mockito.when(field1.isPackagePrivate()).thenReturn(true);
-		Mockito.when(field1.type()).thenReturn(type1);
+		when(field1.isPublic()).thenReturn(false);
+		when(field1.isPackagePrivate()).thenReturn(true);
+		when(field1.type()).thenReturn(type1);
 
-		Mockito.when(field2.isPublic()).thenReturn(true);
-		Mockito.when(field2.type()).thenReturn(type2);
+		when(field2.isPublic()).thenReturn(true);
+		when(field2.type()).thenReturn(type2);
 
-		Mockito.when(type1.qualifiedTypeName()).thenReturn(URL.class.getName());
+		when(type1.qualifiedTypeName()).thenReturn(URL.class.getName());
 
-		Mockito.when(type2.qualifiedTypeName()).thenReturn(Date.class.getName());
+		when(type2.qualifiedTypeName()).thenReturn(Date.class.getName());
 
 		// execute
 		Collection<ImportSpecs> _result = UtilsClassDoc.updateKnownClasses(class1);
 
 		// verify
-		assertThat(_result.size(), is(4));
+		then(_result).hasSize(4);
 
-		final List<String> _imports = _result.stream()//
+		then(_result.stream()//
 				.map(ImportSpecs::getClassName)//
-				.collect(toList());
-		assertThat(_imports, hasItem(URL.class.getName()));
-		assertThat(_imports, hasItem(_superClassName));
-		assertThat(_imports, hasItem(_thisClassName));
-		assertThat(_imports, hasItem(Date.class.getName()));
+				.collect(toList())//
+		).contains(//
+				URL.class.getName(), //
+				_superClassName, //
+				_thisClassName, //
+				Date.class.getName());
 	}
 
 	@Test
@@ -158,43 +159,47 @@ public class TestUtilsClassDoc
 	{
 		// prepare
 		final String _thisClassName = "test.class.this";
-		Mockito.when(class1.qualifiedName()).thenReturn(_thisClassName);
-		Mockito.when(class1.superclass()).thenReturn(class2);
-		Mockito.when(class1.interfaces()).thenReturn(new ClassDoc[] {});
-		Mockito.when(class1.fields()).thenReturn(new FieldDoc[]
+		when(class1.qualifiedName()).thenReturn(_thisClassName);
+		when(class1.superclass()).thenReturn(class2);
+		when(class1.interfaces()).thenReturn(new ClassDoc[] {});
+		when(class1.fields()).thenReturn(new FieldDoc[]
 		{
 				field1
 		});
 
 		final String _superClassName = "test.class.super";
-		Mockito.when(class2.qualifiedName()).thenReturn(_superClassName);
-		Mockito.when(class2.superclass()).thenReturn(class3);
-		Mockito.when(class2.fields()).thenReturn(new FieldDoc[]
+		when(class2.qualifiedName()).thenReturn(_superClassName);
+		when(class2.superclass()).thenReturn(class3);
+		when(class2.fields()).thenReturn(new FieldDoc[]
 		{
 				field2
 		});
 
-		Mockito.when(class3.qualifiedName()).thenReturn(Object.class.getName());
+		when(class3.qualifiedName()).thenReturn(Object.class.getName());
 
-		Mockito.when(field1.isPublic()).thenReturn(false);
-		Mockito.when(field1.isPackagePrivate()).thenReturn(true);
-		Mockito.when(field1.type()).thenReturn(type1);
+		when(field1.isPublic()).thenReturn(false);
+		when(field1.isPackagePrivate()).thenReturn(true);
+		when(field1.type()).thenReturn(type1);
 
-		Mockito.when(field2.isPublic()).thenReturn(true);
-		Mockito.when(field2.type()).thenReturn(type2);
+		when(field2.isPublic()).thenReturn(true);
+		when(field2.type()).thenReturn(type2);
 
-		Mockito.when(type1.qualifiedTypeName()).thenReturn(URL.class.getName());
+		when(type1.qualifiedTypeName()).thenReturn(URL.class.getName());
 
-		Mockito.when(type2.qualifiedTypeName()).thenReturn(Date.class.getName());
+		when(type2.qualifiedTypeName()).thenReturn(Date.class.getName());
 
 		// execute
 		Collection<ImportSpecs> _result = UtilsClassDoc.updateKnownClasses(class1);
 
 		// verify
-		assertThat(_result.isEmpty(), is(false));
+		then(_result).isNotEmpty();
 
-		assertThat(_result.stream().filter(i -> Boolean.FALSE.equals(i.isDirectlyRequired())).map(ImportSpecs::getClassName)
-				.collect(toList()), hasItem(Date.class.getName()));
+		then(_result.stream()//
+				.filter(i -> FALSE.equals(i.isDirectlyRequired()))//
+				.map(ImportSpecs::getClassName)//
+				.collect(toList())//
+		).contains(//
+				Date.class.getName());
 	}
 
 	@Test

@@ -1,8 +1,7 @@
 package test.sporniket.libre.javabeans.doclet;
 
 import static java.util.Arrays.asList;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.sporniket.libre.javabeans.doclet.UtilsClassname;
 
@@ -25,26 +24,26 @@ import com.sporniket.libre.javabeans.doclet.UtilsClassname;
  * This file is part of <i>The Sporniket Javabeans Project &#8211; doclet</i>.
  * 
  * <p>
- * <i>The Sporniket Javabeans Project &#8211; doclet</i> is free software: you can redistribute it and/or modify it under the terms of the
- * GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * <i>The Sporniket Javabeans Project &#8211; doclet</i> is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at
+ * your option) any later version.
  * 
  * <p>
- * <i>The Sporniket Javabeans Project &#8211; doclet</i> is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
- * License for more details.
+ * <i>The Sporniket Javabeans Project &#8211; doclet</i> is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details.
  * 
  * <p>
- * You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library &#8211; 
+ * You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library &#8211;
  * core</i>. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. 2
  * 
  * <hr>
  * 
- * @author David SPORN 
+ * @author David SPORN
  * @version 19.02.00
  * @since 17.09.01
  */
-public class TestUtilsClassname
+public class UtilsClassnameTest
 {
 	@Test
 	public void test__computeOutputClassname()
@@ -57,8 +56,8 @@ public class TestUtilsClassname
 		String _toTestShortable = UtilsClassname.computeOutputClassname("foo.bar.WhateverRaw", _translations, _shortables);
 		String _toTestUnshortable = UtilsClassname.computeOutputClassname("foo.bar.WhoCaresRaw", _translations, _shortables);
 		// verify
-		assertThat(_toTestShortable, is("Sample"));
-		assertThat(_toTestUnshortable, is("foo.bar.WhoCaresRaw"));
+		then(_toTestShortable).isEqualTo("Sample");
+		then(_toTestUnshortable).isEqualTo("foo.bar.WhoCaresRaw");
 	}
 
 	@Test
@@ -70,8 +69,8 @@ public class TestUtilsClassname
 		String _toTestShortable = UtilsClassname.computeOutputClassname("foo.bar.Sample", _shortables);
 		String _toTestUnshortable = UtilsClassname.computeOutputClassname("foo.bar.Whatever", _shortables);
 		// verify
-		assertThat(_toTestShortable, is("Sample"));
-		assertThat(_toTestUnshortable, is("foo.bar.Whatever"));
+		then(_toTestShortable).isEqualTo("Sample");
+		then(_toTestUnshortable).isEqualTo("foo.bar.Whatever");
 	}
 
 	@Test
@@ -81,7 +80,7 @@ public class TestUtilsClassname
 		// execute
 		String _toTest = UtilsClassname.getPackageName(Object.class.getName());
 		// verify
-		assertThat(_toTest, is(Object.class.getPackage().getName()));
+		then(_toTest).isEqualTo(Object.class.getPackage().getName());
 	}
 
 	@Test
@@ -91,7 +90,7 @@ public class TestUtilsClassname
 		// execute
 		String _toTest = UtilsClassname.getSimpleName(Object.class.getName());
 		// verify
-		assertThat(_toTest, is(Object.class.getSimpleName()));
+		then(_toTest).isEqualTo(Object.class.getSimpleName());
 	}
 
 	@Test
@@ -103,8 +102,8 @@ public class TestUtilsClassname
 		// execute
 		Map<String, String> _toTest = UtilsClassname.getTranslationMapWhenPojosAreSuffixed(_registry, _sourcePackages, "Raw");
 		// verify
-		assertThat(_toTest.size(), is(1));
-		assertThat(_toTest.get("foo.bar.sampleRaw"), is("foo.bar.sample"));
+		then(_toTest).hasSize(1);
+		then(_toTest.get("foo.bar.sampleRaw")).isEqualTo("foo.bar.sample");
 	}
 
 	@Test
@@ -114,7 +113,7 @@ public class TestUtilsClassname
 		// execute
 		String _toTest = UtilsClassname.removeSuffixFromClassName("foobar", "bar");
 		// verify
-		assertThat(_toTest, is("foo"));
+		then(_toTest).isEqualTo("foo");
 	}
 
 	@Test
@@ -126,8 +125,8 @@ public class TestUtilsClassname
 		// execute
 		UtilsClassname.updateShortClassnameMappingFromClassnames(_mapping, _registry);
 		// verify
-		assertThat(_mapping.size(), is(2));
-		assertThat(_mapping.get("bar"), is("foo.bar.bar"));
-		assertThat(_mapping.get("fee"), is("foo.fee"));
+		then(_mapping).hasSize(2);
+		then(_mapping.get("bar")).isEqualTo("foo.bar.bar");
+		then(_mapping.get("fee")).isEqualTo("foo.fee");
 	}
 }

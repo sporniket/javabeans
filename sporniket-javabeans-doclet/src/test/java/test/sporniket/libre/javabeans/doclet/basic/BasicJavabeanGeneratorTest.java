@@ -3,6 +3,8 @@
  */
 package test.sporniket.libre.javabeans.doclet.basic;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
@@ -11,12 +13,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.sporniket.libre.javabeans.doclet.DocletOptions;
 import com.sporniket.libre.javabeans.doclet.basic.BasicJavabeanGenerator;
@@ -57,8 +57,8 @@ import com.sun.javadoc.Type;
  * @version 19.02.00
  * @since 17.09.01
  */
-@RunWith(MockitoJUnitRunner.class)
-public class TestBasicJavabeanGenerator
+@ExtendWith(MockitoExtension.class)
+public class BasicJavabeanGeneratorTest
 {
 	@Mock
 	ClassDoc class1;
@@ -105,7 +105,7 @@ public class TestBasicJavabeanGenerator
 		final String _result = new String(_baos.toByteArray(), _charset);
 
 		// verify
-		Assert.assertThat(_result, CoreMatchers.containsString("public foo isTheField("));
+		then(_result).contains("public foo isTheField(");
 	}
 
 	/**
@@ -141,10 +141,10 @@ public class TestBasicJavabeanGenerator
 		final String _result = new String(_baos.toByteArray(), _charset);
 
 		// verify
-		Assert.assertThat(_result, CoreMatchers.containsString("public foo getTheField("));
-		Assert.assertThat(_result, CoreMatchers.containsString("public void setTheField("));
-		Assert.assertThat(_result, CoreMatchers.containsString("{return this.theField ;}"));
-		Assert.assertThat(_result, CoreMatchers.containsString("{this.theField = value;}"));
+		then(_result).contains("public foo getTheField(");
+		then(_result).contains("public void setTheField(");
+		then(_result).contains("{return this.theField ;}");
+		then(_result).contains("{this.theField = value;}");
 	}
 
 	/**
@@ -180,9 +180,9 @@ public class TestBasicJavabeanGenerator
 		final String _result = new String(_baos.toByteArray(), _charset);
 
 		// verify
-		Assert.assertThat(_result, CoreMatchers.containsString("public foo getTheField("));
-		Assert.assertThat(_result, CoreMatchers.containsString("public void setTheField("));
-		Assert.assertThat(_result, CoreMatchers.containsString("{return myTheField ;}"));
-		Assert.assertThat(_result, CoreMatchers.containsString("{myTheField = value;}"));
+		then(_result).contains("public foo getTheField(");
+		then(_result).contains("public void setTheField(");
+		then(_result).contains("{return myTheField ;}");
+		then(_result).contains("{myTheField = value;}");
 	}
 }
