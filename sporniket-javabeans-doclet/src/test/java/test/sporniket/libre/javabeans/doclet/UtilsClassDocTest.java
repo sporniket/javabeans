@@ -1,13 +1,9 @@
 package test.sporniket.libre.javabeans.doclet;
 
-import static java.lang.Boolean.FALSE;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.Mockito.when;
 
-import java.net.URL;
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -102,104 +98,6 @@ public class UtilsClassDocTest
 		then(_result)//
 				.isNotEmpty()//
 				.doesNotContain(primitive);
-	}
-
-	@Test
-	public void testUpdateKnownClasses__doNotMissAnImport()
-	{
-		// prepare
-		final String _thisClassName = "test.class.this";
-		when(class1.qualifiedName()).thenReturn(_thisClassName);
-		when(class1.superclass()).thenReturn(class2);
-		when(class1.interfaces()).thenReturn(new ClassDoc[] {});
-		when(class1.fields()).thenReturn(new FieldDoc[]
-		{
-				field1
-		});
-
-		final String _superClassName = "test.class.super";
-		when(class2.qualifiedName()).thenReturn(_superClassName);
-		when(class2.superclass()).thenReturn(class3);
-		when(class2.fields()).thenReturn(new FieldDoc[]
-		{
-				field2
-		});
-
-		when(class3.qualifiedName()).thenReturn(Object.class.getName());
-
-		when(field1.isPublic()).thenReturn(false);
-		when(field1.isPackagePrivate()).thenReturn(true);
-		when(field1.type()).thenReturn(type1);
-
-		when(field2.isPublic()).thenReturn(true);
-		when(field2.type()).thenReturn(type2);
-
-		when(type1.qualifiedTypeName()).thenReturn(URL.class.getName());
-
-		when(type2.qualifiedTypeName()).thenReturn(Date.class.getName());
-
-		// execute
-		Collection<ImportSpecs> _result = UtilsClassDoc.updateKnownClasses(class1);
-
-		// verify
-		then(_result).hasSize(4);
-
-		then(_result.stream()//
-				.map(ImportSpecs::getClassName)//
-				.collect(toList())//
-		).contains(//
-				URL.class.getName(), //
-				_superClassName, //
-				_thisClassName, //
-				Date.class.getName());
-	}
-
-	@Test
-	public void testUpdateKnownClasses__inheritedPublicFieldsAreNotDirectImports()
-	{
-		// prepare
-		final String _thisClassName = "test.class.this";
-		when(class1.qualifiedName()).thenReturn(_thisClassName);
-		when(class1.superclass()).thenReturn(class2);
-		when(class1.interfaces()).thenReturn(new ClassDoc[] {});
-		when(class1.fields()).thenReturn(new FieldDoc[]
-		{
-				field1
-		});
-
-		final String _superClassName = "test.class.super";
-		when(class2.qualifiedName()).thenReturn(_superClassName);
-		when(class2.superclass()).thenReturn(class3);
-		when(class2.fields()).thenReturn(new FieldDoc[]
-		{
-				field2
-		});
-
-		when(class3.qualifiedName()).thenReturn(Object.class.getName());
-
-		when(field1.isPublic()).thenReturn(false);
-		when(field1.isPackagePrivate()).thenReturn(true);
-		when(field1.type()).thenReturn(type1);
-
-		when(field2.isPublic()).thenReturn(true);
-		when(field2.type()).thenReturn(type2);
-
-		when(type1.qualifiedTypeName()).thenReturn(URL.class.getName());
-
-		when(type2.qualifiedTypeName()).thenReturn(Date.class.getName());
-
-		// execute
-		Collection<ImportSpecs> _result = UtilsClassDoc.updateKnownClasses(class1);
-
-		// verify
-		then(_result).isNotEmpty();
-
-		then(_result.stream()//
-				.filter(i -> FALSE.equals(i.isDirectlyRequired()))//
-				.map(ImportSpecs::getClassName)//
-				.collect(toList())//
-		).contains(//
-				Date.class.getName());
 	}
 
 	@Test

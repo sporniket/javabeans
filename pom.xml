@@ -16,6 +16,7 @@
 		<version.dependency.junit>5.4.0</version.dependency.junit>
 		<version.dependency.mockito>[2.0,3.0)</version.dependency.mockito>
 		<version.dependency.assertj>[3.11,4.0)</version.dependency.assertj>
+		<version.dependency.jackson>[2.9.8,3.0)</version.dependency.jackson>
 
 		<!-- maven plugins version -->
 		<version.maven-enforcer-plugin>3.0.0-M2</version.maven-enforcer-plugin>
@@ -69,10 +70,17 @@
 				<artifactId>mockito-junit-jupiter</artifactId>
 				<version>${version.dependency.mockito}</version>
 			</dependency>
+			<!-- bdd assertions -->
 			<dependency>
 				<groupId>org.assertj</groupId>
 				<artifactId>assertj-core</artifactId>
 				<version>${version.dependency.assertj}</version>
+			</dependency>
+			<!-- Json orm -->
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${version.dependency.jackson}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

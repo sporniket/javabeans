@@ -1,0 +1,36 @@
+{
+	"fields": [
+		{
+			"refType": "java.util.Date",
+			"valIsPackagePrivate": true,
+			"valIsPublic": false,
+			"valName":"myDateCreation",
+			"valQualifiedName": "TheBaseClass.myDateCreation"
+		},
+		{
+			"refType": "java.net.URL",
+			"valIsPackagePrivate": true,
+			"valIsPublic": false,
+			"valName": "mySource",
+			"valQualifiedName": "TheClass.mySource"
+		}
+	],
+	"classes": [
+		{
+			"refFields": [
+				"TheClass.mySource"
+			],
+			"refInterfaces": [],
+			"refSuperclass": "TheBaseClass",
+			"valQualifiedName": "TheClass"
+		},
+		{
+			"refFields": [
+				"TheBaseClass.myDateCreation"
+			],
+			"refInterfaces": [],
+			"refSuperclass": "java.lang.Object",
+			"valQualifiedName": "TheBaseClass"
+		}
+	]
+}

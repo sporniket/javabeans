@@ -61,9 +61,16 @@
 			<artifactId>mockito-junit-jupiter</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- bdd assertions -->
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- json orm -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -99,6 +106,32 @@
 							<useStandardDocletOptions>false</useStandardDocletOptions>
 						</configuration>
 					</execution>
+					<execution>
+						<id>expandJavabeansTest</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>test-javadoc-no-fork</goal>
+						</goals>
+						<configuration>
+							<doclet>com.sporniket.libre.javabeans.doclet.ExpanderDoclet</doclet>
+							<docletArtifact>
+								<groupId>com.sporniket.javabeans</groupId>
+								<artifactId>sporniket-javabeans-doclet</artifactId>
+								<version>${version.sporniket-javabeans-doclet}</version>
+							</docletArtifact>
+							<additionalOptions>
+								<additionalOption>-d</additionalOption>
+								<additionalOption>${project.build.directory}/generated-classes-test/javabeans</additionalOption>
+								<additionalOption>-pojoSuffix</additionalOption>
+								<additionalOption>_Raw</additionalOption>
+							</additionalOptions>
+							<show>private</show>
+							<sourceFileIncludes>
+								<sourceFileIncludes>test\/sporniket\/libre\/javabeans\/mockjavadoc\/\*.java</sourceFileIncludes>
+							</sourceFileIncludes>
+							<useStandardDocletOptions>false</useStandardDocletOptions>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 			<!-- === add generated Javabeans as source folder === -->
@@ -108,7 +141,7 @@
 				<version>3.0.0</version>
 				<executions>
 					<execution>
-						<id>add-source</id>
+						<id>add-sources</id>
 						<phase>generate-sources</phase>
 						<goals>
 							<goal>add-source</goal>
@@ -119,8 +152,21 @@
 							</sources>
 						</configuration>
 					</execution>
+					<execution>
+						<id>add-test-sources</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-classes-test/javabeans</source>
+							</sources>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 		</plugins>
 	</build>
 </project>
+	
