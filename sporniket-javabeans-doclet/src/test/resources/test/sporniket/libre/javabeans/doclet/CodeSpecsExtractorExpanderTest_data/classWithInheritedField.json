@@ -4,7 +4,7 @@
 			"refType": "java.util.Date",
 			"valIsPackagePrivate": true,
 			"valIsPublic": false,
-			"valName":"myDateCreation",
+			"valName": "myDateCreation",
 			"valQualifiedName": "TheBaseClass.myDateCreation"
 		},
 		{

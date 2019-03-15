@@ -38,24 +38,27 @@ public class CodeSpecsExtractorExpanderTest extends TestBase
 	public Stream<DynamicTest> shouldHaveExpectedImportsSpecs() throws JsonParseException, JsonMappingException, IOException
 	{
 		// prepare
-		MockSetup setup = new MockSetupLoader().load(getDataRessource("classWithInheritedField.json"));
+		MockSetup setupInheritedField = new MockSetupLoader().load(getDataRessource("classWithInheritedField.json"));
+		MockSetup setupNativeTypeFields = new MockSetupLoader().load(getDataRessource("classWithNativeTypeFields.json"));
 
 		// execute
-		ClassSpecs _classSpecs = new CodeSpecsExtractor().extractSpecs(setup.getClasses().get("TheClass"),
-				new HashMap<String, String>(0), new DocletOptions(), EXPANDER);
+		ClassSpecs _classSpecsInheritedField = new CodeSpecsExtractor().extractSpecs(
+				setupInheritedField.getClasses().get("TheClass"), new HashMap<String, String>(0), new DocletOptions(), EXPANDER);
+		ClassSpecs _classSpecsNativeTypeFields = new CodeSpecsExtractor().extractSpecs(
+				setupNativeTypeFields.getClasses().get("TheClass"), new HashMap<String, String>(0), new DocletOptions(), EXPANDER);
 
 		// verify
 		return asList(//
 				dynamicTest("Should not miss an import"//
-						, () -> then(_classSpecs.getImports()//
+						, () -> then(_classSpecsInheritedField.getImports()//
 								.stream()//
 								.map(ImportSpecs::getClassName)//
 								.collect(toList())//
 						)//
 								.contains("java.net.URL", "java.util.Date", "TheClass", "TheBaseClass")//
-								.hasSize(4)),
-				dynamicTest("Should not import directly types from inherited fields"//
-						, () -> then(_classSpecs.getImports()//
+								.hasSize(4))//
+				, dynamicTest("Should not import directly types from inherited fields"//
+						, () -> then(_classSpecsInheritedField.getImports()//
 								.stream()//
 								.filter(ImportSpecs::isDirectlyRequired)//
 								.map(ImportSpecs::getClassName)//
@@ -63,6 +66,21 @@ public class CodeSpecsExtractorExpanderTest extends TestBase
 						)//
 								.doesNotContain("java.util.Date")//
 								.hasSize(3))//
+				, dynamicTest("Should not import native types"//
+						, () -> then(_classSpecsNativeTypeFields.getImports()//
+								.stream()//
+								.map(ImportSpecs::getClassName)//
+								.collect(toList())//
+						)//
+								.doesNotContain(boolean.class.getName()//
+										, byte.class.getName()//
+										, char.class.getName()//
+										, int.class.getName()//
+										, long.class.getName()//
+										, float.class.getName()//
+										, double.class.getName()//
+										, short.class.getName()//
+								))//
 		).stream();
 	}
 }
