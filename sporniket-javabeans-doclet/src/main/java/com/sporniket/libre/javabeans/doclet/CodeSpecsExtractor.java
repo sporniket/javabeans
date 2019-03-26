@@ -13,8 +13,7 @@ import static com.sporniket.libre.javabeans.doclet.UtilsClassname.updateShortCla
 import static com.sporniket.libre.javabeans.doclet.UtilsFieldDoc.getAccessibleDeclaredFields;
 import static com.sporniket.libre.javabeans.doclet.UtilsFieldDoc.getAccessibleFields;
 import static com.sporniket.libre.javabeans.doclet.UtilsFieldDoc.getPrivateDeclaredFields;
-import static com.sporniket.libre.javabeans.doclet.UtilsFieldname.computeFieldAccessorSuffix;
-import static com.sporniket.libre.javabeans.doclet.UtilsFieldname.removePrefix;
+import static com.sporniket.strings.StringPredicates.IS_EMPTY;
 import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Collectors.toList;
 
@@ -39,7 +38,8 @@ import com.sporniket.libre.javabeans.doclet.codespecs.ClassSpecs_Builder;
 import com.sporniket.libre.javabeans.doclet.codespecs.FieldSpecs;
 import com.sporniket.libre.javabeans.doclet.codespecs.FieldSpecs_Builder;
 import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs;
-import com.sporniket.libre.lang.string.StringTools;
+import com.sporniket.strings.pipeline.StringPipelineBuilder;
+import com.sporniket.strings.pipeline.StringTransformation;
 import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.AnnotationDesc.ElementValuePair;
 import com.sun.javadoc.AnnotationTypeElementDoc;
@@ -198,7 +198,7 @@ public class CodeSpecsExtractor
 	private List<FieldSpecs> extractFields(ClassDoc from, Map<String, String> translations, Set<String> shortables,
 			DocletOptions options, ExtractionMode mode)
 	{
-		final boolean _noPrefix = StringTools.isEmptyString(options.getBeanFieldPrefix());
+		final boolean _noPrefix = IS_EMPTY.test(options.getBeanFieldPrefix());
 
 		final List<FieldDoc> _directFields = (EXPANDER == mode)
 				? getAccessibleDeclaredFields(from)
@@ -209,10 +209,20 @@ public class CodeSpecsExtractor
 				.map(FieldDoc::name)//
 				.collect(toCollection(TreeSet::new));
 
+		final StringTransformation _simplePrefixRemover = UtilsString.TransformationFactories
+				.buildPrefixRemover(options.getBeanFieldPrefix());
+		final StringTransformation _prefixRemover = EXPANDER == mode //
+				? _simplePrefixRemover
+				: new StringPipelineBuilder()//
+						.pipeThrough(_simplePrefixRemover)//
+						.pipeThrough(UtilsString.Transformations.UNCAPITALIZER)//
+						.done();
+
 		final Function<? super FieldDoc, ? extends FieldSpecs> _toFieldSpecs = (EXPANDER == mode) ? (f -> {
-			final String _capitalizedName = computeFieldAccessorSuffix(f.name());
+			final String _unprefixedName = _prefixRemover.transform(f.name());
+			final String _capitalizedName = UtilsString.Transformations.CAPITALIZER.transform(f.name());
 			return new FieldSpecs_Builder()//
-					.withNameForField(_noPrefix ? f.name() : _capitalizedName)//
+					.withNameForField(_unprefixedName)//
 					.withNameForAccessor(_capitalizedName)//
 					.withFieldPrefix(_noPrefix ? "this." : options.getBeanFieldPrefix())//
 					.withTypeInvocation(computeOutputType_invocation(f.type(), translations, shortables))//
@@ -222,7 +232,7 @@ public class CodeSpecsExtractor
 					.withAnnotations(extractFieldAnnotations(f, translations, shortables))//
 					.done();
 		}) : (f -> {
-			final String _unprefixedName = removePrefix(f.name(), options.getBeanFieldPrefix());
+			final String _unprefixedName = _prefixRemover.transform(f.name());
 			return new FieldSpecs_Builder()//
 					.withNameForField(_unprefixedName)//
 					.withTypeInvocation(computeOutputType_invocation(f.type(), translations, shortables))//
