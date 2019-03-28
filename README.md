@@ -29,6 +29,11 @@ In no particular order :
 * the fluent builder should be parametrized to build any subclass of the target javabean.
 
 
+### What's new in v19.03.00
+
+* #36 : Does not recognize field name prefix in pojo to expands
+* Use junit5 tests, add better coverage.
+
 ### What's new in v19.02.00
 
 * Fixes an obvious problem of classname translation when looking for any replacement possible, e.g. when there are the following names to replace : `PrefixClassOfThings`, `PrefixClassOfThingsSpecial`, it tries to replace the longest first.
