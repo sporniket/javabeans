@@ -212,7 +212,10 @@ public class CodeSpecsExtractor
 		final StringTransformation _simplePrefixRemover = UtilsString.TransformationFactories
 				.buildPrefixRemover(options.getBeanFieldPrefix());
 		final StringTransformation _prefixRemover = EXPANDER == mode //
-				? _simplePrefixRemover
+				? new StringPipelineBuilder()//
+						.pipeThrough(_simplePrefixRemover)//
+						.pipeThrough(UtilsString.Transformations.CAPITALIZER)//
+						.done()
 				: new StringPipelineBuilder()//
 						.pipeThrough(_simplePrefixRemover)//
 						.pipeThrough(UtilsString.Transformations.UNCAPITALIZER)//
@@ -220,10 +223,9 @@ public class CodeSpecsExtractor
 
 		final Function<? super FieldDoc, ? extends FieldSpecs> _toFieldSpecs = (EXPANDER == mode) ? (f -> {
 			final String _unprefixedName = _prefixRemover.transform(f.name());
-			final String _capitalizedName = UtilsString.Transformations.CAPITALIZER.transform(f.name());
 			return new FieldSpecs_Builder()//
 					.withNameForField(_unprefixedName)//
-					.withNameForAccessor(_capitalizedName)//
+					.withNameForAccessor(_unprefixedName)//
 					.withFieldPrefix(_noPrefix ? "this." : options.getBeanFieldPrefix())//
 					.withTypeInvocation(computeOutputType_invocation(f.type(), translations, shortables))//
 					.withDirectlyRequired(_directlyRequiredFields.contains(f.name()))//

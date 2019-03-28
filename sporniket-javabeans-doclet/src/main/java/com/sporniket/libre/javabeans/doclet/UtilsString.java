@@ -20,7 +20,7 @@ public final class UtilsString
 			{
 				return s -> s;
 			}
-			return s -> null != s && s.length() >= prefix.length() && s.startsWith(prefix) ? s.substring(prefix.length()) : s;
+			return s -> null != s && s.length() > prefix.length() && s.startsWith(prefix) ? s.substring(prefix.length()) : s;
 		}
 	}
 }

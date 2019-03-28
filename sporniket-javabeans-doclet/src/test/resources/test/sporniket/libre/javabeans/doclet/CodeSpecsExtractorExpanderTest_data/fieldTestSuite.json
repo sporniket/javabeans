@@ -1,0 +1,93 @@
+{
+	"fields": [
+		{
+			"refType": "boolean",
+			"valIsPackagePrivate": true,
+			"valIsPublic": false,
+			"valName": "myBoolean",
+			"valQualifiedName": "TheClass.myBoolean"
+		},
+		{
+			"refType": "byte",
+			"valIsPackagePrivate": true,
+			"valIsPublic": false,
+			"valName": "myByte",
+			"valQualifiedName": "TheClass.myByte"
+		},
+		{
+			"refType": "char",
+			"valIsPackagePrivate": true,
+			"valIsPublic": false,
+			"valName": "myChar",
+			"valQualifiedName": "TheClass.myChar"
+		},
+		{
+			"refType": "int",
+			"valIsPackagePrivate": true,
+			"valIsPublic": false,
+			"valName": "myInt",
+			"valQualifiedName": "TheClass.myInt"
+		},
+		{
+			"refType": "long",
+			"valIsPackagePrivate": true,
+			"valIsPublic": false,
+			"valName": "myLong",
+			"valQualifiedName": "TheClass.myLong"
+		},
+		{
+			"refType": "float",
+			"valIsPackagePrivate": true,
+			"valIsPublic": false,
+			"valName": "myFloat",
+			"valQualifiedName": "TheClass.myFloat"
+		},
+		{
+			"refType": "double",
+			"valIsPackagePrivate": true,
+			"valIsPublic": false,
+			"valName": "myDouble",
+			"valQualifiedName": "TheClass.myDouble"
+		},
+		{
+			"refType": "short",
+			"valIsPackagePrivate": true,
+			"valIsPublic": false,
+			"valName": "myShort",
+			"valQualifiedName": "TheClass.myShort"
+		},
+		{
+			"refType": "short",
+			"valIsPackagePrivate": true,
+			"valIsPublic": false,
+			"valName": "unprefixed",
+			"valQualifiedName": "TheClass.unprefixed"
+		},
+		{
+			"refType": "short",
+			"valIsPackagePrivate": true,
+			"valIsPublic": false,
+			"valName": "my",
+			"valQualifiedName": "TheClass.my"
+		}
+	],
+	"classes": [
+		{
+			"refFields": [
+				"TheClass.myBoolean",
+				"TheClass.myByte",
+				"TheClass.myChar",
+				"TheClass.myInt",
+				"TheClass.myLong",
+				"TheClass.myFloat",
+				"TheClass.myDouble",
+				"TheClass.myShort",
+				"TheClass.unprefixed",
+				"TheClass.my"
+			],
+			"refInterfaces": [],
+			"refSuperclass": "java.lang.Object",
+			"valQualifiedName": "TheClass"
+		}
+	]
+}

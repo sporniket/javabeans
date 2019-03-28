@@ -1,0 +1,104 @@
+{
+	"fields": [
+		{
+			"array": false,
+			"nameForField": "Boolean",
+			"directlyRequired": true,
+			"annotations": [],
+			"booleanGetter": true,
+			"fieldPrefix": "my",
+			"nameForAccessor": "Boolean",
+			"typeInvocation": "boolean"
+		},
+		{
+			"array": false,
+			"nameForField": "Byte",
+			"directlyRequired": true,
+			"annotations": [],
+			"booleanGetter": false,
+			"fieldPrefix": "my",
+			"nameForAccessor": "Byte",
+			"typeInvocation": "byte"
+		},
+		{
+			"array": false,
+			"nameForField": "Char",
+			"directlyRequired": true,
+			"annotations": [],
+			"booleanGetter": false,
+			"fieldPrefix": "my",
+			"nameForAccessor": "Char",
+			"typeInvocation": "char"
+		},
+		{
+			"array": false,
+			"nameForField": "Int",
+			"directlyRequired": true,
+			"annotations": [],
+			"booleanGetter": false,
+			"fieldPrefix": "my",
+			"nameForAccessor": "Int",
+			"typeInvocation": "int"
+		},
+		{
+			"array": false,
+			"nameForField": "Long",
+			"directlyRequired": true,
+			"annotations": [],
+			"booleanGetter": false,
+			"fieldPrefix": "my",
+			"nameForAccessor": "Long",
+			"typeInvocation": "long"
+		},
+		{
+			"array": false,
+			"nameForField": "Float",
+			"directlyRequired": true,
+			"annotations": [],
+			"booleanGetter": false,
+			"fieldPrefix": "my",
+			"nameForAccessor": "Float",
+			"typeInvocation": "float"
+		},
+		{
+			"array": false,
+			"nameForField": "Double",
+			"directlyRequired": true,
+			"annotations": [],
+			"booleanGetter": false,
+			"fieldPrefix": "my",
+			"nameForAccessor": "Double",
+			"typeInvocation": "double"
+		},
+		{
+			"array": false,
+			"nameForField": "Short",
+			"directlyRequired": true,
+			"annotations": [],
+			"booleanGetter": false,
+			"fieldPrefix": "my",
+			"nameForAccessor": "Short",
+			"typeInvocation": "short"
+		},
+		{
+			"array": false,
+			"nameForField": "Unprefixed",
+			"directlyRequired": true,
+			"annotations": [],
+			"booleanGetter": false,
+			"fieldPrefix": "my",
+			"nameForAccessor": "Unprefixed",
+			"typeInvocation": "short"
+		},
+		{
+			"array": false,
+			"nameForField": "My",
+			"directlyRequired": true,
+			"annotations": [],
+			"booleanGetter": false,
+			"fieldPrefix": "my",
+			"nameForAccessor": "My",
+			"typeInvocation": "short"
+		}
+	]
+}
