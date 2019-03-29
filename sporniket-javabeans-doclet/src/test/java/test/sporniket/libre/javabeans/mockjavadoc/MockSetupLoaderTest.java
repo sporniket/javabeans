@@ -110,8 +110,7 @@ public class MockSetupLoaderTest extends TestBase
 		thenClassDocHasExpectedFeatures(setup.getClasses().get("TheClass")//
 				, new FieldDoc[]
 				{
-						setup.getFields().get("TheClass.mySource")//
-						, setup.getFields().get("TheBaseClass.myDateCreation")
+						setup.getFields().get("TheClass.mySource")
 				}//
 				, setup.getClasses().get("TheBaseClass")//
 				, setup.getPackages().get(""));

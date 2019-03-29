@@ -11,6 +11,7 @@ import java.io.InputStream;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -49,7 +50,14 @@ public class TestBase
 {
 	private static final String FORMAT__DATA_FILE_PATH = "%s_data/%s";
 
-	private ObjectMapper mapper = new ObjectMapper();
+	private ObjectMapper mapper = createMapper();
+
+	private ObjectMapper createMapper()
+	{
+		final ObjectMapper _result = new ObjectMapper();
+		_result.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		return _result;
+	}
 
 	protected InputStream getDataRessource(String resourceName)
 	{
