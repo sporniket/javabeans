@@ -11,7 +11,7 @@ import java.util.*;
  * LGPL v3
  * 
  *
- * @version 15.05.01-SNAPSHOT
+ * @version 19.03.00
  * @author David SPORN
  */
 public class Box

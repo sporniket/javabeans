@@ -33,7 +33,7 @@ import com.sun.javadoc.WildcardType;
  * Utility class for {@link ClassDoc}
  *
  * <p>
- * &copy; Copyright 2012-2017 David Sporn
+ * &copy; Copyright 2012-2019 David Sporn
  * </p>
  * <hr>
  *
@@ -57,14 +57,14 @@ import com.sun.javadoc.WildcardType;
  * <hr>
  *
  * @author David SPORN
- * @version 19.02.00
+ * @version 19.03.00
  * @since 17.09.00
  */
 public final class UtilsClassDoc
 {
 	/**
 	 * <p>
-	 * &copy; Copyright 2012-2017 David Sporn
+	 * &copy; Copyright 2012-2019 David Sporn
 	 * </p>
 	 * <hr>
 	 *
@@ -88,7 +88,7 @@ public final class UtilsClassDoc
 	 * <hr>
 	 *
 	 * @author David SPORN
-	 * @version 19.02.00
+	 * @version 19.03.00
 	 * @since 17.09.00
 	 */
 	public static class ClassDeclaration
@@ -218,7 +218,7 @@ public final class UtilsClassDoc
 
 	/**
 	 * <p>
-	 * &copy; Copyright 2012-2017 David Sporn
+	 * &copy; Copyright 2012-2019 David Sporn
 	 * </p>
 	 * <hr>
 	 *
@@ -242,7 +242,7 @@ public final class UtilsClassDoc
 	 * <hr>
 	 *
 	 * @author David SPORN
-	 * @version 19.02.00
+	 * @version 19.03.00
 	 * @since 17.09.00
 	 */
 	public static class TypeInvocation

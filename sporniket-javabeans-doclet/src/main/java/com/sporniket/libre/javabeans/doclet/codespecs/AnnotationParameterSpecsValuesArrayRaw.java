@@ -9,7 +9,7 @@ import java.util.List;
  * Model for an annotation parameter that is an array.
  * 
  * <p>
- * &copy; Copyright 2012-2017 David Sporn
+ * &copy; Copyright 2012-2019 David Sporn
  * </p>
  * <hr>
  *
@@ -33,7 +33,7 @@ import java.util.List;
  * <hr>
  *
  * @author David SPORN
- * @version 19.02.00
+ * @version 19.03.00
  * @since 18.10.00
  */
 class AnnotationParameterSpecsValuesArrayRaw extends AnnotationParameterSpecsRaw

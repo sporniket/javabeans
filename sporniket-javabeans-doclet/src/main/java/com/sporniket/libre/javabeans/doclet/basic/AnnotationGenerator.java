@@ -15,7 +15,7 @@ import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationSpecs;
 /**
  * Annotation generator, independant of the type of java source code generator.
  * <p>
- * &copy; Copyright 2012-2017 David Sporn
+ * &copy; Copyright 2012-2019 David Sporn
  * </p>
  * <hr>
  *
@@ -39,7 +39,7 @@ import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationSpecs;
  * <hr>
  *
  * @author David SPORN
- * @version 19.02.00
+ * @version 19.03.00
  * @since 18.10.00
  */
 public class AnnotationGenerator extends BasicGeneratorBase

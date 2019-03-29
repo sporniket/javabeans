@@ -7,7 +7,7 @@ import javax.tools.ToolProvider;
 
 /**
  * <p>
- * &copy; Copyright 2012-2017 David Sporn
+ * &copy; Copyright 2012-2019 David Sporn
  * </p>
  * <hr>
  * 
@@ -31,7 +31,7 @@ import javax.tools.ToolProvider;
  * <hr>
  * 
  * @author David SPORN 
- * @version 17.09.01
+ * @version 19.03.00
  * @since 17.09.01
  */
 public class SampleCallToDoclet

@@ -2,7 +2,7 @@ package com.sporniket.sample.pojos;
 
 /**
  * <p>
- * &copy; Copyright 2012-2017 David Sporn
+ * &copy; Copyright 2012-2019 David Sporn
  * </p>
  * <hr>
  * 
@@ -26,7 +26,7 @@ package com.sporniket.sample.pojos;
  * <hr>
  * 
  * @author David SPORN
- * @version 17.09.01
+ * @version 19.03.00
  * @since 17.12.00
  */
 public class SamplePrimitivesRaw extends SampleBasicRaw

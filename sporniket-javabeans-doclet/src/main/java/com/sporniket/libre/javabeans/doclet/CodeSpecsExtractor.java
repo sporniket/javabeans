@@ -50,7 +50,7 @@ import com.sun.javadoc.TypeVariable;
 
 /**
  * <p>
- * &copy; Copyright 2012-2017 David Sporn
+ * &copy; Copyright 2012-2019 David Sporn
  * </p>
  * <hr>
  *
@@ -74,7 +74,7 @@ import com.sun.javadoc.TypeVariable;
  * <hr>
  *
  * @author David SPORN
- * @version 19.02.00
+ * @version 19.03.00
  * @since 17.12.00
  */
 public class CodeSpecsExtractor

@@ -12,7 +12,7 @@ import java.util.Comparator;
 /**
  * Builtin comparators for the model.
  * <p>
- * &copy; Copyright 2012-2017 David Sporn
+ * &copy; Copyright 2012-2019 David Sporn
  * </p>
  * <hr>
  *
@@ -36,7 +36,7 @@ import java.util.Comparator;
  * <hr>
  *
  * @author David SPORN
- * @version 19.02.00
+ * @version 19.03.00
  * @since 19.02.00
  */
 public final class Comparators

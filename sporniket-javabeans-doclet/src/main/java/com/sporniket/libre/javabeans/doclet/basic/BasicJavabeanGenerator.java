@@ -16,7 +16,7 @@ import com.sporniket.libre.lang.string.StringTools;
  * Basic generator of javabeans from pojos.
  *
  * <p>
- * &copy; Copyright 2012-2017 David Sporn
+ * &copy; Copyright 2012-2019 David Sporn
  * </p>
  * <hr>
  *
@@ -40,7 +40,7 @@ import com.sporniket.libre.lang.string.StringTools;
  * <hr>
  *
  * @author David SPORN
- * @version 19.02.00
+ * @version 19.03.00
  * @since 17.09.00
  */
 public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGenerator

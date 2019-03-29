@@ -6,7 +6,7 @@ import java.text.MessageFormat;
  * Command line arguments supported by the javabeans doclets.
  *
  * <p>
- * &copy; Copyright 2012-2017 David Sporn
+ * &copy; Copyright 2012-2019 David Sporn
  * </p>
  * <hr>
  *
@@ -30,7 +30,7 @@ import java.text.MessageFormat;
  * <hr>
  *
  * @author David SPORN
- * @version 19.02.00
+ * @version 19.03.00
  * @since 17.09.00
  */
 public class DocletOptions

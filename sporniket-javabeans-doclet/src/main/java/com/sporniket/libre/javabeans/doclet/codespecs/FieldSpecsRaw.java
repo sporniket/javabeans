@@ -6,7 +6,7 @@ import com.sporniket.libre.javabeans.doclet.DocletOptions;
 
 /**
  * <p>
- * &copy; Copyright 2012-2017 David Sporn
+ * &copy; Copyright 2012-2019 David Sporn
  * </p>
  * <hr>
  *
@@ -30,7 +30,7 @@ import com.sporniket.libre.javabeans.doclet.DocletOptions;
  * <hr>
  *
  * @author David SPORN
- * @version 19.02.00
+ * @version 19.03.00
  * @since 17.12.00
  */
 class FieldSpecsRaw

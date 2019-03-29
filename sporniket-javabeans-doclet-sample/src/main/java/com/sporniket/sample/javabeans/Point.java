@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  * LGPL v3
  * 
  *
- * @version 15.05.01-SNAPSHOT
+ * @version 19.03.00
  * @author David SPORN
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")

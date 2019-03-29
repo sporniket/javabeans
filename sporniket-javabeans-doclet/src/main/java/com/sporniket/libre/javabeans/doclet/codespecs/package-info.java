@@ -1,7 +1,7 @@
 /**
  * Model of data to inject in a code template.
  * <p>
- * &copy; Copyright 2012-2017 David Sporn
+ * &copy; Copyright 2012-2019 David Sporn
  * </p>
  * <hr>
  *
@@ -25,7 +25,7 @@
  * <hr>
  *
  * @author David SPORN
- * @version 19.02.00
+ * @version 19.03.00
  * @since 17.12.00
  */
 package com.sporniket.libre.javabeans.doclet.codespecs;
