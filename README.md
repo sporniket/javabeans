@@ -11,6 +11,7 @@ Content
 5. Miscellanous
 
 ## 1. What is **Sporniket-Javabeans**, and when to use it ?
+
 **Sporniket-Javabeans** is a project to generate Javabeans from a tree of Java POJO structures. The generated tree of Javabeans replicates the POJO tree, supports generics. Additionnally, a fluent builder class is generated for each non abstract generated Javabeans.
 
 **Sporniket-Javabeans** also provides a plugin to perform reverse engineering of an existing class hierarchy of Javabeans for the sake of helping as much as possible to migrate an existing project.
@@ -28,6 +29,10 @@ In no particular order :
 * the fluent builder api 'done()' method name may be specified.
 * the fluent builder should be parametrized to build any subclass of the target javabean.
 
+
+### What's new in v19.04.00
+
+* #34 : Support arrays fields
 
 ### What's new in v19.03.00
 
