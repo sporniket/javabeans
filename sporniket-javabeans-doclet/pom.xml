@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.sporniket.javabeans</groupId>
 		<artifactId>sporniket-javabeans</artifactId>
-		<version>19.04.00</version>
+		<version>19.05.00-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
