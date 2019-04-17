@@ -30,7 +30,7 @@ import com.sporniket.libre.javabeans.doclet.DocletOptions;
  * <hr>
  *
  * @author David SPORN
- * @version 19.03.00
+ * @version 19.04.00
  * @since 17.12.00
  */
 class FieldSpecsRaw

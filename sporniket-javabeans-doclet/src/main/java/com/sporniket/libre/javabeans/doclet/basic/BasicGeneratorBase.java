@@ -33,7 +33,7 @@ import com.sporniket.libre.javabeans.doclet.codespecs.ClassSpecs;
  * <hr>
  *
  * @author David SPORN
- * @version 19.03.00
+ * @version 19.04.00
  * @since 17.09.00
  */
 public class BasicGeneratorBase

@@ -40,7 +40,7 @@ import com.sun.javadoc.WildcardType;
  * <hr>
  *
  * @author David SPORN
- * @version 19.03.00
+ * @version 19.04.00
  * @since 19.03.00
  */
 public class TypeMock extends TypeMockModel implements Type
