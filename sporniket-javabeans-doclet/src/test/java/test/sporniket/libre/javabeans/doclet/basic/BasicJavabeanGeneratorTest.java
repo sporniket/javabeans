@@ -84,6 +84,7 @@ public class BasicJavabeanGeneratorTest
 				.withFields(Arrays.asList(new FieldSpecs_Builder()//
 						.withDirectlyRequired(true)//
 						.withFieldPrefix("my")//
+						.withArrayMarker("")//
 						.withNameForAccessor("TheField")//
 						.withNameForField("TheField")//
 						.withTypeInvocation("foo")//
@@ -120,6 +121,7 @@ public class BasicJavabeanGeneratorTest
 				.withFields(Arrays.asList(new FieldSpecs_Builder()//
 						.withDirectlyRequired(true)//
 						.withFieldPrefix("this.")//
+						.withArrayMarker("")//
 						.withNameForAccessor("TheField")//
 						.withNameForField("theField")//
 						.withTypeInvocation("foo")//
@@ -159,6 +161,7 @@ public class BasicJavabeanGeneratorTest
 				.withFields(Arrays.asList(new FieldSpecs_Builder()//
 						.withDirectlyRequired(true)//
 						.withFieldPrefix("my")//
+						.withArrayMarker("")//
 						.withNameForAccessor("TheField")//
 						.withNameForField("TheField")//
 						.withTypeInvocation("foo")//

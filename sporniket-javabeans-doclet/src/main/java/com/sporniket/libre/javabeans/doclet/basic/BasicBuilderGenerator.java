@@ -111,12 +111,13 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 				.filter(AnnotationSpecs::isOnBuilder)//
 				.filter(AnnotationSpecs::isOnSetter)//
 				.forEach(a -> getOut().printf("    @%s\n", a.getType()));
-		getOut().printf("    public %s%s%s with%s(%s value) {bean.set%s(value); return this;}\n", //
+		getOut().printf("    public %s%s%s with%s(%s%s value) {bean.set%s(value); return this;}\n", //
 				getClassSpecs().getClassName(), //
 				getOptions().getBuilderSuffix(), //
 				getClassSpecs().getInvokedTypeArguments(), //
 				field.getNameForAccessor(), //
 				field.getTypeInvocation(), //
+				field.getArrayMarker(), //
 				field.getNameForAccessor()//
 		);
 	}

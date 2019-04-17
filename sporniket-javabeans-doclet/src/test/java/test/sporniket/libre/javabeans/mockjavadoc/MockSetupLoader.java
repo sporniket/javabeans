@@ -86,6 +86,8 @@ public class MockSetupLoader
 	 */
 	static class SetupStruct
 	{
+		public TypeMock[] types;
+
 		public ClassDocMock[] classes;
 
 		public FieldDocMock[] fields;

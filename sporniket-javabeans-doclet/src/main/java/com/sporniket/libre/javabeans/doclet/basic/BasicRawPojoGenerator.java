@@ -73,7 +73,7 @@ public class BasicRawPojoGenerator extends BasicGenerator implements JavabeanGen
 		field.getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnField)//
 				.forEach(a -> outputAnnotation(a, NEXT_INDENTATION));
-		getOut().printf("    %s %s ;\n", field.getTypeInvocation(), field.getNameForField());
+		getOut().printf("    %s%s %s ;\n", field.getTypeInvocation(), field.getArrayMarker(), field.getNameForField());
 	}
 
 	@Override

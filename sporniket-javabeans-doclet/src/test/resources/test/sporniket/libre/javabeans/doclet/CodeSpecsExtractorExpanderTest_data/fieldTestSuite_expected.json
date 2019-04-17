@@ -1,7 +1,7 @@
 {
 	"fields": [
 		{
-			"array": false,
+			"arrayMarker":"",
 			"nameForField": "Boolean",
 			"directlyRequired": true,
 			"annotations": [],
@@ -11,7 +11,7 @@
 			"typeInvocation": "boolean"
 		},
 		{
-			"array": false,
+			"arrayMarker":"",
 			"nameForField": "Byte",
 			"directlyRequired": true,
 			"annotations": [],
@@ -21,7 +21,7 @@
 			"typeInvocation": "byte"
 		},
 		{
-			"array": false,
+			"arrayMarker":"",
 			"nameForField": "Char",
 			"directlyRequired": true,
 			"annotations": [],
@@ -31,7 +31,7 @@
 			"typeInvocation": "char"
 		},
 		{
-			"array": false,
+			"arrayMarker":"",
 			"nameForField": "Int",
 			"directlyRequired": true,
 			"annotations": [],
@@ -41,7 +41,7 @@
 			"typeInvocation": "int"
 		},
 		{
-			"array": false,
+			"arrayMarker":"",
 			"nameForField": "Long",
 			"directlyRequired": true,
 			"annotations": [],
@@ -51,7 +51,7 @@
 			"typeInvocation": "long"
 		},
 		{
-			"array": false,
+			"arrayMarker":"",
 			"nameForField": "Float",
 			"directlyRequired": true,
 			"annotations": [],
@@ -61,7 +61,7 @@
 			"typeInvocation": "float"
 		},
 		{
-			"array": false,
+			"arrayMarker":"",
 			"nameForField": "Double",
 			"directlyRequired": true,
 			"annotations": [],
@@ -71,7 +71,7 @@
 			"typeInvocation": "double"
 		},
 		{
-			"array": false,
+			"arrayMarker":"",
 			"nameForField": "Short",
 			"directlyRequired": true,
 			"annotations": [],
@@ -81,7 +81,7 @@
 			"typeInvocation": "short"
 		},
 		{
-			"array": false,
+			"arrayMarker":"",
 			"nameForField": "Unprefixed",
 			"directlyRequired": true,
 			"annotations": [],
@@ -91,7 +91,7 @@
 			"typeInvocation": "short"
 		},
 		{
-			"array": false,
+			"arrayMarker":"",
 			"nameForField": "My",
 			"directlyRequired": true,
 			"annotations": [],
@@ -99,6 +99,16 @@
 			"fieldPrefix": "my",
 			"nameForAccessor": "My",
 			"typeInvocation": "short"
+		},
+		{
+			"arrayMarker":"[][]",
+			"nameForField": "ArrayOfStrings",
+			"directlyRequired": true,
+			"annotations": [],
+			"booleanGetter": false,
+			"fieldPrefix": "my",
+			"nameForAccessor": "ArrayOfStrings",
+			"typeInvocation": "String"
 		}
 	]
 }

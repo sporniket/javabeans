@@ -60,12 +60,10 @@ interface MockFactory<InputType, MockType>
 					.done();
 
 	/**
-	 * Factory to quickly setup a {@link Type} with a qualified name.
+	 * Factory to quickly setup a {@link Type} with a qualified name and optionnal array dimensions markers (one "[]" sequence by
+	 * dimension).
 	 */
-	static MockFactory<String, Type> TYPE_FROM_QUALIFIED_NAME = //
-			qn -> (Type) new TypeMockModel_Builder(new TypeMock())//
-					.withValQualifiedName(qn)//
-					.done();
+	static MockFactory<String, Type> TYPE_FROM_QUALIFIED_NAME = new MockFactoryTypeFromQualifiedNameWithArrayDimensions();
 
 	MockType build(InputType input);
 }

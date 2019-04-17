@@ -14,6 +14,7 @@ import static com.sporniket.libre.javabeans.doclet.UtilsFieldDoc.getAccessibleDe
 import static com.sporniket.libre.javabeans.doclet.UtilsFieldDoc.getAccessibleFields;
 import static com.sporniket.libre.javabeans.doclet.UtilsFieldDoc.getPrivateDeclaredFields;
 import static com.sporniket.strings.StringPredicates.IS_EMPTY;
+import static com.sporniket.strings.pipeline.StringTransformation.NULL_TO_EMPTY;
 import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Collectors.toList;
 
@@ -225,6 +226,7 @@ public class CodeSpecsExtractor
 			final String _unprefixedName = _prefixRemover.transform(f.name());
 			return new FieldSpecs_Builder()//
 					.withNameForField(_unprefixedName)//
+					.withArrayMarker(NULL_TO_EMPTY.transform(f.type().dimension()))//
 					.withNameForAccessor(_unprefixedName)//
 					.withFieldPrefix(_noPrefix ? "this." : options.getBeanFieldPrefix())//
 					.withTypeInvocation(computeOutputType_invocation(f.type(), translations, shortables))//
@@ -237,6 +239,7 @@ public class CodeSpecsExtractor
 			final String _unprefixedName = _prefixRemover.transform(f.name());
 			return new FieldSpecs_Builder()//
 					.withNameForField(_unprefixedName)//
+					.withArrayMarker(NULL_TO_EMPTY.transform(f.type().dimension()))//
 					.withTypeInvocation(computeOutputType_invocation(f.type(), translations, shortables))//
 					.withDirectlyRequired(_directlyRequiredFields.contains(f.name()))//
 					.withAnnotations(extractFieldAnnotations(f, translations, shortables))//

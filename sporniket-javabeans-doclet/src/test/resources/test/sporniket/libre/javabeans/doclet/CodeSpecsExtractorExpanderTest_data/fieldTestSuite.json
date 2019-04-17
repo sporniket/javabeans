@@ -69,6 +69,13 @@
 			"valIsPublic": false,
 			"valName": "my",
 			"valQualifiedName": "TheClass.my"
+		},
+		{
+			"refType": "java.lang.String[][]",
+			"valIsPackagePrivate": true,
+			"valIsPublic": false,
+			"valName": "arrayOfStrings",
+			"valQualifiedName": "TheClass.arrayOfStrings"
 		}
 	],
 	"classes": [
@@ -83,7 +90,8 @@
 				"TheClass.myDouble",
 				"TheClass.myShort",
 				"TheClass.unprefixed",
-				"TheClass.my"
+				"TheClass.my",
+				"TheClass.arrayOfStrings"
 			],
 			"refInterfaces": [],
 			"refSuperclass": "java.lang.Object",

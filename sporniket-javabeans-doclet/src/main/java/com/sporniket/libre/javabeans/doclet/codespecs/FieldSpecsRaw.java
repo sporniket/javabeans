@@ -38,6 +38,15 @@ class FieldSpecsRaw
 	List<AnnotationSpecsRaw> annotations;
 
 	/**
+	 * When the field is an array, a repetition of "[]" sequences as specified.
+	 * 
+	 * <p>
+	 * E.g. a one-dimensionnal array will have "[]" ; a two-dimensionnal array will have "[][]" ; and so on.
+	 * </p>
+	 */
+	String arrayMarker;
+
+	/**
 	 * <code>true</code> if the type of the field is native <code>boolean</code> or <code>java.lang.Boolean</code>.
 	 */
 	boolean booleanGetter;

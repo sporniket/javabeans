@@ -37,4 +37,6 @@ package test.sporniket.libre.javabeans.mockjavadoc;
 class TypeMockModel_Raw
 {
 	String valQualifiedName;
+
+	String valDimension;
 }

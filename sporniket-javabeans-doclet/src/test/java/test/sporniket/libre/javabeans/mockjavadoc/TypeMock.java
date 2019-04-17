@@ -3,6 +3,7 @@
  */
 package test.sporniket.libre.javabeans.mockjavadoc;
 
+import com.sporniket.strings.pipeline.StringTransformation;
 import com.sun.javadoc.AnnotatedType;
 import com.sun.javadoc.AnnotationTypeDoc;
 import com.sun.javadoc.ClassDoc;
@@ -125,8 +126,7 @@ public class TypeMock extends TypeMockModel implements Type
 	@Override
 	public String dimension()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return StringTransformation.NULL_TO_EMPTY.transform(getValDimension());
 	}
 
 	/*
