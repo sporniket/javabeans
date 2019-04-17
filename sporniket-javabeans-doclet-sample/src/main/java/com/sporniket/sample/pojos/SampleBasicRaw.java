@@ -39,8 +39,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes(
 {
-		@Type(SampleRelationRaw.class),
-		@Type(SamplePrimitivesRaw.class)
+		@Type(SampleRelationRaw.class), @Type(SamplePrimitivesRaw.class)
 })
 abstract class SampleBasicRaw
 {

@@ -1,6 +1,5 @@
 package com.sporniket.sample.javabeans;
 
-
 /**
  * A sprite is basically a box from a source canvas that is positionned on a target canvas using a "hot point"..
  *
@@ -30,6 +29,11 @@ public class SpriteDefinition
 	 * Property "sourceBox" : .
 	 */
 	private Box mySourceBox;
+
+	/**
+	 * Property "points" : .
+	 */
+	private Point[] myPoints;
 
 	/**
 	 * Read accessor for property "hotPoint" : .
@@ -68,6 +72,19 @@ public class SpriteDefinition
 	public Box getSourceBox()
 	{
 		return mySourceBox;
+	}
+
+	/**
+	 * Read accessor for property "points" : .
+	 *
+	 * 
+	 *
+	 * @return Property "points".
+	 *
+	 */
+	public Point[] getPoints()
+	{
+		return myPoints;
 	}
 
 	/**
@@ -110,6 +127,20 @@ public class SpriteDefinition
 	public void setSourceBox(Box sourceBox)
 	{
 		mySourceBox = sourceBox;
+	}
+
+	/**
+	 * Write accessor for property "points" : .
+	 *
+	 * 
+	 *
+	 * @param sourceBox
+	 *            Value of property "points".
+	 *
+	 */
+	public void setPoints(Point[] points)
+	{
+		myPoints = points;
 	}
 
 	/**

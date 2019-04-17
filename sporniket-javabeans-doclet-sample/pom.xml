@@ -4,13 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.sporniket.javabeans</groupId>
-	<version>19.03.00-SNAPSHOT</version>
+	<version>19.04.00-SNAPSHOT</version>
 	<artifactId>sporniket-javabeans-doclet-sample</artifactId>
 	<packaging>jar</packaging>
 
 	<properties>
 		<version.jdk>1.8</version.jdk>
-		<version.sporniket-javabeans-doclet>19.03.00</version.sporniket-javabeans-doclet>
+		<version.sporniket-javabeans-doclet>19.04.00</version.sporniket-javabeans-doclet>
 
 		<!-- maven plugins version -->
 		<version.maven-compiler-plugin>3.2</version.maven-compiler-plugin>

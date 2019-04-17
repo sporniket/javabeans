@@ -42,4 +42,7 @@ import java.util.Map;
 class SampleGenericsRaw<T, R extends Number> extends SampleBasicRaw
 {
 	Map<T, R> registry;
+
+	String[] tags;
+
 }
