@@ -33,7 +33,7 @@ import com.sporniket.strings.pipeline.StringTransformation;
  * <hr>
  *
  * @author David SPORN
- * @version 19.04.00
+ * @version 19.09.00
  * @since 19.03.00
  */
 class QualifiedNameUtils

@@ -30,7 +30,7 @@
  * <hr>
  *
  * @author David SPORN
- * @version 19.04.00
+ * @version 19.09.00
  * @since 19.03.00
  */
 package test.sporniket.libre.javabeans.mockjavadoc;

@@ -30,6 +30,10 @@ In no particular order :
 * the fluent builder should be parametrized to build any subclass of the target javabean.
 
 
+### What's new in v19.09.00
+
+* #22 : Copy javadoc comments - class and fields
+
 ### What's new in v19.04.00
 
 * #34 : Support arrays fields

@@ -51,7 +51,7 @@ import com.sun.javadoc.WildcardType;
  * <hr>
  *
  * @author David SPORN
- * @version 19.04.00
+ * @version 19.09.00
  * @since 19.03.00
  */
 public class ClassDocMock extends ClassDocMockModel implements ClassDoc

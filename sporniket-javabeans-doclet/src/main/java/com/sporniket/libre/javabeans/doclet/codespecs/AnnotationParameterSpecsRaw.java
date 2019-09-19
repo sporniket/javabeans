@@ -29,7 +29,7 @@ package com.sporniket.libre.javabeans.doclet.codespecs;
  * <hr>
  *
  * @author David SPORN
- * @version 19.04.00
+ * @version 19.09.00
  * @since 18.10.00
  */
 abstract class AnnotationParameterSpecsRaw

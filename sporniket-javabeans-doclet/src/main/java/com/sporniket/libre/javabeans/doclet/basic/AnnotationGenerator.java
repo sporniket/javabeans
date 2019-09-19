@@ -39,7 +39,7 @@ import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationSpecs;
  * <hr>
  *
  * @author David SPORN
- * @version 19.04.00
+ * @version 19.09.00
  * @since 18.10.00
  */
 public class AnnotationGenerator extends BasicGeneratorBase

@@ -54,7 +54,7 @@ import com.sun.javadoc.Type;
  * <hr>
  *
  * @author David SPORN
- * @version 19.04.00
+ * @version 19.09.00
  * @since 17.09.01
  */
 @ExtendWith(MockitoExtension.class)
