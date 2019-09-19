@@ -3,7 +3,7 @@ package com.sporniket.sample.pojos;
 import java.util.Map;
 
 /**
- * Sample generic pojo.
+ * Sample generic pojo extending {@link SampleBasicRaw}.
  * 
  * <p>
  * &copy; Copyright 2012-2019 David Sporn

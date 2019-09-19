@@ -3,6 +3,7 @@ package com.sporniket.libre.javabeans.doclet.codespecs;
 import java.util.List;
 
 import com.sporniket.libre.javabeans.doclet.DocletOptions;
+import com.sun.javadoc.Doc;
 
 /**
  * <p>
@@ -60,6 +61,11 @@ class FieldSpecsRaw
 	 * Either <code>this.</code> or {@link DocletOptions#getBeanFieldPrefix()}
 	 */
 	String fieldPrefix;
+
+	/**
+	 * Javadoc comment lines, as obtained from {@link Doc#getRawCommentText()}.
+	 */
+	String[] javadocLines;
 
 	/**
 	 * Unprefixed name for the accessor.

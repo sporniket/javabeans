@@ -1,6 +1,7 @@
 package com.sporniket.libre.javabeans.doclet.basic;
 
 import static com.sporniket.libre.javabeans.doclet.codespecs.Comparators.IMPORT_SPECS_COMPARATOR_NATURAL;
+import static java.lang.String.join;
 
 import java.util.TreeSet;
 
@@ -46,6 +47,11 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 	@Override
 	public void outputClassBegin()
 	{
+		final String[] _javadocLines = getClassSpecs().getJavadocLines();
+		if (null != _javadocLines && 0 < _javadocLines.length)
+		{
+			getOut().printf("/**%s\n*/\n", join("\n", _javadocLines));
+		}
 		getClassSpecs().getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnBuilder)//
 				.forEach(a -> getOut().printf("@%s\n", a.getType()));
@@ -106,7 +112,12 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 
 	private void outputSetter(final FieldSpecs field)
 	{
+		final String[] _javadocLines = field.getJavadocLines();
 		// setter
+		if (null != _javadocLines && 0 < _javadocLines.length)
+		{
+			getOut().printf("/**@param value\n%s\n*/\n", join("\n", _javadocLines));
+		}
 		field.getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnBuilder)//
 				.filter(AnnotationSpecs::isOnSetter)//

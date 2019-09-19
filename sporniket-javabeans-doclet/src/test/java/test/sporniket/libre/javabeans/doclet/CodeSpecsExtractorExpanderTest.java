@@ -5,6 +5,7 @@ package test.sporniket.libre.javabeans.doclet;
 
 import static com.sporniket.libre.javabeans.doclet.CodeSpecsExtractor.ExtractionMode.EXPANDER;
 import static java.lang.String.format;
+import static java.lang.String.join;
 import static java.util.Arrays.asList;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toList;
@@ -76,7 +77,7 @@ public class CodeSpecsExtractorExpanderTest extends TestBase
 	}
 
 	@TestFactory
-	public Stream<DynamicTest> shouldHaveExpectedFieldSpecs() throws JsonParseException, JsonMappingException, IOException
+	public Stream<DynamicTest> shouldHaveExpectedClassSpecs() throws JsonParseException, JsonMappingException, IOException
 	{
 		// prepare
 		MockSetup setupFieldExtractionTest = new MockSetupLoader().load(getDataRessource("fieldTestSuite.json"));
@@ -91,6 +92,18 @@ public class CodeSpecsExtractorExpanderTest extends TestBase
 
 		// verify
 		List<DynamicTest> _result = new ArrayList<DynamicTest>(_actualFields.size() + 1);
+		_result.add(//
+				dynamicTest("Should have javadoc lines", //
+						() -> {
+							then(_actualClassSpecs.getJavadocLines())//
+									.isNotNull()//
+									.isNotEmpty()//
+							;
+							then(join("\n", _actualClassSpecs.getJavadocLines()))
+									.isEqualTo(join("\n", _expectedClassSpecs.getJavadocLines()))//
+							;
+						}//
+				));
 		_result.add(//
 				dynamicTest("Should have the same number of fields with same names", //
 						() -> then(_actualFields).containsOnlyKeys(_expectedFields.keySet())));

@@ -1,0 +1,67 @@
+{
+	"specs": [
+		{
+			"description": "Should keep as is Javadoc comment without references to pojos",
+			"input": [
+				"* <p>",
+				"* &copy; Copyright 2012-2019 David Sporn",
+				"* </p>"
+			],
+			"expected": [
+				"* <p>",
+				"* &copy; Copyright 2012-2019 David Sporn",
+				"* </p>"
+			]
+		},{
+			"description": "Should convert simple @link reference to pojo",
+			"input": [
+				"* {@link PojoRaw}",
+				"* &copy; Copyright 2012-2019 David Sporn",
+				"* </p>"
+			],
+			"expected": [
+				"* {@link Pojo}",
+				"* &copy; Copyright 2012-2019 David Sporn",
+				"* </p>"
+			]
+		},{
+			"description": "Should convert simple @value reference to pojo",
+			"input": [
+				"* {@value PojoRaw#foo}",
+				"* &copy; Copyright 2012-2019 David Sporn",
+				"* </p>"
+			],
+			"expected": [
+				"* {@value Pojo#foo}",
+				"* &copy; Copyright 2012-2019 David Sporn",
+				"* </p>"
+			]
+		},{
+			"description": "Should convert fully qualified reference to pojo",
+			"input": [
+				"* {@value foo.bar.PojoRaw#foo}",
+				"* &copy; Copyright 2012-2019 David Sporn",
+				"* </p>"
+			],
+			"expected": [
+				"* {@value foo.bar.Pojo#foo}",
+				"* &copy; Copyright 2012-2019 David Sporn",
+				"* </p>"
+			]
+		},{
+			"description": "Should convert multiple references to pojo",
+			"input": [
+				"* {@link FooRaw}",
+				"* {@value PojoRaw#foo}",
+				"* &copy; Copyright 2012-2019 David Sporn",
+				"* </p>"
+			],
+			"expected": [
+				"* {@link Foo}",
+				"* {@value Pojo#foo}",
+				"* &copy; Copyright 2012-2019 David Sporn",
+				"* </p>"
+			]
+		}
+	]
+}

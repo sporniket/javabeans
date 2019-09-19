@@ -3,6 +3,8 @@ package com.sporniket.libre.javabeans.doclet.codespecs;
 import java.util.Collection;
 import java.util.List;
 
+import com.sun.javadoc.Doc;
+
 /**
  * <p>
  * &copy; Copyright 2012-2019 David Sporn
@@ -63,6 +65,11 @@ class ClassSpecsRaw
 	 * Type arguments when invoking the class (e.g. in the builder).
 	 */
 	String invokedTypeArguments;
+
+	/**
+	 * Javadoc comment lines, as obtained from {@link Doc#getRawCommentText()}.
+	 */
+	String[] javadocLines;
 
 	/**
 	 * fully qualified package name.

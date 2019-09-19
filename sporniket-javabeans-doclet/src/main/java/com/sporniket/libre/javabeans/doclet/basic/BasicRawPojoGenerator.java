@@ -2,6 +2,7 @@ package com.sporniket.libre.javabeans.doclet.basic;
 
 import static com.sporniket.libre.javabeans.doclet.basic.Utils.NEXT_INDENTATION;
 import static com.sporniket.libre.javabeans.doclet.codespecs.Comparators.IMPORT_SPECS_COMPARATOR_NATURAL;
+import static java.lang.String.join;
 
 import java.util.TreeSet;
 import java.util.function.Consumer;
@@ -58,6 +59,11 @@ public class BasicRawPojoGenerator extends BasicGenerator implements JavabeanGen
 		final String _extendsMarker = StringTools.isEmptyString(getClassSpecs().getSuperClassName()) ? "" : "\n        extends ";
 		final String _implementsMarker = StringTools.isEmptyString(getClassSpecs().getInterfaceList()) ? "" : "\n      implements ";
 
+		final String[] _javadocLines = getClassSpecs().getJavadocLines();
+		if (null != _javadocLines && 0 < _javadocLines.length)
+		{
+			getOut().printf("/**%s\n*/\n", join("\n", _javadocLines));
+		}
 		final Consumer<? super AnnotationSpecs> _outputAnnotation = a -> outputAnnotation(a, "");
 		getClassSpecs().getAnnotations().stream()//
 				.forEach(_outputAnnotation);
@@ -70,6 +76,11 @@ public class BasicRawPojoGenerator extends BasicGenerator implements JavabeanGen
 
 	private void outputField(FieldSpecs field)
 	{
+		final String[] _javadocLines = field.getJavadocLines();
+		if (null != _javadocLines && 0 < _javadocLines.length)
+		{
+			getOut().printf("/**%s\n*/\n", join("\n", _javadocLines));
+		}
 		field.getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnField)//
 				.forEach(a -> outputAnnotation(a, NEXT_INDENTATION));

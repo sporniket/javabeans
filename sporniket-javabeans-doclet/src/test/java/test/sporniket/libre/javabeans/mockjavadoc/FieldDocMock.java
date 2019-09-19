@@ -244,8 +244,7 @@ public class FieldDocMock extends FieldDocMockModel implements FieldDoc
 	@Override
 	public String getRawCommentText()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return null != getValRawComment() ? String.join("\n", getValRawComment()) : null;
 	}
 
 	/*

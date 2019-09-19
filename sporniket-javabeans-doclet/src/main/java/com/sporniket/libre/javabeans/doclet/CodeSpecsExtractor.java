@@ -4,6 +4,7 @@
 package com.sporniket.libre.javabeans.doclet;
 
 import static com.sporniket.libre.javabeans.doclet.CodeSpecsExtractor.ExtractionMode.EXPANDER;
+import static com.sporniket.libre.javabeans.doclet.RawCommentProcessorFactory.createRawCommentProcessor;
 import static com.sporniket.libre.javabeans.doclet.UtilsClassDoc.computeOutputType;
 import static com.sporniket.libre.javabeans.doclet.UtilsClassDoc.computeOutputType_invocation;
 import static com.sporniket.libre.javabeans.doclet.UtilsClassDoc.shouldBeAbstract;
@@ -87,6 +88,11 @@ public class CodeSpecsExtractor
 	}
 
 	private static final String JAVA_LANG_DEPRECATED = "java.lang.Deprecated";
+
+	/**
+	 * Convert javadoc comment string as string array.
+	 */
+	private static final Function<String, String[]> TO_JAVADOC_LINES = c -> null != c ? c.split("\n") : null;
 
 	private String extractClassDeclaredTypeArguments(ClassDoc from, Map<String, String> translations, Set<String> shortables)
 	{
@@ -224,6 +230,15 @@ public class CodeSpecsExtractor
 
 		final Function<? super FieldDoc, ? extends FieldSpecs> _toFieldSpecs = (EXPANDER == mode) ? (f -> {
 			final String _unprefixedName = _prefixRemover.transform(f.name());
+			String[] _comment = null;
+			final String _rawCommentText = f.getRawCommentText();
+			if (!IS_EMPTY.test(_rawCommentText))
+			{
+				final String _processedComment = EXPANDER == mode
+						? createRawCommentProcessor(options).apply(_rawCommentText)
+						: _rawCommentText;
+				_comment = TO_JAVADOC_LINES.apply(_processedComment);
+			}
 			return new FieldSpecs_Builder()//
 					.withNameForField(_unprefixedName)//
 					.withArrayMarker(NULL_TO_EMPTY.transform(f.type().dimension()))//
@@ -234,6 +249,7 @@ public class CodeSpecsExtractor
 					.withBooleanGetter(("boolean".equals(f.type().qualifiedTypeName()))
 							|| ("java.lang.Boolean".equals(f.type().qualifiedTypeName())))//
 					.withAnnotations(extractFieldAnnotations(f, translations, shortables))//
+					.withJavadocLines(_comment)//
 					.done();
 		}) : (f -> {
 			final String _unprefixedName = _prefixRemover.transform(f.name());
@@ -278,6 +294,16 @@ public class CodeSpecsExtractor
 		updateShortClassnameMappingFromClassnames(_shortNameMapping, translations.values());
 		final Set<String> _shortables = new HashSet<>(_shortNameMapping.values());
 
+		final String _rawCommentText = from.getRawCommentText();
+		String[] _comment = null;
+		if (!IS_EMPTY.test(_rawCommentText))
+		{
+			final String _processedComment = EXPANDER == mode
+					? createRawCommentProcessor(options).apply(_rawCommentText)
+					: _rawCommentText;
+			_comment = TO_JAVADOC_LINES.apply(_processedComment);
+		}
+
 		return new ClassSpecs_Builder()//
 				.withImports(_knownClasses)// FIXME SORT IN NATURAL ORDER
 				.withClassName(computeOutputClassname(from.qualifiedTypeName(), translations, _shortables))//
@@ -289,6 +315,7 @@ public class CodeSpecsExtractor
 				.withSuperClassName(extractSuperClassName(from.superclass(), translations, _shortables))//
 				.withInterfaceList(extractInterfaceList(from, translations, _shortables))//
 				.withAnnotations(extractFieldAnnotations(from, translations, _shortables))//
+				.withJavadocLines(_comment)//
 				.done();
 	}
 

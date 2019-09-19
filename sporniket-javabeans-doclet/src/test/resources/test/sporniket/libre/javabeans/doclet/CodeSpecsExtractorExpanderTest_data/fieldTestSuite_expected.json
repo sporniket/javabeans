@@ -1,17 +1,23 @@
 {
 	"fields": [
 		{
-			"arrayMarker":"",
+			"arrayMarker": "",
 			"nameForField": "Boolean",
 			"directlyRequired": true,
 			"annotations": [],
 			"booleanGetter": true,
 			"fieldPrefix": "my",
 			"nameForAccessor": "Boolean",
-			"typeInvocation": "boolean"
+			"typeInvocation": "boolean",
+			"javadocLines": [
+				"* {@link Foo}",
+				"* {@value Pojo#foo}",
+				"* &copy; Copyright 2012-2019 David Sporn",
+				"* </p>"
+			]
 		},
 		{
-			"arrayMarker":"",
+			"arrayMarker": "",
 			"nameForField": "Byte",
 			"directlyRequired": true,
 			"annotations": [],
@@ -21,7 +27,7 @@
 			"typeInvocation": "byte"
 		},
 		{
-			"arrayMarker":"",
+			"arrayMarker": "",
 			"nameForField": "Char",
 			"directlyRequired": true,
 			"annotations": [],
@@ -31,7 +37,7 @@
 			"typeInvocation": "char"
 		},
 		{
-			"arrayMarker":"",
+			"arrayMarker": "",
 			"nameForField": "Int",
 			"directlyRequired": true,
 			"annotations": [],
@@ -41,7 +47,7 @@
 			"typeInvocation": "int"
 		},
 		{
-			"arrayMarker":"",
+			"arrayMarker": "",
 			"nameForField": "Long",
 			"directlyRequired": true,
 			"annotations": [],
@@ -51,7 +57,7 @@
 			"typeInvocation": "long"
 		},
 		{
-			"arrayMarker":"",
+			"arrayMarker": "",
 			"nameForField": "Float",
 			"directlyRequired": true,
 			"annotations": [],
@@ -61,7 +67,7 @@
 			"typeInvocation": "float"
 		},
 		{
-			"arrayMarker":"",
+			"arrayMarker": "",
 			"nameForField": "Double",
 			"directlyRequired": true,
 			"annotations": [],
@@ -71,7 +77,7 @@
 			"typeInvocation": "double"
 		},
 		{
-			"arrayMarker":"",
+			"arrayMarker": "",
 			"nameForField": "Short",
 			"directlyRequired": true,
 			"annotations": [],
@@ -81,7 +87,7 @@
 			"typeInvocation": "short"
 		},
 		{
-			"arrayMarker":"",
+			"arrayMarker": "",
 			"nameForField": "Unprefixed",
 			"directlyRequired": true,
 			"annotations": [],
@@ -91,7 +97,7 @@
 			"typeInvocation": "short"
 		},
 		{
-			"arrayMarker":"",
+			"arrayMarker": "",
 			"nameForField": "My",
 			"directlyRequired": true,
 			"annotations": [],
@@ -101,7 +107,7 @@
 			"typeInvocation": "short"
 		},
 		{
-			"arrayMarker":"[][]",
+			"arrayMarker": "[][]",
 			"nameForField": "ArrayOfStrings",
 			"directlyRequired": true,
 			"annotations": [],
@@ -110,5 +116,11 @@
 			"nameForAccessor": "ArrayOfStrings",
 			"typeInvocation": "String"
 		}
+	],
+	"javadocLines": [
+		"* {@link Bar}",
+		"* {@value Bar#foo}",
+		"* &copy; Copyright 2012-2019 David Sporn",
+		"* </p>"
 	]
 }

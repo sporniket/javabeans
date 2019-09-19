@@ -45,6 +45,10 @@ abstract class SampleBasicRaw
 {
 	/**
 	 * Date of creation.
+	 * 
+	 * @see something
+	 * @since a long time ago
+	 * @version whatever
 	 */
 	@Deprecated
 	public Date date;

@@ -34,9 +34,7 @@ package test.sporniket.libre.javabeans.mockjavadoc;
  * @version 19.04.00
  * @since 19.03.00
  */
-class TypeMockModel_Raw
+class TypeMockModel_Raw extends ProgramElementDocMockModel_Raw
 {
-	String valQualifiedName;
-
 	String valDimension;
 }

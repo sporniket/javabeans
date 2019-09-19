@@ -5,7 +5,13 @@
 			"valIsPackagePrivate": true,
 			"valIsPublic": false,
 			"valName": "myBoolean",
-			"valQualifiedName": "TheClass.myBoolean"
+			"valQualifiedName": "TheClass.myBoolean",
+			"valRawComment": [
+				"* {@link FooRaw}",
+				"* {@value PojoRaw#foo}",
+				"* &copy; Copyright 2012-2019 David Sporn",
+				"* </p>"
+			]
 		},
 		{
 			"refType": "byte",
@@ -95,7 +101,13 @@
 			],
 			"refInterfaces": [],
 			"refSuperclass": "java.lang.Object",
-			"valQualifiedName": "TheClass"
+			"valQualifiedName": "TheClass",
+			"valRawComment": [
+				"* {@link BarRaw}",
+				"* {@value BarRaw#foo}",
+				"* &copy; Copyright 2012-2019 David Sporn",
+				"* </p>"
+			]
 		}
 	]
 }

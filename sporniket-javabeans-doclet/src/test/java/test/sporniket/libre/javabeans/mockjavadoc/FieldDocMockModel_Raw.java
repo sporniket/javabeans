@@ -36,7 +36,7 @@ import com.sun.javadoc.Type;
  * @version 19.04.00
  * @since 19.03.00
  */
-class FieldDocMockModel_Raw
+class FieldDocMockModel_Raw extends ProgramElementDocMockModel_Raw
 {
 	String refType;
 
@@ -45,8 +45,6 @@ class FieldDocMockModel_Raw
 	boolean valIsPublic;
 
 	String valName;
-
-	String valQualifiedName;
 
 	Type valType;
 

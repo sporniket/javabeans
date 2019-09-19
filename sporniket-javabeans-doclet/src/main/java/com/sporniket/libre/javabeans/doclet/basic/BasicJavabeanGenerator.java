@@ -2,6 +2,8 @@ package com.sporniket.libre.javabeans.doclet.basic;
 
 import static com.sporniket.libre.javabeans.doclet.basic.Utils.NEXT_INDENTATION;
 import static com.sporniket.libre.javabeans.doclet.codespecs.Comparators.IMPORT_SPECS_COMPARATOR_NATURAL;
+import static com.sporniket.strings.StringPredicates.IS_EMPTY;
+import static java.lang.String.join;
 
 import java.util.TreeSet;
 import java.util.function.Consumer;
@@ -10,7 +12,6 @@ import com.sporniket.libre.javabeans.doclet.JavabeanGenerator;
 import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationSpecs;
 import com.sporniket.libre.javabeans.doclet.codespecs.FieldSpecs;
 import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs;
-import com.sporniket.libre.lang.string.StringTools;
 
 /**
  * Basic generator of javabeans from pojos.
@@ -47,7 +48,12 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 {
 	private void outputAccessor(FieldSpecs field)
 	{
+		final String[] _javadocLines = field.getJavadocLines();
 		// getter
+		if (null != _javadocLines && 0 < _javadocLines.length)
+		{
+			getOut().printf("/**@returns\n%s\n*/\n", join("\n", _javadocLines));
+		}
 		field.getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnGetter)//
 				.forEach(a -> getOut().printf("    @%s\n", a.getType()));
@@ -56,6 +62,10 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 				field.getNameForField());
 
 		// setter
+		if (null != _javadocLines && 0 < _javadocLines.length)
+		{
+			getOut().printf("/**@param value\n%s\n*/\n", join("\n", _javadocLines));
+		}
 		field.getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnSetter)//
 				.forEach(a -> getOut().printf("    @%s\n", a.getType()));
@@ -76,9 +86,14 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 	{
 		// last preparations
 		final String _abstractMarker = getClassSpecs().isAbstractRequired() ? " abstract" : "";
-		final String _extendsMarker = StringTools.isEmptyString(getClassSpecs().getSuperClassName()) ? "" : "\n        extends ";
-		final String _implementsMarker = StringTools.isEmptyString(getClassSpecs().getInterfaceList()) ? "" : "\n      implements ";
+		final String _extendsMarker = IS_EMPTY.test(getClassSpecs().getSuperClassName()) ? "" : "\n        extends ";
+		final String _implementsMarker = IS_EMPTY.test(getClassSpecs().getInterfaceList()) ? "" : "\n      implements ";
 
+		final String[] _javadocLines = getClassSpecs().getJavadocLines();
+		if (null != _javadocLines && 0 < _javadocLines.length)
+		{
+			getOut().printf("/**%s\n*/\n", join("\n", _javadocLines));
+		}
 		final Consumer<? super AnnotationSpecs> _outputAnnotation = a -> outputAnnotation(a, "");
 		getClassSpecs().getAnnotations().stream()//
 				.forEach(_outputAnnotation);
@@ -90,6 +105,11 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 
 	private void outputField(FieldSpecs field)
 	{
+		final String[] _javadocLines = field.getJavadocLines();
+		if (null != _javadocLines && 0 < _javadocLines.length)
+		{
+			getOut().printf("/**%s\n*/\n", join("\n", _javadocLines));
+		}
 		field.getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnField)//
 				.forEach(a -> outputAnnotation(a, NEXT_INDENTATION));

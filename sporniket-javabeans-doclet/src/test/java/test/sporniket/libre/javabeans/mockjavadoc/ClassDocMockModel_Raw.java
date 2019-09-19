@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.FieldDoc;
-import com.sun.javadoc.PackageDoc;
 
 /**
  * Model for a {@link ClassDocMock} .
@@ -40,7 +39,7 @@ import com.sun.javadoc.PackageDoc;
  * @version 19.04.00
  * @since 19.03.00
  */
-class ClassDocMockModel_Raw
+class ClassDocMockModel_Raw extends ProgramElementDocMockModel_Raw
 {
 	/**
 	 * Names of fields
@@ -58,19 +57,9 @@ class ClassDocMockModel_Raw
 	String refSuperclass;
 
 	/**
-	 * Actual containing package.
-	 */
-	PackageDoc valContainingPackage;
-
-	/**
 	 * Actual fields.
 	 */
 	List<FieldDoc> valFieldDocs;
-
-	/**
-	 * Qualified name.
-	 */
-	String valQualifiedName;
 
 	/**
 	 * Actual superclass.
