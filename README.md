@@ -23,12 +23,11 @@ a project to generate Javabeans from a XML model. Interested people may checkout
 
 In no particular order :
 
-* replicate javadoc tags when appropriate : descriptions, deprecation, properties summary, ...
 * can generate boundable and constrainable properties (will use annotation)
 * allows true encapsulation of collections and maps (idem)
 * the fluent builder api 'done()' method name may be specified.
-* the fluent builder should be parametrized to build any subclass of the target javabean.
 
+See also the known issues.
 
 ### What's new in v19.09.00
 
