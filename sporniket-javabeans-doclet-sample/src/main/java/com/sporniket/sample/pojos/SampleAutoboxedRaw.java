@@ -1,6 +1,7 @@
 package com.sporniket.sample.pojos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
 /**
  * <p>
@@ -39,6 +40,7 @@ public class SampleAutoboxedRaw extends SampleBasicRaw
 
 	Double precise;
 
+	@JsonPropertyDescription("The \"small\"")
 	Short small;
 
 	@JsonProperty("system_time") // annotation with simple parameter

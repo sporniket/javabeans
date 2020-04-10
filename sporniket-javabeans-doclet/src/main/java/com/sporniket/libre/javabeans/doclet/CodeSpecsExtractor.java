@@ -335,9 +335,17 @@ public class CodeSpecsExtractor
 	private String translateAnnotationValue(Object value, Map<String, String> translations)
 	{
 		String _asString = value.toString();
-		for (Map.Entry<String, String> translation : translations.entrySet())
+		if (value instanceof String)
 		{
-			_asString = _asString.replace(translation.getKey(), translation.getValue());
+			_asString = _asString.replace("\\", "\\\\");
+			_asString = _asString.replace("\"", "\\\"");
+		}
+		else
+		{
+			for (Map.Entry<String, String> translation : translations.entrySet())
+			{
+				_asString = _asString.replace(translation.getKey(), translation.getValue());
+			}
 		}
 		return _asString;
 	}
