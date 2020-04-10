@@ -177,7 +177,8 @@ public class CodeSpecsExtractor
 		return _result;
 	}
 
-	private List<AnnotationSpecs> extractFieldAnnotations(FieldDoc field, Map<String, String> translations, Set<String> shortables)
+	private List<AnnotationSpecs> extractFieldAnnotations(FieldDoc field, Map<String, String> translations, Set<String> shortables,
+			DocletOptions options)
 	{
 		List<AnnotationSpecs> _result = new ArrayList<>(field.annotations().length);
 		for (AnnotationDesc annotation : field.annotations())
@@ -187,8 +188,8 @@ public class CodeSpecsExtractor
 			final AnnotationSpecs_Builder _annotationBuilder = new AnnotationSpecs_Builder()
 					.withType(computeOutputType(annotation.annotationType(), translations, shortables))//
 					.withOnField(true)//
-					.withOnGetter(JAVA_LANG_DEPRECATED.equals(_qualifiedName))//
-					.withOnSetter(JAVA_LANG_DEPRECATED.equals(_qualifiedName))//
+					.withOnGetter(options.getAnnotationsToAddToGetters().contains(_qualifiedName))//
+					.withOnSetter(options.getAnnotationsToAddToGetters().contains(_qualifiedName))//
 					.withOnBuilder(JAVA_LANG_DEPRECATED.equals(_qualifiedName));
 
 			if (_needParametersProcessing)
@@ -248,7 +249,7 @@ public class CodeSpecsExtractor
 					.withDirectlyRequired(_directlyRequiredFields.contains(f.name()))//
 					.withBooleanGetter(("boolean".equals(f.type().qualifiedTypeName()))
 							|| ("java.lang.Boolean".equals(f.type().qualifiedTypeName())))//
-					.withAnnotations(extractFieldAnnotations(f, translations, shortables))//
+					.withAnnotations(extractFieldAnnotations(f, translations, shortables, options))//
 					.withJavadocLines(_comment)//
 					.done();
 		}) : (f -> {
@@ -258,7 +259,7 @@ public class CodeSpecsExtractor
 					.withArrayMarker(NULL_TO_EMPTY.transform(f.type().dimension()))//
 					.withTypeInvocation(computeOutputType_invocation(f.type(), translations, shortables))//
 					.withDirectlyRequired(_directlyRequiredFields.contains(f.name()))//
-					.withAnnotations(extractFieldAnnotations(f, translations, shortables))//
+					.withAnnotations(extractFieldAnnotations(f, translations, shortables, options))//
 					.done();
 		});
 

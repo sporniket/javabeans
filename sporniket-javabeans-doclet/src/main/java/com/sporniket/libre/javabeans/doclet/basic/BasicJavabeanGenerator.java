@@ -56,7 +56,7 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 		}
 		field.getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnGetter)//
-				.forEach(a -> getOut().printf("    @%s\n", a.getType()));
+				.forEach(a -> outputAnnotation(a, NEXT_INDENTATION));
 		getOut().printf("    public %s%s %s%s() {return %s%s ;}\n", field.getTypeInvocation(), field.getArrayMarker(),
 				(field.isBooleanGetter()) ? "is" : "get", field.getNameForAccessor(), field.getFieldPrefix(),
 				field.getNameForField());
@@ -68,7 +68,7 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 		}
 		field.getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnSetter)//
-				.forEach(a -> getOut().printf("    @%s\n", a.getType()));
+				.forEach(a -> outputAnnotation(a, NEXT_INDENTATION));
 		getOut().printf("    public void set%s(%s%s value) {%s%s = value;}\n", field.getNameForAccessor(),
 				field.getTypeInvocation(), field.getArrayMarker(), field.getFieldPrefix(), field.getNameForField());
 

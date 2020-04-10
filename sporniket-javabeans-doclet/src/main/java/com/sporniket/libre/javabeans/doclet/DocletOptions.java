@@ -1,6 +1,11 @@
 package com.sporniket.libre.javabeans.doclet;
 
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
+
 import java.text.MessageFormat;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Command line arguments supported by the javabeans doclets.
@@ -35,7 +40,21 @@ import java.text.MessageFormat;
  */
 public class DocletOptions
 {
-	private static final String FORMAT_TO_STRING = "beanFieldPrefix={0}\nbuilderSuffix={1}\nd={2}\npojoSuffix={3}";
+	private static final String FORMAT_TO_STRING = "beanFieldPrefix={0}\nbuilderSuffix={1}\nd={2}\npojoSuffix={3}\naddAnnotationToGetter={4}\naddAnnotationToSetter={5}";
+
+	private static final String KNOWN_ANNOTATIONS_FOR_GETTER = "java.lang.Deprecated,com.fasterxml.jackson.annotation.JsonProperty,com.fasterxml.jackson.annotation.JsonPropertyDescription";
+
+	private static final String KNOWN_ANNOTATIONS_FOR_SETTER = "java.lang.Deprecated,com.fasterxml.jackson.annotation.JsonProperty,com.fasterxml.jackson.annotation.JsonPropertyDescription";
+
+	/**
+	 * List of annotation (fully qualified names separated with comma) that have to be put on the getter in addition to the field.
+	 */
+	String addAnnotationToGetter;
+
+	/**
+	 * List of annotation (fully qualified name separated with comma) that have to be put on the setter in addition to the field.
+	 */
+	String addAnnotationToSetter;
 
 	/**
 	 * Prefix used for the fields of the javabeans.
@@ -56,6 +75,30 @@ public class DocletOptions
 	 * Suffix of a Pojo that should be expanded into a Javabean.
 	 */
 	String pojoSuffix = "Raw";
+
+	/**
+	 * Internal, set of annotations from {@link #addAnnotationToGetter}.
+	 */
+	private Set<String> myAnnotationsToAddToGetters = null;
+
+	/**
+	 * Internal, set of annotations from {@link #addAnnotationToSetter}.
+	 */
+	private Set<String> myAnnotationsToAddToSetters = null;
+
+	public String getAddAnnotationToGetter()
+	{
+		return (null != addAnnotationToGetter)
+				? KNOWN_ANNOTATIONS_FOR_GETTER + "," + addAnnotationToGetter
+				: KNOWN_ANNOTATIONS_FOR_GETTER;
+	}
+
+	public String getAddAnnotationToSetter()
+	{
+		return (null != addAnnotationToSetter)
+				? KNOWN_ANNOTATIONS_FOR_SETTER + "," + addAnnotationToSetter
+				: KNOWN_ANNOTATIONS_FOR_SETTER;
+	}
 
 	public String getBeanFieldPrefix()
 	{
@@ -80,7 +123,42 @@ public class DocletOptions
 	@Override
 	public String toString()
 	{
-		return MessageFormat.format(FORMAT_TO_STRING, getBeanFieldPrefix(), getBuilderSuffix(), getD(), getPojoSuffix());
+		return MessageFormat.format(FORMAT_TO_STRING, getBeanFieldPrefix(), getBuilderSuffix(), getD(), getPojoSuffix(),
+				getAddAnnotationToGetter(), getAddAnnotationToSetter());
+	}
+
+	public Set<String> getAnnotationsToAddToGetters()
+	{
+		if (null == myAnnotationsToAddToGetters)
+		{
+			myAnnotationsToAddToGetters = new HashSet<String>();
+			myAnnotationsToAddToGetters.addAll(//
+					asList(getAddAnnotationToGetter().split(","))//
+							.stream()//
+							.filter(a -> a != null)//
+							.map(a -> a.trim())//
+							.filter(a -> a.length() > 0)//
+							.collect(toList()));
+
+		}
+		return myAnnotationsToAddToGetters;
+	}
+
+	public Set<String> getAnnotationsToAddToSetters()
+	{
+		if (null == myAnnotationsToAddToSetters)
+		{
+			myAnnotationsToAddToSetters = new HashSet<String>();
+			myAnnotationsToAddToSetters.addAll(//
+					asList(getAddAnnotationToSetter().split(","))//
+							.stream()//
+							.filter(a -> a != null)//
+							.map(a -> a.trim())//
+							.filter(a -> a.length() > 0)//
+							.collect(toList()));
+
+		}
+		return myAnnotationsToAddToSetters;
 	}
 
 }
