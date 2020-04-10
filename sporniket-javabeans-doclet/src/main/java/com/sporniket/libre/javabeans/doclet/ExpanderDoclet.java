@@ -218,18 +218,15 @@ public class ExpanderDoclet
 				_out.close();
 			}
 
-			if (!_classSpecs.isAbstractRequired()) // abstract classes do not need builders...
+			final String _builderQualifiedName = _javabeanQualifiedName + "_Builder";
+
+			System.out.printf("Generating builder %s from %s \n", _builderQualifiedName, _qualifiedName);
+
+			_out = (null != options.d) ? new PrintStream(getFileToGenerate(_builderQualifiedName, options)) : System.out;
+			generateBuilder(_classSpecs, _out, options);
+			if (null != options.d)
 			{
-				final String _builderQualifiedName = _javabeanQualifiedName + "_Builder";
-
-				System.out.printf("Generating builder %s from %s \n", _builderQualifiedName, _qualifiedName);
-
-				_out = (null != options.d) ? new PrintStream(getFileToGenerate(_builderQualifiedName, options)) : System.out;
-				generateBuilder(_classSpecs, _out, options);
-				if (null != options.d)
-				{
-					_out.close();
-				}
+				_out.close();
 			}
 		}
 		catch (final FileNotFoundException _exception)

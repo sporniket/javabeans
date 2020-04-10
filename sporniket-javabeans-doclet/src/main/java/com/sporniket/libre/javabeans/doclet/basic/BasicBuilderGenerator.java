@@ -67,12 +67,15 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 	{
 		String _constructorName = getClassSpecs().getClassName() + getOptions().getBuilderSuffix();
 
-		// default constructor.
-		getOut().printf("    /**Default constructor. \n     */\n    public %s() {bean = new %s%s() ;}\n\n", //
-				_constructorName, //
-				getClassSpecs().getClassName(), //
-				getClassSpecs().getInvokedTypeArguments() //
-		);
+		if (!getClassSpecs().isAbstractRequired())
+		{
+			// default constructor.
+			getOut().printf("    /**Default constructor. \n     */\n    public %s() {bean = new %s%s() ;}\n\n", //
+					_constructorName, //
+					getClassSpecs().getClassName(), //
+					getClassSpecs().getInvokedTypeArguments() //
+			);
+		}
 
 		// constructor that delegates the bean instanciation.
 		getOut().printf(
