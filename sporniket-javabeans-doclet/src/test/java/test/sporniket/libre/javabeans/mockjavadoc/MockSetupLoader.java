@@ -24,7 +24,7 @@ import com.sun.javadoc.Type;
  * Create a {@link MockSetup} from a json description.
  *
  * <p>
- * &copy; Copyright 2012-2019 David Sporn
+ * &copy; Copyright 2012-2020 David Sporn
  * </p>
  * <hr>
  *
@@ -48,7 +48,7 @@ import com.sun.javadoc.Type;
  * <hr>
  *
  * @author David SPORN
- * @version 19.09.00
+ * @version 20.04.00
  * @since 19.03.00
  */
 public class MockSetupLoader
@@ -57,7 +57,7 @@ public class MockSetupLoader
 	 * The json object mapping.
 	 *
 	 * <p>
-	 * &copy; Copyright 2012-2019 David Sporn
+	 * &copy; Copyright 2012-2020 David Sporn
 	 * </p>
 	 * <hr>
 	 *
@@ -81,7 +81,7 @@ public class MockSetupLoader
 	 * <hr>
 	 *
 	 * @author David SPORN
-	 * @version 19.09.00
+	 * @version 20.04.00
 	 * @since 19.03.00
 	 */
 	static class SetupStruct

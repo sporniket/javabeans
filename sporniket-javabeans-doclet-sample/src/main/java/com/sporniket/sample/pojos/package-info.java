@@ -2,7 +2,7 @@
  * Collection of pojos to test the javabean generator.
  * 
  * <p>
- * &copy; Copyright 2012-2019 David Sporn
+ * &copy; Copyright 2012-2020 David Sporn
  * </p>
  * <hr>
  * 

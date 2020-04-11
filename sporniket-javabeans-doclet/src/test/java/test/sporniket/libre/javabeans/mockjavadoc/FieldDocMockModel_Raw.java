@@ -9,7 +9,7 @@ import com.sun.javadoc.Type;
  * Model for a {@link FieldDocMock}.
  *
  * <p>
- * &copy; Copyright 2012-2019 David Sporn
+ * &copy; Copyright 2012-2020 David Sporn
  * </p>
  * <hr>
  *
@@ -33,7 +33,7 @@ import com.sun.javadoc.Type;
  * <hr>
  *
  * @author David SPORN
- * @version 19.09.00
+ * @version 20.04.00
  * @since 19.03.00
  */
 class FieldDocMockModel_Raw extends ProgramElementDocMockModel_Raw

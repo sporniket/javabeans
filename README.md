@@ -29,6 +29,13 @@ In no particular order :
 
 See also the known issues.
 
+### What's new in v20.04.00
+
+* #26 : Generate a generic builder for a generated abstract bean
+* #39 : [Bug] Escape string values for annotations parameters
+* #41 : [bug] Some annotation need to be generated on the accessors too
+
+
 ### What's new in v19.09.00
 
 * #22 : Copy javadoc comments - class and fields

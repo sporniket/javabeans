@@ -7,7 +7,7 @@ import com.sporniket.strings.pipeline.StringTransformation;
  * The collection of String utilities.
  *
  * <p>
- * &copy; Copyright 2012-2019 David Sporn
+ * &copy; Copyright 2012-2020 David Sporn
  * </p>
  * <hr>
  *
@@ -31,7 +31,7 @@ import com.sporniket.strings.pipeline.StringTransformation;
  * <hr>
  *
  * @author David SPORN
- * @version 19.09.00
+ * @version 20.04.00
  * @since 19.03.00
  */
 public final class UtilsString
@@ -40,7 +40,7 @@ public final class UtilsString
 	 * String Transformation collections.
 	 *
 	 * <p>
-	 * &copy; Copyright 2012-2019 David Sporn
+	 * &copy; Copyright 2012-2020 David Sporn
 	 * </p>
 	 * <hr>
 	 *
@@ -64,7 +64,7 @@ public final class UtilsString
 	 * <hr>
 	 *
 	 * @author David SPORN
-	 * @version 19.09.00
+	 * @version 20.04.00
 	 * @since 19.03.00
 	 */
 	public static final class Transformations
@@ -78,7 +78,7 @@ public final class UtilsString
 	 * String transformation factories.
 	 *
 	 * <p>
-	 * &copy; Copyright 2012-2019 David Sporn
+	 * &copy; Copyright 2012-2020 David Sporn
 	 * </p>
 	 * <hr>
 	 *
@@ -102,7 +102,7 @@ public final class UtilsString
 	 * <hr>
 	 *
 	 * @author David SPORN
-	 * @version 19.09.00
+	 * @version 20.04.00
 	 * @since 19.03.00
 	 */
 	public static final class TransformationFactories

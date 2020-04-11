@@ -11,7 +11,7 @@ import java.util.Set;
  * Command line arguments supported by the javabeans doclets.
  *
  * <p>
- * &copy; Copyright 2012-2019 David Sporn
+ * &copy; Copyright 2012-2020 David Sporn
  * </p>
  * <hr>
  *
@@ -35,7 +35,7 @@ import java.util.Set;
  * <hr>
  *
  * @author David SPORN
- * @version 19.09.00
+ * @version 20.04.00
  * @since 17.09.00
  */
 public class DocletOptions
@@ -48,11 +48,15 @@ public class DocletOptions
 
 	/**
 	 * List of annotation (fully qualified names separated with comma) that have to be put on the getter in addition to the field.
+	 * 
+	 * @since 20.04.00
 	 */
 	String addAnnotationToGetter;
 
 	/**
 	 * List of annotation (fully qualified name separated with comma) that have to be put on the setter in addition to the field.
+	 * 
+	 * @since 20.04.00
 	 */
 	String addAnnotationToSetter;
 
@@ -78,11 +82,15 @@ public class DocletOptions
 
 	/**
 	 * Internal, set of annotations from {@link #addAnnotationToGetter}.
+	 * 
+	 * @since 20.04.00
 	 */
 	private Set<String> myAnnotationsToAddToGetters = null;
 
 	/**
 	 * Internal, set of annotations from {@link #addAnnotationToSetter}.
+	 * 
+	 * @since 20.04.00
 	 */
 	private Set<String> myAnnotationsToAddToSetters = null;
 
@@ -127,6 +135,10 @@ public class DocletOptions
 				getAddAnnotationToGetter(), getAddAnnotationToSetter());
 	}
 
+	/**
+	 * @return the set of annotations (fully qualified names) that must be generated on the getter.
+	 * @since 20.04.00
+	 */
 	public Set<String> getAnnotationsToAddToGetters()
 	{
 		if (null == myAnnotationsToAddToGetters)
@@ -144,6 +156,10 @@ public class DocletOptions
 		return myAnnotationsToAddToGetters;
 	}
 
+	/**
+	 * @return the set of annotations (fully qualified names) that must be generated on the setter.
+	 * @since 20.04.00
+	 */
 	public Set<String> getAnnotationsToAddToSetters()
 	{
 		if (null == myAnnotationsToAddToSetters)

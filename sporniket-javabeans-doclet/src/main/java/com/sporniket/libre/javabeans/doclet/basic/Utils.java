@@ -11,7 +11,7 @@ import java.util.function.Predicate;
  * Utility class.
  *
  * <p>
- * &copy; Copyright 2012-2019 David Sporn
+ * &copy; Copyright 2012-2020 David Sporn
  * </p>
  * <hr>
  *
@@ -35,7 +35,7 @@ import java.util.function.Predicate;
  * <hr>
  *
  * @author David SPORN
- * @version 19.09.00
+ * @version 20.04.00
  * @since 17.09.00
  */
 class Utils

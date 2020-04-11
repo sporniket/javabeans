@@ -39,7 +39,7 @@ import test.sporniket.libre.javabeans.mockjavadoc.MockSetupLoader;
  * Tests for {@link CodeSpecsExtractor} when expanding pojos.
  *
  * <p>
- * &copy; Copyright 2012-2019 David Sporn
+ * &copy; Copyright 2012-2020 David Sporn
  * </p>
  * <hr>
  *
@@ -63,7 +63,7 @@ import test.sporniket.libre.javabeans.mockjavadoc.MockSetupLoader;
  * <hr>
  *
  * @author David SPORN
- * @version 19.09.00
+ * @version 20.04.00
  * @since 19.03.00
  */
 public class CodeSpecsExtractorExpanderTest extends TestBase

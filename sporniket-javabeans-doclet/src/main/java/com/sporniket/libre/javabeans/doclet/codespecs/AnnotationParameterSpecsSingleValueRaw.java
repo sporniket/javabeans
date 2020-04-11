@@ -7,7 +7,7 @@ package com.sporniket.libre.javabeans.doclet.codespecs;
  * Model for a single value annotation parameter.
  * 
  * <p>
- * &copy; Copyright 2012-2019 David Sporn
+ * &copy; Copyright 2012-2020 David Sporn
  * </p>
  * <hr>
  *
@@ -31,7 +31,7 @@ package com.sporniket.libre.javabeans.doclet.codespecs;
  * <hr>
  *
  * @author David SPORN
- * @version 19.09.00
+ * @version 20.04.00
  * @since 18.10.00
  */
 class AnnotationParameterSpecsSingleValueRaw extends AnnotationParameterSpecsRaw

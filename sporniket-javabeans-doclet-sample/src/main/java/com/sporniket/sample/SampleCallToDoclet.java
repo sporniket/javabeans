@@ -7,7 +7,7 @@ import javax.tools.ToolProvider;
 
 /**
  * <p>
- * &copy; Copyright 2012-2019 David Sporn
+ * &copy; Copyright 2012-2020 David Sporn
  * </p>
  * <hr>
  * 

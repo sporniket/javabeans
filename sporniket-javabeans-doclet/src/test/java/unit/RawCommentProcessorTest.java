@@ -26,7 +26,7 @@ import test.sporniket.libre.javabeans.doclet.TestBase;
  * Tests on RawCommentProcessors created by {@link RawCommentProcessorFactory}.
  *
  * <p>
- * &copy; Copyright 2012-2019 David Sporn
+ * &copy; Copyright 2012-2020 David Sporn
  * </p>
  * <hr>
  *
@@ -50,7 +50,7 @@ import test.sporniket.libre.javabeans.doclet.TestBase;
  * <hr>
  *
  * @author David SPORN
- * @version 19.09.00
+ * @version 20.04.00
  * @since 19.09.00
  */
 public class RawCommentProcessorTest extends TestBase

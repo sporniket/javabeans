@@ -4,7 +4,7 @@ package test.sporniket.libre.javabeans.mockjavadoc;
  * Common properties for documented elements.
  *
  * <p>
- * &copy; Copyright 2012-2019 David Sporn
+ * &copy; Copyright 2012-2020 David Sporn
  * </p>
  * <hr>
  *
@@ -28,7 +28,7 @@ package test.sporniket.libre.javabeans.mockjavadoc;
  * <hr>
  *
  * @author David SPORN
- * @version 19.09.00
+ * @version 20.04.00
  * @since 19.09.00
  */
 public class DocMockModel_Raw
