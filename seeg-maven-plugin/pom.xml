@@ -2,17 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>sporniket-javabeans</artifactId>
     <groupId>com.sporniket.javabeans</groupId>
+    <artifactId>sporniket-javabeans</artifactId>
     <version>20.04.01-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>com.sporniket.javabeans</groupId>
   <artifactId>seeg-maven-plugin</artifactId>
-  <version>20.04.01-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
-  <name>seeg-maven-plugin Maven Plugin</name>
+  <name>Maven Plugin "Sporniket Entities Extractor and Generator"</name>
 
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
@@ -23,8 +22,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>${version.jdk}</maven.compiler.source>
+    <maven.compiler.target>${version.jdk}</maven.compiler.target>
     <maven.version>3.3.9</maven.version>
   </properties>
 
