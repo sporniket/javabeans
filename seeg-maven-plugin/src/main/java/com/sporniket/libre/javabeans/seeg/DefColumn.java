@@ -8,5 +8,7 @@ public class DefColumn extends Def
 
 	public String javaType;
 
+	public String temporalMapping;
+
 	public boolean notNullable;
 }

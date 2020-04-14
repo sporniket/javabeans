@@ -36,6 +36,9 @@ public class ExtractionWorkspacePostgresql extends ExtractionWorkspaceBase imple
 							"date", Date.class.getName()
 					},
 					{
+							"time", Date.class.getName()
+					},
+					{
 							"timestamp", Date.class.getName()
 					}
 			}).stream()//
@@ -61,6 +64,21 @@ public class ExtractionWorkspacePostgresql extends ExtractionWorkspaceBase imple
 					},
 					{
 							"bool", "Boolean"
+					}
+			}).stream()//
+			.collect(toMap(e -> e[0], e -> e[1]));
+
+	private static final Map<String, String> PGSQL_TEMPORAL_ANNOTATION = Arrays.asList(//
+			new String[][]
+			{
+					{
+							"date", "@javax.persistence.Temporal(javax.persistence.TemporalType.DATE)"
+					},
+					{
+							"time", "@javax.persistence.Temporal(javax.persistence.TemporalType.TIME)"
+					},
+					{
+							"timestamp", "@javax.persistence.Temporal(javax.persistence.TemporalType.TIMESTAMP)"
 					}
 			}).stream()//
 			.collect(toMap(e -> e[0], e -> e[1]));
@@ -91,6 +109,10 @@ public class ExtractionWorkspacePostgresql extends ExtractionWorkspaceBase imple
 			if ((!_c.notNullable || _c.generated) && PGSQL_TYPE_MAP_NULLABLE.containsKey(type))
 			{
 				_c.javaType = PGSQL_TYPE_MAP_NULLABLE.get(type);
+			}
+			if (PGSQL_TEMPORAL_ANNOTATION.containsKey(type))
+			{
+				_c.temporalMapping = PGSQL_TEMPORAL_ANNOTATION.get(type);
 			}
 		}
 		else
