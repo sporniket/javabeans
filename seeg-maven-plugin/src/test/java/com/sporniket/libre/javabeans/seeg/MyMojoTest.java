@@ -36,7 +36,7 @@ public class MyMojoTest
         assertNotNull( pom );
         assertTrue( pom.exists() );
 
-        MyMojo myMojo = ( MyMojo ) rule.lookupConfiguredMojo( pom, "touch" );
+        SeegMojo myMojo = ( SeegMojo ) rule.lookupConfiguredMojo( pom, "touch" );
         assertNotNull( myMojo );
         myMojo.execute();
 
