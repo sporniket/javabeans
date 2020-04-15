@@ -33,7 +33,8 @@ public class Seeg
 	{
 		if (args.length < 3 || args.length > 4)
 		{
-			System.out.println("Usage: java ExtractorAndGeneratorOfEntities configDatabase targetDir targetPackage [schema].");
+			System.out.println(
+					"Usage: java com.sporniket.libre.javabeans.seeg.Seeg configDatabase targetDir targetPackage [schema].");
 			System.out.println("    configDatabase : properties file describing the connection to the database.");
 			System.out.println("        - url : jdbc url, e.g. 'jdbc:postgresql://localhost:54320/postgres'.");
 			System.out.println("        - driverClass : jdbc url, e.g. 'org.postgresql.Driver'.");
