@@ -13,7 +13,7 @@
 	<artifactId>seeg-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
 
-	<name>Maven Plugin "Sporniket Entities Extractor and Generator"</name>
+	<name>The Sporniket Javabeans Project &#8211; Maven Plugin Seeg "Sporniket Entities Extractor and Generator"</name>
 
 	<!-- FIXME change it to the project's website -->
 	<url>http://www.example.com</url>
