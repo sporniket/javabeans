@@ -1,5 +1,6 @@
 package com.sporniket.libre.javabeans.seeg;
 
+import static com.sporniket.libre.javabeans.seeg.StringHelper.uncapitalizeFirstLetter;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.joining;
 
@@ -7,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 public class CodeGeneratorHelper
 {
@@ -15,6 +17,8 @@ public class CodeGeneratorHelper
 	private static final String PREFIX_REPOSITORY = "Dao";
 
 	private static final String PREFIX_FINDER = "FinderOf";
+
+	private static final String PREFIX_ID_CLASS = "IdOf";
 
 	private static final String ANNOTATION__NOT_NULL = "@javax.validation.constraints.NotNull ";
 
@@ -44,14 +48,9 @@ public class CodeGeneratorHelper
 			out.println(format("Table %s has no primary key, cannot generate repository interface !!", specs.nameInDatabase));
 			return;
 		}
-		else if (specs.pkeysColumns.size() > 1)
-		{
-			out.println(
-					format("Table %s has compounded primary key, cannot generate repository interface !!", specs.nameInDatabase));
-			return;
-		}
 		final String _finderName = PREFIX_FINDER + specs.nameInJava;
 		final String _entityName = PREFIX_ENTITY + specs.nameInJava;
+		final String _idClassName = PREFIX_ID_CLASS + specs.nameInJava;
 		File target = new File(targetDir, _finderName + JAVA_EXTENSION_SUFFIX);
 		try (PrintStream _out = new PrintStream(target))
 		{
@@ -62,7 +61,9 @@ public class CodeGeneratorHelper
 				_out.println(format("/** %s. */", specs.comment));
 			}
 			_out.println("@org.springframework.data.repository.NoRepositoryBean");
-			final String _javaTypeOfPrimaryKey = specs.columns.get(specs.pkeysColumns.iterator().next()).javaType;
+			final String _javaTypeOfPrimaryKey = 1 == specs.pkeysColumns.size()
+					? specs.columns.get(specs.pkeysColumns.iterator().next()).javaType
+					: _idClassName;
 			_out.println(format("public interface %s extends org.springframework.data.jpa.repository.JpaRepository<%s, %s> {",
 					_finderName, _entityName, _javaTypeOfPrimaryKey));
 			specs.selectors.values().forEach(s -> {
@@ -140,8 +141,9 @@ public class CodeGeneratorHelper
 	};
 
 	static final CodeGenerator<DefClass> FROM_DEF_CLASS_TO_ENTITY = (specs, targetDir, targetPackage, out) -> {
-		final String _finalTypeName = PREFIX_ENTITY + specs.nameInJava;
-		File target = new File(targetDir, _finalTypeName + JAVA_EXTENSION_SUFFIX);
+		final String _entityName = PREFIX_ENTITY + specs.nameInJava;
+		final String _idClassName = PREFIX_ID_CLASS + specs.nameInJava;
+		File target = new File(targetDir, _entityName + JAVA_EXTENSION_SUFFIX);
 		try (PrintStream _out = new PrintStream(target))
 		{
 			printPackage(targetPackage, _out);
@@ -152,7 +154,11 @@ public class CodeGeneratorHelper
 			}
 			_out.println("@javax.persistence.Entity");
 			_out.println(format("@javax.persistence.Table(name = \"%s\")", specs.nameInDatabase));
-			_out.println(format("public class %s {", _finalTypeName));
+			if (specs.pkeysColumns.size() > 1)
+			{
+				_out.println(format("@javax.persistence.IdClass(%s.class)", _idClassName));
+			}
+			_out.println(format("public class %s {", _entityName));
 			new TreeSet<String>(specs.columns.keySet()).stream()//
 					.map(k -> specs.columns.get(k))//
 					.forEach(colSpecs -> {
@@ -211,12 +217,100 @@ public class CodeGeneratorHelper
 						{
 							_out.println(format("  /**\n   * %s. \n   *\n   * @value the new value. \n   */", colSpecs.comment));
 						}
-						_out.println(format("  public %s with%s(%s%s value) { my%s = value ; return this ;} ", _finalTypeName,
+						_out.println(format("  public %s with%s(%s%s value) { my%s = value ; return this ;} ", _entityName,
 								colSpecs.nameInJava, colSpecs.notNullable ? ANNOTATION__NOT_NULL : "", colSpecs.javaType,
 								colSpecs.nameInJava));
 						_out.println();
 					});
 			_out.println("}");
+			_out.println();
+		}
+		catch (
+
+		FileNotFoundException _error)
+		{
+			_error.printStackTrace();
+		}
+	};
+
+	static final CodeGenerator<DefClass> FROM_DEF_CLASS_TO_ID_CLASS = (specs, targetDir, targetPackage, out) -> {
+		final String _idClassName = PREFIX_ID_CLASS + specs.nameInJava;
+		final String _entityName = PREFIX_ENTITY + specs.nameInJava;
+		File target = new File(targetDir, _idClassName + JAVA_EXTENSION_SUFFIX);
+		try (PrintStream _out = new PrintStream(target))
+		{
+			printPackage(targetPackage, _out);
+			_out.println();
+			_out.println(format("/** Id of {@link %s}. */", _entityName));
+			_out.println(format("public class %s {", _idClassName));
+			// fields and accessors
+			new TreeSet<String>(specs.pkeysColumns).stream()//
+					.map(k -> specs.columns.get(k))//
+					.forEach(colSpecs -> {
+						// field
+						if (null != colSpecs.comment)
+						{
+							_out.println(format("  /**\n   *%s. \n   */", colSpecs.comment));
+						}
+						if (colSpecs.notNullable)
+						{
+							_out.println("  " + ANNOTATION__NOT_NULL);
+						}
+						_out.println(format("  private final %s my%s ;", colSpecs.javaType, colSpecs.nameInJava));
+
+						// getter
+						if (null != colSpecs.comment)
+						{
+							_out.println(
+									format("  /**\n   * %s. \n   *\n   * @returns the current value. \n   */", colSpecs.comment));
+						}
+						_out.println(
+								format("  public %s%s get%s() { return my%s ;} ", colSpecs.notNullable ? ANNOTATION__NOT_NULL : "",
+										colSpecs.javaType, colSpecs.nameInJava, colSpecs.nameInJava));
+
+					});
+
+			// constructor
+			String _constructorArgs = specs.pkeysColumns.stream()//
+					.map(k -> specs.columns.get(k))//
+					.map(c -> format("%s%s %s", c.notNullable ? ANNOTATION__NOT_NULL : "", c.javaType,
+							uncapitalizeFirstLetter(c.nameInJava)))//
+					.collect(Collectors.joining(","));
+			_out.println();
+			_out.println(format("  public %s(%s) {", _idClassName, _constructorArgs));
+			specs.pkeysColumns.stream()//
+					.map(k -> specs.columns.get(k))//
+					.forEach(c -> {
+						_out.println(format("    my%s = %s ;", c.nameInJava, uncapitalizeFirstLetter(c.nameInJava)));
+					});
+			_out.println("  }");
+
+			// equals
+			_out.println();
+			_out.println("  public boolean equals(Object obj) {");
+			_out.println("    if (null == obj) return false ;");
+			_out.println(format("    if (!(obj instanceof %s)) return false ;", _idClassName));
+			_out.println();
+			_out.println(format("    %s _id = (%s) obj ;", _idClassName, _idClassName));
+			specs.pkeysColumns.stream()//
+					.map(k -> specs.columns.get(k))//
+					.forEach(c -> {
+						_out.println(format("    if (!java.util.Objects.equals(my%s, _id.get%s())) return false ;", c.nameInJava,
+								c.nameInJava));
+					});
+			_out.println("    return true;");
+			_out.println("  }");
+
+			// hashcode
+			final String _hashComponents = specs.pkeysColumns.stream()//
+					.map(k -> specs.columns.get(k))//
+					.map(c -> format("my%s", c.nameInJava))//
+					.collect(Collectors.joining(","));
+			_out.println();
+			_out.println(format("  public int hashCode() { return java.util.Objects.hash(%s); }", _hashComponents));
+
+			_out.println("}");
+
 			_out.println();
 		}
 		catch (

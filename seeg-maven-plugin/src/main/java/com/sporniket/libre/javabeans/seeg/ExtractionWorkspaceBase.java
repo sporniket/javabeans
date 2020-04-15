@@ -79,7 +79,7 @@ public abstract class ExtractionWorkspaceBase implements ExtractionWorkspace
 		{
 			throw new IllegalStateException(format("Try to register selector of unknown column '%s.%s'", table, columnName));
 		}
-		if (_class.pkeysColumns.contains(columnName))
+		if (1 == _class.pkeysColumns.size() && _class.pkeysColumns.contains(columnName))
 		{
 			return; // already exists in JpaRepository.
 		}

@@ -2,6 +2,7 @@ package com.sporniket.libre.javabeans.seeg;
 
 import static com.sporniket.libre.javabeans.seeg.CodeGeneratorHelper.FROM_DEF_CLASS_TO_ENTITY;
 import static com.sporniket.libre.javabeans.seeg.CodeGeneratorHelper.FROM_DEF_CLASS_TO_FINDER;
+import static com.sporniket.libre.javabeans.seeg.CodeGeneratorHelper.FROM_DEF_CLASS_TO_ID_CLASS;
 import static com.sporniket.libre.javabeans.seeg.CodeGeneratorHelper.FROM_DEF_CLASS_TO_REPOSITORY;
 import static com.sporniket.libre.javabeans.seeg.CodeGeneratorHelper.FROM_DEF_ENUM;
 import static com.sporniket.libre.javabeans.seeg.ConsoleHelper.printHeader;
@@ -182,7 +183,13 @@ public class Seeg
 			printHeader(out, "Java code");
 
 			workspace.getEnums().forEach(e -> FROM_DEF_ENUM.generate(e, targetDir, targetPackage, out));
-			workspace.getClasses().forEach(c -> FROM_DEF_CLASS_TO_ENTITY.generate(c, targetDir, targetPackage, out));
+			workspace.getClasses().forEach(c -> {
+				FROM_DEF_CLASS_TO_ENTITY.generate(c, targetDir, targetPackage, out);
+				if (c.pkeysColumns.size() > 1)
+				{
+					FROM_DEF_CLASS_TO_ID_CLASS.generate(c, targetDir, targetPackage, out);
+				}
+			});
 			workspace.getClasses().forEach(c -> FROM_DEF_CLASS_TO_FINDER.generate(c, targetDir, targetPackage, out));
 			workspace.getClasses().forEach(c -> FROM_DEF_CLASS_TO_REPOSITORY.generate(c, targetDir, targetPackage, out));
 			out.println("Done.");
