@@ -4,6 +4,12 @@ import static java.lang.String.format;
 
 import java.io.PrintStream;
 
+/**
+ * Utilities to output messages.
+ * 
+ * @author dsporn
+ *
+ */
 public class ConsoleHelper
 {
 

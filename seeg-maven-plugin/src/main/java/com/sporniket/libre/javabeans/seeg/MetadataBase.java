@@ -5,6 +5,12 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Most of the metadata are accessed through the connection metadata.
+ * 
+ * @author dsporn
+ *
+ */
 public abstract class MetadataBase implements Metadata
 {
 

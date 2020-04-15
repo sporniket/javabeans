@@ -8,6 +8,12 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * Building of the internal representation that is specific to PostgreSql.
+ * 
+ * @author dsporn
+ *
+ */
 public class ExtractionWorkspacePostgresql extends ExtractionWorkspaceBase implements ExtractionWorkspace
 {
 
@@ -91,7 +97,7 @@ public class ExtractionWorkspacePostgresql extends ExtractionWorkspaceBase imple
 		{
 			registerClass(table, null);
 		}
-		DefClass _parent = regClasses.get(table);
+		DefTable _parent = regClasses.get(table);
 		DefColumn _c = new DefColumn();
 		_c.nameInDatabase = column;
 		_c.comment = comment;

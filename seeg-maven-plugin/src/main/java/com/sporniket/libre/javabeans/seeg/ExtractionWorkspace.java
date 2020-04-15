@@ -2,9 +2,15 @@ package com.sporniket.libre.javabeans.seeg;
 
 import java.util.Collection;
 
+/**
+ * Workspace to maintains the internal representation for extracting the entities.
+ * 
+ * @author dsporn
+ *
+ */
 public interface ExtractionWorkspace
 {
-	Collection<DefClass> getClasses();
+	Collection<DefTable> getClasses();
 
 	Collection<DefEnum> getEnums();
 

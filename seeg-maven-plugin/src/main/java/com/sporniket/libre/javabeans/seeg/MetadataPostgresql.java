@@ -4,6 +4,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Metadata for PostgreSql.
+ * 
+ * @author dsporn
+ *
+ */
 public class MetadataPostgresql extends MetadataBase
 {
 

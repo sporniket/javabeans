@@ -7,10 +7,16 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Building of the internal representation that is common to all databases.
+ * 
+ * @author dsporn
+ *
+ */
 public abstract class ExtractionWorkspaceBase implements ExtractionWorkspace
 {
 
-	protected final Map<String, DefClass> regClasses = new HashMap<String, DefClass>();
+	protected final Map<String, DefTable> regClasses = new HashMap<String, DefTable>();
 
 	protected final Map<String, DefEnum> regEnums = new HashMap<String, DefEnum>();
 
@@ -20,12 +26,12 @@ public abstract class ExtractionWorkspaceBase implements ExtractionWorkspace
 	}
 
 	@Override
-	public Collection<DefClass> getClasses()
+	public Collection<DefTable> getClasses()
 	{
 		return regClasses.values();
 	}
 
-	private DefClass getClassOrDie(String table)
+	private DefTable getClassOrDie(String table)
 	{
 		if (!regClasses.containsKey(table))
 		{
@@ -43,7 +49,7 @@ public abstract class ExtractionWorkspaceBase implements ExtractionWorkspace
 	@Override
 	public void registerClass(final String table, final String comment)
 	{
-		DefClass _class = new DefClass();
+		DefTable _class = new DefTable();
 		_class.nameInDatabase = table;
 		_class.nameInJava = camelCaseCapitalizedFromSnakeCase(table);
 		_class.comment = comment;
@@ -66,7 +72,7 @@ public abstract class ExtractionWorkspaceBase implements ExtractionWorkspace
 	@Override
 	public void registerPrimaryKey(String table, String column)
 	{
-		DefClass _class = getClassOrDie(table);
+		DefTable _class = getClassOrDie(table);
 		_class.pkeysColumns.add(column);
 
 	}
@@ -74,7 +80,7 @@ public abstract class ExtractionWorkspaceBase implements ExtractionWorkspace
 	@Override
 	public void registerSelector(String table, String selectorName, String columnName, boolean unique)
 	{
-		DefClass _class = getClassOrDie(table);
+		DefTable _class = getClassOrDie(table);
 		if (!_class.columns.containsKey(columnName))
 		{
 			throw new IllegalStateException(format("Try to register selector of unknown column '%s.%s'", table, columnName));

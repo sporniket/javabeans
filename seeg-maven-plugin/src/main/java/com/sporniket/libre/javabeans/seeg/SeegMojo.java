@@ -21,7 +21,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 /**
- * Goal which touches a timestamp file.
+ * Maven goal to start seeg.
  */
 @Mojo(name = "seeg")
 public class SeegMojo extends AbstractMojo
@@ -32,12 +32,32 @@ public class SeegMojo extends AbstractMojo
 	@Parameter(defaultValue = "${project.build.sourceDirectory}", property = "sourceDir", required = true, readonly = true)
 	private File sourceDirectory;
 
+	/**
+	 * Configuration of the connection to the database.
+	 * 
+	 * <p>
+	 * A property file that MUST contains the following keys :
+	 * </p>
+	 * 
+	 * <ul>
+	 * <li>url : jdbc url, e.g. 'jdbc:postgresql://localhost:54320/postgres'.</li>
+	 * <li>driverClass : jdbc url, e.g. 'org.postgresql.Driver'.</li>
+	 * <li>username : name of the database user, should have access to the schema.</li>
+	 * <li>password : password for the database user.</li>
+	 * </ul>
+	 */
 	@Parameter(defaultValue = "${project.basedir}/seeg-connection.properties", property = "connectionConfig", required = true)
 	private File connectionConfiguration;
 
+	/**
+	 * Fully qualified name of the Java package of the generated sources.
+	 */
 	@Parameter(property = "targetPackage", required = true)
 	private String targetPackage;
 
+	/**
+	 * Optionnal, name of the database schema to inspect.
+	 */
 	@Parameter(property = "schemaName", required = false)
 	private String schemaName;
 

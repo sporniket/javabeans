@@ -10,6 +10,12 @@ import java.io.PrintStream;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+/**
+ * Pool of code generators.
+ * 
+ * @author dsporn
+ *
+ */
 public class CodeGeneratorHelper
 {
 	private static final String PREFIX_ENTITY = "Entity";
@@ -41,7 +47,7 @@ public class CodeGeneratorHelper
 		}
 	};
 
-	static final CodeGenerator<DefClass> FROM_DEF_CLASS_TO_FINDER = (specs, targetDir, targetPackage, out) -> {
+	static final CodeGenerator<DefTable> FROM_DEF_CLASS_TO_FINDER = (specs, targetDir, targetPackage, out) -> {
 		// sanity check : require pk
 		if (specs.pkeysColumns.isEmpty())
 		{
@@ -91,7 +97,7 @@ public class CodeGeneratorHelper
 
 	};
 
-	static final CodeGenerator<DefClass> FROM_DEF_CLASS_TO_REPOSITORY = (specs, targetDir, targetPackage, out) -> {
+	static final CodeGenerator<DefTable> FROM_DEF_CLASS_TO_REPOSITORY = (specs, targetDir, targetPackage, out) -> {
 		// sanity check : require pk
 		if (specs.pkeysColumns.isEmpty())
 		{
@@ -140,7 +146,7 @@ public class CodeGeneratorHelper
 
 	};
 
-	static final CodeGenerator<DefClass> FROM_DEF_CLASS_TO_ENTITY = (specs, targetDir, targetPackage, out) -> {
+	static final CodeGenerator<DefTable> FROM_DEF_CLASS_TO_ENTITY = (specs, targetDir, targetPackage, out) -> {
 		final String _entityName = PREFIX_ENTITY + specs.nameInJava;
 		final String _idClassName = PREFIX_ID_CLASS + specs.nameInJava;
 		File target = new File(targetDir, _entityName + JAVA_EXTENSION_SUFFIX);
@@ -233,7 +239,7 @@ public class CodeGeneratorHelper
 		}
 	};
 
-	static final CodeGenerator<DefClass> FROM_DEF_CLASS_TO_ID_CLASS = (specs, targetDir, targetPackage, out) -> {
+	static final CodeGenerator<DefTable> FROM_DEF_CLASS_TO_ID_CLASS = (specs, targetDir, targetPackage, out) -> {
 		final String _idClassName = PREFIX_ID_CLASS + specs.nameInJava;
 		final String _entityName = PREFIX_ENTITY + specs.nameInJava;
 		File target = new File(targetDir, _idClassName + JAVA_EXTENSION_SUFFIX);

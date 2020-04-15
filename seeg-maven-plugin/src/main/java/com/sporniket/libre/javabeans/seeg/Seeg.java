@@ -41,7 +41,7 @@ public class Seeg
 			System.out.println("        - username : name of the database user, should have access to the schema.");
 			System.out.println("        - password : password for the database user.");
 			System.out.println("    targetDir : path to the location where Java source files will be generated.");
-			System.out.println("    targetPackage : full qualified name of the Java package of the generated sources.");
+			System.out.println("    targetPackage : fully qualified name of the Java package of the generated sources.");
 			System.out.println("        e.g. 'com.foo.entities'.");
 			System.out.println("    schema : optionnal, name of the database schema to inspect.");
 
@@ -145,7 +145,7 @@ public class Seeg
 				workspace.registerColumn(_table, _column, _type, _nullable, _comment, _default);
 			}
 			printHeader(out, "Primary Keys");
-			for (DefClass c : workspace.getClasses())
+			for (DefTable c : workspace.getClasses())
 			{
 				for (ResultSet r = _metadata.getPrimaryKeys(schema, c.nameInDatabase); r.next();)
 				{
@@ -155,7 +155,7 @@ public class Seeg
 				}
 			}
 			printHeader(out, "Indexes");
-			for (DefClass c : workspace.getClasses())
+			for (DefTable c : workspace.getClasses())
 			{
 				for (ResultSet r = _metadata.getIndexes(schema, c.nameInDatabase); r.next();)
 				{
@@ -170,7 +170,7 @@ public class Seeg
 				}
 			}
 			printHeader(out, "Foreign Keys");
-			for (DefClass c : workspace.getClasses())
+			for (DefTable c : workspace.getClasses())
 			{
 				for (ResultSet r = _metadata.getForeignKeys(schema, c.nameInDatabase); r.next();)
 				{
