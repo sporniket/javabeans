@@ -16,6 +16,10 @@ Content
 
 **Sporniket-Javabeans** also provides a plugin to perform reverse engineering of an existing class hierarchy of Javabeans for the sake of helping as much as possible to migrate an existing project.
 
+_As of v20.04.01_
+
+**Sporniket-Javabeans** also provides _seeg_ (**S**porniket **E**ntities **E**xtractor and **G**enerator), an application and maven plugin to perform generate a set of entities classes from a database (for now, only PostgreSql is supported), including enums, id classes and a few selectors.
+
 *Before Septembre 2017, it WAS
 a project to generate Javabeans from a XML model. Interested people may checkout the v15.04.00 or v15.04.01 and fork from there.*
 
@@ -28,6 +32,11 @@ In no particular order :
 * the fluent builder api 'done()' method name may be specified.
 
 See also the known issues.
+
+### What's new in v20.04.01
+
+* 42 : Plugin to generate JPA entities and repositories from database
+* 44 : [seeg] implements compounded primary keys with @IdClass
 
 ### What's new in v20.04.00
 
@@ -136,16 +145,53 @@ Issues fixed :
 **Sporniket-Javabeans** relies only on standard jdk 8 and consists of :
 
 * **Sporniket-Javabeans-doclet** : contains ```ExpanderDoclet``` to generate Javabeans, and ```DistillerDoclet``` to reverse-engineer POJOs.
+* **seeg-maven-plugin** : 'Sporniket Entities Extractor and Generator' to generate your JPA entities and spring JpaRepositories base repositories
 
 > Do not use **Sporniket-Javabeans** if this project is not suitable for your project
 
 ## 3. How to use **Sporniket-Javabeans** ?
+
+### Using 'sporniket-javabeans-doclet'
 
 > See the demo project ```sporniket-javabeans-doclet-sample```. It demonstrate :
 >
 > * Javabeans and POJOs generation, integrated in the build process of maven.
 > * Typical supported java code support for conversion (e.g. generics, annotations).
 > * Manual call in a sample program.
+
+### Using 'seeg-maven-plugin'
+
+> This tool require an accessible database with actual tables.
+>
+> PostgreSQL is the only dbms supported for now
+
+In your maven project, prepare a properties file describing the connection to the reference database, by default it will be `${project.basedir}/seeg-connection.properties`, and containing the following keys : 
+
+* _url_ : jdbc url, e.g. 'jdbc:postgresql://localhost:54320/postgres'.
+* _driverClass_ : jdbc url, e.g. 'org.postgresql.Driver'.
+* _username_ : name of the database user, should have access to the schema.
+* _password_ : password for the database user.
+
+In your pom build section, declare and configure seeg-maven-plugin with the target package to generate (in the source folder) and an optionnal schema ; use the `connectionConfig` parameter to set the path to the properties file if it is not `${project.basedir}/seeg-connection.properties`.
+
+```xml
+<plugin>
+	<groupId>com.sporniket.javabeans</groupId>
+	<artifactId>seeg-maven-plugin</artifactId>
+	<version>${version.seeg-maven-plugin}</version>
+	<configuration>
+		<targetPackage>com.sporniket.lca.entities</targetPackage>
+		<schemaName>lca</schemaName>
+	</configuration>
+</plugin>
+```
+
+Then, when ever you need to regenerate your entities, invoke seeg : 
+
+```
+mvn seeg:seeg
+```
+
 
 ## 4. Known issues
 See the [project issues](https://github.com/sporniket/javabeans/issues) page.
