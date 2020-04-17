@@ -28,7 +28,7 @@ package com.sporniket.libre.javabeans.seeg;
  * <hr>
  *
  * @author David SPORN
- * @version 20.04.01
+ * @version 20.04.02
  * @since 20.04.01
  */
 public class StringHelper

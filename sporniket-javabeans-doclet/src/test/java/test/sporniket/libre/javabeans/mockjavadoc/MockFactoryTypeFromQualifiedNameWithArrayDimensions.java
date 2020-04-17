@@ -34,7 +34,7 @@ import com.sun.javadoc.Type;
  * <hr>
  *
  * @author David SPORN
- * @version 20.04.00
+ * @version 20.04.02
  * @since 19.04.00
  */
 class MockFactoryTypeFromQualifiedNameWithArrayDimensions implements MockFactory<String, Type>

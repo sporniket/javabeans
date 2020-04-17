@@ -33,7 +33,7 @@ import com.sun.javadoc.Type;
  * <hr>
  *
  * @author David SPORN
- * @version 20.04.00
+ * @version 20.04.02
  * @since 19.03.00
  */
 class FieldDocMockModel_Raw extends ProgramElementDocMockModel_Raw
