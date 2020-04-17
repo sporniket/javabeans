@@ -190,6 +190,8 @@ public class CodeGeneratorHelper
 				_out.println(format("@javax.persistence.IdClass(%s.class)", _idClassName));
 			}
 			_out.println(format("public class %s {", _entityName));
+
+			// fields
 			new TreeSet<String>(specs.columns.keySet()).stream()//
 					.map(k -> specs.columns.get(k))//
 					.forEach(colSpecs -> {
@@ -253,6 +255,46 @@ public class CodeGeneratorHelper
 								colSpecs.nameInJava));
 						_out.println();
 					});
+
+			// equals
+			_out.println();
+			_out.println("  public boolean equals(Object obj) {");
+			specs.pkeysColumns.stream()//
+					.map(k -> specs.columns.get(k))//
+					.filter(c -> false == c.notNullable)//
+					.forEach(c -> {
+						_out.println(format("    if (null == my%s) return super.equals(obj) ;", c.nameInJava, c.nameInJava));
+					});
+			_out.println("    if (null == obj) return false ;");
+			_out.println(format("    if (!(obj instanceof %s)) return false ;", _entityName));
+			_out.println();
+			_out.println(format("    %s _id = (%s) obj ;", _entityName, _entityName));
+			specs.pkeysColumns.stream()//
+					.map(k -> specs.columns.get(k))//
+					.forEach(c -> {
+						_out.println(format("    if (!java.util.Objects.equals(my%s, _id.get%s())) return false ;", c.nameInJava,
+								c.nameInJava));
+					});
+			_out.println("    return true;");
+			_out.println("  }");
+
+			// hashcode
+			final String _hashComponents = specs.pkeysColumns.stream()//
+					.map(k -> specs.columns.get(k))//
+					.map(c -> format("my%s", c.nameInJava))//
+					.collect(Collectors.joining(","));
+			_out.println();
+			_out.println("  public int hashCode() {");
+			specs.pkeysColumns.stream()//
+					.map(k -> specs.columns.get(k))//
+					.filter(c -> false == c.notNullable)//
+					.forEach(c -> {
+						_out.println(format("    if (null == my%s) return super.hashCode() ;", c.nameInJava, c.nameInJava));
+					});
+			_out.println(format("    return java.util.Objects.hash(%s) ;", _hashComponents));
+			_out.println("  }");
+
+			// the end
 			_out.println("}");
 			_out.println();
 		}
@@ -338,7 +380,7 @@ public class CodeGeneratorHelper
 					.map(c -> format("my%s", c.nameInJava))//
 					.collect(Collectors.joining(","));
 			_out.println();
-			_out.println(format("  public int hashCode() { return java.util.Objects.hash(%s); }", _hashComponents));
+			_out.println(format("  public int hashCode() { return java.util.Objects.hash(%s) ; }", _hashComponents));
 
 			_out.println("}");
 
