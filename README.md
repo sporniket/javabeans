@@ -33,6 +33,12 @@ In no particular order :
 
 See also the known issues.
 
+### What's new in v20.04.02
+
+* #45 : [bug][seeg] 'bigserial' type not supported
+* #46 : [bug][seeg] type 'serial' should be mapped to integer
+* #47 : [seeg] Use primary key columns for entity hashcode and equality
+
 ### What's new in v20.04.01
 
 * 42 : Plugin to generate JPA entities and repositories from database
