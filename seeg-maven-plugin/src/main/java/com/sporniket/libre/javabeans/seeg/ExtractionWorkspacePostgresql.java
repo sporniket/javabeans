@@ -46,6 +46,9 @@ public class ExtractionWorkspacePostgresql extends ExtractionWorkspaceBase imple
 			new String[][]
 			{
 					{
+							"bigserial", "long"
+					},
+					{
 							"serial", "long"
 					},
 					{
