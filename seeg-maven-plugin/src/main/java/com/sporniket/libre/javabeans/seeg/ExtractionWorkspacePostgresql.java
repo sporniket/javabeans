@@ -49,7 +49,7 @@ public class ExtractionWorkspacePostgresql extends ExtractionWorkspaceBase imple
 							"bigserial", "long"
 					},
 					{
-							"serial", "long"
+							"serial", "integer"
 					},
 					{
 							"int8", "long"
