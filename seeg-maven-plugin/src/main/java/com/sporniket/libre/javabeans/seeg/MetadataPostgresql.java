@@ -38,7 +38,7 @@ import java.sql.SQLException;
 public class MetadataPostgresql extends MetadataBase
 {
 
-	private static final String PGSQL_GET_ENUM_VALUES = "SELECT pg_type.typname AS enum_type, pg_enum.enumlabel AS enum_value FROM pg_type JOIN pg_enum ON pg_enum.enumtypid = pg_type.oid order by pg_enum.enumtypid, pg_enum.enumsortorder;";
+	private static final String PGSQL_GET_ENUM_VALUES = "SELECT pg_namespace.nspname as schema, pg_type.typname AS enum_type, pg_enum.enumlabel AS enum_value FROM pg_type JOIN pg_enum ON pg_enum.enumtypid = pg_type.oid JOIN pg_namespace ON pg_namespace.oid = pg_type.typnamespace order by pg_namespace.nspname, pg_enum.enumtypid, pg_enum.enumsortorder;";
 
 	public MetadataPostgresql(Connection connection) throws SQLException
 	{

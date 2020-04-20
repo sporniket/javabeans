@@ -143,9 +143,14 @@ public class Seeg
 			printHeader(out, "Enums values");
 			for (ResultSet r = _metadata.getEnumValues(schema); r.next();)
 			{
+				final String _schema = r.getString("schema");
 				final String _name = r.getString("enum_type");
 				final String _value = r.getString("enum_value");
-				out.println(format("%s.%s", _name, _value));
+				if (!_schema.equals(schema))
+				{
+					continue;
+				}
+				out.println(format("%s.%s.%s", _schema, _name, _value));
 				workspace.registerEnumValue(_name, _value);
 			}
 			printHeader(out, "Tables");
