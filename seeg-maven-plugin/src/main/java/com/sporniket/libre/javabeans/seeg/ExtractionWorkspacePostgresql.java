@@ -119,7 +119,7 @@ public class ExtractionWorkspacePostgresql extends ExtractionWorkspaceBase imple
 
 	@Override
 	public void registerColumn(final String table, final String column, final String type, final String nullable,
-			final String comment, final String defaultValue)
+			final String autoinc, final String isGenerated, final String comment, final String defaultValue)
 	{
 		if (!regClasses.containsKey(table))
 		{
@@ -130,12 +130,25 @@ public class ExtractionWorkspacePostgresql extends ExtractionWorkspaceBase imple
 		_c.nameInDatabase = column;
 		_c.comment = comment;
 		_c.nameInJava = camelCaseCapitalizedFromSnakeCase(column);
-		_c.generated = (null != defaultValue && defaultValue.startsWith("nextval("));
+		final boolean _useSequence = null != defaultValue && defaultValue.startsWith("nextval(");
+		final boolean _autoIncrement = "YES".equals(autoinc);
+		_c.generated = _autoIncrement || _useSequence;
 		_c.notNullable = !_c.generated && "NO".equals(nullable);
 		if (_c.generated)
 		{
-			// supports only identity strategy, for now.
-			_c.generationStrategy = "javax.persistence.GenerationType.IDENTITY";
+			// supports only identity and sequence strategy, for now
+			if (_useSequence)
+			{
+				_c.generationStrategy = "javax.persistence.GenerationType.SEQUENCE";
+				// should have a default value like : nextval('schema."seq_name"...
+				int _nameStart = defaultValue.indexOf('"') + 1;
+				int _nameEnd = defaultValue.indexOf('"', _nameStart);
+				_c.sequenceGenerator = defaultValue.substring(_nameStart, _nameEnd);
+			}
+			else
+			{
+				_c.generationStrategy = "javax.persistence.GenerationType.IDENTITY";
+			}
 		}
 		if (PGSQL_TYPE_MAP.containsKey(type))
 		{

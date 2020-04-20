@@ -41,8 +41,8 @@ public interface ExtractionWorkspace
 
 	void registerClass(final String table, final String comment);
 
-	void registerColumn(final String table, final String column, final String type, final String nullable, final String comment,
-			final String defaultValue);
+	void registerColumn(final String table, final String column, final String type, final String nullable, final String autoinc,
+			final String isGenerated, final String comment, final String defaultValue);
 
 	void registerEnumValue(final String _name, final String _value);
 

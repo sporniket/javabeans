@@ -163,11 +163,13 @@ public class Seeg
 				final String _column = r.getString("COLUMN_NAME");
 				final String _type = r.getString("TYPE_NAME");
 				final String _nullable = r.getString("IS_NULLABLE");
+				final String _autoinc = r.getString("IS_AUTOINCREMENT");
+				final String _generated = r.getString("IS_GENERATEDCOLUMN");
 				final String _default = r.getString("COLUMN_DEF");
 				final String _comment = r.getString("REMARKS");
-				out.println(format("%s.%s (%s -- %s) -- nullable (%s) default (%s) : %s ", _table, _column, _type,
-						r.getString("DATA_TYPE"), _nullable, _default, _comment));
-				workspace.registerColumn(_table, _column, _type, _nullable, _comment, _default);
+				out.println(format("%s.%s (%s -- %s) -- nullable (%s) default (%s) autoinc(%s) generated (%s): %s ", _table,
+						_column, _type, r.getString("DATA_TYPE"), _nullable, _default, _autoinc, _generated, _comment));
+				workspace.registerColumn(_table, _column, _type, _nullable, _autoinc, _generated, _comment, _default);
 			}
 			printHeader(out, "Primary Keys");
 			for (DefTable c : workspace.getClasses())

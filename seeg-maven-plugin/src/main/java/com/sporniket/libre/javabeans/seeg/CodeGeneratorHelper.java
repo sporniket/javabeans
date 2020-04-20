@@ -205,8 +205,20 @@ public class CodeGeneratorHelper
 						{
 							if (null != colSpecs.generationStrategy)
 							{
-								_out.println(
-										format("  @javax.persistence.GeneratedValue(strategy = %s)", colSpecs.generationStrategy));
+								if (null != colSpecs.sequenceGenerator)
+								{
+									_out.println(format(
+											"  @javax.persistence.GeneratedValue(strategy = %s, generator = \"generator__%s\")",
+											colSpecs.generationStrategy, colSpecs.sequenceGenerator));
+									_out.println(format(
+											"  @javax.persistence.SequenceGenerator(name = \"generator__%s\", sequenceName = \"%s\", allocationSize = 1)",
+											colSpecs.sequenceGenerator, colSpecs.sequenceGenerator));
+								}
+								else
+								{
+									_out.println(format("  @javax.persistence.GeneratedValue(strategy = %s)",
+											colSpecs.generationStrategy));
+								}
 							}
 							else
 							{
