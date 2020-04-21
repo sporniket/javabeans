@@ -129,12 +129,6 @@ public class CodeGeneratorHelper
 			out.println(format("Table %s has no primary key, cannot generate repository interface !!", specs.nameInDatabase));
 			return;
 		}
-		else if (specs.pkeysColumns.size() > 1)
-		{
-			out.println(
-					format("Table %s has compounded primary key, cannot generate repository interface !!", specs.nameInDatabase));
-			return;
-		}
 		final String _repoName = PREFIX_REPOSITORY + specs.nameInJava;
 		final String _finderName = PREFIX_FINDER + specs.nameInJava;
 		File target = new File(targetDir, _repoName + JAVA_EXTENSION_SUFFIX);
