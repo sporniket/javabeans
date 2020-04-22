@@ -321,7 +321,16 @@ public class CodeGeneratorHelper
 			printPackage(targetPackage, _out);
 			_out.println();
 			_out.println(format("/** Id of {@link %s}. */", _entityName));
-			_out.println(format("public class %s {", _idClassName));
+			_out.println(format("public class %s implements java.io.Serializable {", _idClassName));
+
+			// serial version id
+			final String _unifiedDescription = specs.pkeysColumns.stream()//
+					.map(k -> specs.columns.get(k))//
+					.map(c -> format("%s %s", c.javaType, c.nameInJava))//
+					.collect(Collectors.joining("+"));
+			_out.println(format("  private static final long serialVersionUID = %dL;", _unifiedDescription.hashCode()));
+			_out.println();
+
 			// fields and accessors
 			new TreeSet<String>(specs.pkeysColumns).stream()//
 					.map(k -> specs.columns.get(k))//
@@ -347,6 +356,8 @@ public class CodeGeneratorHelper
 								format("  public %s%s get%s() { return my%s ;} ", colSpecs.notNullable ? ANNOTATION__NOT_NULL : "",
 										colSpecs.javaType, colSpecs.nameInJava, colSpecs.nameInJava));
 
+						// done
+						_out.println();
 					});
 
 			// constructor
@@ -354,7 +365,7 @@ public class CodeGeneratorHelper
 					.map(k -> specs.columns.get(k))//
 					.map(c -> format("%s%s %s", c.notNullable ? ANNOTATION__NOT_NULL : "", c.javaType,
 							uncapitalizeFirstLetter(c.nameInJava)))//
-					.collect(Collectors.joining(","));
+					.collect(Collectors.joining(", "));
 			_out.println();
 			_out.println(format("  public %s(%s) {", _idClassName, _constructorArgs));
 			specs.pkeysColumns.stream()//
@@ -384,7 +395,7 @@ public class CodeGeneratorHelper
 			final String _hashComponents = specs.pkeysColumns.stream()//
 					.map(k -> specs.columns.get(k))//
 					.map(c -> format("my%s", c.nameInJava))//
-					.collect(Collectors.joining(","));
+					.collect(Collectors.joining(", "));
 			_out.println();
 			_out.println(format("  public int hashCode() { return java.util.Objects.hash(%s) ; }", _hashComponents));
 
