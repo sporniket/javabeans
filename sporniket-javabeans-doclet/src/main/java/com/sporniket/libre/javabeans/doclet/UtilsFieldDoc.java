@@ -37,7 +37,7 @@ import com.sun.javadoc.FieldDoc;
  * <hr>
  *
  * @author David SPORN
- * @version 20.04.02
+ * @version 20.04.03
  * @since 17.09.00
  */
 public final class UtilsFieldDoc

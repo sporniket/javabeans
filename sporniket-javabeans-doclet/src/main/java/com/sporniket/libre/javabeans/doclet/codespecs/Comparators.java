@@ -36,7 +36,7 @@ import java.util.Comparator;
  * <hr>
  *
  * @author David SPORN
- * @version 20.04.02
+ * @version 20.04.03
  * @since 19.02.00
  */
 public final class Comparators

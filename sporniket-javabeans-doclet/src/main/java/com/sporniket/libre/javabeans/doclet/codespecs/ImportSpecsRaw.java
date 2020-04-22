@@ -29,7 +29,7 @@ package com.sporniket.libre.javabeans.doclet.codespecs;
  * <hr>
  *
  * @author David SPORN
- * @version 20.04.02
+ * @version 20.04.03
  * @since 17.12.00
  */
 class ImportSpecsRaw

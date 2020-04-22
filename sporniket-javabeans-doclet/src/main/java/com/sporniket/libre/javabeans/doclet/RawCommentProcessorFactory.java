@@ -34,7 +34,7 @@ import java.util.function.Function;
  * <hr>
  *
  * @author David SPORN
- * @version 20.04.02
+ * @version 20.04.03
  * @since 19.09.00
  */
 public class RawCommentProcessorFactory

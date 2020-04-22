@@ -50,7 +50,7 @@ import test.sporniket.libre.javabeans.doclet.TestBase;
  * <hr>
  *
  * @author David SPORN
- * @version 20.04.02
+ * @version 20.04.03
  * @since 19.09.00
  */
 public class RawCommentProcessorTest extends TestBase

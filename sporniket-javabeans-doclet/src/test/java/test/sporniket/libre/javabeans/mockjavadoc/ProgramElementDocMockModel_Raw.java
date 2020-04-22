@@ -30,7 +30,7 @@ import com.sun.javadoc.PackageDoc;
  * <hr>
  *
  * @author David SPORN
- * @version 20.04.02
+ * @version 20.04.03
  * @since 19.09.00
  */
 public class ProgramElementDocMockModel_Raw extends DocMockModel_Raw

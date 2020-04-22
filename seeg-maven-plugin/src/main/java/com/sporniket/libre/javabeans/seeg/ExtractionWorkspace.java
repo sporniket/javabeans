@@ -30,7 +30,7 @@ import java.util.Collection;
  * <hr>
  *
  * @author David SPORN
- * @version 20.04.02
+ * @version 20.04.03
  * @since 20.04.01
  */
 public interface ExtractionWorkspace

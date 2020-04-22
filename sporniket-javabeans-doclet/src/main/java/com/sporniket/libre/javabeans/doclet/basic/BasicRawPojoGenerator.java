@@ -40,7 +40,7 @@ import com.sporniket.libre.lang.string.StringTools;
  * <hr>
  *
  * @author David SPORN
- * @version 20.04.02
+ * @version 20.04.03
  * @since 17.09.00
  */
 public class BasicRawPojoGenerator extends BasicGenerator implements JavabeanGenerator

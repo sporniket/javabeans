@@ -39,7 +39,7 @@ import com.sun.javadoc.Tag;
  * <hr>
  *
  * @author David SPORN
- * @version 20.04.02
+ * @version 20.04.03
  * @since 19.03.00
  */
 public class PackageDocMock extends PackageDocMockModel implements PackageDoc
