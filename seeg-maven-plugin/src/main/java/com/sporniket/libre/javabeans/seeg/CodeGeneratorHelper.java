@@ -285,10 +285,10 @@ public class CodeGeneratorHelper
 			_out.println("  }");
 
 			// hashcode
-			final String _hashComponents = specs.pkeysColumns.stream()//
+			final String _pkeysAsArgs = specs.pkeysColumns.stream()//
 					.map(k -> specs.columns.get(k))//
 					.map(c -> format("my%s", c.nameInJava))//
-					.collect(Collectors.joining(","));
+					.collect(Collectors.joining(", "));
 			_out.println();
 			_out.println("  public int hashCode() {");
 			specs.pkeysColumns.stream()//
@@ -297,8 +297,15 @@ public class CodeGeneratorHelper
 					.forEach(c -> {
 						_out.println(format("    if (null == my%s) return super.hashCode() ;", c.nameInJava, c.nameInJava));
 					});
-			_out.println(format("    return java.util.Objects.hash(%s) ;", _hashComponents));
+			_out.println(format("    return java.util.Objects.hash(%s) ;", _pkeysAsArgs));
 			_out.println("  }");
+
+			// to id class
+			if (specs.pkeysColumns.size() > 1)
+			{
+				_out.println();
+				_out.println(format("  public %s toIdClass() { return new %s(%s) ;}", _idClassName, _idClassName, _pkeysAsArgs));
+			}
 
 			// the end
 			_out.println("}");
