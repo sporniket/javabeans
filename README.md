@@ -33,6 +33,14 @@ In no particular order :
 
 See also the known issues.
 
+### What's new in v20.04.03
+
+* #48 : [seeg] Have a mapper from Entity to IdClass - David SPORN (HEAD -> master, origin/master, origin/HEAD)
+* #49 : [bug][seeg] identity auto-incremented and sequence columns not recognized properly - David SPORN
+* #50 : [bug][seeg] Generate only enums from the target schema - David SPORN
+* #51 : [bug][seeg] Repository class with idclass is not generated - David SPORN
+* #52 : [bug][seeg] the id class must implements serializable. - David SPORN
+
 ### What's new in v20.04.02
 
 * #45 : [bug][seeg] 'bigserial' type not supported
