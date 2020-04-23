@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
  * <hr>
  *
  * @author David SPORN
- * @version 20.04.03
+ * @version 20.04.04
  * @since 20.04.01
  */
 public class CodeGeneratorHelper
