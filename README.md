@@ -33,6 +33,10 @@ In no particular order :
 
 See also the known issues.
 
+### What's new in v20.04.04
+
+* #53 : [bug][seeg]Hibernate cannot find properties of query method if internal name does not match
+
 ### What's new in v20.04.03
 
 * #48 : [seeg] Have a mapper from Entity to IdClass - David SPORN (HEAD -> master, origin/master, origin/HEAD)
