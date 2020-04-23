@@ -7,6 +7,8 @@ import static java.util.stream.Collectors.joining;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
@@ -186,6 +188,7 @@ public class CodeGeneratorHelper
 			_out.println(format("public class %s {", _entityName));
 
 			// fields
+			Map<String, String> _fieldNames = new HashMap<>(specs.columns.size());
 			new TreeSet<String>(specs.columns.keySet()).stream()//
 					.map(k -> specs.columns.get(k))//
 					.forEach(colSpecs -> {
@@ -231,7 +234,11 @@ public class CodeGeneratorHelper
 						{
 							_out.println("  " + ANNOTATION__NOT_NULL);
 						}
-						_out.println(format("  private %s my%s ;", colSpecs.javaType, colSpecs.nameInJava));
+
+						final String _fieldName = StringHelper.uncapitalizeFirstLetter(colSpecs.nameInJava);
+						_fieldNames.put(colSpecs.nameInDatabase, _fieldName);
+
+						_out.println(format("  private %s %s ;", colSpecs.javaType, _fieldName));
 
 						// getter
 						if (null != colSpecs.comment)
@@ -240,25 +247,25 @@ public class CodeGeneratorHelper
 									format("  /**\n   * %s. \n   *\n   * @returns the current value. \n   */", colSpecs.comment));
 						}
 						_out.println(
-								format("  public %s%s get%s() { return my%s ;} ", colSpecs.notNullable ? ANNOTATION__NOT_NULL : "",
-										colSpecs.javaType, colSpecs.nameInJava, colSpecs.nameInJava));
+								format("  public %s%s get%s() { return %s ;} ", colSpecs.notNullable ? ANNOTATION__NOT_NULL : "",
+										colSpecs.javaType, colSpecs.nameInJava, _fieldName));
 
 						// setter
 						if (null != colSpecs.comment)
 						{
 							_out.println(format("  /**\n   * %s. \n   *\n   * @value the new value. \n   */", colSpecs.comment));
 						}
-						_out.println(format("  public void set%s(%s%s value) { my%s = value ;} ", colSpecs.nameInJava,
-								colSpecs.notNullable ? ANNOTATION__NOT_NULL : "", colSpecs.javaType, colSpecs.nameInJava));
+						_out.println(format("  public void set%s(%s%s value) { this.%s = value ;} ", colSpecs.nameInJava,
+								colSpecs.notNullable ? ANNOTATION__NOT_NULL : "", colSpecs.javaType, _fieldName));
 
 						// fluent setter
 						if (null != colSpecs.comment)
 						{
 							_out.println(format("  /**\n   * %s. \n   *\n   * @value the new value. \n   */", colSpecs.comment));
 						}
-						_out.println(format("  public %s with%s(%s%s value) { my%s = value ; return this ;} ", _entityName,
+						_out.println(format("  public %s with%s(%s%s value) { this.%s = value ; return this ;} ", _entityName,
 								colSpecs.nameInJava, colSpecs.notNullable ? ANNOTATION__NOT_NULL : "", colSpecs.javaType,
-								colSpecs.nameInJava));
+								_fieldName));
 						_out.println();
 					});
 
@@ -268,8 +275,11 @@ public class CodeGeneratorHelper
 			specs.pkeysColumns.stream()//
 					.map(k -> specs.columns.get(k))//
 					.filter(c -> false == c.notNullable)//
-					.forEach(c -> {
-						_out.println(format("    if (null == my%s) return super.equals(obj) ;", c.nameInJava, c.nameInJava));
+					.forEach(c ->
+
+					{
+						_out.println(
+								format("    if (null == this.%s) return super.equals(obj) ;", _fieldNames.get(c.nameInDatabase)));
 					});
 			_out.println("    if (null == obj) return false ;");
 			_out.println(format("    if (!(obj instanceof %s)) return false ;", _entityName));
@@ -278,16 +288,15 @@ public class CodeGeneratorHelper
 			specs.pkeysColumns.stream()//
 					.map(k -> specs.columns.get(k))//
 					.forEach(c -> {
-						_out.println(format("    if (!java.util.Objects.equals(my%s, _id.get%s())) return false ;", c.nameInJava,
-								c.nameInJava));
+						_out.println(format("    if (!java.util.Objects.equals(this.%s, _id.get%s())) return false ;",
+								_fieldNames.get(c.nameInDatabase), c.nameInJava));
 					});
 			_out.println("    return true;");
 			_out.println("  }");
 
 			// hashcode
 			final String _pkeysAsArgs = specs.pkeysColumns.stream()//
-					.map(k -> specs.columns.get(k))//
-					.map(c -> format("my%s", c.nameInJava))//
+					.map(k -> _fieldNames.get(k))//
 					.collect(Collectors.joining(", "));
 			_out.println();
 			_out.println("  public int hashCode() {");
@@ -295,7 +304,8 @@ public class CodeGeneratorHelper
 					.map(k -> specs.columns.get(k))//
 					.filter(c -> false == c.notNullable)//
 					.forEach(c -> {
-						_out.println(format("    if (null == my%s) return super.hashCode() ;", c.nameInJava, c.nameInJava));
+						_out.println(format("    if (null == this.%s) return super.hashCode() ;", _fieldNames.get(c.nameInDatabase),
+								c.nameInJava));
 					});
 			_out.println(format("    return java.util.Objects.hash(%s) ;", _pkeysAsArgs));
 			_out.println("  }");
