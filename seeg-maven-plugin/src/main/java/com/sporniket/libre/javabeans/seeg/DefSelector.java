@@ -31,12 +31,13 @@ import java.util.Set;
  * <hr>
  *
  * @author David SPORN
- * @version 20.05.01
+ * @version 20.07.00
  * @since 20.04.01
  */
 public class DefSelector extends Def
 {
 	boolean unique;
 
-	Set<String> columns = new LinkedHashSet<String>(10);
+	Set<String> columns = new LinkedHashSet<>(10);
+
 }

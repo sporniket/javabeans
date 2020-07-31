@@ -28,7 +28,7 @@ package com.sporniket.libre.javabeans.seeg;
  * <hr>
  *
  * @author David SPORN
- * @version 20.05.01
+ * @version 20.07.00
  * @since 20.04.01
  */
 public class DefColumn extends Def
@@ -54,6 +54,11 @@ public class DefColumn extends Def
 	public String javaType;
 
 	/**
+	 * Database type of the column.
+	 */
+	public String dbType;
+
+	/**
 	 * The fully parametred temporal annotation.
 	 */
 	public String temporalMapping;
@@ -65,8 +70,15 @@ public class DefColumn extends Def
 
 	/**
 	 * <code>true</code> if the column use an enumeration type.
-	 * 
+	 *
 	 * @since 20.05.00
 	 */
 	public boolean isEnum;
+
+	/**
+	 * Defined when the column is a foreign key.
+	 * 
+	 * @since 20.07.00
+	 */
+	public DefReference foreignKey;
 }

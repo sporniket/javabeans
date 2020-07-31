@@ -30,7 +30,7 @@ import java.util.Collection;
  * <hr>
  *
  * @author David SPORN
- * @version 20.05.01
+ * @version 20.07.00
  * @since 20.04.01
  */
 public interface ExtractionWorkspace
@@ -49,4 +49,9 @@ public interface ExtractionWorkspace
 	void registerPrimaryKey(final String table, final String column);
 
 	void registerSelector(final String table, final String selectorName, final String columnName, boolean unique);
+
+	/**
+	 * @since 20.07.00
+	 */
+	void registerForeignKey(final String table, final String column, final String targetTable, final String targetColumn);
 }

@@ -35,7 +35,7 @@ import java.util.Map;
  * <hr>
  *
  * @author David SPORN
- * @version 20.05.01
+ * @version 20.07.00
  * @since 20.04.01
  */
 public abstract class ExtractionWorkspaceBase implements ExtractionWorkspace
@@ -129,6 +129,25 @@ public abstract class ExtractionWorkspaceBase implements ExtractionWorkspace
 		}
 		selector.columns.add(columnName);
 
+	}
+
+	@Override
+	public void registerForeignKey(String table, String column, String targetTable, String targetColumn)
+	{
+		DefTable _class = getClassOrDie(table);
+		if (!_class.columns.containsKey(column))
+		{
+			throw new IllegalStateException(format("Try to register selector of unknown column '%s.%s'", table, column));
+		}
+		DefColumn _column = _class.columns.get(column);
+		if (null != _column.foreignKey)
+		{
+			return; // already set ??
+		}
+		DefReference _ref = new DefReference();
+		_ref.nameInDatabase = targetTable;
+		_ref.column = targetColumn;
+		_column.foreignKey = _ref;
 	}
 
 }

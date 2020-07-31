@@ -1,10 +1,10 @@
+/**
+ *
+ */
 package com.sporniket.libre.javabeans.seeg;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Internal representation of an enum, will be converted to a Java enum.
+ * Model of reference, the name in database store the target table.
  *
  * <p>
  * &copy; Copyright 2012-2020 David Sporn
@@ -32,9 +32,12 @@ import java.util.List;
  *
  * @author David SPORN
  * @version 20.07.00
- * @since 20.04.01
+ * @since 20.07.00
  */
-public class DefEnum extends Def
+public class DefReference extends Def
 {
-	public final List<String> values = new ArrayList<String>(20);
+	/**
+	 * The target column.
+	 */
+	public String column;
 }

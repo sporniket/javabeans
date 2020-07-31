@@ -32,7 +32,7 @@ import java.io.PrintStream;
  * <hr>
  *
  * @author David SPORN
- * @version 20.05.01
+ * @version 20.07.00
  * @since 20.04.01
  */
 public class ConsoleHelper
@@ -43,6 +43,7 @@ public class ConsoleHelper
 	public static void printHeader(PrintStream out, String title)
 	{
 		out.println(format(FORMAT_HEADER, title));
+		out.flush();
 	}
 
 }

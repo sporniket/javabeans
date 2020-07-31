@@ -28,7 +28,7 @@ package com.sporniket.libre.javabeans.seeg;
  * <hr>
  *
  * @author David SPORN
- * @version 20.05.01
+ * @version 20.07.00
  * @since 20.04.01
  */
 public class StringHelper
@@ -75,6 +75,14 @@ public class StringHelper
 			value = value.substring(0, value.length() - 1);
 		}
 		return value;
+	}
+
+	/**
+	 * @since 20.07.00
+	 */
+	public static String escapeQuotes(String t)
+	{
+		return t.replaceAll("'", "\\\\'");
 	}
 
 }

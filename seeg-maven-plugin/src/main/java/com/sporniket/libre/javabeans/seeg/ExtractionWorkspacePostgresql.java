@@ -36,7 +36,7 @@ import java.util.Map;
  * <hr>
  *
  * @author David SPORN
- * @version 20.05.01
+ * @version 20.07.00
  * @since 20.04.01
  */
 public class ExtractionWorkspacePostgresql extends ExtractionWorkspaceBase implements ExtractionWorkspace
@@ -150,6 +150,7 @@ public class ExtractionWorkspacePostgresql extends ExtractionWorkspaceBase imple
 				_c.generationStrategy = "javax.persistence.GenerationType.IDENTITY";
 			}
 		}
+		_c.dbType = type;
 		if (PGSQL_TYPE_MAP.containsKey(type))
 		{
 			_c.javaType = PGSQL_TYPE_MAP.get(type);

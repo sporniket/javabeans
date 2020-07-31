@@ -49,7 +49,7 @@ import java.util.Properties;
  * <hr>
  *
  * @author David SPORN
- * @version 20.05.01
+ * @version 20.07.00
  * @since 20.04.01
  */
 public class Seeg
@@ -217,8 +217,11 @@ public class Seeg
 					final String _table = r.getString("FKTABLE_NAME");
 					final String _columnName = r.getString("FKCOLUMN_NAME");
 					workspace.registerSelector(_table, _columnName, _columnName, false);
-					out.println(format("%s.%s -> %s.%s (%d)", _table, _columnName, r.getString("PKTABLE_NAME"),
-							r.getString("PKCOLUMN_NAME"), r.getShort("KEY_SEQ")));
+					final String _targetTable = r.getString("PKTABLE_NAME");
+					final String _targetColumn = r.getString("PKCOLUMN_NAME");
+					workspace.registerForeignKey(_table, _columnName, _targetTable, _targetColumn);
+					out.println(
+							format("%s.%s -> %s.%s (%d)", _table, _columnName, _targetTable, _targetColumn, r.getShort("KEY_SEQ")));
 				}
 			}
 			printHeader(out, "Java code");
@@ -233,6 +236,9 @@ public class Seeg
 			});
 			workspace.getClasses().forEach(c -> FROM_DEF_TABLE_TO_FINDER.generate(c, targetDir, targetPackage, out));
 			workspace.getClasses().forEach(c -> FROM_DEF_TABLE_TO_REPOSITORY.generate(c, targetDir, targetPackage, out));
+
+			printHeader(out, "Dbml");
+			DbmlGeneratorHelper.FROM_WORKSPACE.generate(workspace, targetDir, targetPackage, out);
 			out.println("Done.");
 		}
 		catch (Exception _error)
