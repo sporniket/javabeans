@@ -1,6 +1,7 @@
 package com.sporniket.libre.javabeans.seeg;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -39,7 +40,7 @@ import java.util.Set;
 public class DefTable extends Def
 {
 
-	public final Map<String, DefColumn> columns = new HashMap<>();
+	public final Map<String, DefColumn> columns = new LinkedHashMap<>();
 
 	public final Set<String> pkeysColumns = new LinkedHashSet<>(10);
 

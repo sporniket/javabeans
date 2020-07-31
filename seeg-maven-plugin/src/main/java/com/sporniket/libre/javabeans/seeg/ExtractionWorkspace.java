@@ -49,4 +49,6 @@ public interface ExtractionWorkspace
 	void registerPrimaryKey(final String table, final String column);
 
 	void registerSelector(final String table, final String selectorName, final String columnName, boolean unique);
+
+	void registerForeignKey(final String table, final String column, final String targetTable, final String targetColumn);
 }

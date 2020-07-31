@@ -38,5 +38,6 @@ public class DefSelector extends Def
 {
 	boolean unique;
 
-	Set<String> columns = new LinkedHashSet<String>(10);
+	Set<String> columns = new LinkedHashSet<>(10);
+
 }

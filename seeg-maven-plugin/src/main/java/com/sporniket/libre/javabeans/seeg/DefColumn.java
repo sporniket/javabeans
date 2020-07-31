@@ -54,6 +54,11 @@ public class DefColumn extends Def
 	public String javaType;
 
 	/**
+	 * Database type of the column.
+	 */
+	public String dbType;
+
+	/**
 	 * The fully parametred temporal annotation.
 	 */
 	public String temporalMapping;
@@ -65,8 +70,13 @@ public class DefColumn extends Def
 
 	/**
 	 * <code>true</code> if the column use an enumeration type.
-	 * 
+	 *
 	 * @since 20.05.00
 	 */
 	public boolean isEnum;
+
+	/**
+	 * Defined when the column is a foreign key.
+	 */
+	public DefReference foreignKey;
 }

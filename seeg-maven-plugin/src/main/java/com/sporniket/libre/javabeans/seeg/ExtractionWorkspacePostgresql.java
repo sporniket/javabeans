@@ -150,6 +150,7 @@ public class ExtractionWorkspacePostgresql extends ExtractionWorkspaceBase imple
 				_c.generationStrategy = "javax.persistence.GenerationType.IDENTITY";
 			}
 		}
+		_c.dbType = type;
 		if (PGSQL_TYPE_MAP.containsKey(type))
 		{
 			_c.javaType = PGSQL_TYPE_MAP.get(type);
