@@ -33,6 +33,14 @@ In no particular order :
 
 See also the known issues.
 
+### What's new in v20.07.00
+
+* #61 : [seeg] generate a dbml model
+
+### What's new in v20.05.02
+
+* #60 :  : [bug][seeg] Finder classes must be parametrized using non native types
+
 ### What's new in v20.05.01
 
 * #56 : [bug][seed] the id class require a no-args constructor
@@ -192,7 +200,7 @@ Issues fixed :
 >
 > PostgreSQL is the only dbms supported for now
 
-In your maven project, prepare a properties file describing the connection to the reference database, by default it will be `${project.basedir}/seeg-connection.properties`, and containing the following keys : 
+In your maven project, prepare a properties file describing the connection to the reference database, by default it will be `${project.basedir}/seeg-connection.properties`, and containing the following keys :
 
 * _url_ : jdbc url, e.g. 'jdbc:postgresql://localhost:54320/postgres'.
 * _driverClass_ : jdbc url, e.g. 'org.postgresql.Driver'.
@@ -213,7 +221,7 @@ In your pom build section, declare and configure seeg-maven-plugin with the targ
 </plugin>
 ```
 
-Then, when ever you need to regenerate your entities, invoke seeg : 
+Then, when ever you need to regenerate your entities, invoke seeg :
 
 ```
 mvn seeg:seeg
