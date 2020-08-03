@@ -33,6 +33,10 @@ In no particular order :
 
 See also the known issues.
 
+### What's new in v20.07.01
+
+* #63 : [bug][seeg] dbml generation interrupted without trace
+
 ### What's new in v20.07.00
 
 * #61 : [seeg] generate a dbml model
