@@ -224,6 +224,10 @@ public class Seeg
 							format("%s.%s -> %s.%s (%d)", _table, _columnName, _targetTable, _targetColumn, r.getShort("KEY_SEQ")));
 				}
 			}
+
+			printHeader(out, "Dbml");
+			DbmlGeneratorHelper.FROM_WORKSPACE.generate(workspace, targetDir, targetPackage, out);
+
 			printHeader(out, "Java code");
 
 			workspace.getEnums().forEach(e -> FROM_DEF_ENUM.generate(e, targetDir, targetPackage, out));
@@ -237,8 +241,6 @@ public class Seeg
 			workspace.getClasses().forEach(c -> FROM_DEF_TABLE_TO_FINDER.generate(c, targetDir, targetPackage, out));
 			workspace.getClasses().forEach(c -> FROM_DEF_TABLE_TO_REPOSITORY.generate(c, targetDir, targetPackage, out));
 
-			printHeader(out, "Dbml");
-			DbmlGeneratorHelper.FROM_WORKSPACE.generate(workspace, targetDir, targetPackage, out);
 			out.println("Done.");
 		}
 		catch (Exception _error)

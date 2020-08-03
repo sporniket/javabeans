@@ -3,10 +3,12 @@
  */
 package com.sporniket.libre.javabeans.seeg;
 
+import static com.sporniket.libre.javabeans.seeg.StringHelper.escapeQuotes;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toMap;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -99,7 +101,10 @@ public class DbmlGeneratorHelper
 
 	static final CodeGenerator<ExtractionWorkspace> FROM_WORKSPACE = (specs, targetDir, targetPackage, out) -> {
 		File target = new File(targetDir, FILENAME);
-		try (PrintStream _out = new PrintStream(target))
+		try (//
+				FileOutputStream _fout = new FileOutputStream(target); //
+				PrintStream _out = new PrintStream(_fout, true)//
+		)
 		{
 			Collection<DefEnum> enums = specs.getEnums();
 			printEnums(_out, enums);
@@ -107,6 +112,7 @@ public class DbmlGeneratorHelper
 			printSectionTitle(_out, "Tables");
 			_out.println();
 			specs.getClasses().forEach(t -> {
+				out.println(format("Table %s...", t.nameInDatabase));
 				_out.println(format("Table %s {", t.nameInDatabase));
 				t.columns.forEach((k, c) -> {
 					String dbType = c.dbType;
@@ -156,12 +162,18 @@ public class DbmlGeneratorHelper
 				_out.println();
 			});
 			_out.println();
+			_out.close();
 		}
 		catch (
 
 		Exception _error)
 		{
 			_error.printStackTrace(out);
+
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace(out);
 		}
 	};
 
@@ -174,11 +186,6 @@ public class DbmlGeneratorHelper
 				: dbType;
 		result = result.endsWith("\"") ? result.substring(0, result.length() - 1) : result;
 		return result;
-	}
-
-	private static String escapeQuotes(String t)
-	{
-		return escapeQuotes(convertEnumAsType(t));
 	}
 
 	private static void printEnums(PrintStream _out, Collection<DefEnum> enums)

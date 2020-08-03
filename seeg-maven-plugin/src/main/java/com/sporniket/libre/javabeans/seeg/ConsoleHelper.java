@@ -43,7 +43,6 @@ public class ConsoleHelper
 	public static void printHeader(PrintStream out, String title)
 	{
 		out.println(format(FORMAT_HEADER, title));
-		out.flush();
 	}
 
 }
