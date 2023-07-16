@@ -26,7 +26,7 @@
  * <hr>
  *
  * @author David SPORN
- * @version 20.05.01
+ * @version 23.07.00
  * @since 17.09.00
  */
 package com.sporniket.libre.javabeans.doclet;

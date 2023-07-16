@@ -35,7 +35,7 @@ import java.util.Map;
  * <hr>
  *
  * @author David SPORN
- * @version 20.07.00
+ * @version 23.07.00
  * @since 20.04.01
  */
 public abstract class ExtractionWorkspaceBase implements ExtractionWorkspace

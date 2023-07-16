@@ -45,7 +45,7 @@ import org.apache.commons.lang3.StringUtils;
  * <hr>
  *
  * @author David SPORN
- * @version 20.07.00
+ * @version 23.07.00
  * @since 20.04.01
  */
 public class CodeGeneratorHelper

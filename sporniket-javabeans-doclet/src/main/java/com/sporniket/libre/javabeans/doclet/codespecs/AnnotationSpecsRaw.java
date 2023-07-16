@@ -28,7 +28,7 @@ import java.util.List;
  * <hr>
  *
  * @author David SPORN
- * @version 20.05.01
+ * @version 23.07.00
  * @since 17.12.00
  */
 class AnnotationSpecsRaw

@@ -28,7 +28,7 @@ package test.sporniket.libre.javabeans.mockjavadoc;
  * <hr>
  *
  * @author David SPORN
- * @version 20.05.01
+ * @version 23.07.00
  * @since 19.09.00
  */
 public class DocMockModel_Raw

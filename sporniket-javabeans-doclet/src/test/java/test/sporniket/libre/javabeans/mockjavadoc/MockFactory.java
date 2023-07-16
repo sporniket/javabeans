@@ -32,7 +32,7 @@ import com.sun.javadoc.Type;
  * <hr>
  *
  * @author David SPORN
- * @version 20.05.01
+ * @version 23.07.00
  * @since 19.03.00
  * 
  * @param <InputType>

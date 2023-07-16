@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
  * <hr>
  *
  * @author David SPORN
- * @version 20.07.00
+ * @version 23.07.00
  * @since 20.07.00
  */
 public class DbmlGeneratorHelper
