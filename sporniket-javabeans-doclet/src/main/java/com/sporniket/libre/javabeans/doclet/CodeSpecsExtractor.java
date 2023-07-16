@@ -81,273 +81,280 @@ import com.sun.javadoc.TypeVariable;
  */
 public class CodeSpecsExtractor
 {
-	public static enum ExtractionMode
-	{
-		DISTILLER,
-		EXPANDER;
-	}
+    public static enum ExtractionMode
+    {
+        DISTILLER,
+        EXPANDER;
+    }
 
-	private static final String JAVA_LANG_DEPRECATED = "java.lang.Deprecated";
+    private static final String JAVA_LANG_DEPRECATED = "java.lang.Deprecated";
 
-	/**
-	 * Convert javadoc comment string as string array.
-	 */
-	private static final Function<String, String[]> TO_JAVADOC_LINES = c -> null != c ? c.split("\n") : null;
+    /**
+     * Convert javadoc comment string as string array.
+     */
+    private static final Function<String, String[]> TO_JAVADOC_LINES = c -> null != c ? c.split("\n") : null;
 
-	private String extractClassDeclaredTypeArguments(ClassDoc from, Map<String, String> translations, Set<String> shortables)
-	{
-		final StringBuilder _result = new StringBuilder();
-		final TypeVariable[] _typeArguments = from.typeParameters();
-		UtilsClassDoc.outputClassParameters__classDeclaration(_result, _typeArguments, translations, shortables);
+    private String extractClassDeclaredTypeArguments(ClassDoc from, Map<String, String> translations, Set<String> shortables)
+    {
+        final StringBuilder _result = new StringBuilder();
+        final TypeVariable[] _typeArguments = from.typeParameters();
+        UtilsClassDoc.outputClassParameters__classDeclaration(_result, _typeArguments, translations, shortables);
 
-		return _result.toString();
-	}
+        return _result.toString();
+    }
 
-	private String extractClassInvokedTypeArguments(ClassDoc from, Map<String, String> translations, Set<String> shortables)
-	{
-		final StringBuilder _result = new StringBuilder();
-		final TypeVariable[] _typeArguments = from.typeParameters();
-		UtilsClassDoc.TypeInvocation.outputTypeArguments(_result, _typeArguments, translations, shortables);
+    private String extractClassInvokedTypeArguments(ClassDoc from, Map<String, String> translations, Set<String> shortables)
+    {
+        final StringBuilder _result = new StringBuilder();
+        final TypeVariable[] _typeArguments = from.typeParameters();
+        UtilsClassDoc.TypeInvocation.outputTypeArguments(_result, _typeArguments, translations, shortables);
 
-		return _result.toString();
-	}
+        return _result.toString();
+    }
 
-	private List<AnnotationParameterSpecs> extractFieldAnnotationParameters(AnnotationDesc annotation,
-			final String annotationQualifiedName, Map<String, String> translations, Set<String> shortables)
-	{
-		final ElementValuePair[] _elementValues = annotation.elementValues();
-		final List<AnnotationParameterSpecs> result = new ArrayList<>(_elementValues.length);
+    private List<AnnotationParameterSpecs> extractFieldAnnotationParameters(AnnotationDesc annotation,
+            final String annotationQualifiedName, Map<String, String> translations, Set<String> shortables)
+    {
+        final ElementValuePair[] _elementValues = annotation.elementValues();
+        final List<AnnotationParameterSpecs> result = new ArrayList<>(_elementValues.length);
 
-		for (AnnotationDesc.ElementValuePair valuePair : _elementValues)
-		{
-			final AnnotationTypeElementDoc _element = valuePair.element();
-			final AnnotationValue _value = valuePair.value();
-			Object _realValue = _value.value();
-			Class<?> _valueClass = _realValue.getClass();
+        for (AnnotationDesc.ElementValuePair valuePair : _elementValues)
+        {
+            final AnnotationTypeElementDoc _element = valuePair.element();
+            final AnnotationValue _value = valuePair.value();
+            Object _realValue = _value.value();
+            Class<?> _valueClass = _realValue.getClass();
 
-			if (!_valueClass.isArray())
-			{
-				result.add(new AnnotationParameterSpecsSingleValue_Builder()//
-						.withName(_element.name())//
-						.withValue(translateAnnotationValue(_realValue, translations))//
-						.withString(_realValue instanceof String)//
-						.done());
-			}
-			else
-			{
-				result.add(new AnnotationParameterSpecsValuesArray_Builder()//
-						.withName(_element.name())//
-						.withValues(Arrays.asList((AnnotationValue[]) _realValue)//
-								.stream()//
-								.map(AnnotationValue::value)//
-								.map(v -> {
-									return new AnnotationParameterSpecsSingleValue_Builder()//
-											.withValue(translateAnnotationValue(v, translations))//
-											.withString(v instanceof String)//
-											.done();
-								})//
-								.collect(toList()))//
-						.done());
-			}
-		}
-		return result;
-	}
+            if (!_valueClass.isArray())
+            {
+                result.add(new AnnotationParameterSpecsSingleValue_Builder()//
+                        .withName(_element.name())//
+                        .withValue(translateAnnotationValue(_realValue, translations))//
+                        .withString(_realValue instanceof String)//
+                        .done());
+            }
+            else
+            {
+                result.add(new AnnotationParameterSpecsValuesArray_Builder()//
+                        .withName(_element.name())//
+                        .withValues(Arrays.asList((AnnotationValue[]) _realValue)//
+                                .stream()//
+                                .map(AnnotationValue::value)//
+                                .map(v -> {
+                                    return new AnnotationParameterSpecsSingleValue_Builder()//
+                                            .withValue(translateAnnotationValue(v, translations))//
+                                            .withString(v instanceof String)//
+                                            .done();
+                                })//
+                                .collect(toList()))//
+                        .done());
+            }
+        }
+        return result;
+    }
 
-	private List<AnnotationSpecs> extractFieldAnnotations(ClassDoc srcClass, Map<String, String> translations,
-			Set<String> shortables)
-	{
-		List<AnnotationSpecs> _result = new ArrayList<>(srcClass.annotations().length);
-		for (AnnotationDesc annotation : srcClass.annotations())
-		{
-			final String _qualifiedName = annotation.annotationType().qualifiedName();
-			boolean _needParametersProcessing = annotation.elementValues().length > 0;
+    private List<AnnotationSpecs> extractFieldAnnotations(ClassDoc srcClass, Map<String, String> translations,
+            Set<String> shortables)
+    {
+        List<AnnotationSpecs> _result = new ArrayList<>(srcClass.annotations().length);
+        for (AnnotationDesc annotation : srcClass.annotations())
+        {
+            final String _qualifiedName = annotation.annotationType().qualifiedName();
+            boolean _needParametersProcessing = annotation.elementValues().length > 0;
 
-			final AnnotationSpecs_Builder _annotationBuilder = new AnnotationSpecs_Builder()//
-					.withType(computeOutputType(annotation.annotationType(), translations, shortables))//
-					.withOnBuilder(JAVA_LANG_DEPRECATED.equals(_qualifiedName));
+            final AnnotationSpecs_Builder _annotationBuilder = new AnnotationSpecs_Builder()//
+                    .withType(computeOutputType(annotation.annotationType(), translations, shortables))//
+                    .withOnBuilder(JAVA_LANG_DEPRECATED.equals(_qualifiedName));
 
-			if (_needParametersProcessing)
-			{
-				_annotationBuilder
-						.withParameters(extractFieldAnnotationParameters(annotation, _qualifiedName, translations, shortables));
-			}
+            if (_needParametersProcessing)
+            {
+                _annotationBuilder
+                        .withParameters(extractFieldAnnotationParameters(annotation, _qualifiedName, translations, shortables));
+            }
 
-			_result.add(_annotationBuilder.done());
-		}
-		return _result;
-	}
+            _result.add(_annotationBuilder.done());
+        }
+        return _result;
+    }
 
-	private List<AnnotationSpecs> extractFieldAnnotations(FieldDoc field, Map<String, String> translations, Set<String> shortables,
-			DocletOptions options)
-	{
-		List<AnnotationSpecs> _result = new ArrayList<>(field.annotations().length);
-		for (AnnotationDesc annotation : field.annotations())
-		{
-			final String _qualifiedName = annotation.annotationType().qualifiedName();
-			boolean _needParametersProcessing = annotation.elementValues().length > 0;
-			final AnnotationSpecs_Builder _annotationBuilder = new AnnotationSpecs_Builder()
-					.withType(computeOutputType(annotation.annotationType(), translations, shortables))//
-					.withOnField(true)//
-					.withOnGetter(options.getAnnotationsToAddToGetters().contains(_qualifiedName))//
-					.withOnSetter(options.getAnnotationsToAddToGetters().contains(_qualifiedName))//
-					.withOnBuilder(JAVA_LANG_DEPRECATED.equals(_qualifiedName));
+    private List<AnnotationSpecs> extractFieldAnnotations(FieldDoc field, Map<String, String> translations, Set<String> shortables,
+            DocletOptions options)
+    {
+        List<AnnotationSpecs> _result = new ArrayList<>(field.annotations().length);
+        for (AnnotationDesc annotation : field.annotations())
+        {
+            final String _qualifiedName = annotation.annotationType().qualifiedName();
+            boolean _needParametersProcessing = annotation.elementValues().length > 0;
+            final AnnotationSpecs_Builder _annotationBuilder = new AnnotationSpecs_Builder()
+                    .withType(computeOutputType(annotation.annotationType(), translations, shortables))//
+                    .withOnField(true)//
+                    .withOnGetter(options.getAnnotationsToAddToGetters().contains(_qualifiedName))//
+                    .withOnSetter(options.getAnnotationsToAddToGetters().contains(_qualifiedName))//
+                    .withOnBuilder(JAVA_LANG_DEPRECATED.equals(_qualifiedName));
 
-			if (_needParametersProcessing)
-			{
-				_annotationBuilder
-						.withParameters(extractFieldAnnotationParameters(annotation, _qualifiedName, translations, shortables));
-			}
+            if (_needParametersProcessing)
+            {
+                _annotationBuilder
+                        .withParameters(extractFieldAnnotationParameters(annotation, _qualifiedName, translations, shortables));
+            }
 
-			_result.add(_annotationBuilder.done());
-		}
-		return _result;
-	}
+            _result.add(_annotationBuilder.done());
+        }
+        return _result;
+    }
 
-	private List<FieldSpecs> extractFields(ClassDoc from, Map<String, String> translations, Set<String> shortables,
-			DocletOptions options, ExtractionMode mode)
-	{
-		final boolean _noPrefix = IS_EMPTY.test(options.getBeanFieldPrefix());
+    private List<FieldSpecs> extractFields(ClassDoc from, Map<String, String> translations, Set<String> shortables,
+            DocletOptions options, ExtractionMode mode)
+    {
+        final boolean _noPrefix = IS_EMPTY.test(options.getBeanFieldPrefix());
 
-		final List<FieldDoc> _directFields = (EXPANDER == mode)
-				? getAccessibleDeclaredFields(from)
-				: getPrivateDeclaredFields(from);
+        final List<FieldDoc> _directFields = (EXPANDER == mode)
+                ? getAccessibleDeclaredFields(from)
+                : getPrivateDeclaredFields(from);
 
-		final TreeSet<String> _directlyRequiredFields = _directFields//
-				.stream()//
-				.map(FieldDoc::name)//
-				.collect(toCollection(TreeSet::new));
+        final TreeSet<String> _directlyRequiredFields = _directFields//
+                .stream()//
+                .map(FieldDoc::name)//
+                .collect(toCollection(TreeSet::new));
 
-		final StringTransformation _simplePrefixRemover = UtilsString.TransformationFactories
-				.buildPrefixRemover(options.getBeanFieldPrefix());
-		final StringTransformation _prefixRemover = EXPANDER == mode //
-				? new StringPipelineBuilder()//
-						.pipeThrough(_simplePrefixRemover)//
-						.pipeThrough(UtilsString.Transformations.CAPITALIZER)//
-						.done()
-				: new StringPipelineBuilder()//
-						.pipeThrough(_simplePrefixRemover)//
-						.pipeThrough(UtilsString.Transformations.UNCAPITALIZER)//
-						.done();
+        final StringTransformation _simplePrefixRemover = UtilsString.TransformationFactories
+                .buildPrefixRemover(options.getBeanFieldPrefix());
+        final StringTransformation _prefixRemover = EXPANDER == mode //
+                ? new StringPipelineBuilder()//
+                        .pipeThrough(_simplePrefixRemover)//
+                        .pipeThrough(UtilsString.Transformations.CAPITALIZER)//
+                        .done()
+                : new StringPipelineBuilder()//
+                        .pipeThrough(_simplePrefixRemover)//
+                        .pipeThrough(UtilsString.Transformations.UNCAPITALIZER)//
+                        .done();
 
-		final Function<? super FieldDoc, ? extends FieldSpecs> _toFieldSpecs = (EXPANDER == mode) ? (f -> {
-			final String _unprefixedName = _prefixRemover.transform(f.name());
-			String[] _comment = null;
-			final String _rawCommentText = f.getRawCommentText();
-			if (!IS_EMPTY.test(_rawCommentText))
-			{
-				final String _processedComment = EXPANDER == mode
-						? createRawCommentProcessor(options).apply(_rawCommentText)
-						: _rawCommentText;
-				_comment = TO_JAVADOC_LINES.apply(_processedComment);
-			}
-			return new FieldSpecs_Builder()//
-					.withNameForField(_unprefixedName)//
-					.withArrayMarker(NULL_TO_EMPTY.transform(f.type().dimension()))//
-					.withNameForAccessor(_unprefixedName)//
-					.withFieldPrefix(_noPrefix ? "this." : options.getBeanFieldPrefix())//
-					.withTypeInvocation(computeOutputType_invocation(f.type(), translations, shortables))//
-					.withDirectlyRequired(_directlyRequiredFields.contains(f.name()))//
-					.withBooleanGetter(("boolean".equals(f.type().qualifiedTypeName()))
-							|| ("java.lang.Boolean".equals(f.type().qualifiedTypeName())))//
-					.withAnnotations(extractFieldAnnotations(f, translations, shortables, options))//
-					.withJavadocLines(_comment)//
-					.done();
-		}) : (f -> {
-			final String _unprefixedName = _prefixRemover.transform(f.name());
-			return new FieldSpecs_Builder()//
-					.withNameForField(_unprefixedName)//
-					.withArrayMarker(NULL_TO_EMPTY.transform(f.type().dimension()))//
-					.withTypeInvocation(computeOutputType_invocation(f.type(), translations, shortables))//
-					.withDirectlyRequired(_directlyRequiredFields.contains(f.name()))//
-					.withAnnotations(extractFieldAnnotations(f, translations, shortables, options))//
-					.done();
-		});
+        final Function<? super FieldDoc, ? extends FieldSpecs> _toFieldSpecs = (EXPANDER == mode) ? (f -> {
+            final String _unprefixedName = _prefixRemover.transform(f.name());
+            String[] _comment = null;
+            final String _rawCommentText = f.getRawCommentText();
+            if (!IS_EMPTY.test(_rawCommentText))
+            {
+                final String _processedComment = EXPANDER == mode
+                        ? createRawCommentProcessor(options).apply(_rawCommentText)
+                        : _rawCommentText;
+                _comment = TO_JAVADOC_LINES.apply(_processedComment);
+            }
+            return new FieldSpecs_Builder()//
+                    .withNameForField(_unprefixedName)//
+                    .withArrayMarker(NULL_TO_EMPTY.transform(f.type().dimension()))//
+                    .withNameForAccessor(_unprefixedName)//
+                    .withFieldPrefix(_noPrefix ? "this." : options.getBeanFieldPrefix())//
+                    .withTypeInvocation(computeOutputType_invocation(f.type(), translations, shortables))//
+                    .withDirectlyRequired(_directlyRequiredFields.contains(f.name()))//
+                    .withBooleanGetter(("boolean".equals(f.type().qualifiedTypeName()))
+                            || ("java.lang.Boolean".equals(f.type().qualifiedTypeName())))//
+                    .withAnnotations(extractFieldAnnotations(f, translations, shortables, options))//
+                    .withJavadocLines(_comment)//
+                    .done();
+        }) : (f -> {
+            final String _unprefixedName = _prefixRemover.transform(f.name());
+            return new FieldSpecs_Builder()//
+                    .withNameForField(_unprefixedName)//
+                    .withArrayMarker(NULL_TO_EMPTY.transform(f.type().dimension()))//
+                    .withTypeInvocation(computeOutputType_invocation(f.type(), translations, shortables))//
+                    .withDirectlyRequired(_directlyRequiredFields.contains(f.name()))//
+                    .withAnnotations(extractFieldAnnotations(f, translations, shortables, options))//
+                    .done();
+        });
 
-		final List<FieldDoc> _fields = (EXPANDER == mode) ? getAccessibleFields(from) : _directFields;
-		return _fields.stream()//
-				.map(_toFieldSpecs)//
-				.collect(toList());
-	}
+        final List<FieldDoc> _fields = (EXPANDER == mode) ? getAccessibleFields(from) : _directFields;
+        return _fields.stream()//
+                .map(_toFieldSpecs)//
+                .collect(toList());
+    }
 
-	private String extractInterfaceList(ClassDoc from, Map<String, String> translations, Set<String> shortables)
-	{
-		final StringBuilder _result = new StringBuilder();
-		final ClassDoc[] _interfaces = from.interfaces();
-		if (_interfaces.length > 0)
-		{
-			for (int _i = 0; _i < _interfaces.length; _i++)
-			{
-				_result.append((0 == _i) ? "" : ", ")
-						.append(computeOutputClassname(_interfaces[_i].name(), translations, shortables));
-			}
-		}
+    private String extractInterfaceList(ClassDoc from, Map<String, String> translations, Set<String> shortables)
+    {
+        final StringBuilder _result = new StringBuilder();
+        final ClassDoc[] _interfaces = from.interfaces();
+        if (_interfaces.length > 0)
+        {
+            for (int _i = 0; _i < _interfaces.length; _i++)
+            {
+                _result.append((0 == _i) ? "" : ", ")
+                        .append(computeOutputClassname(_interfaces[_i].name(), translations, shortables));
+            }
+        }
 
-		return _result.toString();
-	}
+        return _result.toString();
+    }
 
-	public ClassSpecs extractSpecs(ClassDoc from, Map<String, String> translations, DocletOptions options, ExtractionMode mode)
-	{
-		final Collection<ImportSpecs> _knownClasses = updateKnownClasses(from);
+    public ClassSpecs extractSpecs(ClassDoc from, Map<String, String> translations, DocletOptions options, ExtractionMode mode)
+    {
+        final Collection<ImportSpecs> _knownClasses = updateKnownClasses(from);
 
-		final Map<String, String> _shortNameMapping = new HashMap<>(_knownClasses.size() + translations.size());
-		updateShortClassnameMappingFromClassnames(_shortNameMapping,
-				_knownClasses.stream().map(ImportSpecs::getClassName).collect(toList()));
-		updateShortClassnameMappingFromClassnames(_shortNameMapping, translations.values());
-		final Set<String> _shortables = new HashSet<>(_shortNameMapping.values());
+        final Map<String, String> _shortNameMapping = new HashMap<>(_knownClasses.size() + translations.size());
+        updateShortClassnameMappingFromClassnames(_shortNameMapping,
+                _knownClasses.stream().map(ImportSpecs::getClassName).collect(toList()));
+        updateShortClassnameMappingFromClassnames(_shortNameMapping, translations.values());
+        final Set<String> _shortables = new HashSet<>(_shortNameMapping.values());
 
-		final String _rawCommentText = from.getRawCommentText();
-		String[] _comment = null;
-		if (!IS_EMPTY.test(_rawCommentText))
-		{
-			final String _processedComment = EXPANDER == mode
-					? createRawCommentProcessor(options).apply(_rawCommentText)
-					: _rawCommentText;
-			_comment = TO_JAVADOC_LINES.apply(_processedComment);
-		}
+        final String _rawCommentText = from.getRawCommentText();
+        String[] _comment = null;
+        if (!IS_EMPTY.test(_rawCommentText))
+        {
+            final String _processedComment = EXPANDER == mode
+                    ? createRawCommentProcessor(options).apply(_rawCommentText)
+                    : _rawCommentText;
+            _comment = TO_JAVADOC_LINES.apply(_processedComment);
+        }
 
-		return new ClassSpecs_Builder()//
-				.withImports(_knownClasses)// FIXME SORT IN NATURAL ORDER
-				.withClassName(computeOutputClassname(from.qualifiedTypeName(), translations, _shortables))//
-				.withPackageName(from.containingPackage().name())//
-				.withDeclaredTypeArguments(extractClassDeclaredTypeArguments(from, translations, _shortables))//
-				.withInvokedTypeArguments(extractClassInvokedTypeArguments(from, translations, _shortables))//
-				.withFields(extractFields(from, translations, _shortables, options, mode))//
-				.withAbstractRequired(shouldBeAbstract(from))//
-				.withSuperClassName(extractSuperClassName(from.superclass(), translations, _shortables))//
-				.withInterfaceList(extractInterfaceList(from, translations, _shortables))//
-				.withAnnotations(extractFieldAnnotations(from, translations, _shortables))//
-				.withJavadocLines(_comment)//
-				.done();
-	}
+        // class name preparations
+        String _className = from.qualifiedName();
+        String _translatedName = (translations.containsKey(_className)) ? translations.get(_className) : _className;
+        String _simpleName = UtilsClassname.getSimpleName(_translatedName);
 
-	private String extractSuperClassName(ClassDoc superclass, Map<String, String> translations, Set<String> shortables)
-	{
-		final StringBuilder _result = new StringBuilder();
-		if (!Object.class.getName().equals(superclass.qualifiedName()))
-		{
-			_result//
-					.append(computeOutputClassname(superclass.qualifiedTypeName(), translations, shortables))//
-					.append(extractClassInvokedTypeArguments(superclass, translations, shortables));
-		}
+        return new ClassSpecs_Builder()//
+                .withImports(_knownClasses)// FIXME SORT IN NATURAL ORDER
+                .withClassName(_simpleName)//
+                .withClassNameFullyQualified(_translatedName)//
+                .withClassNameOutput(computeOutputClassname(_translatedName, _shortables))//
+                .withPackageName(from.containingPackage().name())//
+                .withDeclaredTypeArguments(extractClassDeclaredTypeArguments(from, translations, _shortables))//
+                .withInvokedTypeArguments(extractClassInvokedTypeArguments(from, translations, _shortables))//
+                .withFields(extractFields(from, translations, _shortables, options, mode))//
+                .withAbstractRequired(shouldBeAbstract(from))//
+                .withSuperClassName(extractSuperClassName(from.superclass(), translations, _shortables))//
+                .withInterfaceList(extractInterfaceList(from, translations, _shortables))//
+                .withAnnotations(extractFieldAnnotations(from, translations, _shortables))//
+                .withJavadocLines(_comment)//
+                .done();
+    }
 
-		return _result.toString();
-	}
+    private String extractSuperClassName(ClassDoc superclass, Map<String, String> translations, Set<String> shortables)
+    {
+        final StringBuilder _result = new StringBuilder();
+        if (!Object.class.getName().equals(superclass.qualifiedName()))
+        {
+            _result//
+                    .append(computeOutputClassname(superclass.qualifiedTypeName(), translations, shortables))//
+                    .append(extractClassInvokedTypeArguments(superclass, translations, shortables));
+        }
 
-	private String translateAnnotationValue(Object value, Map<String, String> translations)
-	{
-		String _asString = value.toString();
-		if (value instanceof String)
-		{
-			_asString = _asString.replace("\\", "\\\\");
-			_asString = _asString.replace("\"", "\\\"");
-		}
-		else
-		{
-			for (Map.Entry<String, String> translation : translations.entrySet())
-			{
-				_asString = _asString.replace(translation.getKey(), translation.getValue());
-			}
-		}
-		return _asString;
-	}
+        return _result.toString();
+    }
+
+    private String translateAnnotationValue(Object value, Map<String, String> translations)
+    {
+        String _asString = value.toString();
+        if (value instanceof String)
+        {
+            _asString = _asString.replace("\\", "\\\\");
+            _asString = _asString.replace("\"", "\\\"");
+        }
+        else
+        {
+            for (Map.Entry<String, String> translation : translations.entrySet())
+            {
+                _asString = _asString.replace(translation.getKey(), translation.getValue());
+            }
+        }
+        return _asString;
+    }
 }

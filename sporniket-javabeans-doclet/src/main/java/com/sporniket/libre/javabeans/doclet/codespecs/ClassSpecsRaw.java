@@ -36,48 +36,58 @@ import com.sun.javadoc.Doc;
  */
 class ClassSpecsRaw
 {
-	boolean abstractRequired;
+    boolean abstractRequired;
 
-	List<AnnotationSpecsRaw> annotations;
+    List<AnnotationSpecsRaw> annotations;
 
-	/**
-	 * Class simple name (without package).
-	 */
-	String className;
+    /**
+     * Class simple name (without package).
+     */
+    String className;
 
-	/**
-	 * Type arguments when defining the class (<code>class</code> keyword).
-	 */
-	String declaredTypeArguments;
+    /**
+     * Class fully qualified name (without package).
+     */
+    String classNameFullyQualified;
 
-	List<FieldSpecsRaw> fields;
+    /**
+     * Class name to use in the current output context, when it is not explicitely the simple name or the full name.
+     */
+    String classNameOutput;
 
-	Collection<ImportSpecsRaw> imports;
+    /**
+     * Type arguments when defining the class (<code>class</code> keyword).
+     */
+    String declaredTypeArguments;
 
-	/**
-	 * (NOT NULL) Comma separated values of interfaces names.
-	 *
-	 * Each name SHOULD be simple, unless the type name is not in the list of shortable types.
-	 */
-	String interfaceList;
+    List<FieldSpecsRaw> fields;
 
-	/**
-	 * Type arguments when invoking the class (e.g. in the builder).
-	 */
-	String invokedTypeArguments;
+    Collection<ImportSpecsRaw> imports;
 
-	/**
-	 * Javadoc comment lines, as obtained from {@link Doc#getRawCommentText()}.
-	 */
-	String[] javadocLines;
+    /**
+     * (NOT NULL) Comma separated values of interfaces names.
+     *
+     * Each name SHOULD be simple, unless the type name is not in the list of shortable types.
+     */
+    String interfaceList;
 
-	/**
-	 * fully qualified package name.
-	 */
-	String packageName;
+    /**
+     * Type arguments when invoking the class (e.g. in the builder).
+     */
+    String invokedTypeArguments;
 
-	/**
-	 * (NOT NULL) Simple name of the extended class (MUST be imported), or empty if the super class is <code>Object</code>.
-	 */
-	String superClassName;
+    /**
+     * Javadoc comment lines, as obtained from {@link Doc#getRawCommentText()}.
+     */
+    String[] javadocLines;
+
+    /**
+     * fully qualified package name.
+     */
+    String packageName;
+
+    /**
+     * (NOT NULL) Simple name of the extended class (MUST be imported), or empty if the super class is <code>Object</code>.
+     */
+    String superClassName;
 }
