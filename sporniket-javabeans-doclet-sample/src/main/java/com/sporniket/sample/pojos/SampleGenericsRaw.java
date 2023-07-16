@@ -1,5 +1,6 @@
 package com.sporniket.sample.pojos;
 
+import java.net.URL;
 import java.util.Map;
 
 /**
@@ -44,5 +45,7 @@ class SampleGenericsRaw<T, R extends Number> extends SampleBasicRaw
 	Map<T, R> registry;
 
 	String[] tags;
+
+	Map<String, URL> urlCache;
 
 }
