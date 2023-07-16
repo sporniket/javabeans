@@ -9,7 +9,7 @@ import java.util.List;
  * Model for an annotation parameter that is an array.
  * 
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

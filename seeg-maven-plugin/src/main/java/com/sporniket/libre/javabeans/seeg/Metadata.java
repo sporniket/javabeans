@@ -7,7 +7,7 @@ import java.sql.SQLException;
  * Abstraction layer, for at least PostgreSql, the jdbc connection metadata cannot give access to the definition of enums.
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

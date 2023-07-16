@@ -15,7 +15,7 @@ import java.util.function.Predicate;
  * Utility package for class names stored in a String.
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

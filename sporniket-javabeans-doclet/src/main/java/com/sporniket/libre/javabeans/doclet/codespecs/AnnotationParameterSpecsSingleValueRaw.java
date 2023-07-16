@@ -7,7 +7,7 @@ package com.sporniket.libre.javabeans.doclet.codespecs;
  * Model for a single value annotation parameter.
  * 
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

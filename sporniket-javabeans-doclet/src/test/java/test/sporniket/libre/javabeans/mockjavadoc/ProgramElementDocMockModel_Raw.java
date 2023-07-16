@@ -6,7 +6,7 @@ import com.sun.javadoc.PackageDoc;
  * Common properties for documented programmatic elements.
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

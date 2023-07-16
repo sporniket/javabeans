@@ -4,7 +4,7 @@ package com.sporniket.libre.javabeans.seeg;
  * Internal representation of a column, will be converted into an object property.
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

@@ -4,7 +4,7 @@ package com.sporniket.libre.javabeans.seeg;
  * Most things (tables, columns,...) will have a naming for the database and one in java, and optionnally a comment.
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

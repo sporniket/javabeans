@@ -2,7 +2,7 @@
  * Code generator to expand a pojo into a javabeans, and to reverse engineer a javabean into a pojo.
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

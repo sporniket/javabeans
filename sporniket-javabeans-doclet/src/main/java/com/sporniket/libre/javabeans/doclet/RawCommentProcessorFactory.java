@@ -10,7 +10,7 @@ import java.util.function.Function;
  * Factory to create the function that look for and converts references to pojos into references to javabeans.
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

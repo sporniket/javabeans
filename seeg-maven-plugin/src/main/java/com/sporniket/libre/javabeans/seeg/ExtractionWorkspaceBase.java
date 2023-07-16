@@ -11,7 +11,7 @@ import java.util.Map;
  * Building of the internal representation that is common to all databases.
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

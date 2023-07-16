@@ -4,7 +4,7 @@ package test.sporniket.libre.javabeans.mockjavadoc;
  * Model for a {@link PackageDocMock}.
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

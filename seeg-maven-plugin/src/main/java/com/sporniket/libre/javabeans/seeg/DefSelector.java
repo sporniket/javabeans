@@ -7,7 +7,7 @@ import java.util.Set;
  * Internal representation of a selector, will be converted to a query method.
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

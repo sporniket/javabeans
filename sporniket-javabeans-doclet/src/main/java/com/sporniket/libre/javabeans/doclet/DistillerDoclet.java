@@ -29,7 +29,7 @@ import com.sun.javadoc.RootDoc;
  * Extract a hierarchy of POJO structs from a hierarchy of Javabeans.
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

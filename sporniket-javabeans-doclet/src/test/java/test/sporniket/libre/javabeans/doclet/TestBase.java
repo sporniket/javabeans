@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Base class for when a test needs common utilities.
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

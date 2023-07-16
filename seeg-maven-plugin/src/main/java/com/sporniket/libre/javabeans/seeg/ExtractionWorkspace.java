@@ -6,7 +6,7 @@ import java.util.Collection;
  * Workspace to maintains the internal representation for extracting the entities.
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

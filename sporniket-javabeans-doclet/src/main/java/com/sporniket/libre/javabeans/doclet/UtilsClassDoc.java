@@ -33,7 +33,7 @@ import com.sun.javadoc.WildcardType;
  * Utility class for {@link ClassDoc}
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *
@@ -64,7 +64,7 @@ public final class UtilsClassDoc
 {
 	/**
 	 * <p>
-	 * &copy; Copyright 2012-2020 David Sporn
+	 * &copy; Copyright 2012-2023 David Sporn
 	 * </p>
 	 * <hr>
 	 *
@@ -218,7 +218,7 @@ public final class UtilsClassDoc
 
 	/**
 	 * <p>
-	 * &copy; Copyright 2012-2020 David Sporn
+	 * &copy; Copyright 2012-2023 David Sporn
 	 * </p>
 	 * <hr>
 	 *

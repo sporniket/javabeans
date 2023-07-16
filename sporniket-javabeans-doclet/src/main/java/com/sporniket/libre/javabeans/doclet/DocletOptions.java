@@ -11,7 +11,7 @@ import java.util.Set;
  * Command line arguments supported by the javabeans doclets.
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

@@ -7,7 +7,7 @@ package com.sporniket.libre.javabeans.doclet;
  * Interface of a java source code generator.
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

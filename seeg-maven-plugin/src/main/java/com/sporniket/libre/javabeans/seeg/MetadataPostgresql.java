@@ -8,7 +8,7 @@ import java.sql.SQLException;
  * Metadata for PostgreSql.
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

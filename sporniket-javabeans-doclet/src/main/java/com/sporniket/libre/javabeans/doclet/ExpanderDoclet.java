@@ -30,7 +30,7 @@ import com.sun.javadoc.RootDoc;
  * Use hierarchy of POJO structs to generate a hierarchy of Javabeans.
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

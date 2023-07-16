@@ -9,7 +9,7 @@ import com.sun.javadoc.Tag;
  * Mock implementation of {@link Doc} backed using {@link DocMockModel}.
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

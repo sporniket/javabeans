@@ -16,7 +16,7 @@ import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs;
  * Base class for generating java code.
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

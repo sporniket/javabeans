@@ -9,7 +9,7 @@ import com.sun.javadoc.Type;
  * Model for a {@link FieldDocMock}.
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

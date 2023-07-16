@@ -21,7 +21,7 @@ import org.apache.commons.lang3.StringUtils;
  * Pool of code generators.
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *

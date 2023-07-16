@@ -10,7 +10,7 @@ import java.util.Set;
  * Internal representation of a table, will be converted into an entity, and eventually an id class.
  *
  * <p>
- * &copy; Copyright 2012-2020 David Sporn
+ * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
  *
