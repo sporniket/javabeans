@@ -33,6 +33,10 @@ In no particular order :
 
 See also the known issues.
 
+### What's new in v23.07.00
+
+* #70 : [doclet][bug] the name of the class being defined is the fully qualified name when another class with the same simple name is already referenced
+
 ### What's new in v20.07.01
 
 * #63 : [bug][seeg] dbml generation interrupted without trace
