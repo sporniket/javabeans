@@ -24,7 +24,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>${version.jdk}</maven.compiler.source>
 		<maven.compiler.target>${version.jdk}</maven.compiler.target>
-		<maven.version>3.3.9</maven.version>
+		<maven.version>3.8.1</maven.version>
 	</properties>
 
 	<dependencies>
