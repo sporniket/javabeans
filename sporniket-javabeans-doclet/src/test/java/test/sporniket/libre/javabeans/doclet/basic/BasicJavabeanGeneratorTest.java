@@ -86,11 +86,10 @@ public class BasicJavabeanGeneratorTest
 		final PrintStream _ps = new PrintStream(_baos, true, _charset.name());
 		final BasicJavabeanGenerator _generator = new Builder<>(new BasicJavabeanGenerator())//
 				.withOptions(options)//
-				.withOut(_ps)//
 				.withClassSpecs(specs)//
 				.done();
 		// execute
-		_generator.outputAccessors();
+		_generator.outputAccessors(_ps);
 		final String _result = new String(_baos.toByteArray(), _charset);
 
 		// verify
@@ -123,11 +122,10 @@ public class BasicJavabeanGeneratorTest
 		final PrintStream _ps = new PrintStream(_baos, true, _charset.name());
 		final BasicJavabeanGenerator _generator = new Builder<>(new BasicJavabeanGenerator())//
 				.withOptions(options)//
-				.withOut(_ps)//
 				.withClassSpecs(specs)//
 				.done();
 		// execute
-		_generator.outputAccessors();
+		_generator.outputAccessors(_ps);
 		final String _result = new String(_baos.toByteArray(), _charset);
 
 		// verify
@@ -163,11 +161,10 @@ public class BasicJavabeanGeneratorTest
 		final PrintStream _ps = new PrintStream(_baos, true, _charset.name());
 		final BasicJavabeanGenerator _generator = new Builder<>(new BasicJavabeanGenerator())//
 				.withOptions(options)//
-				.withOut(_ps)//
 				.withClassSpecs(specs)//
 				.done();
 		// execute
-		_generator.outputAccessors();
+		_generator.outputAccessors(_ps);
 		final String _result = new String(_baos.toByteArray(), _charset);
 
 		// verify
