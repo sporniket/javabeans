@@ -3,8 +3,6 @@ package com.sporniket.libre.javabeans.doclet.codespecs;
 import java.util.Collection;
 import java.util.List;
 
-import com.sun.javadoc.Doc;
-
 /**
  * <p>
  * &copy; Copyright 2012-2023 David Sporn

@@ -3,7 +3,6 @@ package com.sporniket.libre.javabeans.doclet.codespecs;
 import java.util.List;
 
 import com.sporniket.libre.javabeans.doclet.DocletOptions;
-import com.sun.javadoc.Doc;
 
 /**
  * <p>

@@ -38,14 +38,6 @@
 			<groupId>com.sporniket.core</groupId>
 			<artifactId>sporniket-core-io</artifactId>
 		</dependency>
-		<!-- javadoc doclet api -->
-		<dependency>
-			<groupId>sun.jdk</groupId>
-			<artifactId>tools</artifactId>
-			<version>1.8</version>
-			<scope>system</scope>
-			<systemPath>${java.home}/../lib/tools.jar</systemPath>
-		</dependency>
 
 
 		<!-- ===TEST DEPENDENCIES=== -->
@@ -75,7 +67,7 @@
 	<build>
 		<plugins>
 			<!-- === javabeans generation using the doclets === -->
-			<plugin>
+			<!--plugin> //disabled until a migrated plugin is published
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>${version.maven-javadoc-plugin}</version>
@@ -131,9 +123,9 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</!plugin -->
 			<!-- === add generated Javabeans as source folder === -->
-			<plugin>
+			<!--plugin> //disabled until a migrated plugin is published
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
 				<version>3.0.0</version>
@@ -163,7 +155,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin-->
 		</plugins>
 	</build>
 </project>
