@@ -24,9 +24,6 @@ import com.sporniket.libre.javabeans.doclet.basic.Builder;
 import com.sporniket.libre.javabeans.doclet.codespecs.ClassSpecs;
 import com.sporniket.libre.javabeans.doclet.codespecs.ClassSpecs_Builder;
 import com.sporniket.libre.javabeans.doclet.codespecs.FieldSpecs_Builder;
-import com.sun.javadoc.ClassDoc;
-import com.sun.javadoc.FieldDoc;
-import com.sun.javadoc.Type;
 
 /**
  * <p>
@@ -61,16 +58,7 @@ import com.sun.javadoc.Type;
 public class BasicJavabeanGeneratorTest
 {
 	@Mock
-	ClassDoc class1;
-
-	@Mock
-	FieldDoc field1;
-
-	@Mock
 	DocletOptions options;
-
-	@Mock
-	Type type1;
 
 	/**
 	 * @throws UnsupportedEncodingException
