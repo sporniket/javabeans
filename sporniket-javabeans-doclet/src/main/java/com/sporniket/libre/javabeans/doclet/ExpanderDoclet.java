@@ -12,19 +12,22 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+
+import javax.lang.model.SourceVersion;
 
 import com.sporniket.libre.javabeans.doclet.CodeSpecsExtractor.ExtractionMode;
 import com.sporniket.libre.javabeans.doclet.basic.BasicBuilderGenerator;
 import com.sporniket.libre.javabeans.doclet.basic.BasicJavabeanGenerator;
 import com.sporniket.libre.javabeans.doclet.basic.Builder;
 import com.sporniket.libre.javabeans.doclet.codespecs.ClassSpecs;
-import com.sun.javadoc.ClassDoc;
-import com.sun.javadoc.LanguageVersion;
-import com.sun.javadoc.PackageDoc;
-import com.sun.javadoc.RootDoc;
+
+import jdk.javadoc.doclet.Doclet;
+import jdk.javadoc.doclet.DocletEnvironment;
+import jdk.javadoc.doclet.Reporter;
 
 /**
  * Use hierarchy of POJO structs to generate a hierarchy of Javabeans.
@@ -57,8 +60,9 @@ import com.sun.javadoc.RootDoc;
  * @version 23.07.00
  * @since 17.09.00
  */
-public class ExpanderDoclet
+public class ExpanderDoclet implements Doclet
 {
+	@Deprecated
 	private static String extractOptionName(String optionName)
 	{
 		return (optionName.startsWith("--")) ? optionName.substring(2) : optionName.substring(1);
@@ -69,6 +73,7 @@ public class ExpanderDoclet
 	 *
 	 * @return {@link LanguageVersion#JAVA_1_5}
 	 */
+	@Deprecated
 	public static LanguageVersion languageVersion()
 	{
 		return LanguageVersion.JAVA_1_5;
@@ -83,6 +88,7 @@ public class ExpanderDoclet
 	 *            the option name to test.
 	 * @return 0, 1 (flag arguments) or 2 (value argument).
 	 */
+	@Deprecated
 	public static int optionLength(String option)
 	{
 		try
@@ -104,6 +110,7 @@ public class ExpanderDoclet
 		return 0;
 	}
 
+	@Deprecated
 	private static DocletOptions readOptions(String[][] options)
 	{
 		final DocletOptions _result = new DocletOptions();
@@ -131,6 +138,7 @@ public class ExpanderDoclet
 		return _result;
 	}
 
+	@Deprecated
 	public static boolean start(RootDoc root)
 	{
 		final DocletOptions _options = readOptions(root.options());
@@ -140,6 +148,7 @@ public class ExpanderDoclet
 		return true;
 	}
 
+	@Deprecated
 	private void execute(RootDoc root, DocletOptions options)
 	{
 		System.out.println("ExpanderDoclet running with : \n" + options.toString());
@@ -159,6 +168,7 @@ public class ExpanderDoclet
 
 	}
 
+	@Deprecated
 	private void generateBuilder(ClassSpecs classSpecs, PrintStream out, DocletOptions options)
 	{
 		new Builder<>(new BasicBuilderGenerator())//
@@ -168,6 +178,7 @@ public class ExpanderDoclet
 				.done().generate();
 	}
 
+	@Deprecated
 	private void generateJavabean(ClassSpecs classSpecs, PrintStream out, DocletOptions options)
 	{
 		new Builder<>(new BasicJavabeanGenerator())//
@@ -186,6 +197,7 @@ public class ExpanderDoclet
 	 *            the options.
 	 * @return a File descriptor.
 	 */
+	@Deprecated
 	private File getFileToGenerate(String qualifiedName, DocletOptions options)
 	{
 		final String filePath = options.d + File.separatorChar + qualifiedName.replace('.', File.separatorChar) + ".java";
@@ -198,6 +210,7 @@ public class ExpanderDoclet
 		return _result;
 	}
 
+	@Deprecated
 	private void processPojoClass(ClassDoc pojo, final Map<String, String> translations, DocletOptions options)
 	{
 		final ClassSpecs _classSpecs = new CodeSpecsExtractor().extractSpecs(pojo, translations, options, ExtractionMode.EXPANDER);
@@ -233,6 +246,36 @@ public class ExpanderDoclet
 		{
 			_exception.printStackTrace();
 		}
+	}
+	
+	// =================== Doclet =================== 
+
+	@Override
+	public void init(Locale locale, Reporter reporter) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getName() {
+		return getClass().getSimpleName();
+	}
+
+	@Override
+	public Set<? extends Option> getSupportedOptions() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SourceVersion getSupportedSourceVersion() {
+		return SourceVersion.latest();
+	}
+
+	@Override
+	public boolean run(DocletEnvironment environment) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

@@ -16,6 +16,10 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
+
 import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs;
 import com.sporniket.libre.javabeans.doclet.codespecs.ImportSpecs_Builder;
 import com.sun.javadoc.AnnotationDesc;
@@ -619,7 +623,7 @@ public final class UtilsClassDoc
 	 * @param toScan
 	 *            the class to scan.
 	 */
-	public static Collection<ImportSpecs> updateKnownClasses(ClassDoc toScan)
+	public static Collection<ImportSpecs> updateKnownClasses(TypeElement toScan)
 	{
 		final Map<String, ImportSpecs> _knownClasses = new HashMap<>();
 		updateKnownClasses(_knownClasses, toScan, true, false);
@@ -636,14 +640,14 @@ public final class UtilsClassDoc
 	 *            the type to scan.
 	 */
 	@Deprecated
-	private static void updateKnownClasses(Collection<String> knownClasses, Type toScan)
+	private static void updateKnownClasses(Collection<String> knownClasses, TypeMirror toScan)
 	{
 		if (null != toScan.asTypeVariable())
 		{
 			// skip type variables
 			return;
 		}
-		final ParameterizedType _pt = toScan.asParameterizedType();
+		final DeclaredType _pt = toScan.asParameterizedType();
 		if (null != _pt)
 		{
 			Arrays.asList(_pt.typeArguments()).forEach(t -> updateKnownClasses(knownClasses, t));

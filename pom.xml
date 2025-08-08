@@ -9,7 +9,7 @@
 
 	<properties>
 		<url.base>https://github.com/sporniket/core</url.base>
-		<version.jdk>1.8</version.jdk>
+		<version.jdk>24</version.jdk>
 
 		<version.dependency.sporniket.core>19.02.00</version.dependency.sporniket.core>
 		<version.dependency.junit>5.4.0</version.dependency.junit>
