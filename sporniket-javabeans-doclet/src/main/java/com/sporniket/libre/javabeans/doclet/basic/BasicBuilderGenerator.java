@@ -3,6 +3,7 @@ package com.sporniket.libre.javabeans.doclet.basic;
 import static com.sporniket.libre.javabeans.doclet.codespecs.Comparators.IMPORT_SPECS_COMPARATOR_NATURAL;
 import static java.lang.String.join;
 
+import java.io.PrintStream;
 import java.util.TreeSet;
 
 import com.sporniket.libre.javabeans.doclet.BuilderGenerator;
@@ -45,17 +46,17 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 {
 
 	@Override
-	public void outputClassBegin()
+	public void outputClassBegin(PrintStream out)
 	{
 		final String[] _javadocLines = getClassSpecs().getJavadocLines();
 		if (null != _javadocLines && 0 < _javadocLines.length)
 		{
-			getOut().printf("/**%s\n*/\n", join("\n", _javadocLines));
+			out.printf("/**%s\n*/\n", join("\n", _javadocLines));
 		}
 		getClassSpecs().getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnBuilder)//
-				.forEach(a -> getOut().printf("@%s\n", a.getType()));
-		getOut().printf("public class %s%s%s {\n", //
+				.forEach(a -> out.printf("@%s\n", a.getType()));
+		out.printf("public class %s%s%s {\n", //
 				getClassSpecs().getClassName(), //
 				getOptions().getBuilderSuffix(), //
 				getClassSpecs().getDeclaredTypeArguments()//
@@ -63,14 +64,14 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 	}
 
 	@Override
-	public void outputConstructors()
+	public void outputConstructors(PrintStream out)
 	{
 		String _constructorName = getClassSpecs().getClassName() + getOptions().getBuilderSuffix();
 
 		if (!getClassSpecs().isAbstractRequired())
 		{
 			// default constructor.
-			getOut().printf("    /**Default constructor. \n     */\n    public %s() {bean = new %s%s() ;}\n\n", //
+			out.printf("    /**Default constructor. \n     */\n    public %s() {bean = new %s%s() ;}\n\n", //
 					_constructorName, //
 					getClassSpecs().getClassName(), //
 					getClassSpecs().getInvokedTypeArguments() //
@@ -78,7 +79,7 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 		}
 
 		// constructor that delegates the bean instanciation.
-		getOut().printf(
+		out.printf(
 				"    /**Constructor that delegates the bean instanciation. \n     * @param newBean the instanciated bean to use.\n     */\n    public %s(%s%s newBean) {bean = newBean ;}\n\n", //
 				_constructorName, //
 				getClassSpecs().getClassName(), //
@@ -88,44 +89,44 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 	}
 
 	@Override
-	public void outputFields()
+	public void outputFields(PrintStream out)
 	{
 		// bean instance
-		getOut().printf("    private final %s%s bean ;\n\n", //
+		out.printf("    private final %s%s bean ;\n\n", //
 				getClassSpecs().getClassName(), //
 				getClassSpecs().getInvokedTypeArguments()//
 		);
 
 		// bean getter
-		getOut().printf("    public %s%s done() {return bean ;}\n\n", //
+		out.printf("    public %s%s done() {return bean ;}\n\n", //
 				getClassSpecs().getClassName(), //
 				getClassSpecs().getInvokedTypeArguments()//
 		);
 	}
 
 	@Override
-	public void outputImportStatements()
+	public void outputImportStatements(PrintStream out)
 	{
 		TreeSet<ImportSpecs> _sortedImports = new TreeSet<ImportSpecs>(IMPORT_SPECS_COMPARATOR_NATURAL);
 		_sortedImports.addAll(getClassSpecs().getImports());
-		_sortedImports.stream().forEach(i -> outputImportSpecIfValid(i));
+		_sortedImports.stream().forEach(i -> outputImportSpecIfValid(i, out));
 
-		getOut().println();
+		out.println();
 	}
 
-	private void outputSetter(final FieldSpecs field)
+	private void outputSetter(final FieldSpecs field, PrintStream out)
 	{
 		final String[] _javadocLines = field.getJavadocLines();
 		// setter
 		if (null != _javadocLines && 0 < _javadocLines.length)
 		{
-			getOut().printf("/**@param value\n%s\n*/\n", join("\n", _javadocLines));
+			out.printf("/**@param value\n%s\n*/\n", join("\n", _javadocLines));
 		}
 		field.getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnBuilder)//
 				.filter(AnnotationSpecs::isOnSetter)//
-				.forEach(a -> getOut().printf("    @%s\n", a.getType()));
-		getOut().printf("    public %s%s%s with%s(%s%s value) {bean.set%s(value); return this;}\n", //
+				.forEach(a -> out.printf("    @%s\n", a.getType()));
+		out.printf("    public %s%s%s with%s(%s%s value) {bean.set%s(value); return this;}\n", //
 				getClassSpecs().getClassName(), //
 				getOptions().getBuilderSuffix(), //
 				getClassSpecs().getInvokedTypeArguments(), //
@@ -137,8 +138,8 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 	}
 
 	@Override
-	public void outputSetters()
+	public void outputSetters(PrintStream out)
 	{
-		getClassSpecs().getFields().stream().forEach(f -> outputSetter(f));
+		getClassSpecs().getFields().stream().forEach(f -> outputSetter(f, out));
 	}
 }

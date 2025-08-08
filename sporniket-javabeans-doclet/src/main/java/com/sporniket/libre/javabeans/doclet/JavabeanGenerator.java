@@ -3,6 +3,8 @@
  */
 package com.sporniket.libre.javabeans.doclet;
 
+import java.io.PrintStream;
+
 /**
  * Specialized source generator for generating javabeans.
  *
@@ -36,16 +38,16 @@ package com.sporniket.libre.javabeans.doclet;
  */
 public interface JavabeanGenerator extends JavaSourceGenerator
 {
-	void outputAccessors();
+	void outputAccessors(PrintStream out);
 
 	@Override
-	default void outputClassBody()
+	default void outputClassBody(PrintStream out)
 	{
-		outputFields();
+		outputFields(out);
 
-		outputAccessors();
+		outputAccessors(out);
 	}
 
-	void outputFields();
+	void outputFields(PrintStream out);
 
 }

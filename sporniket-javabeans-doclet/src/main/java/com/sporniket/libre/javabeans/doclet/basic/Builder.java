@@ -66,10 +66,4 @@ public class Builder<G extends BasicGenerator>
 		return this;
 	}
 
-	public Builder<G> withOut(PrintStream out)
-	{
-		myGenerator.setOut(out);
-		return this;
-	}
-
 }

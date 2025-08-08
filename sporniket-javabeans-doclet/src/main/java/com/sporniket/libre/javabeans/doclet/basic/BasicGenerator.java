@@ -56,40 +56,33 @@ public abstract class BasicGenerator extends BasicGeneratorBase implements JavaS
 		return c -> (!containingPackageName.equals(getPackageName(c)));
 	}
 
-	protected void outputAnnotation(AnnotationSpecs annotations, String indentation)
+	protected void outputAnnotation(AnnotationSpecs annotations, String indentation, PrintStream out)
 	{
-		annotationGenerator.outputAnnotation(annotations, indentation);
+		annotationGenerator.outputAnnotation(annotations, indentation, out);
 	}
 
 	@Override
-	public void outputClassEnd()
+	public void outputClassEnd(PrintStream out)
 	{
-		getOut().println("}\n");
+		out.println("}\n");
 	}
 
-	protected void outputImportSpecIfValid(ImportSpecs specs)
+	protected void outputImportSpecIfValid(ImportSpecs specs, PrintStream out)
 	{
 		final String _packageName = getPackageName(specs.getClassName());
 		if (!"?".equals(specs.getClassName())//
 				&& !PACKAGE_NAME__JAVA_LANG.equals(_packageName)//
 				&& !getClassSpecs().getPackageName().equals(_packageName))
 		{
-			getOut().printf("import %s;\n", specs.getClassName());
+			out.printf("import %s;\n", specs.getClassName());
 		}
 	}
 
 	@Override
-	public void outputPackageStatement()
+	public void outputPackageStatement(PrintStream out)
 	{
-		getOut().printf("package %s;\n", getClassSpecs().getPackageName());
+		out.printf("package %s;\n", getClassSpecs().getPackageName());
 
-		getOut().println();
-	}
-
-	@Override
-	public void setOut(PrintStream out)
-	{
-		super.setOut(out);
-		annotationGenerator.setOut(out);
+		out.println();
 	}
 }

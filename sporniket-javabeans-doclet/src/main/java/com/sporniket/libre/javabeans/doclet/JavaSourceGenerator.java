@@ -3,6 +3,8 @@
  */
 package com.sporniket.libre.javabeans.doclet;
 
+import java.io.PrintStream;
+
 /**
  * Interface of a java source code generator.
  *
@@ -36,23 +38,23 @@ package com.sporniket.libre.javabeans.doclet;
  */
 public interface JavaSourceGenerator
 {
-	default void generate()
+	default void generate(PrintStream out)
 	{
-		outputPackageStatement();
-		outputImportStatements();
+		outputPackageStatement(out);
+		outputImportStatements(out);
 
-		outputClassBegin();
-		outputClassBody();
-		outputClassEnd();
+		outputClassBegin(out);
+		outputClassBody(out);
+		outputClassEnd(out);
 	}
 
-	void outputClassBegin();
+	void outputClassBegin(PrintStream out);
 
-	void outputClassBody();
+	void outputClassBody(PrintStream out);
 
-	void outputClassEnd();
+	void outputClassEnd(PrintStream out);
 
-	void outputImportStatements();
+	void outputImportStatements(PrintStream out);
 
-	void outputPackageStatement();
+	void outputPackageStatement(PrintStream out);
 }

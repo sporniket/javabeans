@@ -42,8 +42,6 @@ public class BasicGeneratorBase
 
 	private DocletOptions myOptions;
 
-	private PrintStream myOut;
-
 	public BasicGeneratorBase()
 	{
 		super();
@@ -59,11 +57,6 @@ public class BasicGeneratorBase
 		return myOptions;
 	}
 
-	public PrintStream getOut()
-	{
-		return myOut;
-	}
-
 	public void setClassSpecs(ClassSpecs classSpecs)
 	{
 		myClassSpecs = classSpecs;
@@ -72,10 +65,5 @@ public class BasicGeneratorBase
 	public void setOptions(DocletOptions options)
 	{
 		myOptions = options;
-	}
-
-	public void setOut(PrintStream out)
-	{
-		myOut = out;
 	}
 }

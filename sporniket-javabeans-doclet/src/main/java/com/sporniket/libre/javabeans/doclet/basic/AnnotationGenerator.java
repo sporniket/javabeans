@@ -5,6 +5,7 @@ package com.sporniket.libre.javabeans.doclet.basic;
 
 import static com.sporniket.libre.javabeans.doclet.basic.Utils.NEXT_INDENTATION;
 
+import java.io.PrintStream;
 import java.util.List;
 
 import com.sporniket.libre.javabeans.doclet.codespecs.AnnotationParameterSpecs;
@@ -76,7 +77,7 @@ public class AnnotationGenerator extends BasicGeneratorBase
 		return _result.append("\n").append(indentation).append("}").toString();
 	}
 
-	public void outputAnnotation(AnnotationSpecs annotations, String indentation)
+	public void outputAnnotation(AnnotationSpecs annotations, String indentation, PrintStream out)
 	{
 		final List<AnnotationParameterSpecs> _parameters = annotations.getParameters();
 		if (null != _parameters && !_parameters.isEmpty())
@@ -104,11 +105,11 @@ public class AnnotationGenerator extends BasicGeneratorBase
 				}
 				_parametersValueStatement.append("\n");
 			}
-			getOut().printf(_format, annotations.getType(), _parametersValueStatement.toString());
+			out.printf(_format, annotations.getType(), _parametersValueStatement.toString());
 		}
 		else
 		{
-			getOut().printf(indentation + "@%s\n", annotations.getType());
+			out.printf(indentation + "@%s\n", annotations.getType());
 		}
 	}
 

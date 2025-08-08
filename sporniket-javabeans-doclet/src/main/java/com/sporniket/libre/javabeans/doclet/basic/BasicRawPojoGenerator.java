@@ -4,6 +4,7 @@ import static com.sporniket.libre.javabeans.doclet.basic.Utils.NEXT_INDENTATION;
 import static com.sporniket.libre.javabeans.doclet.codespecs.Comparators.IMPORT_SPECS_COMPARATOR_NATURAL;
 import static java.lang.String.join;
 
+import java.io.PrintStream;
 import java.util.TreeSet;
 import java.util.function.Consumer;
 
@@ -47,13 +48,13 @@ public class BasicRawPojoGenerator extends BasicGenerator implements JavabeanGen
 {
 
 	@Override
-	public void outputAccessors()
+	public void outputAccessors(PrintStream out)
 	{
 		// nothing to do
 	}
 
 	@Override
-	public void outputClassBegin()
+	public void outputClassBegin(PrintStream out)
 	{
 		final String _classMarker = getClassSpecs().isAbstractRequired() ? "abstract class" : "class";
 		final String _extendsMarker = StringTools.isEmptyString(getClassSpecs().getSuperClassName()) ? "" : "\n        extends ";
@@ -62,44 +63,44 @@ public class BasicRawPojoGenerator extends BasicGenerator implements JavabeanGen
 		final String[] _javadocLines = getClassSpecs().getJavadocLines();
 		if (null != _javadocLines && 0 < _javadocLines.length)
 		{
-			getOut().printf("/**%s\n*/\n", join("\n", _javadocLines));
+			out.printf("/**%s\n*/\n", join("\n", _javadocLines));
 		}
-		final Consumer<? super AnnotationSpecs> _outputAnnotation = a -> outputAnnotation(a, "");
+		final Consumer<? super AnnotationSpecs> _outputAnnotation = a -> outputAnnotation(a, "", out);
 		getClassSpecs().getAnnotations().stream()//
 				.forEach(_outputAnnotation);
-		getOut().printf("%s %s%s%s%s%s%s\n{\n\n", //
+		out.printf("%s %s%s%s%s%s%s\n{\n\n", //
 				_classMarker, getClassSpecs().getClassName(), getClassSpecs().getDeclaredTypeArguments()//
 				, _extendsMarker, getClassSpecs().getSuperClassName()//
 				, _implementsMarker, getClassSpecs().getInterfaceList()//
 		);
 	}
 
-	private void outputField(FieldSpecs field)
+	private void outputField(FieldSpecs field, PrintStream out)
 	{
 		final String[] _javadocLines = field.getJavadocLines();
 		if (null != _javadocLines && 0 < _javadocLines.length)
 		{
-			getOut().printf("/**%s\n*/\n", join("\n", _javadocLines));
+			out.printf("/**%s\n*/\n", join("\n", _javadocLines));
 		}
 		field.getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnField)//
-				.forEach(a -> outputAnnotation(a, NEXT_INDENTATION));
-		getOut().printf("    %s%s %s ;\n", field.getTypeInvocation(), field.getArrayMarker(), field.getNameForField());
+				.forEach(a -> outputAnnotation(a, NEXT_INDENTATION, out));
+		out.printf("    %s%s %s ;\n", field.getTypeInvocation(), field.getArrayMarker(), field.getNameForField());
 	}
 
 	@Override
-	public void outputFields()
+	public void outputFields(PrintStream out)
 	{
-		getClassSpecs().getFields().stream().filter(FieldSpecs::isDirectlyRequired).forEach(f -> outputField(f));
+		getClassSpecs().getFields().stream().filter(FieldSpecs::isDirectlyRequired).forEach(f -> outputField(f, out));
 	}
 
 	@Override
-	public void outputImportStatements()
+	public void outputImportStatements(PrintStream out)
 	{
 		TreeSet<ImportSpecs> _sortedImports = new TreeSet<ImportSpecs>(IMPORT_SPECS_COMPARATOR_NATURAL);
 		_sortedImports.addAll(getClassSpecs().getImports());
-		_sortedImports.stream().filter(ImportSpecs::isDirectlyRequired).forEach(i -> outputImportSpecIfValid(i));
+		_sortedImports.stream().filter(ImportSpecs::isDirectlyRequired).forEach(i -> outputImportSpecIfValid(i, out));
 
-		getOut().println();
+		out.println();
 	}
 }

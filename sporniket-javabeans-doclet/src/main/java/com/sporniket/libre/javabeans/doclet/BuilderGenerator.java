@@ -1,5 +1,7 @@
 package com.sporniket.libre.javabeans.doclet;
 
+import java.io.PrintStream;
+
 /**
  * Specialized source generator for generating javabean builders.
  *
@@ -35,18 +37,18 @@ public interface BuilderGenerator extends JavaSourceGenerator
 {
 
 	@Override
-	default void outputClassBody()
+	default void outputClassBody(PrintStream out)
 	{
-		outputFields();
+		outputFields(out);
 
-		outputConstructors();
+		outputConstructors(out);
 
-		outputSetters();
+		outputSetters(out);
 	}
 
-	void outputConstructors();
+	void outputConstructors(PrintStream out);
 
-	void outputFields();
+	void outputFields(PrintStream out);
 
-	void outputSetters();
+	void outputSetters(PrintStream out);
 }
