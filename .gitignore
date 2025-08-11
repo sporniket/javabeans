@@ -36,3 +36,5 @@ bin/
 
 #OpenOffice files
 *.ods
+# --- local files
+local.*
