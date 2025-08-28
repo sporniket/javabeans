@@ -34,6 +34,7 @@
 
 	<modules>
 		<module>sporniket-javabeans-models</module>
+		<module>sporniket-javabeans-processors</module>
 		<module>sporniket-javabeans-doclet</module>
 		<module>seeg-maven-plugin</module>
 	</modules>
