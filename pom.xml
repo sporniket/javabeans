@@ -33,9 +33,10 @@
 	<url>${url.base}/blob/master/${project.artifactId}</url>
 
 	<modules>
+		<module>sporniket-javabeans-models</module>
 		<module>sporniket-javabeans-doclet</module>
-	  <module>seeg-maven-plugin</module>
-  </modules>
+		<module>seeg-maven-plugin</module>
+	</modules>
 
 	<dependencyManagement>
 		<dependencies>

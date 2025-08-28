@@ -1,0 +1,161 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.sporniket.javabeans</groupId>
+		<artifactId>sporniket-javabeans</artifactId>
+		<version>23.07.01-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<artifactId>sporniket-javabeans-models</artifactId>
+	<packaging>jar</packaging>
+
+	<properties>
+		<!-- Using my own tool -->
+		<version.sporniket-javabeans-doclet>19.04.00</version.sporniket-javabeans-doclet>
+		<!-- maven plugins version -->
+		<version.maven-javadoc-plugin>3.0.1</version.maven-javadoc-plugin>
+	</properties>
+
+	<name>sporniket-javabeans-models</name>
+	<description>Java and javabeans models, hopefully independant from actual JDK.</description>
+	<url>${url.base}/blob/master/${project.artifactId}</url>
+
+	<distributionManagement>
+		<site>
+			<id>localMvnSite-${project.artifactId}</id>
+			<name>Sporniket Javabeans Generator - ${project.name}</name>
+			<url>${url.base.site.deploy}/${project.parent.artifactId}/module/${project.artifactId}/${project.version}</url>
+		</site>
+	</distributionManagement>
+	<dependencies>
+		<!-- ===INTERNAL DEPENDENCIES=== -->
+
+		<!-- ===EXTERNAL DEPENDENCIES (non test)=== -->
+		<!-- Sporniket core -->
+		<dependency>
+			<groupId>com.sporniket.core</groupId>
+			<artifactId>sporniket-core-io</artifactId>
+		</dependency>
+
+
+		<!-- ===TEST DEPENDENCIES=== -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- bdd assertions -->
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- json orm -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<!-- === javabeans generation using the doclets === -->
+			<!--plugin> //disabled until a migrated plugin is published
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${version.maven-javadoc-plugin}</version>
+				<executions>
+					<execution>
+						<id>expandJavabeans</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>javadoc-no-fork</goal>
+						</goals>
+						<configuration>
+							<doclet>com.sporniket.libre.javabeans.doclet.ExpanderDoclet</doclet>
+							<docletArtifact>
+								<groupId>com.sporniket.javabeans</groupId>
+								<artifactId>sporniket-javabeans-doclet</artifactId>
+								<version>${version.sporniket-javabeans-doclet}</version>
+							</docletArtifact>
+							<additionalOptions>
+								<additionalOption>-d</additionalOption>
+								<additionalOption>${project.build.directory}/generated-classes/javabeans</additionalOption>
+							</additionalOptions>
+							<show>private</show>
+							<sourceFileIncludes>
+								<sourceFileIncludes>com\/sporniket\/libre\/javabeans\/doclet\/codespecs\/\*.java</sourceFileIncludes>
+							</sourceFileIncludes>
+							<useStandardDocletOptions>false</useStandardDocletOptions>
+						</configuration>
+					</execution>
+					<execution>
+						<id>expandJavabeansTest</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>test-javadoc-no-fork</goal>
+						</goals>
+						<configuration>
+							<doclet>com.sporniket.libre.javabeans.doclet.ExpanderDoclet</doclet>
+							<docletArtifact>
+								<groupId>com.sporniket.javabeans</groupId>
+								<artifactId>sporniket-javabeans-doclet</artifactId>
+								<version>${version.sporniket-javabeans-doclet}</version>
+							</docletArtifact>
+							<additionalOptions>
+								<additionalOption>-d</additionalOption>
+								<additionalOption>${project.build.directory}/generated-classes-test/javabeans</additionalOption>
+								<additionalOption>-pojoSuffix</additionalOption>
+								<additionalOption>_Raw</additionalOption>
+							</additionalOptions>
+							<show>private</show>
+							<sourceFileIncludes>
+								<sourceFileIncludes>test\/sporniket\/libre\/javabeans\/mockjavadoc\/\*.java</sourceFileIncludes>
+							</sourceFileIncludes>
+							<useStandardDocletOptions>false</useStandardDocletOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</!plugin -->
+			<!-- === add generated Javabeans as source folder === -->
+			<!--plugin> //disabled until a migrated plugin is published
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>add-sources</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-classes/javabeans</source>
+							</sources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>add-test-sources</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-classes-test/javabeans</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin-->
+		</plugins>
+	</build>
+</project>
