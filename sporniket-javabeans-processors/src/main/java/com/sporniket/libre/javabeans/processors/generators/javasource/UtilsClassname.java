@@ -55,7 +55,8 @@ public final class UtilsClassname
 	 *            the registry of fully qualified class names of imported classes.
 	 * @return the class simple name if in shortables
 	 */
-	public static String computeOutputClassname(String classToOutput, Map<String, String> translations, Set<String> shortables)
+	public static String computeOutputClassname(final String classToOutput, final Map<String, String> translations,
+			final Set<String> shortables)
 	{
 		final String _translatedName = (translations.containsKey(classToOutput)) ? translations.get(classToOutput) : classToOutput;
 		return computeOutputClassname(_translatedName, shortables);
@@ -70,7 +71,7 @@ public final class UtilsClassname
 	 *            the registry of fully qualified class names of imported classes.
 	 * @return the class simple name if in shortables
 	 */
-	public static String computeOutputClassname(String classToOutput, Set<String> shortables)
+	public static String computeOutputClassname(final String classToOutput, final Set<String> shortables)
 	{
 		return (shortables.contains(classToOutput)) ? getSimpleName(classToOutput) : classToOutput;
 	}
@@ -82,7 +83,7 @@ public final class UtilsClassname
 	 *            the fully qualified class name.
 	 * @return the fully qualified package name of the class.
 	 */
-	public static String getPackageName(String fullClassName)
+	public static String getPackageName(final String fullClassName)
 	{
 		final int _lastIndexOfDot = fullClassName.lastIndexOf('.');
 		return fullClassName.substring(0, (_lastIndexOfDot < 0) ? 0 : _lastIndexOfDot);
@@ -102,19 +103,34 @@ public final class UtilsClassname
 	 *            the suffix that builder class names MUST have, excluding class that have the suffix for name.
 	 * @return the translation map.
 	 */
-	public static Map<String, String> getReverseTranslationMapWhenPojosAreSuffixed(Set<String> registry, Set<String> sourcePackages,
-			String pojoSuffix, String builderSuffix)
+	public static Map<String, String> getReverseTranslationMapWhenPojosAreSuffixed(final Set<String> registry,
+			final Set<String> sourcePackages, final String pojoSuffix, final String builderSuffix)
 	{
 		// use a map with keys sorted in reverse order, so that looping on keys to translate something do not overlap.
 		final Map<String, String> result = new TreeMap<>(STRING_COMPARATOR_REVERSE);
-		final Predicate<String> _isPojo = c -> sourcePackages.contains(getPackageName(c)) && !pojoSuffix.equals(getSimpleName(c))
-				&& c.endsWith(pojoSuffix);
-		final Predicate<String> _isBuilder = c -> sourcePackages.contains(getPackageName(c))
-				&& !builderSuffix.equals(getSimpleName(c)) && c.endsWith(builderSuffix);
+		final Predicate<String> _isPojo = c -> !pojoSuffix.equals(getSimpleName(c)) && c.endsWith(pojoSuffix);
+		final Predicate<String> _isBuilder = c -> !builderSuffix.equals(getSimpleName(c)) && c.endsWith(builderSuffix);
 
-		registry.stream().filter(_isBuilder.negate()).filter(_isPojo.negate()).forEach(c -> {
-			result.put(c, c + pojoSuffix);
-		});
+		if (sourcePackages == null || sourcePackages.isEmpty())
+		{
+			registry.stream() //
+					.filter(_isBuilder.negate()) //
+					.filter(_isPojo.negate()) //
+					.forEach(c -> {
+						result.put(c, c + pojoSuffix);
+					});
+		}
+		else
+		{
+			final Predicate<String> _isInSourcePackages = c -> sourcePackages.contains(getPackageName(c));
+			registry.stream() //
+					.filter(_isInSourcePackages) //
+					.filter(_isBuilder.negate()) //
+					.filter(_isPojo.negate()) //
+					.forEach(c -> {
+						result.put(c, c + pojoSuffix);
+					});
+		}
 
 		return result;
 	}
@@ -126,7 +142,7 @@ public final class UtilsClassname
 	 *            the fully qualified class name.
 	 * @return the class simple name.
 	 */
-	public static String getSimpleName(String fullClassName)
+	public static String getSimpleName(final String fullClassName)
 	{
 		return fullClassName.substring(fullClassName.lastIndexOf('.') + 1);
 	}
@@ -144,8 +160,8 @@ public final class UtilsClassname
 	 *            the suffix that pojo class names MUST have, excluding class that have the suffix for name.
 	 * @return the translation map.
 	 */
-	public static Map<String, String> getTranslationMapWhenPojosAreSuffixed(Set<String> registry, Set<String> sourcePackages,
-			String pojoSuffix)
+	public static Map<String, String> getTranslationMapWhenPojosAreSuffixed(final Set<String> registry,
+			final Set<String> sourcePackages, final String pojoSuffix)
 	{
 		// use a map with keys sorted in reverse order, so that looping on keys to translate something do not overlap.
 		final Map<String, String> result = new TreeMap<>(STRING_COMPARATOR_REVERSE);
@@ -174,7 +190,7 @@ public final class UtilsClassname
 	 *            the suffix to remove.
 	 * @return the result if the input are corrects.
 	 */
-	public static String removeSuffixFromClassName(String name, String suffix)
+	public static String removeSuffixFromClassName(final String name, final String suffix)
 	{
 		return name.substring(0, name.length() - suffix.length());
 	}
@@ -187,7 +203,8 @@ public final class UtilsClassname
 	 * @param registry
 	 *            a registry of candidate fully qualified class names to add into the mapping.
 	 */
-	public static void updateShortClassnameMappingFromClassnames(Map<String, String> mapping, Collection<String> registry)
+	public static void updateShortClassnameMappingFromClassnames(final Map<String, String> mapping,
+			final Collection<String> registry)
 	{
 		registry.forEach(c -> {
 			final String _simpleName = getSimpleName(c);
