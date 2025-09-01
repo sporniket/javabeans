@@ -1,6 +1,7 @@
 package com.sporniket.libre.javabeans.processors.generators.javasource;
 
 import static java.util.Arrays.asList;
+import static java.util.Map.entry;
 import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Arrays;
@@ -8,10 +9,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
 
 /**
  * <p>
@@ -44,88 +46,181 @@ import org.junit.jupiter.api.Test;
  */
 public class UtilsClassnameTest
 {
-	@Test
-	public void test__computeOutputClassname()
+	@Nested
+	class Describe__computeOutputClassname
 	{
-		// prepare
-		Set<String> _shortables = new HashSet<>(asList("foo.bar.Sample"));
-		Map<String, String> _translations = new HashMap<>(1);
-		_translations.put("foo.bar.WhateverRaw", "foo.bar.Sample");
-		// execute
-		String _toTestShortable = UtilsClassname.computeOutputClassname("foo.bar.WhateverRaw", _translations, _shortables);
-		String _toTestUnshortable = UtilsClassname.computeOutputClassname("foo.bar.WhoCaresRaw", _translations, _shortables);
-		// verify
-		then(_toTestShortable).isEqualTo("Sample");
-		then(_toTestUnshortable).isEqualTo("foo.bar.WhoCaresRaw");
+		static Set<String> theShortables = Set.of("foo.bar.Sample");
+
+		@Nested
+		class WithoutTranslations
+		{
+			@Test
+			void should_return_simple_name_when_input_is_in_shortables()
+			{
+				final String _input = "foo.bar.Sample";
+				// verify input requirements
+				then(theShortables).contains(_input);
+
+				// execute and verify
+				then(UtilsClassname.computeOutputClassname(_input, theShortables)).isEqualTo("Sample");
+			}
+
+			@Test
+			void should_return_qualified_name_when_input_is_not_in_shortables()
+			{
+				final String _input = "foo.bar.Whatever";
+				// verify input requirements
+				then(theShortables).doesNotContain(_input);
+
+				// execute and verify
+				then(UtilsClassname.computeOutputClassname(_input, theShortables)).isEqualTo(_input);
+			}
+		}
+
+		@Nested
+		class WithTranslations
+		{
+			Map<String, String> theTranslations = Map.of("foo.bar.WhateverRaw", "foo.bar.Sample", "foo.bar.AnotherRaw",
+					"foo.bar.NotShortable");
+
+			@Nested
+			class WhenInputNameHasNoTranslation
+			{
+				@Test
+				void should_return_simple_untranslated_name_when_untranslated_input_is_in_shortables()
+				{
+					final String _input = "foo.bar.Sample";
+					// verify input requirements
+					then(theTranslations).doesNotContainKey(_input);
+					then(theShortables).contains(_input);
+
+					// execute and verify
+					then(UtilsClassname.computeOutputClassname(_input, theTranslations, theShortables)).isEqualTo("Sample");
+				}
+
+				@Test
+				void should_return_qualified_untranslated_name_when_untranslated_input_is_not_in_shortables()
+				{
+					final String _input = "foo.bar.AnotherUntranslatable";
+					// verify input requirements
+					then(theTranslations).doesNotContainKey(_input);
+					then(theShortables).doesNotContain(_input);
+
+					// execute and verify
+					then(UtilsClassname.computeOutputClassname(_input, theTranslations, theShortables))
+							.isEqualTo("foo.bar.AnotherUntranslatable");
+				}
+			}
+
+			@Nested
+			class WhenInputNameHasTranslation
+			{
+				@Test
+				void should_return_simple_translated_name_when_translated_input_is_in_shortables()
+				{
+					final String _input = "foo.bar.WhateverRaw";
+					// verify input requirements
+					then(theTranslations).contains(entry(_input, "foo.bar.Sample"));
+					then(theShortables).contains(theTranslations.get(_input));
+
+					// execute and verify
+					then(UtilsClassname.computeOutputClassname(_input, theTranslations, theShortables)).isEqualTo("Sample");
+				}
+
+				@Test
+				void should_return_qualified_translated_name_when_translated_input_is_not_in_shortables()
+				{
+					final String _input = "foo.bar.AnotherRaw";
+					final String _translation = "foo.bar.NotShortable";
+					// verify input requirements
+					then(theTranslations).contains(entry(_input, _translation));
+					then(theShortables).doesNotContain(theTranslations.get(_input));
+
+					// execute and verify
+					then(UtilsClassname.computeOutputClassname(_input, theTranslations, theShortables)).isEqualTo(_translation);
+				}
+			}
+		}
 	}
 
-	@Test
-	public void test__computeOutputClassname__noTranslations()
+	@Nested
+	class Describle__getPackageName
 	{
-		// prepare
-		Set<String> _shortables = new HashSet<>(asList("foo.bar.Sample"));
-		// execute
-		String _toTestShortable = UtilsClassname.computeOutputClassname("foo.bar.Sample", _shortables);
-		String _toTestUnshortable = UtilsClassname.computeOutputClassname("foo.bar.Whatever", _shortables);
-		// verify
-		then(_toTestShortable).isEqualTo("Sample");
-		then(_toTestUnshortable).isEqualTo("foo.bar.Whatever");
+		@Test
+		public void should_return_package_name_from_fully_qualified_class_name()
+		{
+			// execute and verify
+			then(UtilsClassname.getPackageName("foo.bar.MyClass")).isEqualTo("foo.bar");
+		}
+
+		@Test
+		public void should_return_empty_package_name_when_class_is_in_default_package()
+		{
+			// execute and verify
+			then(UtilsClassname.getPackageName("MyClass")).isEqualTo("");
+		}
 	}
 
-	@Test
-	public void test__getPackageName()
+	@Nested
+	class Describle__getSimpleName
 	{
-		// prepare
-		// execute
-		String _toTest = UtilsClassname.getPackageName(Object.class.getName());
-		// verify
-		then(_toTest).isEqualTo(Object.class.getPackage().getName());
+		@Test
+		public void should_return_the_simple_name_of_fully_qualified_class_name()
+		{
+			// execute and verify
+			then(UtilsClassname.getSimpleName("foo.bar.MyClass")).isEqualTo("MyClass");
+			then(UtilsClassname.getSimpleName("MyClass")).isEqualTo("MyClass");
+		}
 	}
 
-	@Test
-	public void test__getSimpleName()
+	@Nested
+	class Describle__getTranslationMapWhenPojosAreSuffixed
 	{
-		// prepare
-		// execute
-		String _toTest = UtilsClassname.getSimpleName(Object.class.getName());
-		// verify
-		then(_toTest).isEqualTo(Object.class.getSimpleName());
+		@Test
+		public void should_create_translation_map_of_pojo_by_suffixed_names()
+		{
+			// prepare
+			Set<String> _registry = new HashSet<>(asList("foo.bar.Bar", "foo.BearRaw", "foo.bar.Raw", "foo.bar.sampleRaw"));
+			Set<String> _sourcePackages = new HashSet<>(asList("foo.bar", "foo.bar.bir"));
+			// execute
+			Map<String, String> _toTest = UtilsClassname.getTranslationMapWhenPojosAreSuffixed(_registry, _sourcePackages, "Raw");
+			// verify
+			then(_toTest).hasSize(1);
+			then(_toTest.get("foo.bar.sampleRaw")).isEqualTo("foo.bar.sample");
+		}
+
 	}
 
-	@Test
-	public void test__getTranslationMapWhenPojosAreSuffixed()
+	@Nested
+	class Describe__removeSuffixFromClassName
 	{
-		// prepare
-		Set<String> _registry = new HashSet<>(asList("foo.bar.Bar", "foo.BearRaw", "foo.bar.Raw", "foo.bar.sampleRaw"));
-		Set<String> _sourcePackages = new HashSet<>(asList("foo.bar", "foo.bar.bir"));
-		// execute
-		Map<String, String> _toTest = UtilsClassname.getTranslationMapWhenPojosAreSuffixed(_registry, _sourcePackages, "Raw");
-		// verify
-		then(_toTest).hasSize(1);
-		then(_toTest.get("foo.bar.sampleRaw")).isEqualTo("foo.bar.sample");
+		@Test
+		public void should_remove_suffix_from_class_name()
+		{
+			// prepare
+			// execute
+			String _toTest = UtilsClassname.removeSuffixFromClassName("foobar", "bar");
+			// verify
+			then(_toTest).isEqualTo("foo");
+		}
 	}
 
-	@Test
-	public void test__removeSuffixFromClassName()
+	@Nested
+	class Describe__updateShortClassnameMappingFromClassnames
 	{
-		// prepare
-		// execute
-		String _toTest = UtilsClassname.removeSuffixFromClassName("foobar", "bar");
-		// verify
-		then(_toTest).isEqualTo("foo");
+		@Test
+		public void should_update_class_name_mapping_by_short_name()
+		{
+			// prepare
+			List<String> _registry = Arrays.asList("foo.bar.bar", "foo.foo.bar", "foo.fee");
+			Map<String, String> _mapping = new HashMap<>(_registry.size());
+			// execute
+			UtilsClassname.updateShortClassnameMappingFromClassnames(_mapping, _registry);
+			// verify
+			then(_mapping).hasSize(2);
+			then(_mapping.get("bar")).isEqualTo("foo.bar.bar");
+			then(_mapping.get("fee")).isEqualTo("foo.fee");
+		}
 	}
 
-	@Test
-	public void test__updateShortClassnameMappingFromClassnames()
-	{
-		// prepare
-		List<String> _registry = Arrays.asList("foo.bar.bar", "foo.foo.bar", "foo.fee");
-		Map<String, String> _mapping = new HashMap<>(_registry.size());
-		// execute
-		UtilsClassname.updateShortClassnameMappingFromClassnames(_mapping, _registry);
-		// verify
-		then(_mapping).hasSize(2);
-		then(_mapping.get("bar")).isEqualTo("foo.bar.bar");
-		then(_mapping.get("fee")).isEqualTo("foo.fee");
-	}
 }
