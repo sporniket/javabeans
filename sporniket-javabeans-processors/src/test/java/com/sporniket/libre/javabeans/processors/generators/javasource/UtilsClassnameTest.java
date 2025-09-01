@@ -1,15 +1,11 @@
 package com.sporniket.libre.javabeans.processors.generators.javasource;
 
-import static java.util.Arrays.asList;
 import static java.util.Map.entry;
 import static org.assertj.core.api.BDDAssertions.then;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.junit.jupiter.api.Nested;
@@ -20,26 +16,26 @@ import org.junit.jupiter.api.Test;
  * &copy; Copyright 2012-2023 David Sporn
  * </p>
  * <hr>
- * 
+ *
  * <p>
  * This file is part of <i>The Sporniket Javabeans Project &#8211; doclet</i>.
- * 
+ *
  * <p>
  * <i>The Sporniket Javabeans Project &#8211; doclet</i> is free software: you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at
  * your option) any later version.
- * 
+ *
  * <p>
  * <i>The Sporniket Javabeans Project &#8211; doclet</i> is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
  * Public License for more details.
- * 
+ *
  * <p>
  * You should have received a copy of the GNU Lesser General Public License along with <i>The Sporniket Javabeans Library &#8211;
  * core</i>. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. 2
- * 
+ *
  * <hr>
- * 
+ *
  * @author David SPORN
  * @version 23.07.00
  * @since 17.09.01
@@ -49,7 +45,7 @@ public class UtilsClassnameTest
 	@Nested
 	class Describe__computeOutputClassname
 	{
-		static Set<String> theShortables = Set.of("foo.bar.Sample");
+		private static final Set<String> theShortables = Set.of("foo.bar.Sample");
 
 		@Nested
 		class WithoutTranslations
@@ -80,8 +76,8 @@ public class UtilsClassnameTest
 		@Nested
 		class WithTranslations
 		{
-			Map<String, String> theTranslations = Map.of("foo.bar.WhateverRaw", "foo.bar.Sample", "foo.bar.AnotherRaw",
-					"foo.bar.NotShortable");
+			private static final Map<String, String> theTranslations = Map.of("foo.bar.WhateverRaw", "foo.bar.Sample",
+					"foo.bar.AnotherRaw", "foo.bar.NotShortable");
 
 			@Nested
 			class WhenInputNameHasNoTranslation
@@ -108,7 +104,7 @@ public class UtilsClassnameTest
 
 					// execute and verify
 					then(UtilsClassname.computeOutputClassname(_input, theTranslations, theShortables))
-							.isEqualTo("foo.bar.AnotherUntranslatable");
+					.isEqualTo("foo.bar.AnotherUntranslatable");
 				}
 			}
 
@@ -176,17 +172,58 @@ public class UtilsClassnameTest
 	@Nested
 	class Describle__getTranslationMapWhenPojosAreSuffixed
 	{
+		private final Set<String> myRegistry = Set.of("foo.bar.Bar", "foo.BearRaw", "foo.bar.Raw", "foo.bar.sampleRaw",
+				"foo.bar.bir.BirRaw", "foo.bar.bor.BorRaw");
+
+		private final Set<String> mySourcePackages = Set.of("foo.bar", "foo.bar.bir");
+
 		@Test
 		public void should_create_translation_map_of_pojo_by_suffixed_names()
 		{
-			// prepare
-			Set<String> _registry = new HashSet<>(asList("foo.bar.Bar", "foo.BearRaw", "foo.bar.Raw", "foo.bar.sampleRaw"));
-			Set<String> _sourcePackages = new HashSet<>(asList("foo.bar", "foo.bar.bir"));
 			// execute
-			Map<String, String> _toTest = UtilsClassname.getTranslationMapWhenPojosAreSuffixed(_registry, _sourcePackages, "Raw");
+			final Map<String, String> _translationMap = UtilsClassname.getTranslationMapWhenPojosAreSuffixed(myRegistry,
+					mySourcePackages, "Raw");
+
 			// verify
-			then(_toTest).hasSize(1);
-			then(_toTest.get("foo.bar.sampleRaw")).isEqualTo("foo.bar.sample");
+			then(_translationMap).hasSize(2);
+			then(_translationMap).contains(entry("foo.bar.sampleRaw", "foo.bar.sample"),
+					entry("foo.bar.bir.BirRaw", "foo.bar.bir.Bir"));
+		}
+
+		@Test
+		public void should_process_all_classes_when_package_list_is_null()
+		{
+			// execute
+			final Map<String, String> _translationMap = UtilsClassname.getTranslationMapWhenPojosAreSuffixed(myRegistry, null,
+					"Raw");
+
+			// verify
+			then(_translationMap).hasSize(4);
+			then(_translationMap).contains( //
+					entry("foo.BearRaw", "foo.Bear"), //
+					entry("foo.bar.sampleRaw", "foo.bar.sample"), //
+					entry("foo.bar.bir.BirRaw", "foo.bar.bir.Bir"), //
+					entry("foo.bar.bor.BorRaw", "foo.bar.bor.Bor") //
+					);
+
+		}
+
+		@Test
+		public void should_process_all_classes_when_package_list_is_empty()
+		{
+			// execute
+			final Map<String, String> _translationMap = UtilsClassname.getTranslationMapWhenPojosAreSuffixed(myRegistry, Set.of(),
+					"Raw");
+
+			// verify
+			then(_translationMap).hasSize(4);
+			then(_translationMap).contains( //
+					entry("foo.BearRaw", "foo.Bear"), //
+					entry("foo.bar.sampleRaw", "foo.bar.sample"), //
+					entry("foo.bar.bir.BirRaw", "foo.bar.bir.Bir"), //
+					entry("foo.bar.bor.BorRaw", "foo.bar.bor.Bor") //
+			);
+
 		}
 
 	}
@@ -197,25 +234,25 @@ public class UtilsClassnameTest
 		@Test
 		public void should_remove_suffix_from_class_name()
 		{
-			// prepare
-			// execute
-			String _toTest = UtilsClassname.removeSuffixFromClassName("foobar", "bar");
-			// verify
-			then(_toTest).isEqualTo("foo");
+			// execute and verify
+			then(UtilsClassname.removeSuffixFromClassName("foobar", "bar")).isEqualTo("foo");
 		}
 	}
 
 	@Nested
 	class Describe__updateShortClassnameMappingFromClassnames
 	{
+		private final List<String> myRegistry = List.of("foo.bar.bar", "foo.foo.bar", "foo.fee");
+
 		@Test
 		public void should_update_class_name_mapping_by_short_name()
 		{
 			// prepare
-			List<String> _registry = Arrays.asList("foo.bar.bar", "foo.foo.bar", "foo.fee");
-			Map<String, String> _mapping = new HashMap<>(_registry.size());
+			final Map<String, String> _mapping = new HashMap<>(myRegistry.size());
+
 			// execute
-			UtilsClassname.updateShortClassnameMappingFromClassnames(_mapping, _registry);
+			UtilsClassname.updateShortClassnameMappingFromClassnames(_mapping, myRegistry);
+
 			// verify
 			then(_mapping).hasSize(2);
 			then(_mapping.get("bar")).isEqualTo("foo.bar.bar");
