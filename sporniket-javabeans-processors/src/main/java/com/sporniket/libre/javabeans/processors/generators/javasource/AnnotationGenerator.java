@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.sporniket.libre.javabeans.processors.generators.javasource;
 
@@ -45,28 +45,28 @@ import com.sporniket.libre.javabeans.models.javacode.AnnotationSpecs;
  */
 public class AnnotationGenerator extends BasicGeneratorBase
 {
-	private String computeAnnotationValue(AnnotationParameterSpecs annotation, String indentation)
+	private String computeAnnotationValue(final AnnotationParameterSpecs annotation, final String indentation)
 	{
 		if (annotation instanceof AnnotationParameterSpecsSingleValue)
 		{
 			return computeAnnotationValue((AnnotationParameterSpecsSingleValue) annotation, indentation + NEXT_INDENTATION);
 		}
-		else if (annotation instanceof AnnotationParameterSpecsValuesArray)
+		if (annotation instanceof AnnotationParameterSpecsValuesArray)
 		{
 			return computeAnnotationValue((AnnotationParameterSpecsValuesArray) annotation, indentation + NEXT_INDENTATION);
 		}
 		throw new IllegalStateException("Unsupported annotation parameter specs.");
 	}
 
-	private String computeAnnotationValue(AnnotationParameterSpecsSingleValue annotation, String indentation)
+	private String computeAnnotationValue(final AnnotationParameterSpecsSingleValue annotation, final String indentation)
 	{
 		return outputAnnotationParameterValue(annotation);
 	}
 
-	private String computeAnnotationValue(AnnotationParameterSpecsValuesArray annotation, String indentation)
+	private String computeAnnotationValue(final AnnotationParameterSpecsValuesArray annotation, final String indentation)
 	{
-		StringBuilder _result = new StringBuilder("{");
-		for (AnnotationParameterSpecsSingleValue _value : annotation.getValues())
+		final StringBuilder _result = new StringBuilder("{");
+		for (final AnnotationParameterSpecsSingleValue _value : annotation.getValues())
 		{
 			if (_result.length() > 1)
 			{
@@ -77,23 +77,24 @@ public class AnnotationGenerator extends BasicGeneratorBase
 		return _result.append("\n").append(indentation).append("}").toString();
 	}
 
-	public void outputAnnotation(AnnotationSpecs annotations, String indentation, PrintStream out)
+	public void outputAnnotation(final AnnotationSpecs annotations, final String indentation, final PrintStream out)
 	{
 		final List<AnnotationParameterSpecs> _parameters = annotations.getParameters();
 		if (null != _parameters && !_parameters.isEmpty())
 		{
 			String _format = indentation + "@%s(%s)\n";
 			final AnnotationParameterSpecs _firstParameter = _parameters.get(0);
-			StringBuilder _parametersValueStatement = new StringBuilder();
+			final StringBuilder _parametersValueStatement = new StringBuilder();
 			if (1 == _parameters.size() && "value".equals(_firstParameter.getName()))
 			{
 				_parametersValueStatement.append(computeAnnotationValue(_firstParameter, indentation));
 			}
 			else
 			{
-				String _nextIndentation = indentation + NEXT_INDENTATION;
+				_format = indentation + "@%s(%s" + indentation + ")\n";
+				final String _nextIndentation = indentation + NEXT_INDENTATION;
 				// explicite parameters
-				for (AnnotationParameterSpecs _parameter : _parameters)
+				for (final AnnotationParameterSpecs _parameter : _parameters)
 				{
 					if (_parametersValueStatement.length() > 0)
 					{
