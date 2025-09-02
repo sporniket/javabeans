@@ -11,6 +11,21 @@ import java.util.List;
 import java.util.stream.Stream;
 
 /**
+ * Tests on content printed to PrintStreams easier to write.
+ *
+ * <pre>
+ * // prepare
+ * final InMemoryPrintStreamHelper _psh = new InMemoryPrintStreamHelper();
+ *
+ * // execute
+ * doSomething(_psh.getPrintStream());
+ * final List<String> _result = _psh.getLines();
+ *
+ * // verify
+ * then(_result).containsExactly(line1,line2,...) ;
+ * </pre>
+ *
+ *
  * <p>
  * &copy; Copyright 2012-2025 David Sporn
  * </p>
@@ -59,12 +74,23 @@ class InMemoryPrintStreamHelper
 		}
 	}
 
+	/**
+	 * Get the actual content of the buffer as a collection of lines.
+	 *
+	 * The splitting is compatible Linux/Windows.
+	 *
+	 * @return the collection of lines.
+	 */
 	public List<String> getLines()
 	{
-		return Stream.of(getValue().split("\n")) //
-				.map(String::stripTrailing).collect(toList());
+		return Stream.of(getValue().split("\r?\n")).collect(toList());
 	}
 
+	/**
+	 * The print stream to use to collect data in the in memory buffer.
+	 *
+	 * @return the print stream.
+	 */
 	public PrintStream getPrintStream()
 	{
 		return myPrintStream;
