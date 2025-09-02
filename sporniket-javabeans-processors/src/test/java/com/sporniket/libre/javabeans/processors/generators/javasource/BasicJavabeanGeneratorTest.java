@@ -28,6 +28,7 @@ import com.sporniket.libre.javabeans.models.javacode.ClassSpecs;
 import com.sporniket.libre.javabeans.models.javacode.ClassSpecs_Builder;
 import com.sporniket.libre.javabeans.models.javacode.FieldSpecs;
 import com.sporniket.libre.javabeans.models.javacode.FieldSpecs_Builder;
+import com.sporniket.libre.javabeans.models.javacode.ImportSpecs_Builder;
 
 /**
  * <p>
@@ -72,7 +73,7 @@ public class BasicJavabeanGeneratorTest
 		public void should_generate_correct_accessors_for_general_type()
 		{
 			// prepare
-			final FieldSpecs _primitiveBooleanField = new FieldSpecs_Builder()//
+			final FieldSpecs _typicalField = new FieldSpecs_Builder()//
 					.withDirectlyRequired(true)//
 					.withFieldPrefix("my")//
 					.withArrayMarker("")//
@@ -82,7 +83,7 @@ public class BasicJavabeanGeneratorTest
 					.withAnnotations(List.of())//
 					.done();
 			final ClassSpecs _classSpecs = new ClassSpecs_Builder()//
-					.withFields(List.of(_primitiveBooleanField))//
+					.withFields(List.of(_typicalField))//
 					.done();
 			final InMemoryPrintStreamHelper _psh = new InMemoryPrintStreamHelper();
 			final BasicJavabeanGenerator _generator = new Builder<>(new BasicJavabeanGenerator())//
@@ -96,7 +97,7 @@ public class BasicJavabeanGeneratorTest
 			then(_result).containsExactly( //
 					"    public foo getTheField() {return myTheField ;}", //
 					"    public void setTheField(foo value) {myTheField = value;}", //
-					"");
+					"    ");
 
 		}
 
@@ -129,7 +130,7 @@ public class BasicJavabeanGeneratorTest
 			then(_result).containsExactly( //
 					"    public foo isTheField() {return myTheField ;}", //
 					"    public void setTheField(foo value) {myTheField = value;}", //
-					"");
+					"    ");
 
 		}
 
@@ -152,7 +153,7 @@ public class BasicJavabeanGeneratorTest
 					.withType("my.annotations.ForSet") //
 					.withParameters(List.of(_parameter)) //
 					.done();
-			final FieldSpecs _primitiveBooleanField = new FieldSpecs_Builder()//
+			final FieldSpecs _typicalField = new FieldSpecs_Builder()//
 					.withDirectlyRequired(true)//
 					.withFieldPrefix("my")//
 					.withArrayMarker("")//
@@ -163,7 +164,7 @@ public class BasicJavabeanGeneratorTest
 					.withAnnotations(List.of(_annotationForGet, _annotationForSet))//
 					.done();
 			final ClassSpecs _classSpecs = new ClassSpecs_Builder()//
-					.withFields(List.of(_primitiveBooleanField))//
+					.withFields(List.of(_typicalField))//
 					.done();
 			final InMemoryPrintStreamHelper _psh = new InMemoryPrintStreamHelper();
 			final BasicJavabeanGenerator _generator = new Builder<>(new BasicJavabeanGenerator())//
@@ -183,7 +184,7 @@ public class BasicJavabeanGeneratorTest
 					"        foo = \"the value\"", //
 					"    )", //
 					"    public void setTheField(foo value) {myTheField = value;}", //
-					"");
+					"    ");
 
 		}
 
@@ -219,21 +220,21 @@ public class BasicJavabeanGeneratorTest
 			then(_result).containsExactly( //
 					"    /**", //
 					"     * short description of field", //
-					"     *", //
+					"     * ", //
 					"     * other description", //
-					"     *", //
+					"     * ", //
 					"     * @returns the current value", //
 					"     */", //
 					"    public foo getTheField() {return myTheField ;}", //
 					"    /**", //
 					"     * short description of field", //
-					"     *", //
+					"     * ", //
 					"     * other description", //
-					"     *", //
+					"     * ", //
 					"     * @param value the new value", //
 					"     */", //
 					"    public void setTheField(foo value) {myTheField = value;}", //
-					"");
+					"    ");
 
 		}
 	}
@@ -350,5 +351,132 @@ public class BasicJavabeanGeneratorTest
 		then(_result).contains("public void setTheField(");
 		then(_result).contains("{return myTheField ;}");
 		then(_result).contains("{myTheField = value;}");
+	}
+
+	@Test
+	public void should_generate_javabean_source_code()
+	{
+		// prepare
+		// -- field titi (primitive boolean)
+		final FieldSpecs _primitiveBooleanField = new FieldSpecs_Builder()//
+				.withDirectlyRequired(true)//
+				.withFieldPrefix("my")//
+				.withArrayMarker("")//
+				.withNameForAccessor("Titi")//
+				.withNameForField("Titi")//
+				.withTypeInvocation("foo")//
+				.withAnnotations(List.of())//
+				.done();
+
+		// -- field toto (general type)
+		final String[] _javadocLines = new String[]
+		{
+				"short description of field", "", "other description"
+		};
+		final String[] _javadocLinesClass = new String[]
+		{
+				"A very usefull class."
+		};
+		final AnnotationParameterSpecsSingleValue _parameter = new AnnotationParameterSpecsSingleValue_Builder() //
+				.withName("foo") //
+				.withValue("the value") //
+				.withString(true) //
+				.done();
+		final AnnotationSpecs _annotationForGet = new AnnotationSpecs_Builder()//
+				.withOnGetter(true)//
+				.withType("my.annotations.ForGet") //
+				.withParameters(List.of(_parameter)) //
+				.done();
+		final AnnotationSpecs _annotationForSet = new AnnotationSpecs_Builder()//
+				.withOnSetter(true)//
+				.withType("my.annotations.ForSet") //
+				.withParameters(List.of(_parameter)) //
+				.done();
+		final FieldSpecs _typicalField = new FieldSpecs_Builder()//
+				.withDirectlyRequired(true) //
+				.withFieldPrefix("my") //
+				.withArrayMarker("") //
+				.withNameForAccessor("toto") //
+				.withNameForField("toto") //
+				.withTypeInvocation("foo") //
+				.withBooleanGetter(false) //
+				.withAnnotations(List.of(_annotationForGet, _annotationForSet)) //
+				.withJavadocLines(_javadocLines) //
+				.done();
+
+		// -- class
+		final ClassSpecs _specs = new ClassSpecs_Builder() //
+				.withPackageName("my.great.package") //
+				.withImports(List.of( //
+						new ImportSpecs_Builder().withClassName("a.b.c.Cee").withDirectlyRequired(true).done(), //
+						new ImportSpecs_Builder().withClassName("a.b.d.Dee").withDirectlyRequired(true).done(), //
+						new ImportSpecs_Builder().withClassName("a.b.e.Eee").withDirectlyRequired(true).done() //
+				)) //
+				.withAnnotations(List.of()) //
+				.withJavadocLines(_javadocLinesClass)//
+				.withClassName("GreatClass") //
+				.withFields(List.of(_primitiveBooleanField, _typicalField)) //
+				.done();
+
+		// --
+		final InMemoryPrintStreamHelper _psh = new InMemoryPrintStreamHelper();
+		final BasicJavabeanGenerator _generator = new Builder<>(new BasicJavabeanGenerator())//
+				.withOptions(options)//
+				.withClassSpecs(_specs).done();
+
+		// execute
+		_generator.generate(_psh.getPrintStream());
+		final List<String> _result = _psh.getLines();
+
+		then(_result).containsExactly( //
+				"package my.great.package;", //
+				"", //
+				"import a.b.c.Cee;", //
+				"import a.b.d.Dee;", //
+				"import a.b.e.Eee;", //
+				"", //
+				"/**", //
+				" * A very usefull class.", //
+				" */", //
+				"public class GreatClass", //
+				"{", //
+				"", //
+				"    private foo nullTiti ;", //
+				"", //
+				"    /**", //
+				"     * short description of field", //
+				"     * ", //
+				"     * other description", //
+				"     */", //
+				"    private foo nulltoto ;", //
+				"    ", //
+				"    ", //
+				"    public foo getTiti() {return myTiti ;}", //
+				"    public void setTiti(foo value) {myTiti = value;}", //
+				"    ", //
+				"    /**", //
+				"     * short description of field", //
+				"     * ", //
+				"     * other description", //
+				"     * ", //
+				"     * @returns the current value", //
+				"     */", //
+				"    @my.annotations.ForGet(", //
+				"        foo = \"the value\"", //
+				"    )", //
+				"    public foo gettoto() {return mytoto ;}", //
+				"    /**", //
+				"     * short description of field", //
+				"     * ", //
+				"     * other description", //
+				"     * ", //
+				"     * @param value the new value", //
+				"     */", //
+				"    @my.annotations.ForSet(", //
+				"        foo = \"the value\"", //
+				"    )", //
+				"    public void settoto(foo value) {mytoto = value;}", //
+				"    ", //
+				"}");
 	}
 }

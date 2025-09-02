@@ -127,6 +127,7 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 				" = value;}\n" //
 		).forEach(out::print);
 
+		out.print(NEXT_INDENTATION);
 		out.println();
 	}
 
