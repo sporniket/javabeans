@@ -2,11 +2,13 @@ package com.sporniket.libre.javabeans.processors.generators.javasource;
 
 import static com.sporniket.libre.javabeans.models.javacode.Comparators.IMPORT_SPECS_COMPARATOR_NATURAL;
 import static com.sporniket.libre.javabeans.processors.generators.javasource.Utils.NEXT_INDENTATION;
-import static com.sporniket.strings.StringPredicates.IS_EMPTY;
-import static java.lang.String.join;
-import static java.util.Arrays.asList;
+import static com.sporniket.libre.javabeans.processors.generators.javasource.UtilsJavadoc.printJavadoc;
+import static com.sporniket.libre.javabeans.processors.generators.javasource.UtilsJavadoc.printJavadocForGetter;
+import static com.sporniket.libre.javabeans.processors.generators.javasource.UtilsJavadoc.printJavadocForSetter;
+import static com.sporniket.strings.StringPredicates.IS_NOT_EMPTY;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.function.Consumer;
@@ -50,47 +52,6 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 {
 	private static final String CHAR_NEWLINE = "\n";
 
-	private static final String MARKER_JAVADOC_BODY = " * ";
-
-	private static final String MARKER_JAVADOC_HEADER = "/**\n";
-
-	private static final String MARKER_JAVADOC_FOOTER = " */\n";
-
-	private Consumer<String> createJavadocBodyLinePrinter(final String indentation, final PrintStream out)
-	{
-		final Consumer<String> printJavadocBodyLine = s -> {
-			out.print(indentation);
-			out.print(MARKER_JAVADOC_BODY);
-			out.print(s);
-			out.print(CHAR_NEWLINE);
-		};
-		return printJavadocBodyLine;
-	}
-
-	private void outputJavadocForGetter(final String[] javadocLines, final String indentation, final PrintStream out)
-	{
-		final Consumer<String> printJavadocBodyLine = createJavadocBodyLinePrinter(indentation, out);
-		out.print(indentation);
-		out.print(MARKER_JAVADOC_HEADER);
-		asList(javadocLines).forEach(printJavadocBodyLine);
-		List.of("", "@returns the current value").forEach(printJavadocBodyLine);
-		out.print(indentation);
-		out.print(MARKER_JAVADOC_FOOTER);
-		out.flush();
-	}
-
-	private void outputJavadocForSetter(final String[] javadocLines, final String indentation, final PrintStream out)
-	{
-		final Consumer<String> printJavadocBodyLine = createJavadocBodyLinePrinter(indentation, out);
-		out.print(indentation);
-		out.print(MARKER_JAVADOC_HEADER);
-		asList(javadocLines).forEach(printJavadocBodyLine);
-		List.of("", "@param value the new value").forEach(printJavadocBodyLine);
-		out.print(indentation);
-		out.print(MARKER_JAVADOC_FOOTER);
-		out.flush();
-	}
-
 	private void outputAccessor(final FieldSpecs field, final PrintStream out)
 	{
 		final String[] _javadocLines = field.getJavadocLines();
@@ -98,7 +59,7 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 		// getter
 		if (_hasJavadoc)
 		{
-			outputJavadocForGetter(_javadocLines, NEXT_INDENTATION, out);
+			printJavadocForGetter(_javadocLines, NEXT_INDENTATION, out);
 		}
 		field.getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnGetter)//
@@ -114,7 +75,7 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 		// setter
 		if (_hasJavadoc)
 		{
-			outputJavadocForSetter(_javadocLines, NEXT_INDENTATION, out);
+			printJavadocForSetter(_javadocLines, NEXT_INDENTATION, out);
 		}
 		field.getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnSetter)//
@@ -141,22 +102,35 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 	public void outputClassBegin(final PrintStream out)
 	{
 		// last preparations
-		final String _abstractMarker = getClassSpecs().isAbstractRequired() ? " abstract" : "";
-		final String _extendsMarker = IS_EMPTY.test(getClassSpecs().getSuperClassName()) ? "" : "\n        extends ";
-		final String _implementsMarker = IS_EMPTY.test(getClassSpecs().getInterfaceList()) ? "" : "\n      implements ";
 
 		final String[] _javadocLines = getClassSpecs().getJavadocLines();
 		if (null != _javadocLines && 0 < _javadocLines.length)
 		{
-			out.printf("/**%s\n*/\n", join("\n", _javadocLines));
+			printJavadoc(_javadocLines, "", out);
 		}
 		final Consumer<? super AnnotationSpecs> _outputAnnotation = a -> outputAnnotation(a, "", out);
 		getClassSpecs().getAnnotations().stream()//
 				.forEach(_outputAnnotation);
-		out.printf("public%s class %s%s %s%s%s%s\n{\n\n", //
-				_abstractMarker, getClassSpecs().getClassName(), getClassSpecs().getDeclaredTypeArguments()//
-				, _extendsMarker, getClassSpecs().getSuperClassName()//
-				, _implementsMarker, getClassSpecs().getInterfaceList());
+		final List<String> _classOpening = new ArrayList<>(20);
+		_classOpening.add((getClassSpecs().isAbstractRequired()) ? "public abstract class " : "public class ");
+		_classOpening.add(getClassSpecs().getClassName());
+		if (IS_NOT_EMPTY.test(getClassSpecs().getDeclaredTypeArguments()))
+		{
+			_classOpening.add(getClassSpecs().getDeclaredTypeArguments());
+		}
+		if (IS_NOT_EMPTY.test(getClassSpecs().getSuperClassName()))
+		{
+			_classOpening.add("\n        extends ");
+			_classOpening.add(getClassSpecs().getSuperClassName());
+		}
+		if (IS_NOT_EMPTY.test(getClassSpecs().getInterfaceList()))
+		{
+			_classOpening.add("\n        implements ");
+			_classOpening.add(getClassSpecs().getInterfaceList());
+		}
+		_classOpening.add("\n{\n");
+		_classOpening.forEach(out::print);
+		out.flush();
 	}
 
 	private void outputField(final FieldSpecs field, final PrintStream out)
@@ -164,13 +138,21 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 		final String[] _javadocLines = field.getJavadocLines();
 		if (null != _javadocLines && 0 < _javadocLines.length)
 		{
-			out.printf("/**%s\n*/\n", join("\n", _javadocLines));
+			printJavadoc(_javadocLines, NEXT_INDENTATION, out);
 		}
 		field.getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnField)//
 				.forEach(a -> outputAnnotation(a, NEXT_INDENTATION, out));
-		out.printf("    private %s%s %s%s ;\n\n", field.getTypeInvocation(), field.getArrayMarker(),
-				getOptions().getBeanFieldPrefix(), field.getNameForField());
+		List.of( //
+				"    private ", //
+				field.getTypeInvocation(), //
+				field.getArrayMarker(), //
+				" ", //
+				field.getFieldPrefix(), //
+				field.getNameForField(), //
+				" ;\n    \n" //
+		).forEach(out::print);
+		out.flush();
 	}
 
 	@Override
@@ -180,7 +162,6 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 				.filter(FieldSpecs::isDirectlyRequired)//
 				.forEach(_field -> outputField(_field, out));
 
-		out.println();
 	}
 
 	@Override
