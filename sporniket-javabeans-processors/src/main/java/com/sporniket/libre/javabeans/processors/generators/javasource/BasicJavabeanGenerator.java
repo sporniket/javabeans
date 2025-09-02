@@ -11,7 +11,6 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
-import java.util.function.Consumer;
 
 import com.sporniket.libre.javabeans.models.javacode.AnnotationSpecs;
 import com.sporniket.libre.javabeans.models.javacode.FieldSpecs;
@@ -108,9 +107,8 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 		{
 			printJavadoc(_javadocLines, "", out);
 		}
-		final Consumer<? super AnnotationSpecs> _outputAnnotation = a -> outputAnnotation(a, "", out);
 		getClassSpecs().getAnnotations().stream()//
-				.forEach(_outputAnnotation);
+				.forEach(a -> outputAnnotation(a, "", out));
 		final List<String> _classOpening = new ArrayList<>(20);
 		_classOpening.add((getClassSpecs().isAbstractRequired()) ? "public abstract class " : "public class ");
 		_classOpening.add(getClassSpecs().getClassName());

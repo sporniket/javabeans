@@ -152,7 +152,7 @@ final class BasicBuilderGeneratorTest
 				"/**", //
 				" * A very usefull class.", //
 				" */", //
-				"public class GreatClass", //
+				"public class GreatClass_Builder", //
 				"{", //
 				"    private foo myTiti ;", //
 				"    ", //

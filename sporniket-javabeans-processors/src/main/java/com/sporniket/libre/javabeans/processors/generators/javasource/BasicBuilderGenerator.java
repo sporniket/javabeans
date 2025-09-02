@@ -3,8 +3,11 @@ package com.sporniket.libre.javabeans.processors.generators.javasource;
 import static com.sporniket.libre.javabeans.models.javacode.Comparators.IMPORT_SPECS_COMPARATOR_NATURAL;
 import static com.sporniket.libre.javabeans.processors.generators.javasource.Utils.NEXT_INDENTATION;
 import static com.sporniket.libre.javabeans.processors.generators.javasource.UtilsJavadoc.printJavadocForBuilderSetter;
+import static com.sporniket.strings.StringPredicates.IS_NOT_EMPTY;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 
 import com.sporniket.libre.javabeans.models.javacode.AnnotationSpecs;
@@ -55,12 +58,18 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 		}
 		getClassSpecs().getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnBuilder)//
-				.forEach(a -> out.printf("@%s\n", a.getType()));
-		out.printf("public class %s%s%s {\n", //
-				getClassSpecs().getClassName(), //
-				getOptions().getBuilderSuffix(), //
-				getClassSpecs().getDeclaredTypeArguments()//
-		);
+				.forEach(a -> outputAnnotation(a, "", out));
+		final List<String> _classOpening = new ArrayList<>(20);
+		_classOpening.add("public class ");
+		_classOpening.add(getClassSpecs().getClassName());
+		_classOpening.add(getOptions().getBuilderSuffix());
+		if (IS_NOT_EMPTY.test(getClassSpecs().getDeclaredTypeArguments()))
+		{
+			_classOpening.add(getClassSpecs().getDeclaredTypeArguments());
+		}
+		_classOpening.add("\n{\n");
+		_classOpening.forEach(out::print);
+		out.flush();
 	}
 
 	@Override
@@ -71,7 +80,7 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 		if (!getClassSpecs().isAbstractRequired())
 		{
 			// default constructor.
-			out.printf("    /**Default constructor. \n     */\n    public %s() {bean = new %s%s() ;}\n\n", //
+			out.printf("    /**\n     * Default constructor.\n     */\n    public %s() {bean = new %s%s() ;}\n\n", //
 					_constructorName, //
 					getClassSpecs().getClassName(), //
 					getClassSpecs().getInvokedTypeArguments() //
@@ -80,7 +89,7 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 
 		// constructor that delegates the bean instanciation.
 		out.printf(
-				"    /**Constructor that delegates the bean instanciation. \n     * @param newBean the instanciated bean to use.\n     */\n    public %s(%s%s newBean) {bean = newBean ;}\n\n", //
+				"    /**\n     * Constructor that delegates the bean instanciation.\n     * @param newBean the instanciated bean to use.\n     */\n    public %s(%s%s newBean) {bean = newBean ;}\n\n", //
 				_constructorName, //
 				getClassSpecs().getClassName(), //
 				getClassSpecs().getInvokedTypeArguments() //
@@ -91,17 +100,31 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 	@Override
 	public void outputFields(final PrintStream out)
 	{
-		// bean instance
-		out.printf("    private final %s%s bean ;\n\n", //
-				getClassSpecs().getClassName(), //
-				getClassSpecs().getInvokedTypeArguments()//
-		);
+		if (IS_NOT_EMPTY.test(getClassSpecs().getInvokedTypeArguments()))
+		{
+			List.of( //
+					"    private final ", //
+					getClassSpecs().getClassName(), //
+					getClassSpecs().getInvokedTypeArguments(), //
+					" bean ;\n\n    public ", //
+					getClassSpecs().getClassName(), //
+					getClassSpecs().getInvokedTypeArguments(), //
+					" done() {return bean ;}\n\n" //
+			).forEach(out::print);
+		}
+		else
+		{
+			List.of( //
+					"    private final ", //
+					getClassSpecs().getClassName(), //
+					" bean ;\n\n    public ", //
+					getClassSpecs().getClassName(), //
+					" done() {return bean ;}\n\n" //
+			).forEach(out::print);
 
-		// bean getter
-		out.printf("    public %s%s done() {return bean ;}\n\n", //
-				getClassSpecs().getClassName(), //
-				getClassSpecs().getInvokedTypeArguments()//
-		);
+		}
+
+		out.flush();
 	}
 
 	@Override
