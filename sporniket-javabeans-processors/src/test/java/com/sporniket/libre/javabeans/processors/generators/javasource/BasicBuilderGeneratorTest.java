@@ -1,12 +1,11 @@
-/**
- *
- */
 package com.sporniket.libre.javabeans.processors.generators.javasource;
 
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -48,11 +47,11 @@ import com.sporniket.libre.javabeans.models.javacode.ImportSpecs_Builder;
  * <hr>
  *
  * @author David SPORN
- * @version 23.07.00
- * @since 17.09.01
+ * @version 25.11.00
+ * @since 25.11.01
  */
 @ExtendWith(MockitoExtension.class)
-final class BasicJavabeanGeneratorTest
+final class BasicBuilderGeneratorTest
 {
 	/**
 	 * @deprecated details should be setup differently.
@@ -60,6 +59,12 @@ final class BasicJavabeanGeneratorTest
 	@Deprecated
 	@Mock
 	DocletOptions options;
+
+	@BeforeEach
+	void setupOptions()
+	{
+		when(options.getBuilderSuffix()).thenReturn("_Builder");
+	}
 
 	@Test
 	public void should_generate_javabean_source_code()
@@ -128,7 +133,7 @@ final class BasicJavabeanGeneratorTest
 
 		// --
 		final InMemoryPrintStreamHelper _psh = new InMemoryPrintStreamHelper();
-		final BasicJavabeanGenerator _generator = new Builder<>(new BasicJavabeanGenerator()) //
+		final BasicBuilderGenerator _generator = new Builder<>(new BasicBuilderGenerator()) //
 				.withOptions(options) //
 				.withClassSpecs(_specs) //
 				.done();
@@ -186,4 +191,5 @@ final class BasicJavabeanGeneratorTest
 				"    ", //
 				"}");
 	}
+
 }

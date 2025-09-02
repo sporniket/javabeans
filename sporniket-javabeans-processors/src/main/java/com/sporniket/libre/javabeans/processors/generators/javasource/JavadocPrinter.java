@@ -69,6 +69,18 @@ public class JavadocPrinter
 		out.flush();
 	}
 
+	public void printJavadocForBuilderSetter(final String[] javadocLines, final String indentation, final PrintStream out)
+	{
+		final Consumer<String> printJavadocBodyLine = createJavadocBodyLinePrinter(indentation, out);
+		out.print(indentation);
+		out.print(MARKER_JAVADOC_HEADER);
+		asList(javadocLines).forEach(printJavadocBodyLine);
+		List.of("", "@param value the new value", "", "@returns the builder").forEach(printJavadocBodyLine);
+		out.print(indentation);
+		out.print(MARKER_JAVADOC_FOOTER);
+		out.flush();
+	}
+
 	public void printJavadocForGetter(final String[] javadocLines, final String indentation, final PrintStream out)
 	{
 		final Consumer<String> printJavadocBodyLine = createJavadocBodyLinePrinter(indentation, out);

@@ -54,7 +54,7 @@ import java.util.stream.Stream;
  * @version 25.11.00
  * @since 25.11.00
  */
-class InMemoryPrintStreamHelper
+final class InMemoryPrintStreamHelper
 {
 	private final ByteArrayOutputStream myByteArrayOutputStream = new ByteArrayOutputStream();
 

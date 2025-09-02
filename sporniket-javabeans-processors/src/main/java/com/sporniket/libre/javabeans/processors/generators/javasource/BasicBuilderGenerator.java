@@ -1,7 +1,8 @@
 package com.sporniket.libre.javabeans.processors.generators.javasource;
 
 import static com.sporniket.libre.javabeans.models.javacode.Comparators.IMPORT_SPECS_COMPARATOR_NATURAL;
-import static java.lang.String.join;
+import static com.sporniket.libre.javabeans.processors.generators.javasource.Utils.NEXT_INDENTATION;
+import static com.sporniket.libre.javabeans.processors.generators.javasource.UtilsJavadoc.printJavadocForBuilderSetter;
 
 import java.io.PrintStream;
 import java.util.TreeSet;
@@ -45,12 +46,12 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 {
 
 	@Override
-	public void outputClassBegin(PrintStream out)
+	public void outputClassBegin(final PrintStream out)
 	{
 		final String[] _javadocLines = getClassSpecs().getJavadocLines();
 		if (null != _javadocLines && 0 < _javadocLines.length)
 		{
-			out.printf("/**%s\n*/\n", join("\n", _javadocLines));
+			UtilsJavadoc.printJavadoc(_javadocLines, "", out);
 		}
 		getClassSpecs().getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnBuilder)//
@@ -63,9 +64,9 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 	}
 
 	@Override
-	public void outputConstructors(PrintStream out)
+	public void outputConstructors(final PrintStream out)
 	{
-		String _constructorName = getClassSpecs().getClassName() + getOptions().getBuilderSuffix();
+		final String _constructorName = getClassSpecs().getClassName() + getOptions().getBuilderSuffix();
 
 		if (!getClassSpecs().isAbstractRequired())
 		{
@@ -88,7 +89,7 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 	}
 
 	@Override
-	public void outputFields(PrintStream out)
+	public void outputFields(final PrintStream out)
 	{
 		// bean instance
 		out.printf("    private final %s%s bean ;\n\n", //
@@ -104,22 +105,22 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 	}
 
 	@Override
-	public void outputImportStatements(PrintStream out)
+	public void outputImportStatements(final PrintStream out)
 	{
-		TreeSet<ImportSpecs> _sortedImports = new TreeSet<ImportSpecs>(IMPORT_SPECS_COMPARATOR_NATURAL);
+		final TreeSet<ImportSpecs> _sortedImports = new TreeSet<ImportSpecs>(IMPORT_SPECS_COMPARATOR_NATURAL);
 		_sortedImports.addAll(getClassSpecs().getImports());
 		_sortedImports.stream().forEach(i -> outputImportSpecIfValid(i, out));
 
 		out.println();
 	}
 
-	private void outputSetter(final FieldSpecs field, PrintStream out)
+	private void outputSetter(final FieldSpecs field, final PrintStream out)
 	{
 		final String[] _javadocLines = field.getJavadocLines();
 		// setter
 		if (null != _javadocLines && 0 < _javadocLines.length)
 		{
-			out.printf("/**@param value\n%s\n*/\n", join("\n", _javadocLines));
+			printJavadocForBuilderSetter(_javadocLines, NEXT_INDENTATION, out);
 		}
 		field.getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnBuilder)//
@@ -137,7 +138,7 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 	}
 
 	@Override
-	public void outputSetters(PrintStream out)
+	public void outputSetters(final PrintStream out)
 	{
 		getClassSpecs().getFields().stream().forEach(f -> outputSetter(f, out));
 	}

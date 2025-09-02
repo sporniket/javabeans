@@ -1,7 +1,5 @@
 package com.sporniket.libre.javabeans.processors.generators.javasource;
 
-import java.io.PrintStream;
-
 import com.sporniket.libre.javabeans.models.javacode.ClassSpecs;
 
 /**
@@ -39,6 +37,10 @@ public class BasicGeneratorBase
 {
 	private ClassSpecs myClassSpecs;
 
+	/**
+	 * @deprecated alternative to be done.
+	 */
+	@Deprecated
 	private DocletOptions myOptions;
 
 	public BasicGeneratorBase()
@@ -51,17 +53,29 @@ public class BasicGeneratorBase
 		return myClassSpecs;
 	}
 
+	/**
+	 *
+	 * @return
+	 * @deprecated alternative to be done.
+	 */
+	@Deprecated
 	public DocletOptions getOptions()
 	{
 		return myOptions;
 	}
 
-	public void setClassSpecs(ClassSpecs classSpecs)
+	public void setClassSpecs(final ClassSpecs classSpecs)
 	{
 		myClassSpecs = classSpecs;
 	}
 
-	public void setOptions(DocletOptions options)
+	/**
+	 *
+	 * @param options
+	 * @deprecated alternative to be done.
+	 */
+	@Deprecated
+	public void setOptions(final DocletOptions options)
 	{
 		myOptions = options;
 	}

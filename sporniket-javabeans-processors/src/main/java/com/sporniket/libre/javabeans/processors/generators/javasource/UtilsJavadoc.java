@@ -42,6 +42,11 @@ public class UtilsJavadoc
 		PRINTER.printJavadoc(javadocLines, indentation, out);
 	}
 
+	public static void printJavadocForBuilderSetter(final String[] javadocLines, final String indentation, final PrintStream out)
+	{
+		PRINTER.printJavadocForBuilderSetter(javadocLines, indentation, out);
+	}
+
 	public static void printJavadocForGetter(final String[] javadocLines, final String indentation, final PrintStream out)
 	{
 		PRINTER.printJavadocForGetter(javadocLines, indentation, out);

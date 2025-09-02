@@ -40,7 +40,7 @@ import org.junit.jupiter.api.Test;
  * @version 23.07.00
  * @since 17.09.01
  */
-public class UtilsClassnameTest
+final class UtilsClassnameTest
 {
 	@Nested
 	class Describe__computeOutputClassname
