@@ -65,7 +65,7 @@ public class BasicJavabeanGeneratorTest
 	DocletOptions options;
 
 	@Nested
-	class Describe__outputAccessor
+	class Describe__outputAccessors
 	{
 
 		@Test
@@ -217,13 +217,21 @@ public class BasicJavabeanGeneratorTest
 			final List<String> _result = _psh.getLines();
 
 			then(_result).containsExactly( //
-					"    @my.annotations.ForGet(", //
-					"        foo = \"the value\"", //
-					"    )", //
+					"    /**", //
+					"     * short description of field", //
+					"     *", //
+					"     * other description", //
+					"     *", //
+					"     * @returns the current value", //
+					"     */", //
 					"    public foo getTheField() {return myTheField ;}", //
-					"    @my.annotations.ForSet(", //
-					"        foo = \"the value\"", //
-					"    )", //
+					"    /**", //
+					"     * short description of field", //
+					"     *", //
+					"     * other description", //
+					"     *", //
+					"     * @param value the new value", //
+					"     */", //
 					"    public void setTheField(foo value) {myTheField = value;}", //
 					"");
 

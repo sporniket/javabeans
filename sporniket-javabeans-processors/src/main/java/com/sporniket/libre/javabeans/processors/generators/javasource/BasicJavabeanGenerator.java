@@ -1,11 +1,13 @@
 package com.sporniket.libre.javabeans.processors.generators.javasource;
 
-import static com.sporniket.libre.javabeans.processors.generators.javasource.Utils.NEXT_INDENTATION;
 import static com.sporniket.libre.javabeans.models.javacode.Comparators.IMPORT_SPECS_COMPARATOR_NATURAL;
+import static com.sporniket.libre.javabeans.processors.generators.javasource.Utils.NEXT_INDENTATION;
 import static com.sporniket.strings.StringPredicates.IS_EMPTY;
 import static java.lang.String.join;
+import static java.util.Arrays.asList;
 
 import java.io.PrintStream;
+import java.util.List;
 import java.util.TreeSet;
 import java.util.function.Consumer;
 
@@ -46,43 +48,96 @@ import com.sporniket.libre.javabeans.models.javacode.ImportSpecs;
  */
 public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGenerator
 {
-	private void outputAccessor(FieldSpecs field, PrintStream out)
+	private static final String CHAR_NEWLINE = "\n";
+
+	private static final String MARKER_JAVADOC_BODY = " * ";
+
+	private static final String MARKER_JAVADOC_HEADER = "/**\n";
+
+	private static final String MARKER_JAVADOC_FOOTER = " */\n";
+
+	private Consumer<String> createJavadocBodyLinePrinter(final String indentation, final PrintStream out)
+	{
+		final Consumer<String> printJavadocBodyLine = s -> {
+			out.print(indentation);
+			out.print(MARKER_JAVADOC_BODY);
+			out.print(s);
+			out.print(CHAR_NEWLINE);
+		};
+		return printJavadocBodyLine;
+	}
+
+	private void outputJavadocForGetter(final String[] javadocLines, final String indentation, final PrintStream out)
+	{
+		final Consumer<String> printJavadocBodyLine = createJavadocBodyLinePrinter(indentation, out);
+		out.print(indentation);
+		out.print(MARKER_JAVADOC_HEADER);
+		asList(javadocLines).forEach(printJavadocBodyLine);
+		List.of("", "@returns the current value").forEach(printJavadocBodyLine);
+		out.print(indentation);
+		out.print(MARKER_JAVADOC_FOOTER);
+		out.flush();
+	}
+
+	private void outputJavadocForSetter(final String[] javadocLines, final String indentation, final PrintStream out)
+	{
+		final Consumer<String> printJavadocBodyLine = createJavadocBodyLinePrinter(indentation, out);
+		out.print(indentation);
+		out.print(MARKER_JAVADOC_HEADER);
+		asList(javadocLines).forEach(printJavadocBodyLine);
+		List.of("", "@param value the new value").forEach(printJavadocBodyLine);
+		out.print(indentation);
+		out.print(MARKER_JAVADOC_FOOTER);
+		out.flush();
+	}
+
+	private void outputAccessor(final FieldSpecs field, final PrintStream out)
 	{
 		final String[] _javadocLines = field.getJavadocLines();
+		final boolean _hasJavadoc = null != _javadocLines && 0 < _javadocLines.length;
 		// getter
-		if (null != _javadocLines && 0 < _javadocLines.length)
+		if (_hasJavadoc)
 		{
-			out.printf("/**@returns\n%s\n*/\n", join("\n", _javadocLines));
+			outputJavadocForGetter(_javadocLines, NEXT_INDENTATION, out);
 		}
 		field.getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnGetter)//
 				.forEach(a -> outputAnnotation(a, NEXT_INDENTATION, out));
-		out.printf("    public %s%s %s%s() {return %s%s ;}\n", field.getTypeInvocation(), field.getArrayMarker(),
-				(field.isBooleanGetter()) ? "is" : "get", field.getNameForAccessor(), field.getFieldPrefix(),
-				field.getNameForField());
+		List.of( //
+				NEXT_INDENTATION, //
+				"public ", field.getTypeInvocation(), field.getArrayMarker(), //
+				" ", (field.isBooleanGetter()) ? "is" : "get", field.getNameForAccessor(), //
+				"() {return ", field.getFieldPrefix(), field.getNameForField(), //
+				" ;}\n" //
+		).forEach(out::print);
 
 		// setter
-		if (null != _javadocLines && 0 < _javadocLines.length)
+		if (_hasJavadoc)
 		{
-			out.printf("/**@param value\n%s\n*/\n", join("\n", _javadocLines));
+			outputJavadocForSetter(_javadocLines, NEXT_INDENTATION, out);
 		}
 		field.getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnSetter)//
 				.forEach(a -> outputAnnotation(a, NEXT_INDENTATION, out));
-		out.printf("    public void set%s(%s%s value) {%s%s = value;}\n", field.getNameForAccessor(),
-				field.getTypeInvocation(), field.getArrayMarker(), field.getFieldPrefix(), field.getNameForField());
+		List.of( //
+				NEXT_INDENTATION, //
+				"public void set", field.getNameForAccessor(), //
+				"(", field.getTypeInvocation(), field.getArrayMarker(), //
+				" value) {", field.getFieldPrefix(), field.getNameForField(), //
+				" = value;}\n" //
+		).forEach(out::print);
 
 		out.println();
 	}
 
 	@Override
-	public void outputAccessors(PrintStream out)
+	public void outputAccessors(final PrintStream out)
 	{
-		getClassSpecs().getFields().stream().filter(f -> f.isDirectlyRequired()).forEach(f -> outputAccessor(f, out));
+		getClassSpecs().getFields().stream().filter(FieldSpecs::isDirectlyRequired).forEach(f -> outputAccessor(f, out));
 	}
 
 	@Override
-	public void outputClassBegin(PrintStream out)
+	public void outputClassBegin(final PrintStream out)
 	{
 		// last preparations
 		final String _abstractMarker = getClassSpecs().isAbstractRequired() ? " abstract" : "";
@@ -103,7 +158,7 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 				, _implementsMarker, getClassSpecs().getInterfaceList());
 	}
 
-	private void outputField(FieldSpecs field, PrintStream out)
+	private void outputField(final FieldSpecs field, final PrintStream out)
 	{
 		final String[] _javadocLines = field.getJavadocLines();
 		if (null != _javadocLines && 0 < _javadocLines.length)
@@ -118,7 +173,7 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 	}
 
 	@Override
-	public void outputFields(PrintStream out)
+	public void outputFields(final PrintStream out)
 	{
 		getClassSpecs().getFields().stream()//
 				.filter(FieldSpecs::isDirectlyRequired)//
@@ -128,9 +183,9 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 	}
 
 	@Override
-	public void outputImportStatements(PrintStream out)
+	public void outputImportStatements(final PrintStream out)
 	{
-		TreeSet<ImportSpecs> _sortedImports = new TreeSet<ImportSpecs>(IMPORT_SPECS_COMPARATOR_NATURAL);
+		final TreeSet<ImportSpecs> _sortedImports = new TreeSet<ImportSpecs>(IMPORT_SPECS_COMPARATOR_NATURAL);
 		_sortedImports.addAll(getClassSpecs().getImports());
 		_sortedImports.stream().filter(ImportSpecs::isDirectlyRequired).forEach(i -> outputImportSpecIfValid(i, out));
 
