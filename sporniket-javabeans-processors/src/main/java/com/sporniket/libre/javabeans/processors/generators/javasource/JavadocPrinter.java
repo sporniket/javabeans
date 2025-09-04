@@ -66,7 +66,6 @@ public class JavadocPrinter
 		asList(javadocLines).forEach(printJavadocBodyLine);
 		out.print(indentation);
 		out.print(MARKER_JAVADOC_FOOTER);
-		out.flush();
 	}
 
 	public void printJavadocForBuilderSetter(final String[] javadocLines, final String indentation, final PrintStream out)
@@ -78,7 +77,6 @@ public class JavadocPrinter
 		List.of("", "@param value the new value", "", "@returns the builder").forEach(printJavadocBodyLine);
 		out.print(indentation);
 		out.print(MARKER_JAVADOC_FOOTER);
-		out.flush();
 	}
 
 	public void printJavadocForGetter(final String[] javadocLines, final String indentation, final PrintStream out)
@@ -90,7 +88,6 @@ public class JavadocPrinter
 		List.of("", "@returns the current value").forEach(printJavadocBodyLine);
 		out.print(indentation);
 		out.print(MARKER_JAVADOC_FOOTER);
-		out.flush();
 	}
 
 	public void printJavadocForSetter(final String[] javadocLines, final String indentation, final PrintStream out)
@@ -102,7 +99,6 @@ public class JavadocPrinter
 		List.of("", "@param value the new value").forEach(printJavadocBodyLine);
 		out.print(indentation);
 		out.print(MARKER_JAVADOC_FOOTER);
-		out.flush();
 	}
 
 }

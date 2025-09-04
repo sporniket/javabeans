@@ -38,7 +38,7 @@ import java.io.PrintStream;
  */
 public interface JavaSourceGenerator
 {
-	default void generate(PrintStream out)
+	default void generate(final PrintStream out)
 	{
 		outputPackageStatement(out);
 		outputImportStatements(out);
@@ -46,6 +46,7 @@ public interface JavaSourceGenerator
 		outputClassBegin(out);
 		outputClassBody(out);
 		outputClassEnd(out);
+		out.flush();
 	}
 
 	void outputClassBegin(PrintStream out);

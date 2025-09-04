@@ -1,5 +1,7 @@
 package com.sporniket.libre.javabeans.processors.generators.javasource;
 
+import static com.sporniket.strings.StringPredicates.IS_NOT_EMPTY;
+
 import com.sporniket.libre.javabeans.models.javacode.ClassSpecs;
 
 /**
@@ -37,6 +39,8 @@ public class BasicGeneratorBase
 {
 	private ClassSpecs myClassSpecs;
 
+	private boolean myHasTypeArguments;
+
 	/**
 	 * @deprecated alternative to be done.
 	 */
@@ -67,6 +71,12 @@ public class BasicGeneratorBase
 	public void setClassSpecs(final ClassSpecs classSpecs)
 	{
 		myClassSpecs = classSpecs;
+		myHasTypeArguments = IS_NOT_EMPTY.test(getClassSpecs().getDeclaredTypeArguments());
+	}
+
+	protected boolean hasTypeArguments()
+	{
+		return myHasTypeArguments ;
 	}
 
 	/**

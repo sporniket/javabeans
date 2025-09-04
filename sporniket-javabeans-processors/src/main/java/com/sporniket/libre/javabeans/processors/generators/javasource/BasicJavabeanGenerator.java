@@ -112,7 +112,7 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 		final List<String> _classOpening = new ArrayList<>(20);
 		_classOpening.add((getClassSpecs().isAbstractRequired()) ? "public abstract class " : "public class ");
 		_classOpening.add(getClassSpecs().getClassName());
-		if (IS_NOT_EMPTY.test(getClassSpecs().getDeclaredTypeArguments()))
+		if (hasTypeArguments())
 		{
 			_classOpening.add(getClassSpecs().getDeclaredTypeArguments());
 		}
@@ -128,7 +128,6 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 		}
 		_classOpening.add("\n{\n");
 		_classOpening.forEach(out::print);
-		out.flush();
 	}
 
 	private void outputField(final FieldSpecs field, final PrintStream out)
@@ -150,7 +149,6 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 				field.getNameForField(), //
 				" ;\n    \n" //
 		).forEach(out::print);
-		out.flush();
 	}
 
 	@Override

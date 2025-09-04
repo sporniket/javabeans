@@ -154,42 +154,32 @@ final class BasicBuilderGeneratorTest
 				" */", //
 				"public class GreatClass_Builder", //
 				"{", //
-				"    private foo myTiti ;", //
-				"    ", //
+				"    private final GreatClass bean ;", //
+				"", //
+				"    public GreatClass done() {return bean ;}", //
+				"", //
 				"    /**", //
-				"     * short description of field", //
-				"     * ", //
-				"     * other description", //
+				"     * Default constructor.", //
 				"     */", //
-				"    private foo mytoto ;", //
-				"    ", //
-				"    public foo getTiti() {return myTiti ;}", //
-				"    public void setTiti(foo value) {myTiti = value;}", //
-				"    ", //
+				"    public GreatClass_Builder() {bean = new GreatClass() ;}", //
+				"", //
 				"    /**", //
-				"     * short description of field", //
-				"     * ", //
-				"     * other description", //
-				"     * ", //
-				"     * @returns the current value", //
+				"     * Constructor that delegates the bean instanciation.", //
+				"     * @param newBean the instanciated bean to use.", //
 				"     */", //
-				"    @my.annotations.ForGet(", //
-				"        foo = \"the value\"", //
-				"    )", //
-				"    public foo gettoto() {return mytoto ;}", //
+				"    public GreatClass_Builder(GreatClass newBean) {bean = newBean ;}", //
+				"", //
+				"    public GreatClass_Builder withTiti(foo value) {bean.setTiti(value); return this;}", //
 				"    /**", //
 				"     * short description of field", //
 				"     * ", //
 				"     * other description", //
 				"     * ", //
 				"     * @param value the new value", //
+				"     * ", //
+				"     * @returns the builder", //
 				"     */", //
-				"    @my.annotations.ForSet(", //
-				"        foo = \"the value\"", //
-				"    )", //
-				"    public void settoto(foo value) {mytoto = value;}", //
-				"    ", //
+				"    public GreatClass_Builder withtoto(foo value) {bean.settoto(value); return this;}", //
 				"}");
 	}
-
 }

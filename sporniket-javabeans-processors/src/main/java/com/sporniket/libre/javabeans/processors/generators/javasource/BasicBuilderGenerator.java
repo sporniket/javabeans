@@ -3,7 +3,6 @@ package com.sporniket.libre.javabeans.processors.generators.javasource;
 import static com.sporniket.libre.javabeans.models.javacode.Comparators.IMPORT_SPECS_COMPARATOR_NATURAL;
 import static com.sporniket.libre.javabeans.processors.generators.javasource.Utils.NEXT_INDENTATION;
 import static com.sporniket.libre.javabeans.processors.generators.javasource.UtilsJavadoc.printJavadocForBuilderSetter;
-import static com.sporniket.strings.StringPredicates.IS_NOT_EMPTY;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -63,44 +62,51 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 		_classOpening.add("public class ");
 		_classOpening.add(getClassSpecs().getClassName());
 		_classOpening.add(getOptions().getBuilderSuffix());
-		if (IS_NOT_EMPTY.test(getClassSpecs().getDeclaredTypeArguments()))
+		if (hasTypeArguments())
 		{
 			_classOpening.add(getClassSpecs().getDeclaredTypeArguments());
 		}
 		_classOpening.add("\n{\n");
 		_classOpening.forEach(out::print);
-		out.flush();
 	}
 
 	@Override
 	public void outputConstructors(final PrintStream out)
 	{
 		final String _constructorName = getClassSpecs().getClassName() + getOptions().getBuilderSuffix();
+		final List<String> _lines = new ArrayList<>(20);
 
 		if (!getClassSpecs().isAbstractRequired())
 		{
-			// default constructor.
-			out.printf("    /**\n     * Default constructor.\n     */\n    public %s() {bean = new %s%s() ;}\n\n", //
-					_constructorName, //
-					getClassSpecs().getClassName(), //
-					getClassSpecs().getInvokedTypeArguments() //
-			);
+			_lines.add("    /**\n     * Default constructor.\n     */\n    public ");
+			_lines.add(_constructorName);
+			_lines.add("() {bean = new ");
+			_lines.add(getClassSpecs().getClassName());
+			if (hasTypeArguments())
+			{
+				_lines.add(getClassSpecs().getInvokedTypeArguments());
+			}
+			_lines.add("() ;}\n\n");
 		}
 
-		// constructor that delegates the bean instanciation.
-		out.printf(
-				"    /**\n     * Constructor that delegates the bean instanciation.\n     * @param newBean the instanciated bean to use.\n     */\n    public %s(%s%s newBean) {bean = newBean ;}\n\n", //
-				_constructorName, //
-				getClassSpecs().getClassName(), //
-				getClassSpecs().getInvokedTypeArguments() //
-		);
+		_lines.add(
+				"    /**\n     * Constructor that delegates the bean instanciation.\n     * @param newBean the instanciated bean to use.\n     */\n    public ");
+		_lines.add(_constructorName);
+		_lines.add("(");
+		_lines.add(getClassSpecs().getClassName());
+		if (hasTypeArguments())
+		{
+			_lines.add(getClassSpecs().getInvokedTypeArguments());
+		}
+		_lines.add(" newBean) {bean = newBean ;}\n\n");
 
+		_lines.forEach(out::print);
 	}
 
 	@Override
 	public void outputFields(final PrintStream out)
 	{
-		if (IS_NOT_EMPTY.test(getClassSpecs().getInvokedTypeArguments()))
+		if (hasTypeArguments())
 		{
 			List.of( //
 					"    private final ", //
@@ -123,8 +129,6 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 			).forEach(out::print);
 
 		}
-
-		out.flush();
 	}
 
 	@Override
@@ -149,15 +153,23 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 				.filter(AnnotationSpecs::isOnBuilder)//
 				.filter(AnnotationSpecs::isOnSetter)//
 				.forEach(a -> out.printf("    @%s\n", a.getType()));
-		out.printf("    public %s%s%s with%s(%s%s value) {bean.set%s(value); return this;}\n", //
-				getClassSpecs().getClassName(), //
-				getOptions().getBuilderSuffix(), //
-				getClassSpecs().getInvokedTypeArguments(), //
-				field.getNameForAccessor(), //
-				field.getTypeInvocation(), //
-				field.getArrayMarker(), //
-				field.getNameForAccessor()//
-		);
+		final List<String> _lines = new ArrayList<>(20);
+		_lines.add("    public ");
+		_lines.add(getClassSpecs().getClassName());
+		_lines.add(getOptions().getBuilderSuffix());
+		if (hasTypeArguments())
+		{
+			_lines.add(getClassSpecs().getInvokedTypeArguments());
+		}
+		_lines.add(" with");
+		_lines.add(field.getNameForAccessor());
+		_lines.add("(");
+		_lines.add(field.getTypeInvocation());
+		_lines.add(field.getArrayMarker());
+		_lines.add(" value) {bean.set");
+		_lines.add(field.getNameForAccessor());
+		_lines.add("(value); return this;}\n");
+		_lines.forEach(out::print);
 	}
 
 	@Override
