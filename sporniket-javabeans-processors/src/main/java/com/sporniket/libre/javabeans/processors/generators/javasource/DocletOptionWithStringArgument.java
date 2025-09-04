@@ -41,9 +41,9 @@ public class DocletOptionWithStringArgument extends DocletOptionBase {
 	}
 
 	private Optional<String> normalizeOption(String option) {
-		for (int i = 0; i < option.length(); i++) {
-			if ('-' != option.charAt(i)) {
-				return Optional.of(option.substring(i));
+		for (int _i = 0; _i < option.length(); _i++) {
+			if ('-' != option.charAt(_i)) {
+				return Optional.of(option.substring(_i));
 			}
 		}
 		getReporter().print(ERROR, "wrong.processed.option.name:" + option);

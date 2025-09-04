@@ -65,7 +65,7 @@ public class DocletOptions {
 	 * 
 	 * @since 20.04.00
 	 */
-	String addAnnotationToGetter;
+	String myAddAnnotationToGetter;
 
 	/**
 	 * List of annotation (fully qualified name separated with comma) that have to
@@ -73,27 +73,27 @@ public class DocletOptions {
 	 * 
 	 * @since 20.04.00
 	 */
-	String addAnnotationToSetter;
+	String myAddAnnotationToSetter;
 
 	/**
 	 * Prefix used for the fields of the javabeans.
 	 */
-	String beanFieldPrefix = "my";
+	String myBeanFieldPrefix = "my";
 
 	/**
 	 * Suffix of a generated Builder for a Javabean.
 	 */
-	String builderSuffix = "_Builder";
+	String myBuilderSuffix = "_Builder";
 
 	/**
 	 * Store the <code>-d</code> option value (target directory).
 	 */
-	String d;
+	String myD;
 
 	/**
 	 * Suffix of a Pojo that should be expanded into a Javabean.
 	 */
-	String pojoSuffix = "Raw";
+	String myPojoSuffix = "Raw";
 
 	public List<Option> getJavaDocletOptions() {
 		return List.of(new DocletOptionWithStringArgument(//
@@ -129,43 +129,43 @@ public class DocletOptions {
 	}
 
 	/**
-	 * Internal, set of annotations from {@link #addAnnotationToGetter}.
+	 * Internal, set of annotations from {@link #myAddAnnotationToGetter}.
 	 * 
 	 * @since 20.04.00
 	 */
 	private Set<String> myAnnotationsToAddToGetters = null;
 
 	/**
-	 * Internal, set of annotations from {@link #addAnnotationToSetter}.
+	 * Internal, set of annotations from {@link #myAddAnnotationToSetter}.
 	 * 
 	 * @since 20.04.00
 	 */
 	private Set<String> myAnnotationsToAddToSetters = null;
 
 	public String getAddAnnotationToGetter() {
-		return (null != addAnnotationToGetter) ? KNOWN_ANNOTATIONS_FOR_GETTER + "," + addAnnotationToGetter
+		return (null != myAddAnnotationToGetter) ? KNOWN_ANNOTATIONS_FOR_GETTER + "," + myAddAnnotationToGetter
 				: KNOWN_ANNOTATIONS_FOR_GETTER;
 	}
 
 	public String getAddAnnotationToSetter() {
-		return (null != addAnnotationToSetter) ? KNOWN_ANNOTATIONS_FOR_SETTER + "," + addAnnotationToSetter
+		return (null != myAddAnnotationToSetter) ? KNOWN_ANNOTATIONS_FOR_SETTER + "," + myAddAnnotationToSetter
 				: KNOWN_ANNOTATIONS_FOR_SETTER;
 	}
 
 	public String getBeanFieldPrefix() {
-		return beanFieldPrefix;
+		return myBeanFieldPrefix;
 	}
 
 	public String getBuilderSuffix() {
-		return builderSuffix;
+		return myBuilderSuffix;
 	}
 
 	public String getD() {
-		return d;
+		return myD;
 	}
 
 	public String getPojoSuffix() {
-		return pojoSuffix;
+		return myPojoSuffix;
 	}
 
 	@Override

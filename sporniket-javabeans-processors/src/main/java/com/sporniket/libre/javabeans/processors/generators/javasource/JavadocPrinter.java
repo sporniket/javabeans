@@ -49,54 +49,53 @@ public class JavadocPrinter
 
 	private Consumer<String> createJavadocBodyLinePrinter(final String indentation, final PrintStream out)
 	{
-		final Consumer<String> printJavadocBodyLine = s -> {
+		return s -> {
 			out.print(indentation);
 			out.print(MARKER_JAVADOC_BODY);
 			out.print(s);
 			out.print(CHAR_NEWLINE);
 		};
-		return printJavadocBodyLine;
 	}
 
 	public void printJavadoc(final String[] javadocLines, final String indentation, final PrintStream out)
 	{
-		final Consumer<String> printJavadocBodyLine = createJavadocBodyLinePrinter(indentation, out);
+		final Consumer<String> _printJavadocBodyLine = createJavadocBodyLinePrinter(indentation, out);
 		out.print(indentation);
 		out.print(MARKER_JAVADOC_HEADER);
-		asList(javadocLines).forEach(printJavadocBodyLine);
+		asList(javadocLines).forEach(_printJavadocBodyLine);
 		out.print(indentation);
 		out.print(MARKER_JAVADOC_FOOTER);
 	}
 
 	public void printJavadocForBuilderSetter(final String[] javadocLines, final String indentation, final PrintStream out)
 	{
-		final Consumer<String> printJavadocBodyLine = createJavadocBodyLinePrinter(indentation, out);
+		final Consumer<String> _printJavadocBodyLine = createJavadocBodyLinePrinter(indentation, out);
 		out.print(indentation);
 		out.print(MARKER_JAVADOC_HEADER);
-		asList(javadocLines).forEach(printJavadocBodyLine);
-		List.of("", "@param value the new value", "", "@returns the builder").forEach(printJavadocBodyLine);
+		asList(javadocLines).forEach(_printJavadocBodyLine);
+		List.of("", "@param value the new value", "", "@returns the builder").forEach(_printJavadocBodyLine);
 		out.print(indentation);
 		out.print(MARKER_JAVADOC_FOOTER);
 	}
 
 	public void printJavadocForGetter(final String[] javadocLines, final String indentation, final PrintStream out)
 	{
-		final Consumer<String> printJavadocBodyLine = createJavadocBodyLinePrinter(indentation, out);
+		final Consumer<String> _printJavadocBodyLine = createJavadocBodyLinePrinter(indentation, out);
 		out.print(indentation);
 		out.print(MARKER_JAVADOC_HEADER);
-		asList(javadocLines).forEach(printJavadocBodyLine);
-		List.of("", "@returns the current value").forEach(printJavadocBodyLine);
+		asList(javadocLines).forEach(_printJavadocBodyLine);
+		List.of("", "@returns the current value").forEach(_printJavadocBodyLine);
 		out.print(indentation);
 		out.print(MARKER_JAVADOC_FOOTER);
 	}
 
 	public void printJavadocForSetter(final String[] javadocLines, final String indentation, final PrintStream out)
 	{
-		final Consumer<String> printJavadocBodyLine = createJavadocBodyLinePrinter(indentation, out);
+		final Consumer<String> _printJavadocBodyLine = createJavadocBodyLinePrinter(indentation, out);
 		out.print(indentation);
 		out.print(MARKER_JAVADOC_HEADER);
-		asList(javadocLines).forEach(printJavadocBodyLine);
-		List.of("", "@param value the new value").forEach(printJavadocBodyLine);
+		asList(javadocLines).forEach(_printJavadocBodyLine);
+		List.of("", "@param value the new value").forEach(_printJavadocBodyLine);
 		out.print(indentation);
 		out.print(MARKER_JAVADOC_FOOTER);
 	}

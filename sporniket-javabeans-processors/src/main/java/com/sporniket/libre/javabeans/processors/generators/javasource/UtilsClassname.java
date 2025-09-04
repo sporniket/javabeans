@@ -107,7 +107,7 @@ public final class UtilsClassname
 			final Set<String> sourcePackages, final String pojoSuffix, final String builderSuffix)
 	{
 		// use a map with keys sorted in reverse order, so that looping on keys to translate something do not overlap.
-		final Map<String, String> result = new TreeMap<>(STRING_COMPARATOR_REVERSE);
+		final Map<String, String> _result = new TreeMap<>(STRING_COMPARATOR_REVERSE);
 		final Predicate<String> _isPojo = c -> !pojoSuffix.equals(getSimpleName(c)) && c.endsWith(pojoSuffix);
 		final Predicate<String> _isBuilder = c -> !builderSuffix.equals(getSimpleName(c)) && c.endsWith(builderSuffix);
 
@@ -117,7 +117,7 @@ public final class UtilsClassname
 					.filter(_isBuilder.negate()) //
 					.filter(_isPojo.negate()) //
 					.forEach(c -> {
-						result.put(c, c + pojoSuffix);
+						_result.put(c, c + pojoSuffix);
 					});
 		}
 		else
@@ -128,11 +128,11 @@ public final class UtilsClassname
 					.filter(_isBuilder.negate()) //
 					.filter(_isPojo.negate()) //
 					.forEach(c -> {
-						result.put(c, c + pojoSuffix);
+						_result.put(c, c + pojoSuffix);
 					});
 		}
 
-		return result;
+		return _result;
 	}
 
 	/**
@@ -164,7 +164,7 @@ public final class UtilsClassname
 			final Set<String> sourcePackages, final String pojoSuffix)
 	{
 		// use a map with keys sorted in reverse order, so that looping on keys to translate something do not overlap.
-		final Map<String, String> result = new TreeMap<>(STRING_COMPARATOR_REVERSE);
+		final Map<String, String> _result = new TreeMap<>(STRING_COMPARATOR_REVERSE);
 
 		final boolean _noPackageFiltering = (null == sourcePackages) || sourcePackages.isEmpty();
 		final Predicate<String> _isInPackageList = c -> _noPackageFiltering || sourcePackages.contains(getPackageName(c));
@@ -175,10 +175,10 @@ public final class UtilsClassname
 				.filter(_isInPackageList)//
 				.filter(_isPojo)//
 				.forEach(c -> {
-					result.put(c, removeSuffixFromClassName(c, pojoSuffix));
+					_result.put(c, removeSuffixFromClassName(c, pojoSuffix));
 				});
 
-		return result;
+		return _result;
 	}
 
 	/**

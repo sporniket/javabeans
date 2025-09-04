@@ -1,0 +1,3 @@
+[submodule "JavaQuality"]
+	path = JavaQuality
+	url = https://github.com/sporniket/JavaQuality.git

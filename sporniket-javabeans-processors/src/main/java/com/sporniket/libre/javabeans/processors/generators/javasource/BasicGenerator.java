@@ -48,7 +48,7 @@ public abstract class BasicGenerator extends BasicGeneratorBase implements JavaS
 
 	private static final String PACKAGE_NAME__JAVA_LANG = Object.class.getPackage().getName();
 
-	private AnnotationGenerator annotationGenerator = new AnnotationGenerator();
+	private AnnotationGenerator myAnnotationGenerator = new AnnotationGenerator();
 
 	protected Predicate<? super String> getFilterNotInSamePackage(String containingPackageName)
 	{
@@ -57,7 +57,7 @@ public abstract class BasicGenerator extends BasicGeneratorBase implements JavaS
 
 	protected void outputAnnotation(AnnotationSpecs annotations, String indentation, PrintStream out)
 	{
-		annotationGenerator.outputAnnotation(annotations, indentation, out);
+		myAnnotationGenerator.outputAnnotation(annotations, indentation, out);
 	}
 
 	@Override

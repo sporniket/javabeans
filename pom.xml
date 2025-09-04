@@ -18,12 +18,13 @@
 		<version.dependency.jackson>[2.9.8,3.0)</version.dependency.jackson>
 
 		<!-- maven plugins version -->
-		<version.maven-enforcer-plugin>3.0.0-M2</version.maven-enforcer-plugin>
-		<version.maven-compiler-plugin>3.8.0</version.maven-compiler-plugin>
-		<version.maven-source-plugin>3.0.1</version.maven-source-plugin>
-		<version.maven-javadoc-plugin>3.0.1</version.maven-javadoc-plugin>
-		<version.maven-surefire-report-plugin>3.0.0-M3</version.maven-surefire-report-plugin>
-		<version.maven-pmd-plugin>3.4</version.maven-pmd-plugin>
+		<version.maven-enforcer-plugin>3.6.1</version.maven-enforcer-plugin>
+		<version.maven-compiler-plugin>3.14.0</version.maven-compiler-plugin>
+		<version.maven-source-plugin>3.3.1</version.maven-source-plugin>
+		<version.maven-javadoc-plugin>3.11.3</version.maven-javadoc-plugin>
+		<version.maven-surefire-report-plugin>3.5.3</version.maven-surefire-report-plugin>
+		<version.maven-checkstyle-plugin>3.6.0</version.maven-checkstyle-plugin>
+		<version.maven-pmd-plugin>3.27.0</version.maven-pmd-plugin>
 		<version.maven-release-plugin>2.5.3</version.maven-release-plugin>
 
 	</properties>
@@ -165,6 +166,37 @@
 				<configuration>
 					<tagNameFormat>v@{project.version}</tagNameFormat>
 					<pushChanges>false</pushChanges>
+				</configuration>
+			</plugin>
+			<!-- code quality -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${version.maven-checkstyle-plugin}</version>
+				<configuration>
+					<configLocation>JavaQuality/rules/checkstyle-custom.xml</configLocation>
+				</configuration>
+				<executions>
+					<execution>
+						<id>reportAndPerform</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>checkstyle</goal>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>${version.maven-pmd-plugin}</version>
+				<configuration>
+					<aggregate>true</aggregate>
+					<targetJdk>${version.jdk}</targetJdk>
+					<rulesets>
+						<ruleset>JavaQuality/rules/pmd-custom.xml</ruleset>
+					</rulesets>
 				</configuration>
 			</plugin>
 		</plugins>
