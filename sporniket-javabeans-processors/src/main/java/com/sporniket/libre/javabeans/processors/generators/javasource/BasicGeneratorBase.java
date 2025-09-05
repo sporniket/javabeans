@@ -45,7 +45,7 @@ public class BasicGeneratorBase
 	 * @deprecated alternative to be done.
 	 */
 	@Deprecated
-	private DocletOptions myOptions;
+	private Configuration myOptions;
 
 	public BasicGeneratorBase()
 	{
@@ -63,7 +63,7 @@ public class BasicGeneratorBase
 	 * @deprecated alternative to be done.
 	 */
 	@Deprecated
-	public DocletOptions getOptions()
+	public Configuration getOptions()
 	{
 		return myOptions;
 	}
@@ -85,7 +85,7 @@ public class BasicGeneratorBase
 	 * @deprecated alternative to be done.
 	 */
 	@Deprecated
-	public void setOptions(final DocletOptions options)
+	public void setOptions(final Configuration options)
 	{
 		myOptions = options;
 	}

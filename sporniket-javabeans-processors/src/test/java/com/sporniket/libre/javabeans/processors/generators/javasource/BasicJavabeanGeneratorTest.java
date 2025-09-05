@@ -59,7 +59,7 @@ final class BasicJavabeanGeneratorTest
 	 */
 	@Deprecated
 	@Mock
-	DocletOptions options;
+	Configuration options;
 
 	@Test
 	public void should_generate_javabean_source_code()

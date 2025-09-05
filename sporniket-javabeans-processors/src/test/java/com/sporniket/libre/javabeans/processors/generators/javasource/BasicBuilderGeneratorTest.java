@@ -58,7 +58,7 @@ final class BasicBuilderGeneratorTest
 	 */
 	@Deprecated
 	@Mock
-	DocletOptions options;
+	Configuration options;
 
 	@BeforeEach
 	void setupOptions()

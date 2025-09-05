@@ -59,7 +59,7 @@ public class Builder<G extends BasicGenerator>
 		return this;
 	}
 
-	public Builder<G> withOptions(DocletOptions options)
+	public Builder<G> withOptions(Configuration options)
 	{
 		myGenerator.setOptions(options);
 		return this;
