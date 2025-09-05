@@ -1,15 +1,11 @@
 package com.sporniket.libre.javabeans.processors.generators.javasource;
 
 import static org.assertj.core.api.BDDAssertions.then;
-import static org.mockito.Mockito.when;
 
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.sporniket.libre.javabeans.models.javacode.AnnotationParameterSpecsSingleValue;
 import com.sporniket.libre.javabeans.models.javacode.AnnotationParameterSpecsSingleValue_Builder;
@@ -50,20 +46,14 @@ import com.sporniket.libre.javabeans.models.javacode.ImportSpecs_Builder;
  * @version 25.11.00
  * @since 25.11.01
  */
-@ExtendWith(MockitoExtension.class)
 final class BasicBuilderGeneratorTest
 {
-	/**
-	 * @deprecated details should be setup differently.
-	 */
-	@Deprecated
-	@Mock
-	Configuration options;
+	Configuration myOptions = new Configuration();
 
 	@BeforeEach
 	void setupOptions()
 	{
-		when(options.getBuilderSuffix()).thenReturn("_Builder");
+		myOptions.setBuilderSuffix("_Builder");
 	}
 
 	@Test
@@ -134,7 +124,7 @@ final class BasicBuilderGeneratorTest
 		// --
 		final InMemoryPrintStreamHelper _psh = new InMemoryPrintStreamHelper();
 		final BasicBuilderGenerator _generator = new Builder<>(new BasicBuilderGenerator()) //
-				.withOptions(options) //
+				.withOptions(myOptions) //
 				.withClassSpecs(_specs) //
 				.done();
 

@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.sporniket.libre.javabeans.processors.generators.javasource;
 
 import static org.assertj.core.api.BDDAssertions.then;
@@ -8,9 +5,6 @@ import static org.assertj.core.api.BDDAssertions.then;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.sporniket.libre.javabeans.models.javacode.AnnotationParameterSpecsSingleValue;
 import com.sporniket.libre.javabeans.models.javacode.AnnotationParameterSpecsSingleValue_Builder;
@@ -51,14 +45,8 @@ import com.sporniket.libre.javabeans.models.javacode.ImportSpecs_Builder;
  * @version 23.07.00
  * @since 17.09.01
  */
-@ExtendWith(MockitoExtension.class)
 final class BasicJavabeanGeneratorTest
 {
-	/**
-	 * @deprecated details should be setup differently.
-	 */
-	@Deprecated
-	@Mock
 	Configuration options;
 
 	@Test

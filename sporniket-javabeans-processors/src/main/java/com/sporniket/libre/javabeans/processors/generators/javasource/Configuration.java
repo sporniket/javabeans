@@ -122,4 +122,29 @@ public class Configuration
 		return myAnnotationsToAddToSetters;
 	}
 
+	public void setBeanFieldPrefix(final String beanFieldPrefix)
+	{
+		myBeanFieldPrefix = beanFieldPrefix;
+	}
+
+	public void setBuilderSuffix(final String builderSuffix)
+	{
+		myBuilderSuffix = builderSuffix;
+	}
+
+	public void setPojoSuffix(final String pojoSuffix)
+	{
+		myPojoSuffix = pojoSuffix;
+	}
+
+	public void setAnnotationsToAddToGetters(final Set<String> annotationsToAddToGetters)
+	{
+		myAnnotationsToAddToGetters = annotationsToAddToGetters;
+	}
+
+	public void setAnnotationsToAddToSetters(final Set<String> annotationsToAddToSetters)
+	{
+		myAnnotationsToAddToSetters = annotationsToAddToSetters;
+	}
+
 }
