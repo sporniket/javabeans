@@ -4,7 +4,6 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.sporniket.libre.javabeans.models.javacode.AnnotationParameterSpecsSingleValue;
@@ -46,18 +45,12 @@ import com.sporniket.libre.javabeans.models.javacode.ImportSpecs_Builder;
  * @version 25.11.00
  * @since 25.11.01
  */
-final class BasicBuilderGeneratorTest
+final class BasicRawPojoGeneratorTest
 {
 	Configuration myOptions = new Configuration();
 
-	@BeforeEach
-	void setupOptions()
-	{
-		myOptions.setBuilderSuffix("_Builder");
-	}
-
 	@Test
-	public void should_generate_javabean_builder_source_code()
+	public void should_generate_raw_pojo_source_code()
 	{
 		// prepare
 		// -- field titi (primitive boolean)
@@ -117,13 +110,13 @@ final class BasicBuilderGeneratorTest
 				)) //
 				.withAnnotations(List.of()) //
 				.withJavadocLines(_javadocLinesClass)//
-				.withClassName("GreatClass") //
+				.withClassName("GreatClassRaw") //
 				.withFields(List.of(_primitiveBooleanField, _typicalField)) //
 				.done();
 
 		// --
 		final InMemoryPrintStreamHelper _psh = new InMemoryPrintStreamHelper();
-		final BasicBuilderGenerator _generator = new Builder<>(new BasicBuilderGenerator()) //
+		final BasicRawPojoGenerator _generator = new Builder<>(new BasicRawPojoGenerator()) //
 				.withOptions(myOptions) //
 				.withClassSpecs(_specs) //
 				.done();
@@ -142,34 +135,17 @@ final class BasicBuilderGeneratorTest
 				"/**", //
 				" * A very usefull class.", //
 				" */", //
-				"public class GreatClass_Builder", //
+				"class GreatClassRaw", //
 				"{", //
-				"    private final GreatClass bean ;", //
-				"", //
-				"    public GreatClass done() {return bean ;}", //
-				"", //
-				"    /**", //
-				"     * Default constructor.", //
-				"     */", //
-				"    public GreatClass_Builder() {bean = new GreatClass() ;}", //
-				"", //
-				"    /**", //
-				"     * Constructor that delegates the bean instanciation.", //
-				"     * @param newBean the instanciated bean to use.", //
-				"     */", //
-				"    public GreatClass_Builder(GreatClass newBean) {bean = newBean ;}", //
-				"", //
-				"    public GreatClass_Builder withTiti(foo value) {bean.setTiti(value); return this;}", //
+				"    foo myTiti ;", //
+				"    ", //
 				"    /**", //
 				"     * short description of field", //
 				"     * ", //
 				"     * other description", //
-				"     * ", //
-				"     * @param value the new value", //
-				"     * ", //
-				"     * @returns the builder", //
 				"     */", //
-				"    public GreatClass_Builder withtoto(foo value) {bean.settoto(value); return this;}", //
+				"    foo mytoto ;", //
+				"    ", //
 				"}");
 	}
 }
