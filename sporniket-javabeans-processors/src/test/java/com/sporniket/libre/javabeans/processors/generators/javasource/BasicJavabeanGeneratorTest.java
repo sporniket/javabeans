@@ -151,7 +151,7 @@ final class BasicJavabeanGeneratorTest
 			    "    public void setTata(foo value) {tata = value;}", //
 			    "    ", //
 				"    public foo getValue() {return value ;}", //
-				"    public void setValue(foo value) {value = value;}", //
+				"    public void setValue(foo value) {this.value = value;}", //
 				"    ", //
 			    "    public foo[] getTete() {return myTete ;}", //
 			    "    public void setTete(foo[] value) {myTete = value;}", //
