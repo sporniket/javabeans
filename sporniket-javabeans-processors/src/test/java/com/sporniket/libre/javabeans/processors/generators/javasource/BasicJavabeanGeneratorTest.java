@@ -54,15 +54,10 @@ final class BasicJavabeanGeneratorTest
 	{
 		// prepare
 		// -- field titi (primitive boolean)
-		final FieldSpecs _primitiveBooleanField = new FieldSpecs_Builder()//
-				.withDirectlyRequired(true)//
-				.withFieldPrefix("my")//
-				.withArrayMarker("")//
-				.withNameForAccessor("Titi")//
-				.withNameForField("Titi")//
-				.withTypeInvocation("foo")//
-				.withAnnotations(List.of())//
-				.done();
+		final FieldSpecs _minimalField = FieldSpecsFixtures.setupMinimalField("foo", "", "tata", "Tata").done();
+		final FieldSpecs _forceThisField = FieldSpecsFixtures.setupMinimalField("foo", "", "value", "Value").done();
+		final FieldSpecs _primitiveBooleanField = FieldSpecsFixtures.setupBooleanField("foo", "my", "Titi", "Titi").done();
+		final FieldSpecs _arrayField = FieldSpecsFixtures.setupArrayField("foo", "my", "Tete", "Tete").done();
 
 		// -- field toto (general type)
 		final String[] _javadocLines = new String[]
@@ -88,7 +83,7 @@ final class BasicJavabeanGeneratorTest
 				.withType("my.annotations.ForSet") //
 				.withParameters(List.of(_parameter)) //
 				.done();
-		final FieldSpecs _typicalField = new FieldSpecs_Builder()//
+		final FieldSpecs _allTheFeaturesField = new FieldSpecs_Builder()//
 				.withDirectlyRequired(true) //
 				.withFieldPrefix("my") //
 				.withArrayMarker("") //
@@ -111,7 +106,7 @@ final class BasicJavabeanGeneratorTest
 				.withAnnotations(List.of()) //
 				.withJavadocLines(_javadocLinesClass)//
 				.withClassName("GreatClass") //
-				.withFields(List.of(_primitiveBooleanField, _typicalField)) //
+				.withFields(List.of(_minimalField, _forceThisField, _arrayField, _primitiveBooleanField, _allTheFeaturesField)) //
 				.done();
 
 		// --
@@ -127,51 +122,66 @@ final class BasicJavabeanGeneratorTest
 
 		then(_result).containsExactly( //
 				"package my.great.package;", //
-				"", //
-				"import a.b.c.Cee;", //
-				"import a.b.d.Dee;", //
-				"import a.b.e.Eee;", //
-				"", //
-				"/**", //
-				" * A very usefull class.", //
-				" */", //
-				"public class GreatClass", //
-				"{", //
-				"    private foo myTiti ;", //
+			    "", //
+			    "import a.b.c.Cee;", //
+			    "import a.b.d.Dee;", //
+			    "import a.b.e.Eee;", //
+			    "", //
+			    "/**", //
+			    " * A very usefull class.", //
+			    " */", //
+			    "public class GreatClass", //
+			    "{", //
+			    "    private foo tata ;", //
+			    "    ", //
+				"    private foo value ;", //
 				"    ", //
-				"    /**", //
-				"     * short description of field", //
-				"     * ", //
-				"     * other description", //
-				"     */", //
-				"    private foo mytoto ;", //
+			    "    private foo[] myTete ;", //
+			    "    ", //
+			    "    private foo myTiti ;", //
+			    "    ", //
+			    "    /**", //
+			    "     * short description of field", //
+			    "     * ", //
+			    "     * other description", //
+			    "     */", //
+			    "    private foo mytoto ;", //
+			    "    ", //
+			    "    public foo getTata() {return tata ;}", //
+			    "    public void setTata(foo value) {tata = value;}", //
+			    "    ", //
+				"    public foo getValue() {return value ;}", //
+				"    public void setValue(foo value) {value = value;}", //
 				"    ", //
-				"    public foo getTiti() {return myTiti ;}", //
-				"    public void setTiti(foo value) {myTiti = value;}", //
-				"    ", //
-				"    /**", //
-				"     * short description of field", //
-				"     * ", //
-				"     * other description", //
-				"     * ", //
-				"     * @returns the current value", //
-				"     */", //
-				"    @my.annotations.ForGet(", //
+			    "    public foo[] getTete() {return myTete ;}", //
+			    "    public void setTete(foo[] value) {myTete = value;}", //
+			    "    ", //
+			    "    public foo isTiti() {return myTiti ;}", //
+			    "    public void setTiti(foo value) {myTiti = value;}", //
+			    "    ", //
+			    "    /**", //
+			    "     * short description of field", //
+			    "     * ", //
+			    "     * other description", //
+			    "     * ", //
+			    "     * @returns the current value", //
+			    "     */", //
+			    "    @my.annotations.ForGet(", //
 				"        foo = \"the value\"", //
-				"    )", //
-				"    public foo gettoto() {return mytoto ;}", //
-				"    /**", //
-				"     * short description of field", //
-				"     * ", //
-				"     * other description", //
-				"     * ", //
-				"     * @param value the new value", //
-				"     */", //
-				"    @my.annotations.ForSet(", //
+			    "    )", //
+			    "    public foo gettoto() {return mytoto ;}", //
+			    "    /**", //
+			    "     * short description of field", //
+			    "     * ", //
+			    "     * other description", //
+			    "     * ", //
+			    "     * @param value the new value", //
+			    "     */", //
+			    "    @my.annotations.ForSet(", //
 				"        foo = \"the value\"", //
-				"    )", //
-				"    public void settoto(foo value) {mytoto = value;}", //
-				"    ", //
-				"}");
+			    "    )", //
+			    "    public void settoto(foo value) {mytoto = value;}", //
+			    "    ", //
+			    "}");
 	}
 }
