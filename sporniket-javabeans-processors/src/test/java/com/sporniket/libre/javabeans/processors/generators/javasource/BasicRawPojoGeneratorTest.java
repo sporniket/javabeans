@@ -13,7 +13,6 @@ import com.sporniket.libre.javabeans.models.javacode.AnnotationSpecs_Builder;
 import com.sporniket.libre.javabeans.models.javacode.ClassSpecs;
 import com.sporniket.libre.javabeans.models.javacode.ClassSpecs_Builder;
 import com.sporniket.libre.javabeans.models.javacode.FieldSpecs;
-import com.sporniket.libre.javabeans.models.javacode.FieldSpecs_Builder;
 import com.sporniket.libre.javabeans.models.javacode.ImportSpecs_Builder;
 
 /**
@@ -53,18 +52,13 @@ final class BasicRawPojoGeneratorTest
 	public void should_generate_raw_pojo_source_code()
 	{
 		// prepare
-		// -- field titi (primitive boolean)
-		final FieldSpecs _primitiveBooleanField = new FieldSpecs_Builder()//
-				.withDirectlyRequired(true)//
-				.withFieldPrefix("my")//
-				.withArrayMarker("")//
-				.withNameForAccessor("Titi")//
-				.withNameForField("Titi")//
-				.withTypeInvocation("foo")//
-				.withAnnotations(List.of())//
-				.done();
+		// -- fields
+		final FieldSpecs _minimalField = FieldSpecsFixtures.setupMinimalField("foo", "", "tata", "Tata").done();
+		final FieldSpecs _forceThisField = FieldSpecsFixtures.setupMinimalField("foo", "", "value", "Value").done();
+		final FieldSpecs _primitiveBooleanField = FieldSpecsFixtures.setupBooleanField("foo", "my", "Titi", "Titi").done();
+		final FieldSpecs _arrayField = FieldSpecsFixtures.setupArrayField("foo", "my", "Tete", "Tete").done();
 
-		// -- field toto (general type)
+		// -- javadoc
 		final String[] _javadocLines = new String[]
 		{
 				"short description of field", "", "other description"
@@ -73,6 +67,8 @@ final class BasicRawPojoGeneratorTest
 		{
 				"A very usefull class."
 		};
+
+		// -- annotations
 		final AnnotationParameterSpecsSingleValue _parameter = new AnnotationParameterSpecsSingleValue_Builder() //
 				.withName("foo") //
 				.withValue("the value") //
@@ -88,15 +84,14 @@ final class BasicRawPojoGeneratorTest
 				.withType("my.annotations.ForSet") //
 				.withParameters(List.of(_parameter)) //
 				.done();
-		final FieldSpecs _typicalField = new FieldSpecs_Builder()//
+		final AnnotationSpecs _annotationForField = new AnnotationSpecs_Builder()//
+				.withOnField(true)//
+				.withType("my.annotations.ForField") //
+				.withParameters(List.of(_parameter)) //
+				.done();
+		final FieldSpecs _allTheFeaturesField = FieldSpecsFixtures.setupMinimalField("foo", "my", "toto", "toto")//
 				.withDirectlyRequired(true) //
-				.withFieldPrefix("my") //
-				.withArrayMarker("") //
-				.withNameForAccessor("toto") //
-				.withNameForField("toto") //
-				.withTypeInvocation("foo") //
-				.withBooleanGetter(false) //
-				.withAnnotations(List.of(_annotationForGet, _annotationForSet)) //
+				.withAnnotations(List.of(_annotationForGet, _annotationForSet, _annotationForField)) //
 				.withJavadocLines(_javadocLines) //
 				.done();
 
@@ -111,7 +106,7 @@ final class BasicRawPojoGeneratorTest
 				.withAnnotations(List.of()) //
 				.withJavadocLines(_javadocLinesClass)//
 				.withClassName("GreatClassRaw") //
-				.withFields(List.of(_primitiveBooleanField, _typicalField)) //
+				.withFields(List.of(_minimalField, _forceThisField, _arrayField, _primitiveBooleanField, _allTheFeaturesField)) //
 				.done();
 
 		// --
@@ -137,6 +132,12 @@ final class BasicRawPojoGeneratorTest
 				" */", //
 				"class GreatClassRaw", //
 				"{", //
+				"    foo tata ;", //
+				"    ", //
+				"    foo value ;", //
+				"    ", //
+				"    foo[] myTete ;", //
+				"    ", //
 				"    foo myTiti ;", //
 				"    ", //
 				"    /**", //
@@ -144,7 +145,78 @@ final class BasicRawPojoGeneratorTest
 				"     * ", //
 				"     * other description", //
 				"     */", //
+				"    @my.annotations.ForField(", //
+				"        foo = \"the value\"", //
+				"    )", //
 				"    foo mytoto ;", //
+				"    ", //
+				"}");
+	}
+
+	@Test
+	void should_generate_class_with_all_the_features()
+	{
+		// prepare
+		// -- fields
+		final FieldSpecs _minimalField = FieldSpecsFixtures.setupMinimalField("foo", "", "tata", "Tata").done();
+
+		// -- javadoc
+		final String[] _javadocLinesClass = new String[]
+		{
+				"A very usefull class."
+		};
+
+		// -- annotations
+		final AnnotationParameterSpecsSingleValue _parameter = new AnnotationParameterSpecsSingleValue_Builder() //
+				.withName("foo") //
+				.withValue("the value") //
+				.withString(true) //
+				.done();
+		final AnnotationSpecs _annotationForClass = new AnnotationSpecs_Builder()//
+				.withType("my.annotations.ForClass") //
+				.withParameters(List.of(_parameter)) //
+				.done();
+
+		// -- class
+		final ClassSpecs _specs = new ClassSpecs_Builder() //
+				.withAbstractRequired(true) //
+				.withPackageName("my.great.package") //
+				.withImports(List.of()) //
+				.withAnnotations(List.of(_annotationForClass)) //
+				.withJavadocLines(_javadocLinesClass)//
+				.withClassName("GreatClass") //
+				.withDeclaredTypeArguments("<DeclaredTypeArgument>") //
+				.withInvokedTypeArguments("<InvokedTypeArgument>") //
+				.withSuperClassName("SuperClass") //
+				.withInterfaceList("a, b, c") //
+				.withFields(List.of(_minimalField)) //
+				.done();
+
+		// --
+		final InMemoryPrintStreamHelper _psh = new InMemoryPrintStreamHelper();
+		final BasicRawPojoGenerator _generator = new Builder<>(new BasicRawPojoGenerator()) //
+				.withClassSpecs(_specs) //
+				.done();
+
+		// execute
+		_generator.generate(_psh.getPrintStream());
+		final List<String> _result = _psh.getLines();
+
+		then(_result).containsExactly( //
+				"package my.great.package;", //
+				"", //
+				"", //
+				"/**", //
+				" * A very usefull class.", //
+				" */", //
+				"@my.annotations.ForClass(", //
+				"    foo = \"the value\"", //
+				")", //
+				"abstract class GreatClass<DeclaredTypeArgument>", //
+				"        extends SuperClass", //
+				"        implements a, b, c", //
+				"{", //
+				"    foo tata ;", //
 				"    ", //
 				"}");
 	}
