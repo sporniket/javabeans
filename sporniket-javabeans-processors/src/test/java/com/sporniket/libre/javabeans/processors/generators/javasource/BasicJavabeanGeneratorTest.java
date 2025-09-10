@@ -99,6 +99,9 @@ final class BasicJavabeanGeneratorTest
 		final ClassSpecs _specs = new ClassSpecs_Builder() //
 				.withPackageName("my.great.package") //
 				.withImports(List.of( //
+						new ImportSpecs_Builder().withClassName("?").withDirectlyRequired(true).done(), //
+						new ImportSpecs_Builder().withClassName("java.lang.Whatever").withDirectlyRequired(true).done(), //
+						new ImportSpecs_Builder().withClassName("my.great.package.Whatever").withDirectlyRequired(true).done(), //
 						new ImportSpecs_Builder().withClassName("a.b.c.Cee").withDirectlyRequired(true).done(), //
 						new ImportSpecs_Builder().withClassName("a.b.d.Dee").withDirectlyRequired(true).done(), //
 						new ImportSpecs_Builder().withClassName("a.b.e.Eee").withDirectlyRequired(true).done() //

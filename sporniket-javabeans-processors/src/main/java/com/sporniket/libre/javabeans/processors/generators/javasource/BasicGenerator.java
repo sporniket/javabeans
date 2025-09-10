@@ -6,7 +6,6 @@ package com.sporniket.libre.javabeans.processors.generators.javasource;
 import static com.sporniket.libre.javabeans.processors.generators.javasource.UtilsClassname.getPackageName;
 
 import java.io.PrintStream;
-import java.util.function.Predicate;
 
 import com.sporniket.libre.javabeans.models.javacode.AnnotationSpecs;
 import com.sporniket.libre.javabeans.models.javacode.ImportSpecs;
@@ -44,29 +43,22 @@ import com.sporniket.libre.javabeans.models.javacode.ImportSpecs;
  */
 public abstract class BasicGenerator extends BasicGeneratorBase implements JavaSourceGenerator
 {
-	protected static final Predicate<? super String> FILTER__IS_NOT_TYPE_PARAMETER = c -> !"?".equals(c);
-
 	private static final String PACKAGE_NAME__JAVA_LANG = Object.class.getPackage().getName();
 
-	private AnnotationGenerator myAnnotationGenerator = new AnnotationGenerator();
+	private final AnnotationGenerator myAnnotationGenerator = new AnnotationGenerator();
 
-	protected Predicate<? super String> getFilterNotInSamePackage(String containingPackageName)
-	{
-		return c -> (!containingPackageName.equals(getPackageName(c)));
-	}
-
-	protected void outputAnnotation(AnnotationSpecs annotations, String indentation, PrintStream out)
+	protected void outputAnnotation(final AnnotationSpecs annotations, final String indentation, final PrintStream out)
 	{
 		myAnnotationGenerator.outputAnnotation(annotations, indentation, out);
 	}
 
 	@Override
-	public void outputClassEnd(PrintStream out)
+	public void outputClassEnd(final PrintStream out)
 	{
 		out.println("}\n");
 	}
 
-	protected void outputImportSpecIfValid(ImportSpecs specs, PrintStream out)
+	protected void outputImportSpecIfValid(final ImportSpecs specs, final PrintStream out)
 	{
 		final String _packageName = getPackageName(specs.getClassName());
 		if (!"?".equals(specs.getClassName())//
@@ -78,7 +70,7 @@ public abstract class BasicGenerator extends BasicGeneratorBase implements JavaS
 	}
 
 	@Override
-	public void outputPackageStatement(PrintStream out)
+	public void outputPackageStatement(final PrintStream out)
 	{
 		out.printf("package %s;\n", getClassSpecs().getPackageName());
 
