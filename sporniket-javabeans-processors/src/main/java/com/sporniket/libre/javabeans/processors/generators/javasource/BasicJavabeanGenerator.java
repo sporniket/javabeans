@@ -79,11 +79,16 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 		field.getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnSetter)//
 				.forEach(a -> outputAnnotation(a, NEXT_INDENTATION, out));
+		String _targetField = field.getFieldPrefix() + field.getNameForField();
+		if ("value".equals(_targetField))
+		{
+			_targetField = "this.value";
+		}
 		List.of( //
 				NEXT_INDENTATION, //
 				"public void set", field.getNameForAccessor(), //
 				"(", field.getTypeInvocation(), field.getArrayMarker(), //
-				" value) {", field.getFieldPrefix(), field.getNameForField(), //
+				" value) {", _targetField, //
 				" = value;}\n" //
 		).forEach(out::print);
 
