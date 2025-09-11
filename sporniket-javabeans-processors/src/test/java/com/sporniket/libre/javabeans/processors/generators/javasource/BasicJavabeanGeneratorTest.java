@@ -46,7 +46,7 @@ import com.sporniket.libre.javabeans.models.javacode.ImportSpecs_Builder;
  */
 final class BasicJavabeanGeneratorTest
 {
-	Configuration options;
+	Configuration myOptions;
 
 	@Test
 	public void should_generate_javabean_source_code()
@@ -115,7 +115,6 @@ final class BasicJavabeanGeneratorTest
 		// --
 		final InMemoryPrintStreamHelper _psh = new InMemoryPrintStreamHelper();
 		final BasicJavabeanGenerator _generator = new Builder<>(new BasicJavabeanGenerator()) //
-				.withOptions(options) //
 				.withClassSpecs(_specs) //
 				.done();
 
@@ -233,7 +232,7 @@ final class BasicJavabeanGeneratorTest
 		// --
 		final InMemoryPrintStreamHelper _psh = new InMemoryPrintStreamHelper();
 		final BasicJavabeanGenerator _generator = new Builder<>(new BasicJavabeanGenerator()) //
-				.withOptions(options) //
+				.withOptions(myOptions) //
 				.withClassSpecs(_specs) //
 				.done();
 

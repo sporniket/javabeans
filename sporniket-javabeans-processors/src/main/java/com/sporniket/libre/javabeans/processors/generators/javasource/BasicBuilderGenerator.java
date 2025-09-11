@@ -53,7 +53,11 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 		final String[] _javadocLines = getClassSpecs().getJavadocLines();
 		if (null != _javadocLines && 0 < _javadocLines.length)
 		{
-			UtilsJavadoc.printJavadoc(_javadocLines, "", out);
+			final String[] _builderJavadoc = new String[]
+			{
+					"Fluent builder/wrapper for " + getClassSpecs().getClassName(), "", "@see " + getClassSpecs().getClassName()
+			};
+			UtilsJavadoc.printJavadoc(_builderJavadoc, "", out);
 		}
 		getClassSpecs().getAnnotations().stream()//
 				.filter(AnnotationSpecs::isOnBuilder)//

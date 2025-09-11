@@ -140,7 +140,9 @@ final class BasicBuilderGeneratorTest
 				"import a.b.e.Eee;", //
 				"", //
 				"/**", //
-				" * A very usefull class.", //
+				" * Fluent builder/wrapper for GreatClass", //
+				" * ", //
+				" * @see GreatClass", //
 				" */", //
 				"public class GreatClass_Builder", //
 				"{", //
@@ -170,6 +172,158 @@ final class BasicBuilderGeneratorTest
 				"     * @returns the builder", //
 				"     */", //
 				"    public GreatClass_Builder withtoto(foo value) {bean.settoto(value); return this;}", //
+				"}");
+	}
+
+	@Test
+	void should_generate_javabean_builder_for_concrete_javabean_with_all_the_features()
+	{
+		// prepare
+		// -- fields
+		final FieldSpecs _minimalField = FieldSpecsFixtures.setupMinimalField("foo", "", "tata", "Tata").done();
+
+		// -- javadoc
+		final String[] _javadocLinesClass = new String[]
+		{
+				"A very usefull class."
+		};
+
+		// -- annotations
+		final AnnotationParameterSpecsSingleValue _parameter = new AnnotationParameterSpecsSingleValue_Builder() //
+				.withName("foo") //
+				.withValue("the value") //
+				.withString(true) //
+				.done();
+		final AnnotationSpecs _annotationForClass = new AnnotationSpecs_Builder()//
+				.withType("my.annotations.ForClass") //
+				.withParameters(List.of(_parameter)) //
+				.done();
+
+		// -- class
+		final ClassSpecs _specs = new ClassSpecs_Builder() //
+				.withPackageName("my.great.package") //
+				.withImports(List.of()) //
+				.withAnnotations(List.of(_annotationForClass)) //
+				.withJavadocLines(_javadocLinesClass)//
+				.withClassName("GreatClass") //
+				.withDeclaredTypeArguments("<DeclaredTypeArgument>") //
+				.withInvokedTypeArguments("<InvokedTypeArgument>") //
+				.withSuperClassName("SuperClass") //
+				.withInterfaceList("a, b, c") //
+				.withFields(List.of(_minimalField)) //
+				.done();
+
+		// --
+		final InMemoryPrintStreamHelper _psh = new InMemoryPrintStreamHelper();
+		final BasicBuilderGenerator _generator = new Builder<>(new BasicBuilderGenerator()) //
+				.withOptions(myOptions) //
+				.withClassSpecs(_specs) //
+				.done();
+
+		// execute
+		_generator.generate(_psh.getPrintStream());
+		final List<String> _result = _psh.getLines();
+
+		then(_result).containsExactly( //
+				"package my.great.package;", //
+				"", //
+				"", //
+				"/**", //
+				" * Fluent builder/wrapper for GreatClass", //
+				" * ", //
+				" * @see GreatClass", //
+				" */", //
+				"public class GreatClass_Builder<DeclaredTypeArgument>", //
+				"{", //
+				"    private final GreatClass<InvokedTypeArgument> bean ;", //
+				"", //
+				"    public GreatClass<InvokedTypeArgument> done() {return bean ;}", //
+				"", //
+				"    /**", //
+				"     * Default constructor.", //
+				"     */", //
+				"    public GreatClass_Builder() {bean = new GreatClass<InvokedTypeArgument>() ;}", //
+				"", //
+				"    /**", //
+				"     * Constructor that delegates the bean instanciation.", //
+				"     * @param newBean the instanciated bean to use.", //
+				"     */", //
+				"    public GreatClass_Builder(GreatClass<InvokedTypeArgument> newBean) {bean = newBean ;}", //
+				"", //
+				"    public GreatClass_Builder<InvokedTypeArgument> withTata(foo value) {bean.setTata(value); return this;}", //
+			    "}");
+	}
+
+	@Test
+	void should_omit_default_constructor_for_abstract_javabean()
+	{
+		// prepare
+		// -- fields
+		final FieldSpecs _minimalField = FieldSpecsFixtures.setupMinimalField("foo", "", "tata", "Tata").done();
+
+		// -- javadoc
+		final String[] _javadocLinesClass = new String[]
+		{
+				"A very usefull class."
+		};
+
+		// -- annotations
+		final AnnotationParameterSpecsSingleValue _parameter = new AnnotationParameterSpecsSingleValue_Builder() //
+				.withName("foo") //
+				.withValue("the value") //
+				.withString(true) //
+				.done();
+		final AnnotationSpecs _annotationForClass = new AnnotationSpecs_Builder()//
+				.withType("my.annotations.ForClass") //
+				.withParameters(List.of(_parameter)) //
+				.done();
+
+		// -- class
+		final ClassSpecs _specs = new ClassSpecs_Builder() //
+				.withAbstractRequired(true) //
+				.withPackageName("my.great.package") //
+				.withImports(List.of()) //
+				.withAnnotations(List.of(_annotationForClass)) //
+				.withJavadocLines(_javadocLinesClass)//
+				.withClassName("GreatClass") //
+				.withDeclaredTypeArguments("<DeclaredTypeArgument>") //
+				.withInvokedTypeArguments("<InvokedTypeArgument>") //
+				.withFields(List.of(_minimalField)) //
+				.done();
+
+		// --
+		final InMemoryPrintStreamHelper _psh = new InMemoryPrintStreamHelper();
+		final BasicBuilderGenerator _generator = new Builder<>(new BasicBuilderGenerator()) //
+				.withOptions(myOptions) //
+				.withClassSpecs(_specs) //
+				.done();
+
+		// execute
+		_generator.generate(_psh.getPrintStream());
+		final List<String> _result = _psh.getLines();
+
+		then(_result).containsExactly( //
+				"package my.great.package;", //
+				"", //
+				"", //
+				"/**", //
+				" * Fluent builder/wrapper for GreatClass", //
+				" * ", //
+				" * @see GreatClass", //
+				" */", //
+				"public class GreatClass_Builder<DeclaredTypeArgument>", //
+				"{", //
+				"    private final GreatClass<InvokedTypeArgument> bean ;", //
+				"", //
+				"    public GreatClass<InvokedTypeArgument> done() {return bean ;}", //
+				"", //
+				"    /**", //
+				"     * Constructor that delegates the bean instanciation.", //
+				"     * @param newBean the instanciated bean to use.", //
+				"     */", //
+				"    public GreatClass_Builder(GreatClass<InvokedTypeArgument> newBean) {bean = newBean ;}", //
+				"", //
+				"    public GreatClass_Builder<InvokedTypeArgument> withTata(foo value) {bean.setTata(value); return this;}", //
 				"}");
 	}
 }
