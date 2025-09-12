@@ -35,7 +35,7 @@
 
 	<modules>
 		<module>sporniket-javabeans-models</module>
-		<module>sporniket-javabeans-processors</module>
+		<module>sporniket-javabeans-models-consumers-javasource</module>
 		<module>sporniket-javabeans-doclet</module>
 		<module>seeg-maven-plugin</module>
 	</modules>
@@ -175,6 +175,7 @@
 				<version>${version.maven-checkstyle-plugin}</version>
 				<configuration>
 					<configLocation>JavaQuality/rules/checkstyle-custom.xml</configLocation>
+					<excludes>**/*_Builder.java</excludes>
 				</configuration>
 				<executions>
 					<execution>
