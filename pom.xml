@@ -36,6 +36,7 @@
 	<modules>
 		<module>sporniket-javabeans-models</module>
 		<module>sporniket-javabeans-models-consumers-javasource</module>
+		<module>sporniket-javabeans-models-producers-javadoc</module>
 		<module>sporniket-javabeans-doclet</module>
 		<module>seeg-maven-plugin</module>
 	</modules>
