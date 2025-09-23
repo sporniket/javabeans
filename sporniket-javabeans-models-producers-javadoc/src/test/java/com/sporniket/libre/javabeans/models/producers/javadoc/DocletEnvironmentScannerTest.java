@@ -1,5 +1,6 @@
 package com.sporniket.libre.javabeans.models.producers.javadoc;
 
+import static org.assertj.core.api.Assertions.tuple;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -62,15 +63,22 @@ class DocletEnvironmentScannerTest
 		final Collection<ClassSpecs> _result = new DocletEnvironmentScanner().scan(_environment,
 				new DocletEnvironmentScanConfiguration());
 
-		then(_result).hasSize(2);
+		then(_result) //
+				.hasSize(2) //
+				.extracting("className", "classNameFullyQualified") //
+				.containsExactly( //
+						tuple("MyGreatClass", "my-great-package.MyGreatClass"), //
+						tuple("MyOtherClass", "my-great-package.MyOtherClass") //
+				);
 	}
 
-	Element mockPackage(final String simpleName, final List<Element> elements)
+	Element mockPackage(final String simpleName, final List<Element> enclosedElements)
 	{
 		final Element _elPackage = mock(Element.class);
 		when(_elPackage.getKind()).thenReturn(ElementKind.PACKAGE);
 		when(_elPackage.getSimpleName()).thenReturn(new NameString(simpleName));
-		doReturn(elements).when(_elPackage).getEnclosedElements();
+		doReturn(enclosedElements).when(_elPackage).getEnclosedElements();
+		enclosedElements.forEach(e -> when(e.getEnclosingElement()).thenReturn(_elPackage));
 		return _elPackage;
 	}
 

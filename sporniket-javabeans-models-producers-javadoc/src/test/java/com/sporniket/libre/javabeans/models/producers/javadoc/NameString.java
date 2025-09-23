@@ -35,4 +35,10 @@ class NameString implements Name
 		return myValue.contentEquals(cs);
 	}
 
+	@Override
+	public String toString()
+	{
+		return myValue;
+	}
+
 }

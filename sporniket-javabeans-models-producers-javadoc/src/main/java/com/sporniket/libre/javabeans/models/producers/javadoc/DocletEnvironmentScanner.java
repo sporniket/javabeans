@@ -2,8 +2,10 @@ package com.sporniket.libre.javabeans.models.producers.javadoc;
 
 import static java.util.stream.Collectors.toList;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.List;
 
 import javax.lang.model.element.Element;
@@ -46,13 +48,31 @@ public class DocletEnvironmentScanner
 {
 	public Collection<ClassSpecs> scan(final DocletEnvironment root, final DocletEnvironmentScanConfiguration configuration)
 	{
-		final List<Element> _accumulator = new ArrayList();
+		final List<Element> _accumulator = new ArrayList<>();
 		root.getIncludedElements().forEach(e -> {
 			findClasses(e, _accumulator);
 		});
 		return _accumulator.stream() //
-				.map(e -> new ClassSpecs_Builder().done()) //
+				.map(e -> {
+					final String _packageName = computePackageName(e);
+					final String _qualifiedName = _packageName + "." + e.getSimpleName().toString();
+					return new ClassSpecs_Builder() //
+							.withClassName(e.getSimpleName().toString()) //
+							.withClassNameFullyQualified(_qualifiedName) //
+							.done();
+				}) //
 				.collect(toList());
+	}
+
+	String computePackageName(final Element element)
+	{
+		final Deque<String> path = new ArrayDeque<>(20);
+		for (Element container = element.getEnclosingElement(); container != null; container = container.getEnclosingElement())
+		{
+			path.addFirst(container.getSimpleName().toString());
+		}
+
+		return String.join(".", path);
 	}
 
 	private void findClasses(final Element root, final List<Element> accumulator)
