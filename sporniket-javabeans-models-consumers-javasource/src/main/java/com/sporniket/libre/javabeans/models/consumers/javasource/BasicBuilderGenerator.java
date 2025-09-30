@@ -3,9 +3,12 @@ package com.sporniket.libre.javabeans.models.consumers.javasource;
 import static com.sporniket.libre.javabeans.models.Comparators.IMPORT_SPECS_COMPARATOR_NATURAL;
 import static com.sporniket.libre.javabeans.models.consumers.javasource.Utils.NEXT_INDENTATION;
 import static com.sporniket.libre.javabeans.models.consumers.javasource.UtilsJavadoc.printJavadocForBuilderSetter;
+import static java.util.Collections.emptyList;
+import static java.util.Optional.ofNullable;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -59,8 +62,10 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 			};
 			UtilsJavadoc.printJavadoc(_builderJavadoc, "", out);
 		}
-		getClassSpecs().getAnnotations().stream()//
-				.filter(AnnotationSpecs::isOnBuilder)//
+		ofNullable(getClassSpecs().getAnnotations()) //
+				.orElse(emptyList()) //
+				.stream() //
+				.filter(AnnotationSpecs::isOnBuilder) //
 				.forEach(a -> outputAnnotation(a, "", out));
 		final List<String> _classOpening = new ArrayList<>(20);
 		_classOpening.add("public class ");
@@ -138,9 +143,13 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 	@Override
 	public void outputImportStatements(final PrintStream out)
 	{
-		final TreeSet<ImportSpecs> _sortedImports = new TreeSet<ImportSpecs>(IMPORT_SPECS_COMPARATOR_NATURAL);
-		_sortedImports.addAll(getClassSpecs().getImports());
-		_sortedImports.stream().forEach(i -> outputImportSpecIfValid(i, out));
+		final Collection<ImportSpecs> _imports = getClassSpecs().getImports();
+		if (null != _imports)
+		{
+			final TreeSet<ImportSpecs> _sortedImports = new TreeSet<ImportSpecs>(IMPORT_SPECS_COMPARATOR_NATURAL);
+			_sortedImports.addAll(_imports);
+			_sortedImports.stream().forEach(i -> outputImportSpecIfValid(i, out));
+		}
 
 		out.println();
 	}
@@ -179,6 +188,9 @@ public class BasicBuilderGenerator extends BasicGenerator implements BuilderGene
 	@Override
 	public void outputSetters(final PrintStream out)
 	{
-		getClassSpecs().getFields().stream().forEach(f -> outputSetter(f, out));
+		ofNullable(getClassSpecs().getFields()) //
+				.orElse(emptyList()) //
+				.stream() //
+				.forEach(f -> outputSetter(f, out));
 	}
 }

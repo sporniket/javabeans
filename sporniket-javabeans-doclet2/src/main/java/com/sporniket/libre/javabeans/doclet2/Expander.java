@@ -13,6 +13,7 @@ import com.sporniket.libre.javabeans.models.ClassSpecs;
 import com.sporniket.libre.javabeans.models.consumers.javasource.BasicBuilderGenerator;
 import com.sporniket.libre.javabeans.models.consumers.javasource.BasicJavabeanGenerator;
 import com.sporniket.libre.javabeans.models.consumers.javasource.Builder;
+import com.sporniket.libre.javabeans.models.consumers.javasource.Configuration;
 import com.sporniket.libre.javabeans.models.producers.javadoc.DocletEnvironmentScanConfiguration;
 import com.sporniket.libre.javabeans.models.producers.javadoc.DocletEnvironmentScanner;
 
@@ -52,18 +53,21 @@ public class Expander implements Doclet
 	public boolean run(final DocletEnvironment environment)
 	{
 		final DocletEnvironmentScanConfiguration configuration = new DocletEnvironmentScanConfiguration();
+		final Configuration generatorOptions = new Configuration();
 		final Collection<ClassSpecs> _classes = new DocletEnvironmentScanner().scan(environment, configuration);
 		for (final ClassSpecs _class : _classes)
 		{
 			System.out.println("##########");
 			new Builder<>(new BasicJavabeanGenerator()) //
 					.withClassSpecs(_class) //
+					.withOptions(generatorOptions) //
 					.done() //
 					.generate(System.out);
 
 			System.out.println("==========");
 			new Builder<>(new BasicBuilderGenerator()) //
 					.withClassSpecs(_class) //
+					.withOptions(generatorOptions) //
 					.done() //
 					.generate(System.out);
 		}

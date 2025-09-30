@@ -6,9 +6,12 @@ import static com.sporniket.libre.javabeans.models.consumers.javasource.UtilsJav
 import static com.sporniket.libre.javabeans.models.consumers.javasource.UtilsJavadoc.printJavadocForGetter;
 import static com.sporniket.libre.javabeans.models.consumers.javasource.UtilsJavadoc.printJavadocForSetter;
 import static com.sporniket.strings.StringPredicates.IS_NOT_EMPTY;
+import static java.util.Collections.emptyList;
+import static java.util.Optional.ofNullable;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -99,7 +102,11 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 	@Override
 	public void outputAccessors(final PrintStream out)
 	{
-		getClassSpecs().getFields().stream().filter(FieldSpecs::isDirectlyRequired).forEach(f -> outputAccessor(f, out));
+		ofNullable(getClassSpecs().getFields()) //
+				.orElse(emptyList()) //
+				.stream() //
+				.filter(FieldSpecs::isDirectlyRequired) //
+				.forEach(f -> outputAccessor(f, out));
 	}
 
 	@Override
@@ -112,7 +119,8 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 		{
 			printJavadoc(_javadocLines, "", out);
 		}
-		getClassSpecs().getAnnotations().stream()//
+		ofNullable(getClassSpecs().getAnnotations()) //
+				.orElse(emptyList()) //
 				.forEach(a -> outputAnnotation(a, "", out));
 		final List<String> _classOpening = new ArrayList<>(20);
 		_classOpening.add((getClassSpecs().isAbstractRequired()) ? "public abstract class " : "public class ");
@@ -159,7 +167,9 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 	@Override
 	public void outputFields(final PrintStream out)
 	{
-		getClassSpecs().getFields().stream()//
+		ofNullable(getClassSpecs().getFields()) //
+				.orElse(emptyList()) //
+				.stream()//
 				.filter(FieldSpecs::isDirectlyRequired)//
 				.forEach(_field -> outputField(_field, out));
 
@@ -168,9 +178,13 @@ public class BasicJavabeanGenerator extends BasicGenerator implements JavabeanGe
 	@Override
 	public void outputImportStatements(final PrintStream out)
 	{
-		final TreeSet<ImportSpecs> _sortedImports = new TreeSet<ImportSpecs>(IMPORT_SPECS_COMPARATOR_NATURAL);
-		_sortedImports.addAll(getClassSpecs().getImports());
-		_sortedImports.stream().filter(ImportSpecs::isDirectlyRequired).forEach(i -> outputImportSpecIfValid(i, out));
+		final Collection<ImportSpecs> _imports = getClassSpecs().getImports();
+		if (null != _imports)
+		{
+			final TreeSet<ImportSpecs> _sortedImports = new TreeSet<ImportSpecs>(IMPORT_SPECS_COMPARATOR_NATURAL);
+			_sortedImports.addAll(_imports);
+			_sortedImports.stream().filter(ImportSpecs::isDirectlyRequired).forEach(i -> outputImportSpecIfValid(i, out));
+		}
 
 		out.println();
 	}

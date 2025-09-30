@@ -4,9 +4,12 @@ import static com.sporniket.libre.javabeans.models.Comparators.IMPORT_SPECS_COMP
 import static com.sporniket.libre.javabeans.models.consumers.javasource.Utils.NEXT_INDENTATION;
 import static com.sporniket.libre.javabeans.models.consumers.javasource.UtilsJavadoc.printJavadoc;
 import static com.sporniket.strings.StringPredicates.IS_NOT_EMPTY;
+import static java.util.Collections.emptyList;
+import static java.util.Optional.ofNullable;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -66,7 +69,8 @@ public class BasicRawPojoGenerator extends BasicGenerator implements JavabeanGen
 		{
 			printJavadoc(_javadocLines, "", out);
 		}
-		getClassSpecs().getAnnotations().stream()//
+		ofNullable(getClassSpecs().getAnnotations()) //
+				.orElse(emptyList()) //
 				.forEach(a -> outputAnnotation(a, "", out));
 		final List<String> _classOpening = new ArrayList<>(20);
 		_classOpening.add((getClassSpecs().isAbstractRequired()) ? "abstract class " : "class ");
@@ -113,15 +117,22 @@ public class BasicRawPojoGenerator extends BasicGenerator implements JavabeanGen
 	@Override
 	public void outputFields(final PrintStream out)
 	{
-		getClassSpecs().getFields().stream().filter(FieldSpecs::isDirectlyRequired).forEach(f -> outputField(f, out));
+		ofNullable(getClassSpecs().getFields()) //
+				.orElse(emptyList()) //
+				.stream().filter(FieldSpecs::isDirectlyRequired) //
+				.forEach(f -> outputField(f, out));
 	}
 
 	@Override
 	public void outputImportStatements(final PrintStream out)
 	{
-		final TreeSet<ImportSpecs> _sortedImports = new TreeSet<ImportSpecs>(IMPORT_SPECS_COMPARATOR_NATURAL);
-		_sortedImports.addAll(getClassSpecs().getImports());
-		_sortedImports.stream().filter(ImportSpecs::isDirectlyRequired).forEach(i -> outputImportSpecIfValid(i, out));
+		final Collection<ImportSpecs> _imports = getClassSpecs().getImports();
+		if (null != _imports)
+		{
+			final TreeSet<ImportSpecs> _sortedImports = new TreeSet<ImportSpecs>(IMPORT_SPECS_COMPARATOR_NATURAL);
+			_sortedImports.addAll(_imports);
+			_sortedImports.stream().filter(ImportSpecs::isDirectlyRequired).forEach(i -> outputImportSpecIfValid(i, out));
+		}
 
 		out.println();
 	}
