@@ -2,14 +2,20 @@ package com.sporniket.libre.javabeans.models.producers.javadoc;
 
 import static java.util.stream.Collectors.toList;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Deque;
 import java.util.List;
 
+import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
 
+import com.sporniket.libre.javabeans.models.AnnotationParameterSpecs;
+import com.sporniket.libre.javabeans.models.AnnotationParameterSpecsSingleValue_Builder;
+import com.sporniket.libre.javabeans.models.AnnotationSpecs;
+import com.sporniket.libre.javabeans.models.AnnotationSpecs_Builder;
 import com.sporniket.libre.javabeans.models.ClassSpecs;
 import com.sporniket.libre.javabeans.models.ClassSpecs_Builder;
 
@@ -53,30 +59,51 @@ public class DocletEnvironmentScanner
 			findClasses(e, _accumulator);
 		});
 		return _accumulator.stream() //
-				.map(e -> {
-					final String _packageName = computePackageName(e);
-					final String _qualifiedName = _packageName + "." + e.getSimpleName().toString();
+				.map(_e -> {
+					final TypeElement _te = (TypeElement) _e;
+					final String _packageName = root.getElementUtils().getPackageOf(_e).getQualifiedName().toString();
+					final String _qualifiedName = _te.getQualifiedName().toString();
+					final List<AnnotationSpecs> _annotations = mapToAnnotationSpecs(_te);
 					return new ClassSpecs_Builder() //
-							.withClassName(e.getSimpleName().toString()) //
+							.withClassName(_te.getSimpleName().toString()) //
 							.withClassNameFullyQualified(_qualifiedName) //
+							.withPackageName(_packageName) //
+							.withAnnotations(_annotations) //
 							.done();
 				}) //
 				.collect(toList());
 	}
 
-	String computePackageName(final Element element)
+	private List<AnnotationSpecs> mapToAnnotationSpecs(final TypeElement _te)
 	{
-		final Deque<String> path = new ArrayDeque<>(20);
-		for (Element container = element.getEnclosingElement(); container != null; container = container.getEnclosingElement())
-		{
-			path.addFirst(container.getSimpleName().toString());
-		}
-
-		return String.join(".", path);
+		final List<AnnotationSpecs> _annotations = _te.getAnnotationMirrors() //
+				.stream() //
+				.map(_a -> {
+					final DeclaredType _type = _a.getAnnotationType();
+					final List<AnnotationParameterSpecs> _parameters = //
+							_a.getElementValues().entrySet() //
+									.stream().map(_entry -> {
+										final ExecutableElement _ex = _entry.getKey();
+										final AnnotationValue _v = _entry.getValue();
+										return new AnnotationParameterSpecsSingleValue_Builder() //
+												.withName(_ex.getSimpleName().toString()) //
+												.withValue(_v.getValue()) //
+												.withString("java.lang.String".equals(_ex.getReturnType().toString())) //
+												.done();
+									}) //
+									.collect(toList());
+					return new AnnotationSpecs_Builder() //
+							.withType(_type.toString()) //
+							.withParameters(_parameters) //
+							.done();
+				}) //
+				.collect(toList());
+		return _annotations;
 	}
 
 	private void findClasses(final Element root, final List<Element> accumulator)
 	{
+
 		switch (root.getKind())
 		{
 			case CLASS:
