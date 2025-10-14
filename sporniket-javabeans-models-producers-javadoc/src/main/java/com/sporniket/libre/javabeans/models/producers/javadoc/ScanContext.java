@@ -29,7 +29,7 @@ package com.sporniket.libre.javabeans.models.producers.javadoc;
  * @version 23.07.00
  * @since 25.11.00
  */
-public class DocletEnvironmentScanConfiguration
+public class ScanContext
 {
 
 }

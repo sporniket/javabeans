@@ -14,7 +14,7 @@ import com.sporniket.libre.javabeans.models.consumers.javasource.BasicBuilderGen
 import com.sporniket.libre.javabeans.models.consumers.javasource.BasicJavabeanGenerator;
 import com.sporniket.libre.javabeans.models.consumers.javasource.Builder;
 import com.sporniket.libre.javabeans.models.consumers.javasource.Configuration;
-import com.sporniket.libre.javabeans.models.producers.javadoc.DocletEnvironmentScanConfiguration;
+import com.sporniket.libre.javabeans.models.producers.javadoc.ScanConfiguration;
 import com.sporniket.libre.javabeans.models.producers.javadoc.DocletEnvironmentScanner;
 
 import jdk.javadoc.doclet.Doclet;
@@ -52,7 +52,7 @@ public class Expander implements Doclet
 	@Override
 	public boolean run(final DocletEnvironment environment)
 	{
-		final DocletEnvironmentScanConfiguration configuration = new DocletEnvironmentScanConfiguration();
+		final ScanConfiguration configuration = new ScanConfiguration();
 		final Configuration generatorOptions = new Configuration();
 		final Collection<ClassSpecs> _classes = new DocletEnvironmentScanner().scan(environment, configuration);
 		for (final ClassSpecs _class : _classes)

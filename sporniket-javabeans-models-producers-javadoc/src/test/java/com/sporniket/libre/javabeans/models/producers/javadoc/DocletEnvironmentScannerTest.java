@@ -61,7 +61,7 @@ class DocletEnvironmentScannerTest
 		doReturn(Set.of(_elPackage)).when(_environment).getIncludedElements();
 
 		final Collection<ClassSpecs> _result = new DocletEnvironmentScanner().scan(_environment,
-				new DocletEnvironmentScanConfiguration());
+				new ScanConfiguration());
 
 		then(_result) //
 				.hasSize(2) //
