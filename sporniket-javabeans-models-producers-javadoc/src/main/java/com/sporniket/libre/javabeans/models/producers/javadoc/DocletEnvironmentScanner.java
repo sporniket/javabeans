@@ -216,12 +216,10 @@ public class DocletEnvironmentScanner
 						switch (_elKind)
 						{
 							case ANNOTATION_TYPE -> {
-								// this is wrong
-								// we get @my.annotation.type = { values...}
-								// instead of @my.annotation.type({ values... })
-								// FIXME
 								return new AnnotationParameterSpecsValuesArray_Builder() //
-										.withName(new StringBuilder().append("@").append(_el.toString()).toString()) //
+										.withName(ex.getSimpleName().toString()) //
+										.withPrefix("@" + _el.toString() + "(") //
+										.withPostfix(")") //
 										.withValues(_values)//
 										.done();
 							}

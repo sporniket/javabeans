@@ -13,7 +13,6 @@ import com.sporniket.libre.javabeans.models.AnnotationParameterSpecsSingleValue_
 import com.sporniket.libre.javabeans.models.AnnotationParameterSpecsValuesArray_Builder;
 import com.sporniket.libre.javabeans.models.AnnotationSpecs;
 import com.sporniket.libre.javabeans.models.AnnotationSpecs_Builder;
-import com.sporniket.libre.javabeans.models.consumers.javasource.AnnotationGenerator;
 
 /**
  * <p>
@@ -258,6 +257,73 @@ class AnnotationGeneratorTest
 				"                  \"the value of bar.b\", ", //
 				"                  \"the value of bar.value\"", //
 				"            }", //
+				"    )");
+	}
+
+	@Test
+	void should_output_annotations_with_arguments_being_parameterized_annotations()
+	{
+		final AnnotationParameterSpecsSingleValue _parameter = new AnnotationParameterSpecsSingleValue_Builder() //
+				.withName("foo") //
+				.withValue("the value") //
+				.withString(true) //
+				.done();
+		final AnnotationSpecs _annotation = new AnnotationSpecs_Builder()//
+				.withOnGetter(true)//
+				.withType("my.annotations.Simple") //
+				.withParameters(List.of( //
+						new AnnotationParameterSpecsSingleValue_Builder() //
+								.withName("value") //
+								.withValue("the value of value") //
+								.withString(true) //
+								.done(), //
+						new AnnotationParameterSpecsSingleValue_Builder() //
+								.withName("foo") //
+								.withValue("the value of foo") //
+								.withString(true) //
+								.done(), //
+						new AnnotationParameterSpecsValuesArray_Builder() //
+								.withName("bar") //
+								.withPrefix("@foo.bar.annotation.MyAnnotation(") //
+								.withPostfix(")") //
+								.withValues(List.of( //
+										new AnnotationParameterSpecsSingleValue_Builder() //
+												.withName("a") //
+												.withValue("the value of bar.a") //
+												.withString(true) //
+												.done(), //
+										new AnnotationParameterSpecsSingleValue_Builder() //
+												.withName("b") //
+												.withValue("the value of bar.b") //
+												.withString(true) //
+												.done(), //
+										new AnnotationParameterSpecsSingleValue_Builder() //
+												.withName("value") //
+												.withValue("the value of bar.value") //
+												.withString(true) //
+												.done() //
+								)) //
+								.done() //
+				)) //
+				.done();
+
+		// --
+		final InMemoryPrintStreamHelper _psh = new InMemoryPrintStreamHelper();
+
+		// execute
+		new AnnotationGenerator().outputAnnotation(_annotation, "    ", _psh.getPrintStream());
+		final List<String> _result = _psh.getLines();
+
+		// verify
+		then(_result).containsExactly( //
+				"    @my.annotations.Simple(", //
+				"        value = \"the value of value\", ", //
+				"        foo = \"the value of foo\", ", //
+				"        bar = @foo.bar.annotation.MyAnnotation({", //
+				"                  \"the value of bar.a\", ", //
+				"                  \"the value of bar.b\", ", //
+				"                  \"the value of bar.value\"", //
+				"            })", //
 				"    )");
 	}
 

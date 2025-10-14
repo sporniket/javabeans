@@ -65,16 +65,29 @@ public class AnnotationGenerator extends BasicGeneratorBase
 
 	private String computeAnnotationValue(final AnnotationParameterSpecsValuesArray annotation, final String indentation)
 	{
-		final StringBuilder _result = new StringBuilder("{");
+		final StringBuilder _result = new StringBuilder();
+		if (null != annotation.getPrefix())
+		{
+			final String _prefix = annotation.getPrefix().trim();
+			_result.append(_prefix);
+		}
+		_result.append("{");
+		final int startLength = _result.length();
 		for (final AnnotationParameterSpecsSingleValue _value : annotation.getValues())
 		{
-			if (_result.length() > 1)
+			if (_result.length() > startLength)
 			{
 				_result.append(", ");
 			}
 			_result.append("\n      ").append(indentation).append(outputAnnotationParameterValue(_value));
 		}
-		return _result.append("\n").append(indentation).append("}").toString();
+		_result.append("\n").append(indentation).append("}");
+		if (null != annotation.getPostfix())
+		{
+			final String _postfix = annotation.getPostfix().trim();
+			_result.append(_postfix);
+		}
+		return _result.toString();
 	}
 
 	public void outputAnnotation(final AnnotationSpecs annotations, final String indentation, final PrintStream out)

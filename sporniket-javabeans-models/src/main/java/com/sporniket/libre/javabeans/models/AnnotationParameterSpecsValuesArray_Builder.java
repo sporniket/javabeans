@@ -36,16 +36,29 @@ public class AnnotationParameterSpecsValuesArray_Builder {
 
     public AnnotationParameterSpecsValuesArray done() {return bean ;}
 
-    /**Default constructor. 
+    /**Default constructor.
      */
     public AnnotationParameterSpecsValuesArray_Builder() {bean = new AnnotationParameterSpecsValuesArray() ;}
 
-    /**Constructor that delegates the bean instanciation. 
+    /**Constructor that delegates the bean instanciation.
      * @param newBean the instanciated bean to use.
      */
-    public AnnotationParameterSpecsValuesArray_Builder(AnnotationParameterSpecsValuesArray newBean) {bean = newBean ;}
+    public AnnotationParameterSpecsValuesArray_Builder(final AnnotationParameterSpecsValuesArray newBean) {bean = newBean ;}
 
-    public AnnotationParameterSpecsValuesArray_Builder withValues(List<AnnotationParameterSpecsSingleValue> value) {bean.setValues(value); return this;}
-    public AnnotationParameterSpecsValuesArray_Builder withName(String value) {bean.setName(value); return this;}
+    public AnnotationParameterSpecsValuesArray_Builder withValues(final List<AnnotationParameterSpecsSingleValue> value) {bean.setValues(value); return this;}
+    public AnnotationParameterSpecsValuesArray_Builder withName(final String value) {bean.setName(value); return this;}
+
+	public AnnotationParameterSpecsValuesArray_Builder withPrefix(final String value)
+	{
+		bean.setPrefix(value);
+		return this;
+	}
+
+	public AnnotationParameterSpecsValuesArray_Builder withPostfix(final String value)
+	{
+		bean.setPostfix(value);
+		return this;
+	}
+
 }
 

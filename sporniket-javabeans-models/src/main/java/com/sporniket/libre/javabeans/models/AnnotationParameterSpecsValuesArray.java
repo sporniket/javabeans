@@ -31,15 +31,53 @@ import java.util.List;
  * @version 25.11.00
  * @since 25.11.00
  */
-public class AnnotationParameterSpecsValuesArray 
+public class AnnotationParameterSpecsValuesArray
         extends AnnotationParameterSpecs
 {
 
     private List<AnnotationParameterSpecsSingleValue> myValues ;
 
+	/**
+	 * Prefix added before the list : <code>prefix{...}postfix</code>.
+	 *
+	 * Added to accomodate parameters that are annotations with parameter themselves. For this specific case, the prefix would be
+	 * something like <code>@the_annotation(</code>.
+	 *
+	 */
+	private String myPrefix;
+
+	/**
+	 * Suffix added after the list : <code>prefix{...}postfix</code>.
+	 *
+	 * Added to accomodate parameters that are annotations with parameter themselves. For this specific case, the prefix would be
+	 * something like <code>)</code>.
+	 *
+	 */
+	private String myPostfix;
+
 
     public List<AnnotationParameterSpecsSingleValue> getValues() {return myValues ;}
-    public void setValues(List<AnnotationParameterSpecsSingleValue> value) {myValues = value;}
+    public void setValues(final List<AnnotationParameterSpecsSingleValue> value) {myValues = value;}
+
+	public String getPrefix()
+	{
+		return myPrefix;
+	}
+
+	public void setPrefix(final String prefix)
+	{
+		myPrefix = prefix;
+	}
+
+	public String getPostfix()
+	{
+		return myPostfix;
+	}
+
+	public void setPostfix(final String postfix)
+	{
+		myPostfix = postfix;
+	}
 
 }
 
