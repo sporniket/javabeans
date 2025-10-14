@@ -1,12 +1,17 @@
 package com.sporniket.libre.javabeans.models.producers.javadoc;
 
+import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 
 import com.sporniket.libre.javabeans.models.AnnotationSpecs;
@@ -48,8 +53,12 @@ public class DocletEnvironmentScanner
 {
 	private final AnnotationScanner myAnnotationScanner = new AnnotationScanner();
 
+	private final Set<String> DEADEND_ANNOTATION_NAMES = Set.of("java.lang.annotation.Documented",
+			"java.lang.annotation.Retention", "java.lang.annotation.Target");
+
 	public Collection<ClassSpecs> scan(final DocletEnvironment root, final ScanConfiguration configuration)
 	{
+		dumpEnvironment(root);
 		final List<Element> _accumulator = new ArrayList<>();
 		root.getIncludedElements().forEach(e -> {
 			findClasses(e, _accumulator);
@@ -85,5 +94,52 @@ public class DocletEnvironmentScanner
 			default:
 				// ignore
 		}
+	}
+
+	private void dumpEnvironment(final DocletEnvironment root)
+	{
+		System.out.println("==============================[Doclet environment]==============================");
+		root.getIncludedElements().forEach(e -> dumpElement(e, ""));
+		System.out.println("--------------------------------------------------------------------------------");
+	}
+
+	private void dumpElement(final Element e, final String indentation)
+	{
+		final String _name = e.toString();
+		System.out.println(format("%s[%s] > '%s'", indentation, e.getKind(), _name));
+
+		if (!DEADEND_ANNOTATION_NAMES.contains(_name))
+		{
+			final String _indentationAnnotation = indentation + "|    ";
+			e.getAnnotationMirrors().forEach(am -> {
+				dumpAnnotationMirror(am, _indentationAnnotation);
+			});
+		}
+
+		final String _indentationChildren = indentation + "| ";
+		e.getEnclosedElements() //
+				.stream() //
+				.filter(ee -> ee != e) //
+				.forEach(ee -> {
+			dumpElement(ee, _indentationChildren);
+		});
+	}
+
+	private void dumpAnnotationMirror(final AnnotationMirror am, final String indentation)
+	{
+		System.out.println(format("%s[_annotation_]", indentation));
+		final String _indentationMain = indentation + "| ";
+		dumpElement(am.getAnnotationType().asElement(), _indentationMain);
+		final String _indentationChildren = _indentationMain + "|   ";
+		am.getElementValues().forEach((_x, _v) -> {
+			dumpAnnotationValue(_x, _v, _indentationChildren);
+		});
+	}
+
+	private void dumpAnnotationValue(final ExecutableElement x, final AnnotationValue v, final String indentation)
+	{
+		System.out.println(format("%s%s", indentation, x.getSimpleName()));
+		System.out.println(format("%s = %s", indentation, v.getValue().toString()));
+
 	}
 }
