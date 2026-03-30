@@ -72,10 +72,10 @@ public class AnnotationGenerator extends BasicGeneratorBase
 			_result.append(_prefix);
 		}
 		_result.append("{");
-		final int startLength = _result.length();
+		final int _startLength = _result.length();
 		for (final AnnotationParameterSpecsSingleValue _value : annotation.getValues())
 		{
-			if (_result.length() > startLength)
+			if (_result.length() > _startLength)
 			{
 				_result.append(", ");
 			}

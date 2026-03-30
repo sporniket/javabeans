@@ -13,6 +13,8 @@ import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.util.Types;
 
 import com.sporniket.libre.javabeans.models.AnnotationSpecs;
 import com.sporniket.libre.javabeans.models.ClassSpecs;
@@ -53,8 +55,8 @@ public class DocletEnvironmentScanner
 {
 	private final AnnotationScanner myAnnotationScanner = new AnnotationScanner();
 
-	private final Set<String> DEADEND_ANNOTATION_NAMES = Set.of("java.lang.annotation.Documented",
-			"java.lang.annotation.Retention", "java.lang.annotation.Target");
+	private final Set<String> DEADEND_ANNOTATION_NAMES = Set.of("java.lang.annotation.Documented", "java.lang.annotation.Retention",
+			"java.lang.annotation.Target");
 
 	public Collection<ClassSpecs> scan(final DocletEnvironment root, final ScanConfiguration configuration)
 	{
@@ -63,6 +65,9 @@ public class DocletEnvironmentScanner
 		root.getIncludedElements().forEach(e -> {
 			findClasses(e, _accumulator);
 		});
+
+		final Types _typeUtils = root.getTypeUtils();
+		final TypeParameterScanner _typeParameterScanner = new TypeParameterScanner(_typeUtils);
 		return _accumulator.stream() //
 				.map(_e -> {
 					final ScanContext _context = new ScanContext();
@@ -70,11 +75,14 @@ public class DocletEnvironmentScanner
 					final String _packageName = root.getElementUtils().getPackageOf(_e).getQualifiedName().toString();
 					final String _qualifiedName = _te.getQualifiedName().toString();
 					final List<AnnotationSpecs> _annotations = myAnnotationScanner.scan(_te, _context, configuration);
+					final TypeParameterCollection _typeParameters = _typeParameterScanner.scan((DeclaredType) _e.asType());
 					return new ClassSpecs_Builder() //
 							.withClassName(_te.getSimpleName().toString()) //
 							.withClassNameFullyQualified(_qualifiedName) //
 							.withPackageName(_packageName) //
 							.withAnnotations(_annotations) //
+							.withDeclaredTypeArguments(_typeParameters.getDeclaredTypeParameters().orElse(null)) //
+							.withInvokedTypeArguments(_typeParameters.getInvokedTypeParameters().orElse(null)) //
 							.done();
 				}) //
 				.collect(toList());
@@ -121,8 +129,8 @@ public class DocletEnvironmentScanner
 				.stream() //
 				.filter(ee -> ee != e) //
 				.forEach(ee -> {
-			dumpElement(ee, _indentationChildren);
-		});
+					dumpElement(ee, _indentationChildren);
+				});
 	}
 
 	private void dumpAnnotationMirror(final AnnotationMirror am, final String indentation)
