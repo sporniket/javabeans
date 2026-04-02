@@ -19,6 +19,8 @@ import javax.lang.model.util.Types;
 import com.sporniket.libre.javabeans.models.AnnotationSpecs;
 import com.sporniket.libre.javabeans.models.ClassSpecs;
 import com.sporniket.libre.javabeans.models.ClassSpecs_Builder;
+import com.sporniket.libre.javabeans.models.producers.javadoc.typescanner.TypeParameterCollection;
+import com.sporniket.libre.javabeans.models.producers.javadoc.typescanner.TypeParameterScanner;
 
 import jdk.javadoc.doclet.DocletEnvironment;
 

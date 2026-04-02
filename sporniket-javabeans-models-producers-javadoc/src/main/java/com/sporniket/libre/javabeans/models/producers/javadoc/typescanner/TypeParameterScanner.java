@@ -1,4 +1,4 @@
-package com.sporniket.libre.javabeans.models.producers.javadoc;
+package com.sporniket.libre.javabeans.models.producers.javadoc.typescanner;
 
 import java.util.List;
 

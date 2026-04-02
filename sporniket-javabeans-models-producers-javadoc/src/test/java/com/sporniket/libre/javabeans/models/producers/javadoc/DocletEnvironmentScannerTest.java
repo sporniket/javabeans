@@ -12,6 +12,7 @@ import java.util.Set;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.TypeElement;
 
 import org.junit.jupiter.api.Test;
 
@@ -84,7 +85,7 @@ class DocletEnvironmentScannerTest
 
 	Element mockClassElement(final String simpleName)
 	{
-		final Element _elClass = mock(Element.class);
+		final Element _elClass = mock(TypeElement.class);
 		when(_elClass.getKind()).thenReturn(ElementKind.CLASS);
 		when(_elClass.getSimpleName()).thenReturn(new NameString(simpleName));
 		return _elClass;
